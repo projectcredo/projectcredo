@@ -1,20 +1,24 @@
 require 'test_helper'
 
 class ListsControllerTest < ActionDispatch::IntegrationTest
-  # setup do
-  #   @list = List.create name: 'hey'
-  # end
+  include Devise::Test::IntegrationHelpers
 
-  # test "should get index" do
-  #   get lists_url
-  #   assert_response :success
-  # end
+  setup do
+    @user = Fabricate(:user)
+    @list = Fabricate(:list, user: @user)
+  end
 
-  # test "should destroy list" do
-  #   assert_difference('List.count', -1) do
-  #     delete list_url(@list)
-  #   end
+  test "should get index" do
+    get root_url
+    assert_response :success
+    assert_includes @response.body, @list.name
+  end
 
-  #   assert_redirected_to lists_path
-  # end
+  test "should create list" do
+    sign_in @user
+
+    assert_difference('List.count', 1) do
+      post lists_url(list: Fabricate.attributes_for(:list, user: @user))
+    end
+  end
 end

@@ -19,5 +19,10 @@ module Projectcredo
 
     # Include the authenticity token in remote forms.
     config.action_view.embed_authenticity_token_in_remote_forms = true
+
+    config.generators do |g|
+      g.test_framework      :minitest, spec: true, fixture_replacement: :fabrication
+      g.fixture_replacement :fabrication, dir: "test/fabricators"
+    end
   end
 end
