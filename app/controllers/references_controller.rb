@@ -53,17 +53,17 @@ class ReferencesController < ApplicationController
   private
     def reference_params
       params.require(:reference).permit(
-        :list_id, :paper_id, :id, paper: [:locator_id, :locator_type, :title])
+        :list_id, :paper_id, :id, locator: [:id, :type, :title])
     end
 
     def locator_params
-      reference_params.fetch(:paper, nil)
+      reference_params[:locator]
     end
 
     def set_paper_locator
-      locator_klass = LOCATOR_CLASSES[locator_params[:locator_type]]
+      locator_klass = LOCATOR_CLASSES[locator_params[:type]]
 
-      return redirect_to(:back, alert: "Identifier can't be blank.") if locator_params[:locator_id].blank?
+      return redirect_to(:back, alert: "Identifier can't be blank.") if locator_params[:id].blank?
       return redirect_to(:back, alert: 'Bad locator parameters') if locator_klass.nil?
 
       @locator = locator_klass.new locator_params
