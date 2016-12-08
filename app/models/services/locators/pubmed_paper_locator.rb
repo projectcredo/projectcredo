@@ -2,7 +2,7 @@ class PubmedPaperLocator
   attr_accessor :locator_id, :errors
 
   def initialize locator_params={}
-    self.locator_id = locator_params[:locator_id].strip
+    self.locator_id = locator_params[:id].strip
     self.errors = []
   end
 
