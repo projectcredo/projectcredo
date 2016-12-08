@@ -43,8 +43,8 @@ $(document).ready(function() {
   });
 
   paperType = $('#add_locator_type');
-  paperLocator = $('#reference_paper_locator_id');
-  paperTitle = $('#reference_paper_title');
+  paperLocator = $('#reference_locator_id');
+  paperTitle = $('#reference_locator_title');
   paperSubmit = $('#add_locator_submit');
   cancelAddLocator = $('#cancel-add-locator');
 

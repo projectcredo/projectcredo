@@ -1,4 +1,9 @@
 class ReferencesController < ApplicationController
+  LOCATOR_CLASSES = {
+    'doi' => DoiPaperLocator,
+    'link' => LinkPaperLocator,
+    'pubmed' => PubmedPaperLocator
+  }
   before_action :ensure_current_user, except: :show
   before_action :set_paper_locator, only: :create
 
@@ -24,7 +29,7 @@ class ReferencesController < ApplicationController
         flash['notice'] = "You added '#{paper.title}' to '#{list.name}'"
       end
     else
-      logger.debug "No paper found for: #{paper_params.inspect}"
+      logger.debug "No paper found for: #{locator_params.inspect}"
       flash['alert'] = "Couldn't find or import a paper with those parameters"
     end
     redirect_back(fallback_location: list_path)
@@ -48,27 +53,19 @@ class ReferencesController < ApplicationController
   private
     def reference_params
       params.require(:reference).permit(
-        :list_id, :paper_id, :id, paper: [:locator_id, :locator_type, :title])
+        :list_id, :paper_id, :id, locator: [:id, :type, :title])
     end
 
-    def paper_params
-      reference_params.fetch(:paper, nil)
+    def locator_params
+      reference_params[:locator]
     end
 
     def set_paper_locator
-      locator_type, locator_id, paper_title = paper_params.values_at(:locator_type, :locator_id, :title)
+      locator_klass = LOCATOR_CLASSES[locator_params[:type]]
 
-      return redirect_to(:back, alert: "Identifier can't be blank.") if locator_id.blank?
+      return redirect_to(:back, alert: "Identifier can't be blank.") if locator_params[:id].blank?
+      return redirect_to(:back, alert: 'Bad locator parameters') if locator_klass.nil?
 
-      case locator_type
-      when 'doi'
-        @locator = DoiPaperLocator.new locator_id: locator_id
-      when 'link'
-        @locator = LinkPaperLocator.new locator_id: locator_id, paper_title: paper_title
-      when 'pubmed'
-        @locator = PubmedPaperLocator.new locator_id: locator_id
-      else
-        return redirect_to(:back, alert: 'Bad locator parameters')
-      end
+      @locator = locator_klass.new locator_params
     end
 end

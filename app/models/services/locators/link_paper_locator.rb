@@ -1,9 +1,9 @@
 class LinkPaperLocator
   attr_accessor :locator_id, :paper_title, :errors
 
-  def initialize locator_id: , paper_title:
-    self.locator_id = locator_id.strip
-    self.paper_title = paper_title.strip
+  def initialize locator_params={}
+    self.locator_id = locator_params[:id].strip
+    self.paper_title = locator_params[:title].strip
     self.errors = []
   end
 

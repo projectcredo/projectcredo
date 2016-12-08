@@ -11,9 +11,9 @@
   %>
   <%= form_for list.references.build, html: {class: 'hidden'} do |f| %>
     <%= f.hidden_field :list_id, value: list.id %>
-    <%= f.fields_for Paper.new do |p| %>
-      <%= p.text_field :locator_type, value: 'doi' %>
-      <%= p.text_field :locator_id, id: 'crossref-locator-id' %>
+    <%= f.fields_for :locator do |l| %>
+      <%= l.text_field :type, value: 'doi' %>
+      <%= l.text_field :id, id: 'crossref-locator-id' %>
     <% end %>
   <% end %>
 </div>

@@ -1,21 +1,21 @@
 <%= form_for list.references.build, html: {class: 'form-inline'} do |f| %>
   <%= f.hidden_field :list_id, value: list.id %>
   <div class="add-paper">
-    <%= f.fields_for Paper.new do |p| %>
+    <%= f.fields_for :locator do |l| %>
       <div class="form-group add-reference col-md-12">
-        <%= p.hidden_field :locator_type, value: '', id: 'add_locator_type' %>
+        <%= l.hidden_field :type, value: '', id: 'add_locator_type' %>
         <i>
           Or add a paper by
           <%= link_to "DOI", '#', id: "add-doi" %>,
           <%= link_to "Pubmed ID", '#', id: "add-pubmed" %>,
           or <%= link_to "URL", '#', id: "add-link" %>
         </i>
-        <%= p.text_field  :locator_id,
+        <%= l.text_field  :id,
                           placeholder: 'URL, DOI, or Pubmed',
                           class: "form-control hidden paper-locator input-sm",
                           disabled: true %>
 
-        <%= p.text_field  :title,
+        <%= l.text_field  :title,
                           placeholder: 'Required - Paper Title ex: Regulation of the Neural Circuitry of Emotion',
                           class: "form-control hidden paper-title input-sm",
                           disabled: true %>
