@@ -29,7 +29,7 @@ class ReferencesController < ApplicationController
         flash['notice'] = "You added '#{paper.title}' to '#{list.name}'"
       end
     else
-      logger.debug "No paper found for: #{paper_params.inspect}"
+      logger.debug "No paper found for: #{locator_params.inspect}"
       flash['alert'] = "Couldn't find or import a paper with those parameters"
     end
     redirect_back(fallback_location: list_path)
@@ -56,16 +56,16 @@ class ReferencesController < ApplicationController
         :list_id, :paper_id, :id, paper: [:locator_id, :locator_type, :title])
     end
 
-    def paper_params
+    def locator_params
       reference_params.fetch(:paper, nil)
     end
 
     def set_paper_locator
-      locator_klass = LOCATOR_CLASSES[paper_params[:locator_type]]
+      locator_klass = LOCATOR_CLASSES[locator_params[:locator_type]]
 
-      return redirect_to(:back, alert: "Identifier can't be blank.") if paper_params[:locator_id].blank?
+      return redirect_to(:back, alert: "Identifier can't be blank.") if locator_params[:locator_id].blank?
       return redirect_to(:back, alert: 'Bad locator parameters') if locator_klass.nil?
 
-      @locator = locator_klass.new paper_params
+      @locator = locator_klass.new locator_params
     end
 end
