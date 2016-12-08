@@ -96,7 +96,4 @@ Rails.application.configure do
   end
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
-
-  # Analytics
-  config.ga_tracking_id = 'UA-88657092-1'
 end
