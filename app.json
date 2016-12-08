@@ -33,6 +33,9 @@
     },
     "IS_REVIEW_APP": {
       "required": true
+    },
+    "GA_TRACKING_ID": {
+      "required": true
     }
   },
   "formation": {
