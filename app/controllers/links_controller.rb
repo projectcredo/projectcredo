@@ -3,12 +3,12 @@ class LinksController < ApplicationController
 
   def destroy
     link = Link.find(link_params[:id])
+    url = link.url
     reference = Reference.find(params[:reference])
     list = reference.list
 
     respond_to do |format|
       list_path = user_list_path(list.owner, list)
-
       if current_user.can_moderate?(list)
         link.destroy
         format.html do
@@ -17,7 +17,7 @@ class LinksController < ApplicationController
               notice: "'#{link.url}' has been successfully removed from '#{link.paper.title}'"
             )
         end
-        format.js { render('destroy.js.erb', reference: reference) }
+        format.js { render('destroy.js.erb', locals: { url: url, reference_id: reference.id }) }
       else
         flash[:alert] = 'You do not have permission to moderate this list.'
 

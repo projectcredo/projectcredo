@@ -1,6 +1,4 @@
-linksList = "<%= escape_javascript(render('links/links', reference: reference)) %>";
-linksUL = $("#details-<%= reference.id %>").find('.links');
-
-linksUL.html(linksList);
-
-
+url = "<%= url %>"
+link = $("#details-<%= reference_id %>").find("a[href= '" + url + "']");
+linkLi = link.parent('li');
+linkLi.remove();
