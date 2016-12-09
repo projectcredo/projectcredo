@@ -33,7 +33,7 @@
       </div>
     </nav>
     <div class="flash-messages">
-      <%= content_tag(:p, notice, class: "notice alert-success") if notice %>
+      <%= content_tag(:p, notice, class: "notice alert alert-info") if notice %>
       <%= content_tag(:p, alert, class: "alert alert-danger") if alert %>
     </div>
     <div class="container<%= '-fluid' if @full_width %>">

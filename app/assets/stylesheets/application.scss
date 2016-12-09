@@ -51,3 +51,11 @@ input[placeholder] {
     background: none;
     text-decoration: none;
 }
+
+.flash-messages {
+  width: 40%;
+  margin: auto;
+  .alert {
+    margin: 0;
+  }
+}
