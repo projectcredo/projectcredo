@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get '/about' => 'static_pages#about'
   get '/.well-known/acme-challenge/:id' => 'static_pages#lets_encrypt'
 
-  devise_for :users, controllers: {registrations: 'users/registrations'}
+  devise_for :users
 
   resources :papers, only: [:show, :edit, :update] do
     resources :links, only: :destroy, shallow: true
