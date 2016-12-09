@@ -32,9 +32,17 @@
         </div>
       </div>
     </nav>
+
+    <%
+      close_button =
+        button_tag(type: "button", class: "close", "data-dismiss": "alert", "aria-label": "Close") do
+          content_tag(:span, '&times;'.html_safe, "aria_hidden": "true")
+        end
+    %>
+
     <div class="flash-messages">
-      <%= content_tag(:p, notice, class: "notice alert alert-info") if notice %>
-      <%= content_tag(:p, alert, class: "alert alert-danger") if alert %>
+      <%= content_tag(:p, "#{notice}#{close_button}".html_safe, class: "notice alert alert-info") if notice %>
+      <%= content_tag(:p, "#{alert}#{close_button}".html_safe, class: "alert alert-danger") if alert %>
     </div>
     <div class="container<%= '-fluid' if @full_width %>">
       <%= yield %>
