@@ -16,7 +16,7 @@ class LinksController < ApplicationController
               notice: "'#{link.url}' has been successfully removed from '#{link.paper.title}'"
             )
         end
-        format.js { render('destroy.js.erb', locals: { reference_id: reference.id }) }
+        format.js { render('destroy.js.erb') }
       else
         flash[:alert] = 'You do not have permission to moderate this list.'
 
