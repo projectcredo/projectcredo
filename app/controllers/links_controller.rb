@@ -13,7 +13,7 @@ class LinksController < ApplicationController
         format.html do
             redirect_back(
               fallback_location: list_path,
-              notice: "'#{link.url}' has been successfully removed from '#{link.paper.title}'"
+              notice: "'#{@link.url}' has been successfully removed from '#{@link.paper.title}'"
             )
         end
         format.js { render('destroy.js.erb') }
