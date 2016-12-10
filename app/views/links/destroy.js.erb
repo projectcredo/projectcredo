@@ -1,4 +1,4 @@
-url = "<%= url %>"
-link = $("#details-<%= reference_id %>").find("a[href= '" + url + "']");
-linkLi = link.parent('li');
-linkLi.remove();
+link = $("#link-<%= @link.id %>")
+link.remove();
+
+<%= render 'layouts/flash_messages', flash: {notice: 'Link deleted.'} %>
