@@ -10,7 +10,7 @@
 
 <% if paper.links.any? %>
   <% paper.links.each do |l| %>
-    <li>
+    <li id="link-<%= l.id %>">
       <%= link_to l.url, l.url, target: '_blank' %>
       <% if l.link_editable && current_user_can_moderate?(reference.list) %>
         <%= link_to '',

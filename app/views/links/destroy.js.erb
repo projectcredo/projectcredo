@@ -1,6 +1,3 @@
-linksList = "<%= escape_javascript(render('links/links', reference: reference)) %>";
-linksUL = $("#details-<%= reference.id %>").find('.links');
+$("#link-<%= @link.id %>").remove();
 
-linksUL.html(linksList);
-
-
+<%= render 'layouts/flash_messages', flash: {notice: "#{@link.url} has been successfully removed from #{@link.paper.title}"} %>
