@@ -1,4 +1,6 @@
 <% @title = "#{@list.owner.username} | #{@list.name}" %>
+<% content_for :head do %>
+<% end %>
 
 <h2 class= "list-title"><%= @list.name %></h2>
 <div class="list-nav">

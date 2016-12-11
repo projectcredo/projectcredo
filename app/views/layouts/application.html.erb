@@ -6,6 +6,12 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= render 'layouts/google_analytics' %>
+    <link href="/assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <%= tag :meta, property: "og:type", content: "website" %>
+    <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
+    <%= tag :meta, property: "og:image", content: "/assets/images/projectcredologo.jpg" %>
+
+    <%= yield :head %>
   </head>
 
   <body>
