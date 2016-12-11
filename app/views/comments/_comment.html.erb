@@ -1,7 +1,14 @@
 <div class="comment" id="comment-<%= comment.id %>" >
   <p class="text-muted">
     <%= if comment.created_at == comment.updated_at then 'Added by' else 'Updated by' end %>
-    <strong><%= link_to comment.user.username, user_lists_path(comment.user.username) %></strong> on <%= l(comment.updated_at, format: '%B, %d %Y %H:%M:%S') %>
+    <strong>
+      <% if comment.user %>
+        <%= link_to comment.user.username, user_lists_path(comment.user.username) %>
+      <% else %>
+        [deleted]
+      <% end %>
+    </strong>
+    on <%= l(comment.updated_at, format: '%B, %d %Y %H:%M:%S') %>
   </p>
   <% comment_content = wrap_on_line_breaks comment.content %>
   <%= content_tag(:span, comment_content, class: "content") %>
