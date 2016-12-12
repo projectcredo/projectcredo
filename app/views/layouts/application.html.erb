@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="/favicon.ico?v=2">
     <%= tag :meta, property: "og:type", content: "website" %>
     <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
-    <%= tag :meta, property: "og:image", content: "/assets/projectcredologo.jpg" %>
+    <%= tag :meta, property: "og:image", content: request.protocol + request.host + "/assets/projectcredologo.jpg" %>
 
     <%= yield :head %>
   </head>
