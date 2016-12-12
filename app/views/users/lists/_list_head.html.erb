@@ -1,11 +1,11 @@
 <% @title = "#{list.owner.username} | #{list.name}" %>
 <% content_for :meta_og do %>
-  <%= tag :meta, property: "og:type", content: "website" %>
+  <%= tag :meta, property: "og:type", content: "article" %>
   <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
   <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
   <%= tag :meta, property: "og:description", content: truncate(list.description, length: 400, separator: ' ') %>
   <%= tag :meta, property: "og:author", content: list.owner.username %>
-  <%= tag :meta, property: "og:published_time", content: list.created_at %>
+  <%= tag :meta, property: "og:published_time", content: list.created_at.strftime('%Y-%m-%d %H:%M') %>
   <%= tag :meta, property: "og:image:width", content: "600" %>
   <%= tag :meta, property: "og:image:height", content: "600" %>
 <% end %>
