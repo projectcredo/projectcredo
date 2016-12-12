@@ -1,0 +1,12 @@
+<div class='row'>
+  <div class='col-md-11'>
+    <%= message %>
+  </div>
+  <div class='col-md-1'>
+    <%=
+      button_tag(type: "button", class: "close", "data-dismiss": "alert", "aria-label": "Close") do
+        content_tag(:span, '&times;'.html_safe, "aria_hidden": "true")
+      end
+    %>
+  </div>
+</div>
