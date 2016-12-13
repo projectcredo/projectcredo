@@ -6,7 +6,7 @@ class References::VotesController < ApplicationController
     current_user.likes reference
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render 'references/vote.js.erb', locals: {reference: reference} }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: reference} }
     end
   end
 
@@ -15,7 +15,7 @@ class References::VotesController < ApplicationController
     current_user.unlike reference
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You unlike it!' }
-      format.js { render 'references/vote.js.erb', locals: {reference: reference} }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: reference} }
     end
   end
 
