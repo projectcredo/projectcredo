@@ -13,7 +13,9 @@
   <% comment_content = wrap_on_line_breaks comment.content %>
   <%= content_tag(:span, comment_content, class: "content") %>
   <ul>
-    <li><%= render 'votes/toggle_like', votable: comment %></li>
+    <li id="comment-vote-<%= comment.id %>">
+      <%= render 'votes/toggle_like', votable: comment %>
+    </li>
     <li><%= (link_to 'reply', "#", class: 'toggle-reply btn btn-link btn-xs', 'data-parent-comment-id' => comment.id) if current_user %></li>
     <% if current_user == comment.user %>
       <li><%= link_to 'edit', edit_comment_path(comment), remote: true, class: "edit-comment btn btn-link btn-xs" %></li>
