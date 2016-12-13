@@ -11,7 +11,7 @@
 
 <div class="row paper-show">
   <% if not show_comments %>
-    <div class="col-md-1"><%= render 'votes/toggle_like', votable: reference %></div>
+    <div class="col-md-1" id="ref-vote-<%=reference.id%>"><%= render 'votes/toggle_like', votable: reference %></div>
   <% end %>
   <div class="col-md-<%= show_comments ? 12 : 11 %>">
     <% if show_comments %>
