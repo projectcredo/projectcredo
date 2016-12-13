@@ -2,15 +2,21 @@ class Lists::VotesController < ApplicationController
   before_action :ensure_current_user
 
   def create
-    current_user.likes List.find(votable_params[:id])
-
-    redirect_to :back
+    list = List.find(votable_params[:id])
+    current_user.likes list
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'You like it!' }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: list} }
+    end
   end
 
   def destroy
-    current_user.unlike List.find(votable_params[:id])
-
-    redirect_to :back
+    list = List.find(votable_params[:id])
+    current_user.unlike list
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'You unlike it!' }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: list} }
+    end
   end
 
   private
