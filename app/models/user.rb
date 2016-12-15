@@ -58,12 +58,13 @@ class User < ApplicationRecord
 
   def visible_lists
     public_lists = List.publicly_visible
-    shared_guest_lists = List.where(
-      'list_memberships.user_id = ? AND NOT lists.visibility = ?',
-      id, List.visibilities[:private]
+    owned_or_shared_guest_lists = List.where(
+      'list_memberships.user_id = :id AND (list_memberships.role = :role OR NOT lists.visibility = :visibility)',
+      {id: id, role: ListMembership.roles[:owner], visibility: List.visibilities[:private]}
     ).distinct
 
-    public_lists.or(shared_guest_lists)
+
+    public_lists.or(owned_or_shared_guest_lists)
   end
 
   def owned_lists
