@@ -5,15 +5,19 @@ class Comments::VotesController < ApplicationController
   def create
     current_user.likes @comment
     @comment.order_siblings
-
-    redirect_to :back
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'You like it!' }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
+    end
   end
 
   def destroy
     current_user.unlike @comment
     @comment.order_siblings
-
-    redirect_to :back
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'You like it!' }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
+    end
   end
 
   private

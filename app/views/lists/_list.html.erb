@@ -5,7 +5,9 @@
         <div class="row">
           <div class="col-md-12">
             <%= render 'lists/toggle_pin', list: list %>
-            <%= render 'votes/toggle_like', votable: list %>
+            <span id="list-vote-<%= list.id %>">
+              <%= render 'votes/toggle_like', votable: list %>
+            </span>
             <% if current_user.can_edit? list %>
               <small class="pull-right">
                 <%= link_to 'Edit ', edit_user_list_path(list.owner, list) %>

@@ -2,15 +2,21 @@ class References::VotesController < ApplicationController
   before_action :ensure_current_user
 
   def create
-    current_user.likes Reference.find(votable_params[:id])
-
-    redirect_to :back
+    reference = Reference.find(votable_params[:id])
+    current_user.likes reference
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'You like it!' }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: reference} }
+    end
   end
 
   def destroy
-    current_user.unlike Reference.find(votable_params[:id])
-
-    redirect_to :back
+    reference = Reference.find(votable_params[:id])
+    current_user.unlike reference
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'You unlike it!' }
+      format.js { render 'votes/toggle_like.js.erb', locals: {votable: reference} }
+    end
   end
 
   private
