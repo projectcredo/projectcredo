@@ -57,17 +57,7 @@ class User < ApplicationRecord
   end
 
   def visible_lists
-    List.where(<<~QUERY
-        visibility = #{List.visibilities[:public]}
-        OR (
-          list_memberships.user_id = #{id}
-          AND (
-            list_memberships.role = #{ListMembership.roles[:owner]}
-            OR NOT lists.visibility = #{List.visibilities[:private]}
-          )
-        )
-      QUERY
-    ).distinct
+    List.visible_to(self)
   end
 
   def owned_lists

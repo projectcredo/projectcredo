@@ -6,7 +6,11 @@ class Users::ListsController < ApplicationController
   before_action :ensure_visible, only: :show
 
   def index
-    @lists = @user.authored_lists.distinct
+    if current_user
+      @lists = @user.lists.visible_to(current_user)
+    else
+      @lists = @user.lists.publicly_visible
+    end
   end
 
   def show
