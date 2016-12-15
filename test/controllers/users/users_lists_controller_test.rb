@@ -46,4 +46,17 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
 
     assert_includes @response.body, list_2.name
   end
+
+  test 'updates user list' do
+    sign_in @user
+    patch(user_list_path(@user, @list), params: {list: {name: 'Updated list name'}})
+    @list.reload
+    assert_equal @list.name, 'Updated list name'
+  end
+
+  test 'destroys user list' do
+    sign_in @user
+    delete user_list_path(@user, @list)
+    refute List.exists?(id: @list.id)
+  end
 end
