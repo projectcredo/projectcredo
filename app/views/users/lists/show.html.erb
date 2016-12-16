@@ -26,6 +26,7 @@
 </p>
 <strong>Description</strong>
 <%= wrap_on_line_breaks @list.description %>
+<%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
 <%= render 'crossref/search', list: @list %>
 <%= render 'lists/add_reference', list: @list %>
 <% reference_count = @list.references.count %>

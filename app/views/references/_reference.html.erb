@@ -60,7 +60,7 @@
     </div>
 
     <div class="paper-detail well collapse <%= "in" if show_comments %>" id="comments-<%= reference.id %>">
-      <%= render 'references/comments', reference: reference %>
+      <%= render 'commentables/comments', commentable: reference, list_for_authorization: reference.list %>
     </div>
 
   </div>
