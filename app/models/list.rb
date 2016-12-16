@@ -10,6 +10,19 @@ class List < ApplicationRecord
   # Scopes
   default_scope { joins(:list_memberships).order(cached_votes_up: :desc, updated_at: :desc) }
   scope :publicly_visible, -> { where(visibility: :public).distinct }
+  scope :visible_to, ->(user) do
+    where(<<~QUERY
+        visibility = #{List.visibilities[:public]}
+        OR (
+          list_memberships.user_id = #{user.id}
+          AND (
+            list_memberships.role = #{ListMembership.roles[:owner]}
+            OR NOT lists.visibility = #{List.visibilities[:private]}
+          )
+        )
+      QUERY
+    ).distinct
+  end
 
   # Callbacks
   after_create ->{ list_memberships.find_or_create_by(list: self, user: user) }

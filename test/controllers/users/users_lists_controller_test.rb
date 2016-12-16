@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ListsControllerTest < ActionDispatch::IntegrationTest
+class Users::ListsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
@@ -9,27 +9,9 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "guest should get index" do
-    get root_url
+    get user_lists_path(@user)
     assert_response :success
     assert_includes @response.body, @list.name
-  end
-
-  test 'guest should see public lists' do
-    user_2 = Fabricate(:user)
-    list_2 = Fabricate(:list, user: user_2)
-
-    get root_url
-
-    assert_includes @response.body, @list.name
-    assert_includes @response.body, list_2.name
-  end
-
-  test "user should create list" do
-    sign_in @user
-
-    assert_difference('List.count', 1) do
-      post lists_url(list: Fabricate.attributes_for(:list, user: @user))
-    end
   end
 
   test "user should see other user's public list" do
@@ -37,12 +19,12 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     list_2 = Fabricate.build(:list, user: user_2)
 
     sign_in @user
-    get root_url
+    get user_lists_path(user_2)
 
     refute_includes @response.body, list_2.name
     list_2.save
 
-    get root_url
+    get user_lists_path(user_2)
     assert_includes @response.body, list_2.name
   end
 
@@ -51,7 +33,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     list_2 = Fabricate(:list, user: user_2, visibility: :private)
 
     sign_in @user
-    get root_url
+    get user_lists_path(user_2)
 
     refute_includes @response.body, list_2.name
   end
@@ -60,8 +42,21 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     list_2 = Fabricate(:list, user: @user, visibility: :private)
 
     sign_in @user
-    get root_url
+    get user_lists_path(@user)
 
     assert_includes @response.body, list_2.name
+  end
+
+  test 'updates user list' do
+    sign_in @user
+    patch(user_list_path(@user, @list), params: {list: {name: 'Updated list name'}})
+    @list.reload
+    assert_equal @list.name, 'Updated list name'
+  end
+
+  test 'destroys user list' do
+    sign_in @user
+    delete user_list_path(@user, @list)
+    refute List.exists?(id: @list.id)
   end
 end
