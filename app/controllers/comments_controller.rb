@@ -81,13 +81,13 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      comment_params = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
-      valid_type = %w{List Reference}.include? comment_params[:commentable_type]
+      parameters = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
+      valid_type = %w{List Reference}.include? parameters[:commentable_type]
       if !valid_type
-        logger.debug "Comment with invalid parent type created by #{current_user.email} with params: #{comment_params.inspect}"
-        comment_params[:commentable_type] = nil
+        logger.debug "Comment with invalid parent type by #{current_user.email} with params: #{parameters.inspect}"
+        parameters[:commentable_type] = nil
       end
-      comment_params
+      parameters
     end
 
     def get_commentable_root_list commentable
