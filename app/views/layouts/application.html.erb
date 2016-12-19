@@ -7,15 +7,16 @@
     <%= javascript_include_tag 'application' %>
     <%= render 'layouts/google_analytics' %>
     <link rel="shortcut icon" href="/favicon.ico?v=2">
-  <% if content_for?(:meta_og) %>
-      <%= yield :meta_og %>
-  <% else %>
-    <%= tag :meta, property: "og:type", content: "website" %>
-    <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
-    <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
-    <%= tag :meta, property: "og:image:width", content: "600" %>
-    <%= tag :meta, property: "og:image:height", content: "600" %>
-  <% end %>
+    <% if content_for?(:meta_og) %>
+        <%= yield :meta_og %>
+    <% else %>
+      <%= tag :meta, property: "og:type", content: "website" %>
+      <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
+      <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
+      <%= tag :meta, property: "og:image:width", content: "600" %>
+      <%= tag :meta, property: "og:image:height", content: "600" %>
+    <% end %>
+    <%= render 'application/favicon' %>
   </head>
 
   <body>
