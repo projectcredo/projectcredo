@@ -9,6 +9,6 @@ commentsContainer = $("div#comment-<%= @comment.parent_id %> > .comments");
 commentsContainer.prepend("<%= escape_javascript(comment_and_comments_container) %>");
 $('#comment-<%= @comment.parent_id %> > form').hide();
 
-commentsCountSpan = $("span#comments-count-<%= reference.id %>");
+commentsCountSpan = $("span#comments-count-<%= commentable.id %>");
 commentsCount = parseInt(commentsCountSpan.text());
 commentsCountSpan.text(parseInt(commentsCount) + 1);

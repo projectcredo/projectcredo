@@ -1,14 +1,14 @@
 <%
   comment_and_comments_container = render('comments/comment', comment: @comment) do
-    render('form', comment: reference.comments.build)
+    render('form', comment: commentable.comments.build)
     content_tag(:div, '', class: 'comments', 'data-commentable-id' => @comment.id)
   end
 %>
 
-commentsContainer = $("div.reference.comments[data-commentable-id=<%= reference.id %>]");
+commentsContainer = $("div.comments[data-commentable-id=<%= commentable.id %>]");
 commentsContainer.prepend("<%= escape_javascript(comment_and_comments_container) %>");
-$('#comments-<%= reference.id %> form#new_comment textarea').val('');
+$('#comments-<%= commentable.id %> form#new_comment textarea').val('');
 
-commentsCountSpan = $("span#comments-count-<%= reference.id %>");
+commentsCountSpan = $("span#comments-count-<%= commentable.id %>");
 commentsCount = parseInt(commentsCountSpan.text());
 commentsCountSpan.text(parseInt(commentsCount) + 1);

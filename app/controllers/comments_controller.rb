@@ -16,13 +16,13 @@ class CommentsController < ApplicationController
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @comment }
         format.js do
-          reference = @comment.root.commentable
+          commentable = @comment.root.commentable
           is_top_level = !!@comment.commentable
 
           if is_top_level
-            render('references/comments/create.js.erb', locals: { reference: reference })
+            render('commentables/comments/create.js.erb', locals: {commentable: commentable})
           else
-            render('comments/create.js.erb', locals: { reference: reference })
+            render('comments/create.js.erb', locals: {commentable: commentable})
           end
         end
       else
@@ -44,7 +44,7 @@ class CommentsController < ApplicationController
       if @comment.update(comment_params)
         format.html { redirect_to :back, notice: 'Comment was successfully updated.' }
         format.json { render :show, status: :ok, location: @comment }
-        format.js { render 'update.js.erb', locals: {reference: @comment.root.commentable} }
+        format.js { render 'update.js.erb', locals: {commentable: @comment.root.commentable} }
       else
         format.html { redirect_to :back, notice: 'Comment was not updated.' }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
@@ -55,20 +55,20 @@ class CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    reference = @comment.root.commentable
-    list = reference.list
+    commentable = @comment.root.commentable
+    list_for_authorization = get_commentable_root_list commentable
 
     respond_to do |format|
-      if current_user.can_moderate?(list) || @comment.user == current_user
+      if current_user.can_moderate?(list_for_authorization) || @comment.user == current_user
         @comment.destroy
         format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
         format.json { head :no_content }
-        format.js { render 'destroy.js.erb', locals: {reference: reference} }
+        format.js { render 'destroy.js.erb', locals: {commentable: commentable} }
       else
         flash[:alert] = 'You do not have permission to moderate this list.'
 
-        format.html { redirect_back fallback_location: user_list_path(list.owner, list) }
-        format.js { ajax_redirect_to(user_list_path(list.owner, list)) }
+        format.html { redirect_back fallback_location: user_list_path(list_for_authorization.owner, list_for_authorization) }
+        format.js { ajax_redirect_to(user_list_path(list_for_authorization.owner, list_for_authorization)) }
       end
     end
   end
@@ -81,6 +81,17 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
+      comment_params = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
+      valid_type = %w{List Reference}.include? comment_params[:commentable_type]
+      if !valid_type
+        logger.debug "Comment with invalid parent type created by #{current_user.email} with params: #{comment_params.inspect}"
+        comment_params[:commentable_type] = nil
+      end
+      comment_params
+    end
+
+    def get_commentable_root_list commentable
+      return commentable if commentable.is_a?(List)
+      return commentable.list if commentable.is_a?(Reference)
     end
 end
