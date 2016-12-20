@@ -19,18 +19,31 @@
   <% end %>
 
 </div>
-<p>
-  <% @list.tag_list.each do |tag| %>
-    <a class="btn btn-default btn-xs"><%= tag %></a>
-  <% end %>
-</p>
-<strong>Description</strong>
-<%= wrap_on_line_breaks @list.description %>
-<%= render 'crossref/search', list: @list %>
-<%= render 'lists/add_reference', list: @list %>
-<% reference_count = @list.references.count %>
-<% if reference_count > 0 %>
-  <%= render 'papers/sort_by' %>
-  <i><%= reference_count%> papers added to this list</i>
-<% end %>
-<%= render partial: 'references/reference', collection: @references, locals: {show_comments: false} %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <p>
+        <% @list.tag_list.each do |tag| %>
+          <a class="btn btn-default btn-xs"><%= tag %></a>
+        <% end %>
+      </p>
+      <strong>Description</strong>
+      <%= wrap_on_line_breaks @list.description %>
+      <%= render 'crossref/search', list: @list %>
+      <%= render 'lists/add_reference', list: @list %>
+      <% reference_count = @list.references.count %>
+      <% if reference_count > 0 %>
+        <%= render 'papers/sort_by' %>
+        <i><%= reference_count%> papers added to this list</i>
+      <% end %>
+      <%= render partial: 'references/reference', collection: @references, locals: {show_comments: false} %>
+    </div>
+    <div class="col-md-4 list-comments">
+      <strong>Comments on <%= @list.name %></strong>
+      <div id="comments-<%= @list.id %>">
+        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+      </div>
+    </div>
+  </div>
+</div>

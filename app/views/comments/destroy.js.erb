@@ -1,7 +1,7 @@
 deletedComments = $("#comment-<%= @comment.id %>").find(".comment").length + 1;
 $("#comment-<%= @comment.id %>").remove();
 
-commentsCountSpan = $("span#comments-count-<%= reference.id %>");
+commentsCountSpan = $("span#comments-count-<%= commentable.id %>");
 commentsCount = parseInt(commentsCountSpan.text());
 commentsCountSpan.text(parseInt(commentsCount - deletedComments));
 
