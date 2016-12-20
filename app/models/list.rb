@@ -45,6 +45,7 @@ class List < ApplicationRecord
       ListMembership.create(attrs)
     end
   end
+  has_many :comments, as: :commentable
 
   # Validations
   validates :name,

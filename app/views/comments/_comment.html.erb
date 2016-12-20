@@ -20,7 +20,7 @@
     <% if current_user == comment.user %>
       <li><%= link_to 'edit', edit_comment_path(comment), remote: true, class: "edit-comment btn btn-link btn-xs" %></li>
       <li><%= link_to 'delete', comment_path(comment), remote: true, class: "text-danger small", method: :delete %><li>
-    <% elsif current_user_can_moderate?(list) %>
+    <% elsif current_user_can_moderate?(list_for_authorization) %>
       <li><%= link_to 'delete', comment_path(comment), remote: true, class: "text-danger small", method: :delete %><li>
     <% end %>
   </ul>

@@ -26,6 +26,10 @@
 </p>
 <strong>Description</strong>
 <%= wrap_on_line_breaks @list.description %>
+<strong>Comments</strong>
+<div id="comments-<%= @list.id %>">
+  <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+</div>
 <%= render 'crossref/search', list: @list %>
 <%= render 'lists/add_reference', list: @list %>
 <% reference_count = @list.references.count %>
