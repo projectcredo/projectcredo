@@ -44,12 +44,15 @@
     <h3 id="search-paper">Search</h3>
     <h4>
       The easiest way to find a paper is to search by keywords, a paper's title, author name, or journal.  This search ties to Crossref's library of papers.
-
+    </h4>
+    <%= image_tag("how-to/search-paper.jpg", class: "img-thumbnail") %>
+    <h4>
       Click the paper you want to add.
     </h4>
+    <%= image_tag("how-to/click-paper.jpg", class: "img-thumbnail") %>
     <h3 id="add-doi">DOI</h3>
     <h4>
-      <p>Digital object identifiers (DOIs) are a persistent identifier for electronic documents and used by many publishers to link a journal article to its location on the web.  DOIs will begin with <b>"10."</b> followed by a 4 digit identifier for the publishing body.</p>
+      <p>Digital object identifiers (DOIs) are a persistent identifier for electronic documents and used by many publishers to link a journal article to its location on the web.  DOIs will begin with <b>"10."</b> followed by a 4 digit identifier for the publishing body.  <b>Pro-tip:</b> you can use "https://dx.doi.org/" + DOI to find any DOI paper.</p>
       <p>Examples of DOIs include:</p>
       <ul>
         <li>10.1371/journal.pone.0066981</li>
@@ -57,29 +60,36 @@
         <li>10.1163/193724086x00217</li>
       </ul>
     </h4>
+    <%= image_tag("how-to/plos-doi.jpg", class: "img-thumbnail") %>
     <h3 id="add-pubmed">Pubmed ID</h3>
     <h4>
       <p>Pubmed IDs or PMIDs are a simple string of numbers and ties to Pubmed's database of articles.</p>
       <p>Examples of Pubmed IDs include:</p>
       <ul>
-        <li>23193287</li>
+        <li>27896477</li>
         <li>27977802</li>
         <li>27974576</li>
       </ul>
     </h4>
+    <%= image_tag("how-to/pubmed.jpg", class: "img-thumbnail") %>
     <h3 id="add-url">URL</h3>
     <h4>
-      If you can't find a paper through search, DOI, or Pubmed ID you can add a paper by its URL and title.  This should be a last resort option as we cannot validate the bibliographic data at this point.
+      If you can't find a paper through search, DOI, or Pubmed ID you can add a paper by its URL and title.  This should be a last resort option as we cannot validate the bibliographic data at this point.  Project Credo will only accept a URL at a proper https address.
     </h4>
+    <%= image_tag("how-to/ipcc-url.jpg", class: "img-thumbnail") %>
+    <%= image_tag("how-to/ipcc-report.jpg", class: "img-thumbnail") %>
     <h3 id="add-paper-info">Additional Paper Data</h3>
     <h4>
       <p>You can add missing details for a paper such as the abstract, links, and tags.</p>
 
       <p>Abstract</p>
-      Links
-      Tags
+      <%= image_tag("how-to/paper-abstract.jpg", class: "img-thumbnail") %>
+      <p>Links</p>
+      <%= image_tag("how-to/paper-links.jpg", class: "img-thumbnail") %>
+      <p>Tags</p>
+      <%= image_tag("how-to/paper-tags.jpg", class: "img-thumbnail") %>
     </h4>
-    <h3 id="add-pubmed">Remove a Paper</h3>
+    <h3 id="remove-paper">Remove a Paper</h3>
     <h4>
       Removing a paper is as simple as clicking the "Remove from list" button.  Only owners of lists, collaborators, or the original poster of the paper can remove a paper from a list.
     </h4>
@@ -90,31 +100,37 @@
     <h3 id="comment">Comment</h3>
     <h4>
       <p>Commenting on paper helps provide details that aren't easily discernible from the abstract.  Good paper comments should shed light on the intent of the paper and point out any interesting findings or biases in the methodology</p>
+      <%= image_tag("how-to/paper-comment.jpg", class: "img-thumbnail") %>
       <p>You can also comment on a list which provides context on how papers fit in the larger conversation of the topic.  Good list comments show where papers fit within the scientific lifecycle and where each paper fits within the discussion.</p>
+      <%= image_tag("how-to/list-comment.jpg", class: "img-thumbnail") %>
     </h4>
     <h3 id="vote">Vote</h3>
     <h4>
       Voting for a paper or comment helps show viewers what's important.  Upvote the best papers within the context of a list.  Help others identify the most valuable comments.
     </h4>
+    <%= image_tag("how-to/vote.jpg", class: "img-thumbnail") %>
     <h3 id="share">Share</h3>
     <h4>
       Sharing your list or other people's list is easy and helps Project Credo spread the message of primary research.  Share the link on Facebook, Twitter, or any other social media platform.
     </h4>
+    <%= image_tag("how-to/share-url.jpg", class: "img-thumbnail") %>
 
-    <h2 id='get-started'>Get Started!</h2>
-    <h4>
-      Now that you know how to help build our scientific commons, let's jump into it!  Go to our <%=link_to "homepage", root_path %> and see what people have already created or
-      <%= "sign-in/sign-up and" unless current_user %> <%= link_to "create your own list.", new_list_path %>
-    </h4>
-    <div class="row">
-      <% if not current_user %>
-        <div class="col-md-2">
-          <%= link_to "Sign-in", new_user_session_path, class: "btn btn-primary btn-lg"%>
-        </div>
-        <div class="col-md-2">
-          <%= link_to "Sign-up", new_user_registration_path, class: "btn btn-primary btn-lg"%>
-        </div>
-      <% end %>
+    <div class='get-started'>
+      <h2 id='get-started'>Get Started!</h2>
+      <h4>
+        Now that you know how to help build our scientific commons, let's jump into it!  Go to our <%=link_to "homepage", root_path %> and see what people have already created or
+        <%= "sign-in/sign-up and" unless current_user %> <%= link_to "create your own list.", new_list_path %>
+      </h4>
+      <div class="row">
+        <% if not current_user %>
+          <div class="col-md-2">
+            <%= link_to "Sign-in", new_user_session_path, class: "btn btn-primary btn-lg"%>
+          </div>
+          <div class="col-md-2">
+            <%= link_to "Sign-up", new_user_registration_path, class: "btn btn-primary btn-lg"%>
+          </div>
+        <% end %>
+      </div>
     </div>
 
   </div>
@@ -140,7 +156,7 @@
           <li><a href="#add-pubmed">Pubmed ID</a></li>
           <li><a href="#add-url">URL</a></li>
           <li><a href="#add-paper-info">Additional Paper Data</a></li>
-          <li><a href="#add-pubmed">Remove a Paper</a></li>
+          <li><a href="#remove-paper">Remove a Paper</a></li>
         </ul>
       </li>
 
