@@ -1,0 +1,25 @@
+.how-to{
+  h1, h2, h3 {
+    padding-top: 60px;
+    margin-top: -40px;
+    padding-bottom: 10px;
+  }
+
+  h1, h2 {
+    border-bottom: 1px solid;
+    border-color: $gray-lighter;
+    margin-bottom: 20px;
+  }
+
+  img {
+      max-width: 100%;
+      height: auto;
+      width: auto\9; /* ie8 */
+      margin: 10px;
+  }
+
+  .get-started  {
+  margin-bottom: 600px
+  }
+
+}

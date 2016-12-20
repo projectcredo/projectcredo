@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'lists#index'
   get '/about' => 'static_pages#about'
+  get '/how-to' => 'static_pages#how_to'
   get '/.well-known/acme-challenge/:id' => 'static_pages#lets_encrypt'
 
   devise_for :users
