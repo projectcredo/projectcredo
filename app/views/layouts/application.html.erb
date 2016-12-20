@@ -31,12 +31,13 @@
           <%= link_to 'Project Credo', root_path, class:"navbar-brand" %>
           <ul class="nav navbar-nav">
             <li><%= link_to 'Home', root_path %></li>
-            <li><%= link_to 'About', about_path %></li>
           </ul>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><%= link_to 'Sponsor Us','https://www.patreon.com/projectcredo', target: '_blank' %></li>
+            <li><%= link_to 'How To', how_to_path %></li>
+            <li><%= link_to 'About', about_path %></li>
             <%= render 'layouts/user_session_links' %>
           </ul>
         </div>
