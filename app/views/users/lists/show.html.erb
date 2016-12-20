@@ -1,40 +1,48 @@
 <%= render 'list_head', list: @list %>
 
-<h2 class= "list-title"><%= @list.name %></h2>
-<div class="list-nav">
-  by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>
-  <% if current_user %>
-    <% if current_user.can_edit? @list %>
-     - <%= link_to 'Edit', edit_user_list_path(@list.owner, @list) %>
-   <% end %>
-    <% if @list.owner == current_user %>
-       - <%= link_to 'Delete List', user_list_path(@list.owner, @list), data: { confirm: 'Are you sure?' }, method: :delete %>
-    <% end %>
-  <% end %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <h2 class= "list-title"><%= @list.name %></h2>
+      <div class="list-nav">
+        by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>
+        <% if current_user %>
+          <% if current_user.can_edit? @list %>
+           - <%= link_to 'Edit', edit_user_list_path(@list.owner, @list) %>
+         <% end %>
+          <% if @list.owner == current_user %>
+             - <%= link_to 'Delete List', user_list_path(@list.owner, @list), data: { confirm: 'Are you sure?' }, method: :delete %>
+          <% end %>
+        <% end %>
 
-  <% if @list.participants == 'contributors' %>
-   <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
-  <% else %>
-    <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🔓 </span>
-  <% end %>
+        <% if @list.participants == 'contributors' %>
+         <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
+        <% else %>
+          <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🔓 </span>
+        <% end %>
 
+      </div>
+      <p>
+        <% @list.tag_list.each do |tag| %>
+          <a class="btn btn-default btn-xs"><%= tag %></a>
+        <% end %>
+      </p>
+      <strong>Description</strong>
+      <%= wrap_on_line_breaks @list.description %>
+      <%= render 'crossref/search', list: @list %>
+      <%= render 'lists/add_reference', list: @list %>
+      <% reference_count = @list.references.count %>
+      <% if reference_count > 0 %>
+        <%= render 'papers/sort_by' %>
+        <i><%= reference_count%> papers added to this list</i>
+      <% end %>
+      <%= render partial: 'references/reference', collection: @references, locals: {show_comments: false} %>
+    </div>
+    <div class="col-md-3">
+      <strong>Comments</strong>
+      <div id="comments-<%= @list.id %>">
+        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+      </div>
+    </div>
+  </div>
 </div>
-<p>
-  <% @list.tag_list.each do |tag| %>
-    <a class="btn btn-default btn-xs"><%= tag %></a>
-  <% end %>
-</p>
-<strong>Description</strong>
-<%= wrap_on_line_breaks @list.description %>
-<strong>Comments</strong>
-<div id="comments-<%= @list.id %>">
-  <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
-</div>
-<%= render 'crossref/search', list: @list %>
-<%= render 'lists/add_reference', list: @list %>
-<% reference_count = @list.references.count %>
-<% if reference_count > 0 %>
-  <%= render 'papers/sort_by' %>
-  <i><%= reference_count%> papers added to this list</i>
-<% end %>
-<%= render partial: 'references/reference', collection: @references, locals: {show_comments: false} %>
