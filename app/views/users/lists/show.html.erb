@@ -1,27 +1,28 @@
 <%= render 'list_head', list: @list %>
 
+<h2 class= "list-title"><%= @list.name %></h2>
+<div class="list-nav">
+  by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>
+  <% if current_user %>
+    <% if current_user.can_edit? @list %>
+     - <%= link_to 'Edit', edit_user_list_path(@list.owner, @list) %>
+   <% end %>
+    <% if @list.owner == current_user %>
+       - <%= link_to 'Delete List', user_list_path(@list.owner, @list), data: { confirm: 'Are you sure?' }, method: :delete %>
+    <% end %>
+  <% end %>
+
+  <% if @list.participants == 'contributors' %>
+   <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
+  <% else %>
+    <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🔓 </span>
+  <% end %>
+
+</div>
+
 <div class="container">
   <div class="row">
-    <div class="col-md-9">
-      <h2 class= "list-title"><%= @list.name %></h2>
-      <div class="list-nav">
-        by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>
-        <% if current_user %>
-          <% if current_user.can_edit? @list %>
-           - <%= link_to 'Edit', edit_user_list_path(@list.owner, @list) %>
-         <% end %>
-          <% if @list.owner == current_user %>
-             - <%= link_to 'Delete List', user_list_path(@list.owner, @list), data: { confirm: 'Are you sure?' }, method: :delete %>
-          <% end %>
-        <% end %>
-
-        <% if @list.participants == 'contributors' %>
-         <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
-        <% else %>
-          <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🔓 </span>
-        <% end %>
-
-      </div>
+    <div class="col-md-8">
       <p>
         <% @list.tag_list.each do |tag| %>
           <a class="btn btn-default btn-xs"><%= tag %></a>
@@ -38,7 +39,7 @@
       <% end %>
       <%= render partial: 'references/reference', collection: @references, locals: {show_comments: false} %>
     </div>
-    <div class="col-md-3 list-comments">
+    <div class="col-md-4 list-comments">
       <strong>Comments on <%= @list.name %></strong>
       <div id="comments-<%= @list.id %>">
         <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
