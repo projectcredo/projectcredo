@@ -11,6 +11,22 @@
   hyphens: auto;
 }
 
+.new-list {
+  color: $brand-primary;
+  text-align: center;
+  height: 250px;
+  padding-top: 50px;
+  display: block;
+
+
+  &:before    {
+    font-family: "Glyphicons Halflings";
+    content: "\270f";
+    font-size: 5em;
+    width: 50%;
+  }
+}
+
 .list-title {
   margin: 5px 0 0 0;
 }
