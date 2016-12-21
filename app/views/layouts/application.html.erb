@@ -11,12 +11,12 @@
         <%= yield :meta_og %>
     <% else %>
       <%= tag :meta, property: "og:type", content: "website" %>
-      <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
-      <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
-      <%= tag :meta, property: "og:image:width", content: "600" %>
-      <%= tag :meta, property: "og:image:height", content: "600" %>
-      <%= tag :meta, property: "og:description", content: "A collaborative research tool to curate, comment on, and share lists of research.  Our mission is to build a scientific commons for evidence based consensus on a wide range of topics" %>
+      <%= tag :meta, property: "og:description", content: "A collaborative research tool to curate, comment on, and share lists of research.  Our mission is to build a scientific commons for evidence based consensus on a wide range of topics." %>
     <% end %>
+    <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
+    <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
+    <%= tag :meta, property: "og:image:width", content: "600" %>
+    <%= tag :meta, property: "og:image:height", content: "600" %>
     <%= render 'application/favicon' %>
   </head>
 
