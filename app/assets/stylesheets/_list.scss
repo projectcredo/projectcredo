@@ -21,7 +21,7 @@
 
   &:before    {
     font-family: "Glyphicons Halflings";
-    content: "\270f";
+    content: "\e081";
     font-size: 5em;
     width: 50%;
   }
@@ -38,4 +38,8 @@
 
 .contributor-list {
   margin-bottom: 10px;
+}
+
+.list-index {
+  background-color: $gray-lighter;
 }

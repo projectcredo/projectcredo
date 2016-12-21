@@ -24,7 +24,7 @@
     <%= render 'application/favicon' %>
   </head>
 
-  <body data-spy="scroll" data-target=".scrollspy">
+  <body class= "<%= 'list-index' if (action_name == 'index' && controller_name == 'lists')%>">
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
