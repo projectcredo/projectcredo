@@ -12,12 +12,17 @@
 }
 
 .new-list {
-  color: $brand-primary;
+  color: $gray;
   text-align: center;
   height: 250px;
   padding-top: 50px;
   display: block;
+  opacity: 0.6;
 
+  &:hover{
+    opacity: 1;
+    color: $brand-primary;
+  }
 
   &:before    {
     font-family: "Glyphicons Halflings";
