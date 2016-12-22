@@ -1,7 +1,7 @@
 <%
   @title = 'Home'
   @full_width = true
-  content_for :body_class do 'list-index' end
+  @body_class = "list-index"
 %>
 
 <% if @pinned_lists.present? %>
