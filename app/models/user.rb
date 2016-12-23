@@ -66,6 +66,7 @@ class User < ApplicationRecord
 
   before_save { self.email.downcase! if self.email }
   after_create :create_homepage
+  after_create :subscribe_user_to_mailing_list
 
   acts_as_voter
 
@@ -79,6 +80,12 @@ class User < ApplicationRecord
 
   def to_param
     username
+  end
+
+  private
+
+  def subscribe_user_to_mailing_list
+    SubscribeUserToMailingListJob.perform_later(self)
   end
 
   protected
