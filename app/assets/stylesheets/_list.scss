@@ -11,6 +11,27 @@
   hyphens: auto;
 }
 
+.new-list {
+  color: $gray;
+  text-align: center;
+  height: 250px;
+  padding-top: 50px;
+  display: block;
+  opacity: 0.6;
+
+  &:hover{
+    opacity: 1;
+    color: $brand-primary;
+  }
+
+  &:before    {
+    font-family: "Glyphicons Halflings";
+    content: "\e081";
+    font-size: 5em;
+    width: 50%;
+  }
+}
+
 .list-title {
   margin: 5px 0 0 0;
 }
@@ -22,4 +43,8 @@
 
 .contributor-list {
   margin-bottom: 10px;
+}
+
+.list-index {
+  background-color: $gray-lighter;
 }
