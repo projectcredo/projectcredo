@@ -58,4 +58,5 @@
     </div>
     <%= console if Rails.env.development? %>
   </body>
+  <%= yield(:page_app) %>
 </html>

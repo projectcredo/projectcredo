@@ -30,3 +30,16 @@
     <% end %>
   </div>
 <% end %>
+
+<div id="add-reference">{{ message }}</div>
+
+<% content_for(:page_app) do %>
+  <script>
+    addReference = new Vue({
+      el: '#add-reference',
+      data: {
+        message: 'Hello world!'
+      }
+    });
+  </script>
+<% end %>
