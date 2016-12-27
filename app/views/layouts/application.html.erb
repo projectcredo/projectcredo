@@ -56,7 +56,7 @@
     <div class="container<%= '-fluid' if @full_width %>">
       <%= yield %>
     </div>
-    <%# console if Rails.env.development? %>
+    <%= console if Rails.env.development? && ENV['CONSOLE_ENABLED'] %>
   </body>
   <%= yield(:page_app) %>
 </html>
