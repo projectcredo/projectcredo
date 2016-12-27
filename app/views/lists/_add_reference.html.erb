@@ -1,44 +1,73 @@
-<%= form_for list.references.build, html: {class: 'form-inline'} do |f| %>
+<%= form_for list.references.build, html: {class: 'form-inline', id: 'add-reference'} do |f| %>
   <%= f.hidden_field :list_id, value: list.id %>
   <div class="add-paper">
     <%= f.fields_for :locator do |l| %>
       <div class="form-group add-reference col-md-12">
-        <%= l.hidden_field :type, value: '', id: 'add_locator_type' %>
+        <%= l.hidden_field :type, 'v-bind:value' => 'locatorType' %>
         <i>
           Or add a paper by
-          <%= link_to "DOI", '#', id: "add-doi" %>,
-          <%= link_to "Pubmed ID", '#', id: "add-pubmed" %>,
-          or <%= link_to "URL", '#', id: "add-link" %>
+          <%= link_to "DOI", '', '@click.prevent': "addDoi" %>,
+          <%= link_to "Pubmed ID", '', '@click.prevent': "addPubmed" %>,
+          or <%= link_to "URL", '', '@click.prevent': "addUrl" %>
         </i>
-        <%= l.text_field  :id,
-                          placeholder: 'URL, DOI, or Pubmed',
-                          class: "form-control hidden paper-locator input-sm",
-                          disabled: true %>
+        <div class="form-group" v-bind:class='{ hidden: dataHidden }'>
+          <%= l.text_field  :id,
+                            class: "form-control paper-locator input-sm",
+                            'v-bind:placeholder' => 'locatorIdPlaceholder',
+                            'v-bind:disabled' => 'dataHidden' %>
 
-        <%= l.text_field  :title,
-                          placeholder: 'Required - Paper Title ex: Regulation of the Neural Circuitry of Emotion',
-                          class: "form-control hidden paper-title input-sm",
-                          disabled: true %>
-        <div class="form-group">
+          <%= l.text_field  :title,
+                            placeholder: 'Required - Paper Title ex: Regulation of the Neural Circuitry of Emotion',
+                            class: "form-control paper-title input-sm",
+                            'v-bind:class' => '{ hidden: hideTitleField }',
+                            'v-bind:disabled' => 'hideTitleField' %>
           <%= f.submit "Submit",
-                class: "btn btn-primary btn-xs hidden",
-                id: 'add_locator_submit',
+                class: "btn btn-primary btn-xs",
                 disabled: !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>
-          <%= link_to "cancel", '#', id: "cancel-add-locator", class: "hidden" %>
+          <%= link_to "cancel", '', '@click.prevent' => 'cancelAdd', 'v-bind:class' => '{ hidden: dataHidden }' %>
         </div>
       </div>
     <% end %>
   </div>
 <% end %>
 
-<div id="add-reference">{{ message }}</div>
-
 <% content_for(:page_app) do %>
   <script>
     addReference = new Vue({
       el: '#add-reference',
       data: {
-        message: 'Hello world!'
+        dataHidden: true,
+        locatorType: '',
+        locatorIdPlaceholder: 'URL, DOI, or Pubmed'
+      },
+      methods: {
+        addDoi: function() {
+          this.dataHidden = false;
+          this.locatorType = 'doi';
+          this.locatorIdPlaceholder = "10.1371/journal.pone.0001897"
+        },
+        addPubmed: function() {
+          this.dataHidden = false;
+          this.locatorType = 'pubmed';
+          this.locatorIdPlaceholder = "18365029"
+        },
+        addUrl: function() {
+          this.dataHidden = false;
+          this.locatorType = 'link';
+          this.locatorIdPlaceholder = "http://example.org/"
+        },
+        submitLocator: function() {
+          alert('hey')
+        },
+        cancelAdd: function() {
+          this.dataHidden = true;
+          this.locatorType = '';
+        }
+      },
+      computed: {
+        hideTitleField: function() {
+          return !(this.locatorType === 'link')
+        }
       }
     });
   </script>
