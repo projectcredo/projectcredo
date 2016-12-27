@@ -6,9 +6,9 @@
         <%= l.hidden_field :type, 'v-bind:value' => 'locatorType' %>
         <i>
           Or add a paper by
-          <%= link_to "DOI", '', '@click.prevent': "addDoi" %>,
-          <%= link_to "Pubmed ID", '', '@click.prevent': "addPubmed" %>,
-          or <%= link_to "URL", '', '@click.prevent': "addUrl" %>
+          <%= link_to "DOI", '', '@click.prevent': "setLocatorType('doi')" %>,
+          <%= link_to "Pubmed ID", '', '@click.prevent': "setLocatorType('pubmed')" %>,
+          or <%= link_to "URL", '', '@click.prevent': "setLocatorType('link')" %>
         </i>
         <div class="form-group" v-bind:class='{ hidden: dataHidden }'>
           <%= l.text_field  :id,
@@ -33,40 +33,33 @@
 
 <% content_for(:page_app) do %>
   <script>
-    addReference = new Vue({
+    var addReferenceApp = new Vue({
       el: '#add-reference',
       data: {
-        dataHidden: true,
-        locatorType: '',
-        locatorIdPlaceholder: 'URL, DOI, or Pubmed'
+        locatorType: null,
+        placeholderFor: {
+          doi: "DOI ex: '10.1371/journal.pone.0001897'",
+          pubmed: "Pubmed ID ex: '18365029'",
+          link: "URL ex: http://journals.plos.org/plosone/article?id=example"
+        }
       },
       methods: {
-        addDoi: function() {
-          this.dataHidden = false;
-          this.locatorType = 'doi';
-          this.locatorIdPlaceholder = "DOI ex: '10.1371/journal.pone.0001897'"
-        },
-        addPubmed: function() {
-          this.dataHidden = false;
-          this.locatorType = 'pubmed';
-          this.locatorIdPlaceholder = "Pubmed ID ex: '18365029'"
-        },
-        addUrl: function() {
-          this.dataHidden = false;
-          this.locatorType = 'link';
-          this.locatorIdPlaceholder = "URL ex: http://journals.plos.org/plosone/article?id=example"
-        },
-        submitLocator: function() {
-          alert('hey')
+        setLocatorType: function(refType) {
+          this.locatorType = refType;
         },
         cancelAdd: function() {
-          this.dataHidden = true;
-          this.locatorType = '';
+          this.locatorType = null;
         }
       },
       computed: {
         hideTitleField: function() {
           return !(this.locatorType === 'link')
+        },
+        locatorIdPlaceholder: function() {
+          return this.placeholderFor[this.locatorType]
+        },
+        dataHidden: function() {
+          return !this.locatorType;
         }
       }
     });
