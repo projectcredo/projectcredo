@@ -1,14 +1,8 @@
 <strong>Search for a paper to add</strong>
 <div class="input-group input-group-sm crossref">
-
   <span class="input-group-addon" id="crossref-submit"><i class="glyphicon glyphicon-search"></i></span>
-  <%=
-    text_field_tag 'crossref-search',
-      nil,
-      class: 'form-control',
-      placeholder: 'Search for a paper',
-      disabled: !(list.accepts_public_contributions? || current_user_can_edit?(list))
-  %>
+  <% search_disabled = !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>
+  <input type="text" name="crossref-search" id="crossref-search" class="form-control" placeholder="Search for a paper" <%= 'disabled="disabled"' if search_disabled %>>
   <%= form_for list.references.build, html: {class: 'hidden'} do |f| %>
     <%= f.hidden_field :list_id, value: list.id %>
     <%= f.fields_for :locator do |l| %>
