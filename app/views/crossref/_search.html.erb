@@ -1,14 +1,80 @@
-<strong>Search for a paper to add</strong>
-<div class="input-group input-group-sm crossref">
-  <span class="input-group-addon" id="crossref-submit"><i class="glyphicon glyphicon-search"></i></span>
-  <% search_disabled = !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>
-  <input type="text" name="crossref-search" id="crossref-search" class="form-control" placeholder="Search for a paper" <%= 'disabled="disabled"' if search_disabled %>>
-  <%= form_for list.references.build, html: {class: 'hidden'} do |f| %>
-    <%= f.hidden_field :list_id, value: list.id %>
-    <%= f.fields_for :locator do |l| %>
-      <%= l.text_field :type, value: 'doi' %>
-      <%= l.text_field :id, id: 'crossref-locator-id' %>
+<div id="search-app">
+  <strong>Search for a paper to add</strong>
+  <div class="input-group input-group-sm crossref">
+    <span class="input-group-addon" id="crossref-submit"><i class="glyphicon glyphicon-search"></i></span>
+    <input
+      class="form-control"
+      placeholder="Search for a paper"
+      v-bind:disabled="searchDisabled"
+      v-model="query"
+      v-on:keydown.esc="clearSearch"
+    >
+    <%= form_for list.references.build, html: {class: 'hidden'} do |f| %>
+      <%= f.hidden_field :list_id, value: list.id %>
+      <%= f.fields_for :locator do |l| %>
+        <%= l.text_field :type, value: 'doi' %>
+        <%= l.text_field :id, id: 'crossref-locator-id' %>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+  <ul class="list-group" id="crossref-results" v-bind:class="{ hidden: resultsHidden }">
+    <li class="list-group-item" v-for="result in results" v-bind:data-doi="result.doi" v-bind:class="{ clickable: !!result.doi }">
+      {{ result.fullCitation }}
+    </li>
+  </ul>
 </div>
-<ul class="hidden list-group" id="crossref-results"></ul>
+
+<% content_for(:page_app) do %>
+  <script>
+    var searchApp = new Vue({
+      el: '#search-app',
+      data: {
+        searchDisabled: <%= !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>,
+        query: '',
+        data: [],
+        results: []
+      },
+      computed: {
+        resultsHidden: function() {
+          return !(this.results.length > 0)
+        },
+        results: function() {
+          return this.data.map(function(result) {
+            if (result.doi) {
+              result.doi = result.doi.replace('http://dx.doi.org/', '');
+            }
+            return result;
+          });
+        }
+      },
+      watch: {
+        query: function() {
+          this.data = [{fullCitation: "Searching..."}];
+          this.getResults();
+        }
+      },
+      methods: {
+        clearSearch: function() {
+          this.data = [];
+          this.query = '';
+        },
+        getResults: debounce(
+          function() {
+            if (this.query === '') {
+              this.clearSearch();
+            } else {
+              $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
+                if (data.length > 0) {
+                  searchApp.data = data;
+                } else {
+                  searchApp.data = [{fullCitation: 'No results found.'}];
+                };
+              });
+            }
+          },
+          200
+        )
+      }
+    });
+  </script>
+<% end %>
