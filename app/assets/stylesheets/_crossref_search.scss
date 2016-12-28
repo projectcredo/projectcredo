@@ -1,4 +1,4 @@
-#crossref-results {
+.crossref-results {
   padding: 0;
   position: relative;
   top: -1px;
@@ -14,7 +14,7 @@
   }
 }
 
-#crossref-search.submitted {
+input.submitted {
   background-color: $gray-lighter;
 }
 

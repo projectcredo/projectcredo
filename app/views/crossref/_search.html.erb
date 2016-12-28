@@ -1,24 +1,32 @@
 <div id="search-app">
   <strong>Search for a paper to add</strong>
   <div class="input-group input-group-sm crossref">
-    <span class="input-group-addon" id="crossref-submit"><i class="glyphicon glyphicon-search"></i></span>
+    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
     <input
       class="form-control"
-      placeholder="Search for a paper"
+      v-bind:placeholder="placeholder"
+      v-bind:class="{ submitted: submitted }"
       v-bind:disabled="searchDisabled"
       v-model="query"
       v-on:keydown.esc="clearSearch"
+      v-on:input="clearResults"
     >
-    <%= form_for list.references.build, html: {class: 'hidden'} do |f| %>
+    <%= form_for list.references.build, html: {class: 'hidden', 'ref' => "form"} do |f| %>
       <%= f.hidden_field :list_id, value: list.id %>
       <%= f.fields_for :locator do |l| %>
         <%= l.text_field :type, value: 'doi' %>
-        <%= l.text_field :id, id: 'crossref-locator-id' %>
+        <%= l.text_field :id, 'v-bind:value' => 'doi' %>
       <% end %>
     <% end %>
   </div>
-  <ul class="list-group" id="crossref-results" v-bind:class="{ hidden: resultsHidden }">
-    <li class="list-group-item" v-for="result in results" v-bind:data-doi="result.doi" v-bind:class="{ clickable: !!result.doi }">
+  <ul class="list-group crossref-results" v-bind:class="{ hidden: resultsHidden }">
+    <li
+      class="list-group-item"
+      v-for="result in results"
+      v-bind:data-doi="result.doi"
+      v-bind:class="{ clickable: !!result.doi }"
+      v-on:click="selectResult(result)"
+    >
       {{ result.fullCitation }}
     </li>
   </ul>
@@ -32,31 +40,18 @@
         searchDisabled: <%= !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>,
         query: '',
         data: [],
-        results: []
-      },
-      computed: {
-        resultsHidden: function() {
-          return !(this.results.length > 0)
-        },
-        results: function() {
-          return this.data.map(function(result) {
-            if (result.doi) {
-              result.doi = result.doi.replace('http://dx.doi.org/', '');
-            }
-            return result;
-          });
-        }
-      },
-      watch: {
-        query: function() {
-          this.data = [{fullCitation: "Searching..."}];
-          this.getResults();
-        }
+        results: [],
+        doi: null,
+        submitted: false,
+        placeholder: 'Search for a paper'
       },
       methods: {
         clearSearch: function() {
           this.data = [];
           this.query = '';
+        },
+        clearResults: function() {
+          this.data = [];
         },
         getResults: debounce(
           function() {
@@ -73,7 +68,39 @@
             }
           },
           200
-        )
+        ),
+        selectResult: function(result) {
+          this.doi = result.doi;
+          this.submitted = true;
+          this.searchDisabled = true;
+          this.query = '';
+          this.placeholder = result.fullCitation;
+          this.data = [];
+          window.setTimeout(function() {
+            searchApp.$refs.form.submit();
+          }, 100)
+        }
+      },
+      computed: {
+        resultsHidden: function() {
+          return !(this.results.length > 0)
+        },
+        results: function() {
+          return this.data.map(function(result) {
+            if (result.doi) {
+              result.doi = result.doi.replace('http://dx.doi.org/', '');
+            }
+            return result;
+          });
+        }
+      },
+      watch: {
+        query: function() {
+          if (this.submitted === false) {
+            this.data = [{fullCitation: "Searching..."}];
+          }
+          this.getResults();
+        }
       }
     });
   </script>
