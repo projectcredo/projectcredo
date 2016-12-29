@@ -9,7 +9,7 @@
       v-bind:disabled="searchDisabled"
       v-model="query"
       v-on:keydown.esc="clearSearch"
-      v-on:input="clearResults"
+      v-on:keyup="getResults"
     >
     <%= form_for list.references.build, html: {class: 'hidden', 'ref' => "form"} do |f| %>
       <%= f.hidden_field :list_id, value: list.id %>
@@ -39,7 +39,6 @@
       data: {
         searchDisabled: <%= !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>,
         query: '',
-        data: [],
         results: [],
         doi: null,
         submitted: false,
@@ -47,25 +46,25 @@
       },
       methods: {
         clearSearch: function() {
-          this.data = [];
+          this.results = [];
           this.query = '';
-        },
-        clearResults: function() {
-          this.data = [];
         },
         getResults: debounce(
           function() {
             if (this.query === '') {
-              this.clearSearch();
-            } else {
-              $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
-                if (data.length > 0) {
-                  searchApp.data = data;
-                } else {
-                  searchApp.data = [{fullCitation: 'No results found.'}];
-                };
-              });
+              this.results = [];
+              return;
             }
+            $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
+              if (data.length > 0) {
+                searchApp.results = data.map(function(result) {
+                  result.doi = result.doi.replace('http://dx.doi.org/', '');
+                  return result;
+                });
+              } else {
+                searchApp.results = [{fullCitation: 'No results found.', doi: null}];
+              };
+            });
           },
           200
         ),
@@ -73,33 +72,17 @@
           this.doi = result.doi;
           this.submitted = true;
           this.searchDisabled = true;
-          this.query = '';
           this.placeholder = result.fullCitation;
-          this.data = [];
-          window.setTimeout(function() {
-            searchApp.$refs.form.submit();
-          }, 100)
+          this.clearSearch();
+          window.setTimeout(
+            function() { searchApp.$refs.form.submit() },
+            0
+          );
         }
       },
       computed: {
         resultsHidden: function() {
           return !(this.results.length > 0)
-        },
-        results: function() {
-          return this.data.map(function(result) {
-            if (result.doi) {
-              result.doi = result.doi.replace('http://dx.doi.org/', '');
-            }
-            return result;
-          });
-        }
-      },
-      watch: {
-        query: function() {
-          if (this.submitted === false) {
-            this.data = [{fullCitation: "Searching..."}];
-          }
-          this.getResults();
         }
       }
     });
