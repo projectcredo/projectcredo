@@ -26,8 +26,8 @@
       v-bind:data-doi="result.doi"
       v-bind:class="{ clickable: !!result.doi }"
       v-on:click="selectResult(result)"
+      v-html="result.fullCitation"
     >
-      {{ result.fullCitation }}
     </li>
   </ul>
 </div>
