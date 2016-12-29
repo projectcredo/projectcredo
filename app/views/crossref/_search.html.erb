@@ -51,10 +51,8 @@
         },
         getResults: debounce(
           function() {
-            if (this.query === '') {
-              this.results = [];
-              return;
-            }
+            if (this.query === '') { return this.results = [] }
+
             $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
               if (data.length > 0) {
                 searchApp.results = data.map(function(result) {
@@ -74,16 +72,12 @@
           this.searchDisabled = true;
           this.placeholder = result.fullCitation;
           this.clearSearch();
-          window.setTimeout(
-            function() { searchApp.$refs.form.submit() },
-            0
-          );
+          // This is to give Vue time to update the doi above. It doesn't need much.
+          window.setTimeout(function() { searchApp.$refs.form.submit() }, 0);
         }
       },
       computed: {
-        resultsHidden: function() {
-          return !(this.results.length > 0)
-        }
+        resultsHidden: function() { return !(this.results.length > 0) }
       }
     });
   </script>
