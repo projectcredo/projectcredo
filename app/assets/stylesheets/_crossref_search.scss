@@ -1,4 +1,4 @@
-#crossref-results {
+.crossref-results {
   padding: 0;
   position: relative;
   top: -1px;
@@ -12,12 +12,4 @@
   li:hover {
     background-color: $state-info-bg;
   }
-}
-
-#crossref-search.submitted {
-  background-color: $gray-lighter;
-}
-
-.crossref {
-  margin-bottom: 4px;
 }
