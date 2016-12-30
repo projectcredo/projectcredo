@@ -19,7 +19,7 @@
       <% end %>
     <% end %>
   </div>
-  <ul class="list-group crossref-results" v-bind:class="{ hidden: resultsHidden }">
+  <ul class="list-group crossref-results" v-if="showResults">
     <li
       class="list-group-item"
       v-for="result in results"
@@ -77,7 +77,7 @@
         }
       },
       computed: {
-        resultsHidden: function() { return !(this.results.length > 0) }
+        showResults: function() { return (this.results.length > 0) }
       }
     });
   </script>
