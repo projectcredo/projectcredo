@@ -37,7 +37,7 @@
     var searchApp = new Vue({
       el: '#search-app',
       data: {
-        searchDisabled: <%= !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>,
+        searchDisabled: <%= !current_user_can_edit?(list) %>,
         query: '',
         results: [],
         doi: null,
