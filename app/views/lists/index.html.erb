@@ -4,36 +4,127 @@
   @body_class = "list-index"
 %>
 
-<% if @pinned_lists.present? %>
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Pinned Lists</h1>
-    </div>
-  </div>
+<div id="search-lists">
 
-  <div class="cards row">
-    <div class="col-md-3">
-      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-        <h2>Create a new list</h2>
-      <% end %>
-    </div>
-    <%= render @pinned_lists %>
-  </div>
-<% end %>
+  <select
+    class="form-control"
+    v-model="category"
+    >
+    <option>All Categories</option>
+    <option>Content</option>
+    <option>Artistic</option>
+    <option>Random</option>
+    <option>Exercise</option>
+  </select>
 
-<% if @unpinned_lists.present? %>
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Lists</h1>
-    </div>
-  </div>
+  <span>Categories: {{ category }} </span>
 
-  <div class="cards row">
-    <div class="col-md-3">
-      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-        <h2>Create a new list</h2>
-      <% end %>
+  <% if @pinned_lists.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Pinned Lists</h1>
+      </div>
     </div>
-    <%= render @unpinned_lists %>
-  </div>
+
+    <div class="cards row">
+      <div class="col-md-3">
+        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
+          <h2>Create a new list</h2>
+        <% end %>
+      </div>
+
+      <%# take out render to have vue app on one page %>
+      <% @pinned_lists.each do |list|%>
+        <%# list_partial %>
+        <div class="col-md-3 list-card" v-show="<%= list.tag_list.to_a %>.includes(category.toLowerCase()) || category == 'All Categories'">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <% if user_signed_in? %>
+                <div class="row">
+                  <div class="col-md-12">
+                    <%= render 'lists/toggle_pin', list: list %>
+                    <span id="list-vote-<%= list.id %>">
+                      <%= render 'votes/toggle_like', votable: list %>
+                    </span>
+                    <% if current_user.can_edit? list %>
+                      <small class="pull-right">
+                        <%= link_to 'Edit ', edit_user_list_path(list.owner, list) %>
+                      </small>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+              <h2>
+                <%= link_to list.name, user_list_path(list.owner, list) %><br>
+                <small> by <%= link_to list.owner.username, user_lists_path(list.owner) %></small>
+              </h2>
+              <p><%= truncate(list.description, length: 400, separator: ' ') %></p>
+              <small>Tags:<i><%= list.tag_list %></i></br></small>
+            </div>
+          </div>
+        </div><%# end of list_partial %>
+      <% end %><%# end of @pinned.each %>
+
+    </div>
+  <% end %>
+
+  <% if @unpinned_lists.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Lists</h1>
+      </div>
+    </div>
+
+    <div class="cards row">
+      <div class="col-md-3">
+        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
+          <h2>Create a new list</h2>
+        <% end %>
+      </div>
+
+      <%# take out render to have vue app on one page %>
+      <% @unpinned_lists.each do |list|%>
+        <%# list_partial %>
+        <div class="col-md-3 list-card" v-show="<%= list.tag_list.to_a %>.includes(category.toLowerCase()) || category == 'All Categories'">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <% if user_signed_in? %>
+                <div class="row">
+                  <div class="col-md-12">
+                    <%= render 'lists/toggle_pin', list: list %>
+                    <span id="list-vote-<%= list.id %>">
+                      <%= render 'votes/toggle_like', votable: list %>
+                    </span>
+                    <% if current_user.can_edit? list %>
+                      <small class="pull-right">
+                        <%= link_to 'Edit ', edit_user_list_path(list.owner, list) %>
+                      </small>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+              <h2>
+                <%= link_to list.name, user_list_path(list.owner, list) %><br>
+                <small> by <%= link_to list.owner.username, user_lists_path(list.owner) %></small>
+              </h2>
+              <p><%= truncate(list.description, length: 400, separator: ' ') %></p>
+              <small>Tags:<i><%= list.tag_list %></i></br></small>
+            </div>
+          </div>
+        </div><%# end of list_partial %>
+      <% end %><%# end of @unpinned.each %>
+
+    </div>
+  <% end %>
+</div>
+
+<% content_for(:page_app) do %>
+  <script>
+    var searchLists = new Vue({
+      el: '#search-lists',
+      data: {
+        category: 'All Categories'
+      }
+    });
+  </script>
 <% end %>
