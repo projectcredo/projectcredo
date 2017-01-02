@@ -11,13 +11,11 @@
     v-model="category"
     >
     <option>All Categories</option>
-    <option>Content</option>
-    <option>Artistic</option>
-    <option>Random</option>
-    <option>Exercise</option>
+    <option>Health and Nutrition</option>
+    <option>Economics and Social Policy</option>
+    <option>Science and Technology</option>
+    <option>Other</option>
   </select>
-
-  <span>Categories: {{ category }} </span>
 
   <% if @pinned_lists.present? %>
     <div class="row">
