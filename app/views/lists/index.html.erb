@@ -8,7 +8,7 @@
 
   <select
     class="form-control"
-    v-model="category"
+    v-model="selectedCategory"
     >
     <option>All Categories</option>
     <option>Health and Nutrition</option>
@@ -26,18 +26,17 @@
 
     <div class="cards row">
       <div class="col-md-3">
+
         <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
           <h2>Create a new list</h2>
         <% end %>
       </div>
 
-      <%# take out render to have vue app on one page %>
       <% @pinned_lists.each do |list|%>
-        <%# list_partial %>
-        <div class="col-md-3 list-card" v-show="<%= list.tag_list.to_a %>.includes(category.toLowerCase()) || category == 'All Categories'">
+        <div class="col-md-3 list-card" v-show="filterByTag(<%= list.tag_list.to_a %>)">
           <%= render 'list', list: list %>
-        </div><%# end of list_partial %>
-      <% end %><%# end of @pinned.each %>
+        </div>
+      <% end %>
 
     </div>
   <% end %>
@@ -56,14 +55,11 @@
         <% end %>
       </div>
 
-      <%# take out render to have vue app on one page %>
       <% @unpinned_lists.each do |list|%>
-        <%# list_partial %>
-        <div class="col-md-3 list-card" v-show="<%= list.tag_list.to_a %>.includes(category.toLowerCase()) || category == 'All Categories'">
+        <div class="col-md-3 list-card" v-show="filterByTag(<%= list.tag_list.to_a %>)">
           <%= render 'list', list: list %>
-        </div><%# end of list_partial %>
-      <% end %><%# end of @unpinned.each %>
-
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>
@@ -73,7 +69,12 @@
     var searchLists = new Vue({
       el: '#search-lists',
       data: {
-        category: 'All Categories'
+        selectedCategory: 'All Categories'
+      },
+      methods: {
+        filterByTag: function(tags) {
+         return tags.includes(this.selectedCategory.toLowerCase()) || this.selectedCategory == 'All Categories'
+        }
       }
     });
   </script>
