@@ -35,31 +35,7 @@
       <% @pinned_lists.each do |list|%>
         <%# list_partial %>
         <div class="col-md-3 list-card" v-show="<%= list.tag_list.to_a %>.includes(category.toLowerCase()) || category == 'All Categories'">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <% if user_signed_in? %>
-                <div class="row">
-                  <div class="col-md-12">
-                    <%= render 'lists/toggle_pin', list: list %>
-                    <span id="list-vote-<%= list.id %>">
-                      <%= render 'votes/toggle_like', votable: list %>
-                    </span>
-                    <% if current_user.can_edit? list %>
-                      <small class="pull-right">
-                        <%= link_to 'Edit ', edit_user_list_path(list.owner, list) %>
-                      </small>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-              <h2>
-                <%= link_to list.name, user_list_path(list.owner, list) %><br>
-                <small> by <%= link_to list.owner.username, user_lists_path(list.owner) %></small>
-              </h2>
-              <p><%= truncate(list.description, length: 400, separator: ' ') %></p>
-              <small>Tags:<i><%= list.tag_list %></i></br></small>
-            </div>
-          </div>
+          <%= render 'list', list: list %>
         </div><%# end of list_partial %>
       <% end %><%# end of @pinned.each %>
 
@@ -84,31 +60,7 @@
       <% @unpinned_lists.each do |list|%>
         <%# list_partial %>
         <div class="col-md-3 list-card" v-show="<%= list.tag_list.to_a %>.includes(category.toLowerCase()) || category == 'All Categories'">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <% if user_signed_in? %>
-                <div class="row">
-                  <div class="col-md-12">
-                    <%= render 'lists/toggle_pin', list: list %>
-                    <span id="list-vote-<%= list.id %>">
-                      <%= render 'votes/toggle_like', votable: list %>
-                    </span>
-                    <% if current_user.can_edit? list %>
-                      <small class="pull-right">
-                        <%= link_to 'Edit ', edit_user_list_path(list.owner, list) %>
-                      </small>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-              <h2>
-                <%= link_to list.name, user_list_path(list.owner, list) %><br>
-                <small> by <%= link_to list.owner.username, user_lists_path(list.owner) %></small>
-              </h2>
-              <p><%= truncate(list.description, length: 400, separator: ' ') %></p>
-              <small>Tags:<i><%= list.tag_list %></i></br></small>
-            </div>
-          </div>
+          <%= render 'list', list: list %>
         </div><%# end of list_partial %>
       <% end %><%# end of @unpinned.each %>
 

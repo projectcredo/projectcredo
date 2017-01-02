@@ -4,17 +4,11 @@ class ListsController < ApplicationController
   # GET /lists
   # GET /lists.json
   def index
-    @lists = List.publicly_visible
     if current_user
       @pinned_lists = current_user.visible_lists.merge(current_user.homepage.lists.distinct)
       @unpinned_lists = current_user.visible_lists.where.not(id: @pinned_lists.pluck(:id))
     else
       @unpinned_lists = List.publicly_visible
-    end
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @lists }
     end
   end
 
