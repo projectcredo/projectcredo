@@ -6,15 +6,8 @@
 
 <div id="search-lists">
 
-  <select
-    class="form-control"
-    v-model="selectedCategory"
-    >
-    <option>All Categories</option>
-    <option>Health and Nutrition</option>
-    <option>Economics and Social Policy</option>
-    <option>Science and Technology</option>
-    <option>Other</option>
+  <select class="form-control" v-model="selectedCategory">
+    <option v-for="category in categories" v-text="category"></option>
   </select>
 
   <% if @pinned_lists.present? %>
@@ -69,7 +62,15 @@
     var searchLists = new Vue({
       el: '#search-lists',
       data: {
-        selectedCategory: 'All Categories'
+        selectedCategory: 'All Categories',
+        categories:
+          [
+            'All Categories',
+            'Health and Nutrition',
+            'Economics and Social Policy',
+            'Science and Technology',
+            'Other'
+          ]
       },
       methods: {
         filterByTag: function(tags) {
