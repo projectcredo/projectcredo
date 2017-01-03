@@ -18,6 +18,7 @@
   <input
     class="form-control"
     v-model="query"
+    v-bind:placeholder="placeholder"
     v-on:keyup="getResults"
   >
   <ul class="list-group crossref-results" v-if="this.results.length">
@@ -74,7 +75,8 @@
         selectedTag: 'All Tags',
         query: '',
         tags: <%=  @tag_buckets  %>,
-        results: []
+        results: [],
+        placeholder: "Search for a list"
       },
       computed: {
         matchingTags() {
