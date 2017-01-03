@@ -68,7 +68,7 @@
       data: {
         selectedTag: 'All Tags',
         query: '',
-        tags: <%=  @tag_buckets  %>,
+        tags: <%=  raw @tags  %>,
         results: [],
         placeholder: "Search for a list"
       },
