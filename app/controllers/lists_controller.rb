@@ -4,6 +4,9 @@ class ListsController < ApplicationController
   # GET /lists
   # GET /lists.json
   def index
+    all_generated_tags = List.publicly_visible.map(&:tag_list).flatten.uniq
+    titleized_tags = all_generated_tags.map!(&:titleize).sort!
+    @tag_buckets = titleized_tags.insert(0,'All Tags').to_json.html_safe
     if current_user
       @pinned_lists = current_user.visible_lists.merge(current_user.homepage.lists.distinct)
       @unpinned_lists = current_user.visible_lists.where.not(id: @pinned_lists.pluck(:id))

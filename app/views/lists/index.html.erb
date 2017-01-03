@@ -5,9 +5,16 @@
 %>
 
 <div id="search-lists">
-  <select class="form-control" v-model="selectedCategory">
-    <option v-for="category in categories" v-text="category"></option>
-  </select>
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label class="col-md-1 control-label">Category:</label>
+      <div class="col-md-2">
+        <select class="form-control" v-model="selectedCategory">
+          <option v-for="category in categories" v-text="category"></option>
+        </select>
+      </div>
+    </div>
+  </div>
 
   <% if @pinned_lists.present? %>
     <div class="row">
@@ -50,28 +57,20 @@
     var searchLists = new Vue({
       el: '#search-lists',
       data: {
-        selectedCategory: 'All Categories',
-        categories:
-          [
-            'All Categories',
-            'Health and Nutrition',
-            'Economics and Social Policy',
-            'Science and Technology',
-            'Untagged'
-          ]
+        selectedCategory: 'All Tags',
+        categories: <%=  @tag_buckets  %>
       },
       methods: {
         showSelectedCategory: function(tags) {
-          if (this.selectedCategory === 'All Categories') {
+          if (this.selectedCategory === 'All Tags') {
             return true
           } else if (this.selectedCategory === 'Untagged') {
             for (var i = 0; i < this.categories.length; i++) {
               if (tags.includes(this.categories[i].toLowerCase())) {
                 return false
-                break
               }
-              return true
             }
+            return true
           } else {
             return tags.includes(this.selectedCategory.toLowerCase())
           }
