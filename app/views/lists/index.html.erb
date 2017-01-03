@@ -9,8 +9,8 @@
     <div class="form-group">
       <label class="col-md-1 control-label">Category:</label>
       <div class="col-md-2">
-        <select class="form-control" v-model="selectedCategory">
-          <option v-for="category in categories" v-text="category"></option>
+        <select class="form-control" v-model="selectedTag">
+          <option v-for="tag in allTags" v-text="tag"></option>
         </select>
       </div>
     </div>
@@ -57,12 +57,12 @@
     var searchLists = new Vue({
       el: '#search-lists',
       data: {
-        selectedCategory: 'All Tags',
-        categories: <%=  @tag_buckets  %>
+        selectedTag: 'All Tags',
+        allTags: <%=  @tag_buckets  %>
       },
       methods: {
-        showSelectedCategory: function(tags) {
-          return tags.includes(this.selectedCategory.toLowerCase()) || this.selectedCategory === 'All Tags'
+        showSelectedTag: function(tags) {
+          return tags.includes(this.selectedTag.toLowerCase()) || this.selectedTag === 'All Tags'
         }
       }
     });
