@@ -5,16 +5,30 @@
 %>
 
 <div id="search-lists">
-  <div class="form-horizontal">
+<!--   <div class="form-horizontal">
     <div class="form-group">
       <label class="col-md-1 control-label">Category:</label>
       <div class="col-md-2">
         <select class="form-control" v-model="selectedTag">
-          <option v-for="tag in Tags" v-text="tag"></option>
+          <option v-for="tag in tags" v-text="tag"></option>
         </select>
       </div>
     </div>
-  </div>
+  </div> -->
+  <input
+    class="form-control"
+    v-model="query"
+    v-on:keyup="getResults"
+  >
+  <ul class="list-group crossref-results" v-if="this.results.length">
+    <li
+      class="list-group-item"
+      v-for="result in results"
+      v-html="result"
+      v-on:click="selectResult(result)"
+    >
+    </li>
+  </ul>
 
   <% if @pinned_lists.present? %>
     <div class="row">
@@ -58,11 +72,31 @@
       el: '#search-lists',
       data: {
         selectedTag: 'All Tags',
-        Tags: <%=  @tag_buckets  %>
+        query: '',
+        tags: <%=  @tag_buckets  %>,
+        results: []
+      },
+      computed: {
+        matchingTags() {
+          return this.tags.filter(tag => tag.toLowerCase().includes(this.query.toLowerCase()))
+        }
       },
       methods: {
-        showSelectedTag: function(tags) {
-          return tags.includes(this.selectedTag.toLowerCase()) || this.selectedTag === 'All Tags'
+        showSelectedTag: function(listTags) {
+          return listTags.includes(this.selectedTag.toLowerCase()) || this.selectedTag === 'All Tags'
+        },
+        showQueriedTag: function(tags) {
+          return tags.includes(this.query.toLowerCase()) || this.query === ''
+        },
+        getResults: function() {
+          if (this.query === '') {
+            return this.results = []
+          } else {
+            return this.results = this.matchingTags
+          }
+        },
+        selectResult: function(result) {
+          this.query = result
         }
       }
     });
