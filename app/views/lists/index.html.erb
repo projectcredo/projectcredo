@@ -84,7 +84,7 @@
       },
       computed: {
         matchingTags() {
-          return this.tags.filter(tag => tag.toLowerCase().includes(this.query.toLowerCase()))
+          return this.tags.filter(tag => tag.toLowerCase().includes(this.query.toLowerCase())).slice(0,10)
         }
       },
       methods: {
