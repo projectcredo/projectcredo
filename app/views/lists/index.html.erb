@@ -62,18 +62,7 @@
       },
       methods: {
         showSelectedCategory: function(tags) {
-          if (this.selectedCategory === 'All Tags') {
-            return true
-          } else if (this.selectedCategory === 'Untagged') {
-            for (var i = 0; i < this.categories.length; i++) {
-              if (tags.includes(this.categories[i].toLowerCase())) {
-                return false
-              }
-            }
-            return true
-          } else {
-            return tags.includes(this.selectedCategory.toLowerCase())
-          }
+          return tags.includes(this.selectedCategory.toLowerCase()) || this.selectedCategory === 'All Tags'
         }
       }
     });
