@@ -73,13 +73,18 @@
         placeholder: "Search for a list"
       },
       computed: {
+        matchQuery() {
+          return this.query.toLowerCase()
+        },
         matchingTags() {
-          return this.tags.filter(tag => tag.toLowerCase().includes(this.query.toLowerCase())).slice(0,10)
+          return this.tags.filter(
+                    tag => tag.toLowerCase().includes(this.matchQuery)
+                  ).slice(0,10)
         }
       },
       methods: {
         showQueriedTag: function(tags) {
-          return tags.includes(this.query.toLowerCase()) || this.query === ''
+          return tags.includes(this.matchQuery) || this.query === ''
         },
         getResults: function() {
           if (this.query === '') {
