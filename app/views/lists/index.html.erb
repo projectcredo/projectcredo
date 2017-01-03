@@ -10,7 +10,7 @@
       <label class="col-md-1 control-label">Category:</label>
       <div class="col-md-2">
         <select class="form-control" v-model="selectedTag">
-          <option v-for="tag in allTags" v-text="tag"></option>
+          <option v-for="tag in Tags" v-text="tag"></option>
         </select>
       </div>
     </div>
@@ -58,7 +58,7 @@
       el: '#search-lists',
       data: {
         selectedTag: 'All Tags',
-        allTags: <%=  @tag_buckets  %>
+        Tags: <%=  @tag_buckets  %>
       },
       methods: {
         showSelectedTag: function(tags) {
