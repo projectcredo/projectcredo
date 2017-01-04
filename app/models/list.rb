@@ -56,6 +56,7 @@ class List < ApplicationRecord
               message: "must be unique for lists you own."
             }
   validates_associated :list_memberships
+  validate :validate_tag
 
   # Methods
   def owner
@@ -86,5 +87,11 @@ class List < ApplicationRecord
 
   def to_param
     slug
+  end
+
+  def validate_tag
+    tag_list.to_a.each do |tag|
+      errors.add(:tag_list, "cannot contain special characters") unless tag =~ /^[a-zA-Z0-9 ]+$/
+    end
   end
 end
