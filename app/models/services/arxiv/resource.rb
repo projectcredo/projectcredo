@@ -1,6 +1,6 @@
 require Arxiv
 
-class Arxiv
+module Arxiv
   class Resource
     # defines the respresentation of a single Arxiv paper
 
@@ -8,7 +8,17 @@ class Arxiv
 
     def initialize id
       self.id = id.to_s
-      self.response = Arxiv.get(identifier: id)
+
+      # if id not found Arxiv::Error::ManuscriptNotFound is thrown
+      # if id is malformed Arxiv::Error::MalformedId is thrown
+      # obvious comment is obvious, obvious name is obvious
+      begin
+        self.response = Arxiv.get(identifier: id)
+      rescue Arxiv::Error::ManuscriptNotFound => not_found_error
+        # stand in
+      rescue Arxiv::Error::MalformedId => bad_id_error
+        # stand in
+      end
     end
 
     def map_attributes mapper, data
