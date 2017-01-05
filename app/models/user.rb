@@ -85,7 +85,7 @@ class User < ApplicationRecord
   private
 
   def subscribe_user_to_all_users_list
-    if Rails.env.production? && !ENV['IS_REVIEW_APP] %> 
+    if Rails.env.production? && !ENV['IS_REVIEW_APP'] %> 
       gb = Gibbon::Request.new
       gb.lists(ENV['ALLUSERS_LIST_ID']).members.create(body: {email_address: self.email, status: "subscribed", merge_fields: {USERNAME: self.username}})
     end
