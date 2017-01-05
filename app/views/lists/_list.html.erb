@@ -1,4 +1,4 @@
-<div class="col-md-3 list-card">
+<div class="col-md-3 list-card" v-show="showQueriedTag(<%= list.tag_list.to_a %>)">
   <div class="panel panel-default">
     <div class="panel-body">
       <% if user_signed_in? %>
