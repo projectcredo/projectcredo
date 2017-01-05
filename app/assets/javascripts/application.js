@@ -46,18 +46,4 @@ debounce = function(func, wait, immediate) {
 
     return result;
   };
-
-  'use strict';
-  String.prototype.capitalize = function() {
-      return this
-  }
-
-  String.prototype.titleize = function() {
-      var string_array = this.split(' ');
-      string_array = string_array.map(function(str) {
-         return str.capitalize();
-      });
-
-      return string_array.join(' ');
-  };
 };
