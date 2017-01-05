@@ -1,5 +1,3 @@
-require Arxiv
-
 module Arxiv
   class Resource
     # defines the respresentation of a single Arxiv paper
@@ -11,13 +9,15 @@ module Arxiv
 
       # if id not found Arxiv::Error::ManuscriptNotFound is thrown
       # if id is malformed Arxiv::Error::MalformedId is thrown
-      # obvious comment is obvious, obvious name is obvious
+      # obvious comment is obvious, obvious error name is obvious
       begin
-        self.response = Arxiv.get(identifier: id)
+        self.response = Arxiv.get identifier: id
       rescue Arxiv::Error::ManuscriptNotFound => not_found_error
-        # stand in
+        # do nothing
+        puts 'ManuscriptNotFound'
       rescue Arxiv::Error::MalformedId => bad_id_error
-        # stand in
+        # do nothing
+        puts 'MalformedId'
       end
     end
 
@@ -37,7 +37,7 @@ module Arxiv
         doi:                nil,
         arxiv_id:           lambda { |data| data.arxiv_id },
         abstract:           lambda { |data| data.abstract },
-        abstract_editable:  lambda { |data| data.abstract }
+        abstract_editable:  lambda { |data| data.abstract },
         published_at:       lambda { |data| data.created_at },
         authors_attributes: lambda { |data| data.authors }
       }
