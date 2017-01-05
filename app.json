@@ -36,6 +36,12 @@
     },
     "GA_TRACKING_ID": {
       "required": true
+    },
+    "MAILCHIMP_API_KEY": {
+      "required": true
+    },
+    "ALLUSERS_LIST_ID": {
+      "required": true
     }
   },
   "formation": {
