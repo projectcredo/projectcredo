@@ -11,7 +11,7 @@ module Arxiv
       # if id is malformed Arxiv::Error::MalformedId is thrown
       # obvious comment is obvious, obvious error name is obvious
       begin
-        self.response = Arxiv.get identifier: id
+        self.response = Arxiv.get(id)
       rescue Arxiv::Error::ManuscriptNotFound => not_found_error
         # do nothing
         puts 'ManuscriptNotFound'
@@ -39,6 +39,7 @@ module Arxiv
         abstract:           lambda { |data| data.abstract },
         abstract_editable:  lambda { |data| data.abstract },
         published_at:       lambda { |data| data.created_at },
+        # separate into familyname, givenname
         authors_attributes: lambda { |data| data.authors }
       }
     end
