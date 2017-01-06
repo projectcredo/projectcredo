@@ -37,7 +37,7 @@ papers = [
 
 
 ActiveRecord::Base.transaction do
-  u = User.create(email: 'testaccount@projectcredo.com', password: 'password', username: 'testuser')
+  u = User.create(email: 'user@example.com', password: 'password', username: 'testuser')
 
   comments = [
     {content: 'First', user_id: u.id},
