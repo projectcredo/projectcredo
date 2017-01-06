@@ -13,6 +13,7 @@
           v-model="query"
           v-bind:placeholder="placeholder"
           v-on:keyup="getResults"
+          v-on:keyup.27="clearResults"
         >
 
         <ul class="list-group list-autocomplete" v-if="this.results.length">
@@ -95,6 +96,10 @@
           } else {
             this.results = this.matchingTags
           }
+        },
+        clearResults: function() {
+          this.query = ''
+          this.results = []
         },
         selectResult: function(result) {
           this.query = result
