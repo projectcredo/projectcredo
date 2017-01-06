@@ -87,7 +87,7 @@
       },
       methods: {
         showQueriedTag: function(tags) {
-          return tags.includes(this.matchQuery) || this.query === ''
+          return this.query === '' || tags.includes(this.matchQuery)
         },
         getResults: function() {
           if (this.query === '') {
