@@ -5,23 +5,26 @@
 %>
 
 <div id="search-lists">
-  <div class="form-group">
-    <div class="col-md-6 col-md-offset-3">
-      <input
-        class="form-control"
-        v-model="query"
-        v-bind:placeholder="placeholder"
-        v-on:keyup="getResults"
-      >
-      <ul class="list-group crossref-results" v-if="this.results.length">
-        <li
-          class="list-group-item"
-          v-for="result in results"
-          v-html="result"
-          v-on:click="selectResult(result)"
+  <div class="row">
+    <div class="form-group col-md-3">
+
+        <input
+          class="form-control query-input"
+          v-model="query"
+          v-bind:placeholder="placeholder"
+          v-on:keyup="getResults"
         >
-        </li>
-      </ul>
+
+        <ul class="list-group list-autocomplete" v-if="this.results.length">
+          <li
+            class="list-group-item"
+            v-for="result in results"
+            v-html="result"
+            v-on:click="selectResult(result)"
+          >
+          </li>
+        </ul>
+
     </div>
   </div>
 
@@ -70,7 +73,7 @@
         query: '',
         tags: <%=  raw @tags  %>,
         results: [],
-        placeholder: "Search for a list"
+        placeholder: "Search for a list..."
       },
       computed: {
         matchQuery() {
