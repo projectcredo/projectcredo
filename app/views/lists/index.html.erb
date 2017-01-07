@@ -4,36 +4,107 @@
   @body_class = "list-index"
 %>
 
-<% if @pinned_lists.present? %>
+<div id="search-lists">
   <div class="row">
-    <div class="col-md-12">
-      <h1>Pinned Lists</h1>
+    <div class="form-group col-md-3">
+        <input
+          class="form-control query-input"
+          v-model="query"
+          v-bind:placeholder="placeholder"
+          v-on:keyup="getResults"
+          v-on:keyup.esc="clearResults"
+        >
+
+        <ul class="list-group list-autocomplete" v-if="this.results.length">
+          <li
+            class="list-group-item"
+            v-for="result in results"
+            v-html="result"
+            v-on:click="selectResult(result)"
+          >
+          </li>
+        </ul>
+
     </div>
   </div>
 
-  <div class="cards row">
-    <div class="col-md-3">
-      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-        <h2>Create a new list</h2>
-      <% end %>
+  <% if @pinned_lists.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Pinned Lists</h1>
+      </div>
     </div>
-    <%= render @pinned_lists %>
-  </div>
-<% end %>
 
-<% if @unpinned_lists.present? %>
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Lists</h1>
+    <div class="cards row">
+      <div class="col-md-3">
+        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
+          <h2>Create a new list</h2>
+        <% end %>
+      </div>
+      <%= render @pinned_lists %>
     </div>
-  </div>
 
-  <div class="cards row">
-    <div class="col-md-3">
-      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-        <h2>Create a new list</h2>
-      <% end %>
+  <% end %>
+
+  <% if @unpinned_lists.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Lists</h1>
+      </div>
     </div>
-    <%= render @unpinned_lists %>
-  </div>
+
+    <div class="cards row">
+      <div class="col-md-3">
+        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
+          <h2>Create a new list</h2>
+        <% end %>
+      </div>
+      <%= render @unpinned_lists %>
+    </div>
+  <% end %>
+</div>
+
+<% content_for(:page_app) do %>
+  <script>
+    var searchLists = new Vue({
+      el: '#search-lists',
+      data: {
+        selectedTag: 'All Tags',
+        query: '',
+        tags: <%=  raw @tags  %>,
+        results: [],
+        placeholder: "Search for a list..."
+      },
+      computed: {
+        matchQuery() {
+          return this.query.toLowerCase()
+        },
+        matchingTags() {
+          return this.tags.filter(
+                    tag => tag.toLowerCase().includes(this.matchQuery)
+                  ).slice(0,10)
+        }
+      },
+      methods: {
+        showQueriedTag: function(tags) {
+          return this.query === '' || tags.toString().includes(this.matchQuery)
+        },
+        getResults: function() {
+          if (this.query === '') {
+            this.results = []
+          } else {
+            this.results = this.matchingTags
+          }
+        },
+        clearResults: function() {
+          this.query = ''
+          this.results = []
+        },
+        selectResult: function(result) {
+          this.query = result
+          this.results = []
+        }
+      }
+    });
+  </script>
 <% end %>
