@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+[Paper, List, Reference, User].each(&:destroy_all)
+
 list_names =[
   "Allergies and immigrant families",
   "Crop co-cultivation methods",
@@ -15,7 +17,7 @@ list_names =[
   "Efficacy of vitamin supplements",
   "The effect of probiotics on Irritable Bowel Syndrome",
   "Factors in second language acquisition 学第二语言的因素",
-  "Maintaining mobility in old age",
+  "Maintaining mobility in old age"
 ]
 
 papers = [
@@ -51,6 +53,7 @@ ActiveRecord::Base.transaction do
   list_names.each do |d|
     l = u.lists.create(name: d, description: d)
     l.tag_list.add(d.split)
+    l.save
 
     r1 = l.references.create(paper: p1, user: u)
     r2 = l.references.create(paper: p2, user: u)
