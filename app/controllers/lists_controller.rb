@@ -11,9 +11,6 @@ class ListsController < ApplicationController
     else
       lists = @unpinned_lists = List.publicly_visible
     end
-
-    searchable_tags = lists.map(&:tag_list).flatten.uniq
-    @tags = searchable_tags.map!(&:titleize).sort!
   end
 
   # GET /lists/new
