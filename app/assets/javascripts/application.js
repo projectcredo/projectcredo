@@ -54,7 +54,6 @@ var searchLists = new Vue({
   data: {
     unpinnedLists: [],
     pinnedLists: [],
-    selectedTag: 'All Tags',
     query: '',
     results: [],
     placeholder: "Search for a list..."
