@@ -1,8 +1,4 @@
-<%
-  search_terms = list.tag_list.to_a
-  search_terms = search_terms.push(list.name.downcase, list.description.downcase, list.owner.username)
-%>
-<div class="col-md-3 list-card" v-if="showQueriedTag(<%= search_terms %>)">
+<div class="col-md-3 list-card" v-if="showList(<%= list.id %>)">
   <div class="panel panel-default">
     <div class="panel-body">
       <% if user_signed_in? %>
