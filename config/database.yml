@@ -19,9 +19,11 @@ default: &default
   encoding: unicode
   pool: 5
   timeout: 5000
+<% if ENV['DOCKERIZED'] ==  'true' %>
   username: postgres
   host: postgres
   port: 5432
+<% end %>
 
 development:
   <<: *default

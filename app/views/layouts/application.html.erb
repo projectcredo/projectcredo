@@ -2,6 +2,7 @@
 <html>
   <head>
     <title><%= "Project Credo#{' | ' if @title}#{@title}" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
@@ -12,7 +13,7 @@
     <%= tag :meta, property: "og:image:width", content: "600" %>
     <%= tag :meta, property: "og:image:height", content: "600" %>
     <% if content_for?(:meta_og) %>
-        <%= yield :meta_og %>
+      <%= yield :meta_og %>
     <% else %>
       <%= tag :meta, property: "og:type", content: "website" %>
       <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
@@ -24,7 +25,7 @@
     <%= render 'application/favicon' %>
   </head>
 
-  <body data-spy="scroll" data-target=".scrollspy">
+  <body data-spy="scroll" data-target=".scrollspy" class="<%= @body_class %>">
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -56,6 +57,7 @@
     <div class="container<%= '-fluid' if @full_width %>">
       <%= yield %>
     </div>
-    <%= console if Rails.env.development? %>
+    <%= console if Rails.env.development? && ENV['CONSOLE_ENABLED'] %>
   </body>
+  <%= yield(:page_app) %>
 </html>

@@ -1,4 +1,8 @@
-<div class="col-md-3 list-card">
+<%
+  search_terms = list.tag_list.to_a
+  search_terms = search_terms.push(list.name.downcase, list.description.downcase, list.owner.username)
+%>
+<div class="col-md-3 list-card" v-if="showQueriedTag(<%= search_terms %>)">
   <div class="panel panel-default">
     <div class="panel-body">
       <% if user_signed_in? %>
@@ -20,8 +24,19 @@
         <%= link_to list.name, user_list_path(list.owner, list) %><br>
         <small> by <%= link_to list.owner.username, user_lists_path(list.owner) %></small>
       </h2>
+
+      <% list.tag_list.each do |tag| %>
+        <a class="btn btn-default btn-xs"><%= tag %></a>
+      <% end %>
+
       <p><%= truncate(list.description, length: 400, separator: ' ') %></p>
-      <small>Tags:<i><%= list.tag_list %></i></br></small>
+
+      <% comments_count = list.comments.map {|c| c.self_and_descendants.length}.inject(0,&:+) %>
+
+      <small><i>
+        Last Update: <%= list.updated_at.strftime("%b %d, %Y at %l:%M%P")%>
+        <span class="pull-right"> <%= pluralize(comments_count, 'comment') if comments_count > 0 %></span>
+      </i></small>
     </div>
   </div>
 </div>

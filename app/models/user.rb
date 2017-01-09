@@ -66,6 +66,7 @@ class User < ApplicationRecord
 
   before_save { self.email.downcase! if self.email }
   after_create :create_homepage
+  after_create :subscribe_user_to_all_users_list
 
   acts_as_voter
 
@@ -79,6 +80,15 @@ class User < ApplicationRecord
 
   def to_param
     username
+  end
+
+  private
+
+  def subscribe_user_to_all_users_list
+    if Rails.env.production? && !ENV['IS_REVIEW_APP'] 
+      gb = Gibbon::Request.new
+      gb.lists(ENV['ALLUSERS_LIST_ID']).members.create(body: {email_address: self.email, status: "subscribed", merge_fields: {USERNAME: self.username}})
+    end
   end
 
   protected
