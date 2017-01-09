@@ -13,8 +13,7 @@ class ListsController < ApplicationController
     end
 
     searchable_tags = lists.map(&:tag_list).flatten.uniq
-    titleized_tags = searchable_tags.map!(&:titleize).sort!
-    @tags = titleized_tags.to_json
+    @tags = searchable_tags.map!(&:titleize).sort!
   end
 
   # GET /lists/new

@@ -69,25 +69,43 @@
     var searchLists = new Vue({
       el: '#search-lists',
       data: {
+        unpinnedLists: <%= raw render('lists/lists.json', lists: @unpinned_lists) %>,
+        pinnedLists: <%= raw render('lists/lists.json', lists: @pinned_lists) %>,
         selectedTag: 'All Tags',
         query: '',
-        tags: <%=  raw @tags  %>,
+        tags: <%=  raw @tags.to_json  %>,
         results: [],
         placeholder: "Search for a list..."
       },
       computed: {
+        allLists() {
+          allLists = this.unpinnedLists.concat(this.pinnedLists)
+          return allLists.reduce((memo, list)=>{
+            var listId = list.id
+            delete list.id
+            memo[listId+''] = list
+            return memo
+          }, {})
+        },
         matchQuery() {
           return this.query.toLowerCase()
         },
         matchingTags() {
-          return this.tags.filter(
-                    tag => tag.toLowerCase().includes(this.matchQuery)
-                  ).slice(0,10)
+          return this.tags.filter((tag) => {
+            tag.toLowerCase().includes(this.matchQuery)
+          }).slice(0,10)
         }
       },
       methods: {
-        showQueriedTag: function(tags) {
-          return this.query === '' || tags.toString().includes(this.matchQuery)
+        showList: function(id) {
+          if (this.query === '') {return true}
+
+          var list = this.allLists[id]
+          var searchablAttrs = list.tag_list.concat(list.name, list.description, list.owner)
+          // Only unique values
+          searchablAttrs = [...new Set(searchablAttrs)]
+
+          return searchablAttrs.toString().toLowerCase().includes(this.query)
         },
         getResults: function() {
           if (this.query === '') {
