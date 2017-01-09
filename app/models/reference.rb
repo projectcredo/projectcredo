@@ -2,7 +2,7 @@ class Reference < ApplicationRecord
   has_many :comments, as: :commentable
 
   belongs_to :paper
-  belongs_to :list
+  belongs_to :list, touch: true
   belongs_to :user
 
   validates :paper, uniqueness: { scope: :list }

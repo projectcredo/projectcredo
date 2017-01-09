@@ -18,6 +18,7 @@ class CommentsController < ApplicationController
         format.js do
           commentable = @comment.root.commentable
           is_top_level = !!@comment.commentable
+          commentable.touch
 
           if is_top_level
             render('commentables/comments/create.js.erb', locals: {commentable: commentable})
@@ -94,4 +95,5 @@ class CommentsController < ApplicationController
       return commentable if commentable.is_a?(List)
       return commentable.list if commentable.is_a?(Reference)
     end
+
 end
