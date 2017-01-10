@@ -49,6 +49,7 @@ debounce = function(func, wait, immediate) {
 };
 
 // Temporary location for shared Vue scripts
+// Also needs to be pre-ES6 for asset pipeline compatibility
 
 var searchLists = new Vue({
   data: {
@@ -59,26 +60,30 @@ var searchLists = new Vue({
     placeholder: "Search for a list..."
   },
   computed: {
-    allLists() {
-      allLists = this.unpinnedLists.concat(this.pinnedLists)
-      return allLists.reduce((memo, list)=>{
+    allLists: function () {
+      return this.unpinnedLists.concat(this.pinnedLists)
+    },
+    allListsById: function() {
+      return this.allLists.reduce(function(memo, list) {
         var listId = list.id
         delete list.id
         memo[listId+''] = list
         return memo
       }, {})
     },
-    tags() {
-      return Object.keys(this.allLists).reduce((memo, listId) => {
-        return memo.concat(this.allLists[listId].tag_list)
+    tags: function() {
+      var allTags = this.allLists.reduce(function(memo, list) {
+        return memo.concat(list.tag_list)
       }, [])
+
+      return Array.from(new Set(allTags))
     },
-    matchQuery() {
+    matchQuery: function() {
       return this.query.toLowerCase()
     },
-    matchingTags() {
-      return this.tags.filter((tag) => {
-        return tag.toLowerCase().includes(this.matchQuery)
+    matchingTags: function() {
+      return this.tags.filter(function(tag) {
+        return tag.toLowerCase().includes(searchLists.matchQuery)
       }).slice(0,10)
     }
   },
@@ -86,10 +91,10 @@ var searchLists = new Vue({
     showList: function(id) {
       if (this.query === '') {return true}
 
-      var list = this.allLists[id]
+      var list = this.allListsById[id]
       var searchablAttrs = list.tag_list.concat(list.name, list.description, list.owner)
       // Only unique values
-      searchablAttrs = [...new Set(searchablAttrs)]
+      searchablAttrs = Array.from(new Set(searchablAttrs))
 
       return searchablAttrs.toString().toLowerCase().includes(this.query)
     },
