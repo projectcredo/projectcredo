@@ -1,114 +1,141 @@
-<% url = if list.persisted? then user_list_path(list.owner, list) else lists_path end  %>
+<div id="list-edit">
 
-<%= form_for(list, url: url) do |f| %>
-  <% if list.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
+  <% url = if list.persisted? then user_list_path(list.owner, list) else lists_path end  %>
 
-      <ul>
-        <% list.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <div class="form-horizontal">
-    <div class="form-group">
-      <%= f.label :name, class: "col-md-2 control-label" %>
-      <div class="col-md-10">
-        <%= f.text_field :name, class: "form-control" %>
-      </div>
-    </div>
+  <%= form_for(list, url: url) do |f| %>
+    <% if list.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
 
-    <div class="form-group">
-      <%= f.label :description, class: "col-md-2 control-label" %>
-      <div class="col-md-10">
-        <%= f.text_area :description, class: "form-control", rows: 5 %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="col-md-2 control-label">
-        <%= f.label :tag_list, 'Tags'%>
-        <p><small>(separated by commas)</small></p>
-      </div>
-      <div class="col-md-10">
-        <%= f.text_field :tag_list, value: list.tag_list.join(","), class: "form-control", placeholder: 'Ex: biology, chemistry, physics' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="col-md-2 control-label">
-        <%= f.label :participants, 'List participants'%>
-        <p><small>(who can add to this list?)</small></p>
-      </div>
-      <div class="col-md-10">
-        <%= f.select :participants,
-          options_for_select(
-            [%w{Public public},%w{Contributors contributors}],
-            list.participants
-          ),
-          {},
-          {class: "form-control", disabled: list.persisted? && !(current_user == list.owner)} %>
-      </div>
-    </div>
-
-    <% if list.persisted? %>
-      <div class="form-group">
-        <label class="col-md-2 control-label">List owner</label>
-        <div class="col-md-10">
-          <div class="form-control contributor-list">
-            <%= link_to list.owner.username, user_lists_path(list.owner) %>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-2 control-label">Current contributors</label>
-        <div class="col-md-10">
-          <% members = list.members.where.not(id: list.owner.id) %>
-          <% if members.any? %>
-            <% members.each do |member| %>
-              <div class="form-control contributor-list">
-                <%= link_to member.username, user_lists_path(member) %>
-                <% if current_user_can_moderate?(list) || member == current_user %>
-                  <%= link_to('Remove',
-                        list_member_path(list.id, member.id),
-                        class: "remove-member text-danger pull-right",
-                        method: :delete) %>
-                <% end %>
-              </div>
-            <% end %>
-          <% else %>
-            <div class="form-control">None</div>
-          <% end %>
-        </div>
+        <ul>
+          <% list.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+        </ul>
       </div>
     <% end %>
+    <div class="form-horizontal">
+      <div class="form-group">
+        <%= f.label :name, class: "col-md-2 control-label" %>
+        <div class="col-md-10">
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :members, 'Add a contributor', class: "col-md-2 control-label"  %>
-      <div class="col-md-10">
-        <%
-          if list.persisted?
-            non_members = User.all - @list.members
-            disable_contributors = !current_user.can_moderate?(list)
-          else
-            non_members = User.all - [current_user]
-            disable_contributors = false
-          end
-        %>
-        <%= f.select :members, non_members.map(&:username), {include_blank: 'None'}, {class: "form-control", disabled: disable_contributors}  %>
+      <div class="form-group">
+        <%= f.label :description, class: "col-md-2 control-label" %>
+        <div class="col-md-10">
+          <%= f.text_area :description, class: "form-control", rows: 5 %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-2 control-label">
+          <%= f.label :tag_list, 'Tags'%>
+          <p><small>(separated by commas)</small></p>
+        </div>
+        <div class="col-md-10">
+          <%= f.text_field :tag_list, value: list.tag_list.join(","), class: "form-control", placeholder: 'Ex: biology, chemistry, physics' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-2 control-label">
+          <%= f.label :participants, 'List participants'%>
+          <p><small>(who can add to this list?)</small></p>
+        </div>
+        <div class="col-md-10">
+          <%= f.select :participants,
+            options_for_select(
+              [%w{Public public},%w{Contributors contributors}],
+              list.participants
+            ),
+            {},
+            {class: "form-control", disabled: list.persisted? && !(current_user == list.owner)} %>
+        </div>
+      </div>
+
+      <% if list.persisted? %>
+        <div class="form-group">
+          <label class="col-md-2 control-label">List owner</label>
+          <div class="col-md-10">
+            <div class="form-control contributor-list">
+              <%= link_to list.owner.username, user_lists_path(list.owner) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label">Current contributors</label>
+          <div class="col-md-10">
+            <% members = list.members.where.not(id: list.owner.id) %>
+            <% if members.any? %>
+              <% members.each do |member| %>
+                <div class="form-control contributor-list">
+                  <%= link_to member.username, user_lists_path(member) %>
+                  <% if current_user_can_moderate?(list) || member == current_user %>
+                    <%= link_to('Remove',
+                          list_member_path(list.id, member.id),
+                          class: "remove-member text-danger pull-right",
+                          method: :delete) %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="form-control">None</div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :members, 'Add a contributor', class: "col-md-2 control-label"  %>
+        <div class="col-md-10">
+          <select name="list[members]" id="list_members" class="form-control" v-bind:disabled="selectDisabled">
+            <option value="">None</option>
+            <option
+              v-for="nonMember in members"
+              v-bind:value="nonMember.username"
+              v-text="nonMember.username"
+            >
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit button_name, class: "btn btn-primary" %>
+          <%= link_to 'cancel',
+            if list.id then user_list_path(list.user, list) else root_path end
+          %>
+        </div>
       </div>
     </div>
+  <% end %>
 
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit button_name, class: "btn btn-primary" %>
-        <%= link_to 'cancel',
-          if list.id then user_list_path(list.user, list) else root_path end
-        %>
-      </div>
-    </div>
-  </div>
+</div>
+
+<% content_for(:page_app) do %>
+  <script>
+    var editList = new Vue({
+      el: '#list-edit',
+      data: {
+        owner: '<%= list.owner.username %>',
+        selectDisabled:
+          <%=
+            if list.persisted?
+              !current_user.can_moderate?(list)
+            else
+              false
+            end
+          %>,
+        members: <%= raw render('users/members.json', members: @members) %>,
+        nonMembers: []
+      },
+      computed: {
+
+      }
+    })
+  </script>
 <% end %>
