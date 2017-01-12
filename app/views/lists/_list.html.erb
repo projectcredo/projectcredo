@@ -8,7 +8,7 @@
             <span id="list-vote-<%= list.id %>">
               <toggle-vote
                 :liked="<%= current_user.voted_for?(list) %>"
-                vote-path="<%= list_vote_path(list) %>"
+                vote-path="<%= list_vote_url(list) %>"
                 votable-class="list"
                 vote-count="<%= list.get_likes.size.to_s %>"
               ></toggle-vote>

@@ -66,16 +66,16 @@ Vue.component('toggle-pin', {
 })
 
 Vue.component('toggle-vote', {
-  props: ['liked', 'votePath', 'votableClass', 'voteCount'],
+  props: ['liked', 'voteUrl', 'votableClass', 'voteCount'],
   template: `
-    <a data-remote="true" :data-method="liked ? 'delete' : 'post'" :href="votePath" rel="nofollow">
+    <a :href="voteUrl" rel="nofollow" @click.prevent="submitToggleVote">
       <button name="button" type="submit" :class="computedClasses">
         {{ voteCount }}
       </button>
     </a>
   `,
   computed: {
-    computedClasses() {
+    computedClasses: function() {
       var classes = {
         vote: true,
         active: this.liked
