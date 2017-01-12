@@ -80,7 +80,6 @@ var ToggleVote = {
   `,
   methods: {
     toggleVote: function() {
-      console.log('wtf')
       this.liked = !this.liked
       if (this.liked) {
         this.voteCount++
