@@ -7,7 +7,7 @@ class Comments::VotesController < ApplicationController
     @comment.order_siblings
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render nothing: true, status: 204 }
+      format.json { render nothing: true, status: 204 }
     end
   end
 
@@ -16,7 +16,7 @@ class Comments::VotesController < ApplicationController
     @comment.order_siblings
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render nothing: true, status: 204 }
+      format.json { render nothing: true, status: 204 }
     end
   end
 

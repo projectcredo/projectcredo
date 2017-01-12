@@ -6,7 +6,7 @@ class References::VotesController < ApplicationController
     current_user.likes @reference
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render nothing: true, status: 204 }
+      format.json { render nothing: true, status: 204 }
     end
   end
 
@@ -14,7 +14,7 @@ class References::VotesController < ApplicationController
     current_user.unlike @reference
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You unlike it!' }
-      format.js { render nothing: true, status: 204 }
+      format.json { render nothing: true, status: 204 }
     end
   end
 

@@ -63,8 +63,12 @@
   <%= yield(:page_app) %>
 
   <script>
+    var AuthenticityToken = "<%= form_authenticity_token %>"
     var credo = new Vue({
-      el: '#credo'
+      el: '#credo',
+      components: {
+        'toggle-vote': ToggleVote
+      }
     })
   </script>
 </html>

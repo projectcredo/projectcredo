@@ -65,15 +65,39 @@ Vue.component('toggle-pin', {
   }
 })
 
-Vue.component('toggle-vote', {
-  props: ['liked', 'voteUrl', 'votableClass', 'voteCount'],
+var ToggleVote = {
+  props: ['initialLike', 'voteUrl', 'votableClass', 'initialVoteCount'],
+  data: function() {
+    return {
+      liked: this.initialLike,
+      voteCount: this.initialVoteCount
+    }
+  },
   template: `
-    <a :href="voteUrl" rel="nofollow" @click.prevent="submitToggleVote">
-      <button name="button" type="submit" :class="computedClasses">
-        {{ voteCount }}
-      </button>
-    </a>
+    <button :class="computedClasses" @click="submitToggleVote">
+      {{ voteCount }}
+    </button>
   `,
+  methods: {
+    toggleVote: function() {
+      console.log('wtf')
+      this.liked = !this.liked
+      if (this.liked) {
+        this.voteCount++
+      } else {
+        this.voteCount--
+      }
+    },
+    submitToggleVote: function() {
+      var toggler = this
+        $.ajax({
+          type: (this.liked ? 'DELETE' : 'POST'),
+          url: toggler.voteUrl,
+          dataType: 'json'
+        })
+          .done(toggler.toggleVote)
+    }
+  },
   computed: {
     computedClasses: function() {
       var classes = {
@@ -84,7 +108,7 @@ Vue.component('toggle-vote', {
       return classes
     }
   }
-})
+}
 
 var searchLists = new Vue({
   data: {

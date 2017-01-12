@@ -7,10 +7,10 @@
             <toggle-pin :pinned="<%= current_user.homepage.lists.include?(list) %>" list-slug="<%= list.slug %>"></toggle-pin>
             <span id="list-vote-<%= list.id %>">
               <toggle-vote
-                :liked="<%= current_user.voted_for?(list) %>"
+                :initial-like="<%= current_user.voted_for?(list) %>"
                 vote-url="<%= list_vote_url(list) %>"
                 votable-class="list"
-                vote-count="<%= list.get_likes.size.to_s %>"
+                initial-vote-count="<%= list.get_likes.size.to_s %>"
               ></toggle-vote>
             </span>
             <% if current_user.can_edit? list %>

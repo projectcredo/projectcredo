@@ -15,10 +15,10 @@
   <ul>
     <li id="comment-vote-<%= comment.id %>">
       <toggle-vote
-        :liked="<%= current_user.voted_for?(comment) %>"
+        :initial-like="<%= current_user.voted_for?(comment) %>"
         vote-url="<%= comment_vote_url(comment) %>"
         votable-class="comment"
-        vote-count="<%= comment.get_likes.size.to_s %>"
+        initial-vote-count="<%= comment.get_likes.size.to_s %>"
       ></toggle-vote>
     </li>
     <li><%= (link_to 'reply', "#", class: 'toggle-reply btn btn-link btn-xs', 'data-parent-comment-id' => comment.id) if current_user %></li>
