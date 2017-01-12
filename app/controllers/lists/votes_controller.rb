@@ -6,7 +6,7 @@ class Lists::VotesController < ApplicationController
     current_user.likes @list
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render 'votes/toggle_like.js.erb', locals: {votable: @list} }
+      format.js { render nothing: true, status: 204 }
     end
   end
 
@@ -14,7 +14,7 @@ class Lists::VotesController < ApplicationController
     current_user.unlike @list
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You unlike it!' }
-      format.js { render 'votes/toggle_like.js.erb', locals: {votable: @list} }
+      format.js { render nothing: true, status: 204 }
     end
   end
 
