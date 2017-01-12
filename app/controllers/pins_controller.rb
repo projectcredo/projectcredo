@@ -3,14 +3,14 @@ class PinsController < ApplicationController
   before_action :set_pinned_lists
 
   def create
-    @pinned_lists << List.find_by(slug: list_params[:id])
-    redirect_to :back
+    @pinned_lists << List.find_by(slug: list_params[:list_id])
+    redirect_back(fallback_location: root_path)
   end
 
   def destroy
-    list = @pinned_lists.find_by(slug: list_params[:id])
+    list = @pinned_lists.find_by(slug: list_params[:list_id])
     @pinned_lists = @pinned_lists.delete(list)
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -19,6 +19,6 @@ class PinsController < ApplicationController
     end
 
     def list_params
-      params.permit(:id)
+      params.permit(:list_id)
     end
 end
