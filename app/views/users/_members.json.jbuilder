@@ -1,3 +1,3 @@
-json.array!(members) do |member|
-  json.extract! member, :username
+json.array!(users) do |u|
+  json.extract! u, :username
 end

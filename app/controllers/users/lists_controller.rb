@@ -18,7 +18,6 @@ class Users::ListsController < ApplicationController
   end
 
   def edit
-    @members = @list.members
   end
 
   def update

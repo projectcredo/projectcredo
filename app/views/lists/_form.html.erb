@@ -94,7 +94,7 @@
           <select name="list[members]" id="list_members" class="form-control" v-bind:disabled="selectDisabled">
             <option value="">None</option>
             <option
-              v-for="nonMember in members"
+              v-for="nonMember in nonMembers"
               v-bind:value="nonMember.username"
               v-text="nonMember.username"
             >
@@ -123,18 +123,11 @@
       data: {
         owner: '<%= list.owner.username %>',
         selectDisabled:
-          <%=
-            if list.persisted?
-              !current_user.can_moderate?(list)
-            else
-              false
-            end
-          %>,
-        members: <%= raw render('users/members.json', members: @members) %>,
-        nonMembers: []
+          <%= if list.persisted? then !current_user.can_moderate?(list) else false end %>,
+        nonMembers: <%= raw render('users/members.json', users: (User.all - @list.members - @list.owner)) %>,
+        members: <%= raw render('users/members.json', users: @list.members) %>
       },
       computed: {
-
       }
     })
   </script>
