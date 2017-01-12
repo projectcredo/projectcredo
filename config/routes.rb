@@ -10,12 +10,12 @@ Rails.application.routes.draw do
     resources :links, only: :destroy, shallow: true
   end
 
-  resources :pins, only: [:create, :destroy]
-
   resources :lists, only: [:new, :create] do
     resources :references, only: [:show, :create, :destroy]
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
     resources :members, only: :destroy, controller: 'lists/members'
+    post 'pin' => 'pins#create'
+    delete 'pin' => 'pins#destroy'
   end
 
   resources :references do

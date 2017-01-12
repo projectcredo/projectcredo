@@ -1,8 +1,5 @@
 <% if current_user.homepage.lists.include? list %>
-  <%= link_to button_tag('Unpin', class: "btn btn-default btn-sm pull-left pin active"), pin_path(list), method: :delete %>
+  <%= link_to button_tag('Unpin', class: "btn btn-default btn-sm pull-left pin active"), list_pin_path(list), method: :delete %>
 <% else %>
-  <%= form_tag pins_path do %>
-    <%= text_field_tag 'id', list.slug, hidden: true %>
-    <%= submit_tag 'Pin', class: "btn btn-default btn-sm pull-left pin" %>
-  <% end %>
+  <%= link_to button_tag('Pin', class: "btn btn-default btn-sm pull-left pin"), list_pin_path(list), method: :post %>
 <% end %>
