@@ -1,5 +1,0 @@
-<% if current_user.homepage.lists.include? list %>
-  <%= link_to button_tag('Unpin', class: "btn btn-default btn-sm pull-left pin active"), list_pin_path(list), method: :delete %>
-<% else %>
-  <%= link_to button_tag('Pin', class: "btn btn-default btn-sm pull-left pin"), list_pin_path(list), method: :post %>
-<% end %>

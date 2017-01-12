@@ -51,6 +51,20 @@ debounce = function(func, wait, immediate) {
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
+Vue.component('toggle-pin', {
+  props: ['pinned', 'listSlug'],
+  template: `
+    <a :data-method="pinned ? 'delete' : 'post'" :href="votePath" rel="nofollow">
+      <button name="button" type="submit" class="btn btn-default btn-sm pull-left pin" :class="pinned ? 'active' : ''">{{ pinned ? 'Unpin' : 'Pin' }}</button>
+    </a>
+  `,
+  computed: {
+    votePath: function() {
+      return '/lists/' + this.listSlug + '/pin'
+    }
+  }
+})
+
 var searchLists = new Vue({
   data: {
     unpinnedLists: [],
