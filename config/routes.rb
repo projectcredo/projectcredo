@@ -11,11 +11,10 @@ Rails.application.routes.draw do
   end
 
   resources :lists, only: [:new, :create] do
-    resources :references, only: [:show, :create, :destroy]
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
+    resource :pin, controller: 'lists/pins', only: [:create, :destroy]
     resources :members, only: :destroy, controller: 'lists/members'
-    post 'pin' => 'pins#create'
-    delete 'pin' => 'pins#destroy'
+    resources :references, only: [:show, :create, :destroy]
   end
 
   resources :references do

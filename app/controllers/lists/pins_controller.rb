@@ -1,4 +1,4 @@
-class PinsController < ApplicationController
+class Lists::PinsController < ApplicationController
   before_action :ensure_current_user
   before_action :set_pinned_lists
 
