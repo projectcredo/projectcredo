@@ -51,19 +51,33 @@ debounce = function(func, wait, immediate) {
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
-Vue.component('toggle-pin', {
-  props: ['pinned', 'listSlug'],
+var TogglePin = {
+  props: ['initialPin', 'listSlug'],
+  data: function() {
+    return {pinned: this.initialPin}
+  },
   template: `
-    <a :data-method="pinned ? 'delete' : 'post'" :href="pinPath" rel="nofollow">
-      <button name="button" type="submit" class="btn btn-default btn-sm pull-left pin" :class="pinned ? 'active' : ''">{{ pinned ? 'Unpin' : 'Pin' }}</button>
-    </a>
+    <button class="btn btn-default btn-sm pull-left pin" :class="{active: pinned}" @click="submitTogglePin">
+      {{ pinned ? 'Unpin' : 'Pin' }}
+    </button>
   `,
+  methods: {
+    submitTogglePin: function () {
+      var toggler = this
+      $.ajax({
+        type: (this.pinned ? 'DELETE' : 'POST'),
+        url: toggler.pinPath,
+        dataType: 'json'
+      })
+        .done(function() {toggler.pinned = !toggler.pinned})
+    }
+  },
   computed: {
     pinPath: function() {
       return '/lists/' + this.listSlug + '/pin'
     }
   }
-})
+}
 
 var ToggleVote = {
   props: ['initialLike', 'voteUrl', 'votableClass', 'initialVoteCount'],
@@ -89,12 +103,12 @@ var ToggleVote = {
     },
     submitToggleVote: function() {
       var toggler = this
-        $.ajax({
-          type: (this.liked ? 'DELETE' : 'POST'),
-          url: toggler.voteUrl,
-          dataType: 'json'
-        })
-          .done(toggler.toggleVote)
+      $.ajax({
+        type: (this.liked ? 'DELETE' : 'POST'),
+        url: toggler.voteUrl,
+        dataType: 'json'
+      })
+        .done(toggler.toggleVote)
     }
   },
   computed: {
@@ -172,4 +186,12 @@ var searchLists = new Vue({
       this.results = []
     }
   }
-});
+})
+
+var credo = new Vue({
+  components: {
+    'toggle-vote': ToggleVote,
+    'toggle-pin': TogglePin
+  }
+})
+

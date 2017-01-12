@@ -4,7 +4,7 @@
       <% if user_signed_in? %>
         <div class="row">
           <div class="col-md-12">
-            <toggle-pin :pinned="<%= current_user.homepage.lists.include?(list) %>" list-slug="<%= list.slug %>"></toggle-pin>
+            <toggle-pin :initial-pin="<%= current_user.homepage.lists.include?(list) %>" list-slug="<%= list.slug %>"></toggle-pin>
             <span id="list-vote-<%= list.id %>">
               <toggle-vote
                 :initial-like="<%= current_user.voted_for?(list) %>"
