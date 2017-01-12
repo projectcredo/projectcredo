@@ -4,13 +4,21 @@ class Lists::PinsController < ApplicationController
 
   def create
     @pinned_lists << List.find_by(slug: list_params[:list_id])
-    redirect_back(fallback_location: root_path)
+
+    respond_to do |format|
+      format.html { redirect_back(fallback_location: root_path) }
+      format.json { render nothing: true, status: 204 }
+    end
   end
 
   def destroy
     list = @pinned_lists.find_by(slug: list_params[:list_id])
     @pinned_lists = @pinned_lists.delete(list)
-    redirect_back(fallback_location: root_path)
+
+    respond_to do |format|
+      format.html { redirect_back(fallback_location: root_path) }
+      format.json { render nothing: true, status: 204 }
+    end
   end
 
   private
