@@ -80,7 +80,7 @@ Vue.component('toggle-vote', {
         vote: true,
         active: this.liked
       }
-      classes[this.votableClass] = true
+      classes[this.votableClass+'-vote'] = true
       return classes
     }
   }

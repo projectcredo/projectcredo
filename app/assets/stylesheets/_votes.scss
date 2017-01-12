@@ -1,4 +1,4 @@
-button.comment.vote {
+button.comment-vote {
   @extend .btn, .btn-link, .btn-xs;
   color: $gray-light;
 
@@ -8,11 +8,11 @@ button.comment.vote {
   }
 }
 
-button.comment.vote.active {
+button.comment-vote.active {
   color: $link-color;
 }
 
-.reference.vote {
+.reference-vote {
   &:before  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
@@ -21,7 +21,7 @@ button.comment.vote.active {
   @extend .btn, .btn-default, .btn-sm;
 }
 
-.list.vote {
+.list-vote {
   &:before  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
