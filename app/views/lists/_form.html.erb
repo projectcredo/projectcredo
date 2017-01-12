@@ -91,8 +91,15 @@
       <div class="form-group">
         <%= f.label :members, 'Add a contributor', class: "col-md-2 control-label"  %>
         <div class="col-md-10">
-          <select name="list[members]" id="list_members" class="form-control" v-bind:disabled="selectDisabled">
-            <option value="">None</option>
+          <select
+            name="list[members]"
+            id="list_members"
+            class="form-control"
+            v-bind:disabled="selectDisabled"
+            v-model="selected"
+            v-on:click="addMember()"
+          >
+            <option value=""><i>Users</i></option>
             <option
               v-for="nonMember in nonMembers"
               v-bind:value="nonMember"
@@ -121,14 +128,22 @@
     var editList = new Vue({
       el: '#list-edit',
       data: {
+        selected: '',
         owner: '<%= list.owner.username %>',
         selectDisabled:
           <%= if list.persisted? then !current_user.can_moderate?(list) else false end %>,
         nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@list.owner.username]) %>,
         members: <%= raw @list.members.map(&:username) %>
       },
-      method: {
-
+      methods: {
+        addMember() {
+          if(this.selected != '') {
+            this.members.push(this.selected);
+            var index = this.nonMembers.indexOf(this.selected);
+            this.nonMembers.splice(index,1);
+            this.selected = ''
+          }
+        }
       }
     })
   </script>
