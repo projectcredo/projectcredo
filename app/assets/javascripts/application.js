@@ -54,12 +54,12 @@ debounce = function(func, wait, immediate) {
 Vue.component('toggle-pin', {
   props: ['pinned', 'listSlug'],
   template: `
-    <a :data-method="pinned ? 'delete' : 'post'" :href="votePath" rel="nofollow">
+    <a :data-method="pinned ? 'delete' : 'post'" :href="pinPath" rel="nofollow">
       <button name="button" type="submit" class="btn btn-default btn-sm pull-left pin" :class="pinned ? 'active' : ''">{{ pinned ? 'Unpin' : 'Pin' }}</button>
     </a>
   `,
   computed: {
-    votePath: function() {
+    pinPath: function() {
       return '/lists/' + this.listSlug + '/pin'
     }
   }
