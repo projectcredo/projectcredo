@@ -11,7 +11,14 @@
 
 <div class="row paper-show">
   <% if not show_comments %>
-    <div class="col-md-1" id="reference-vote-<%=reference.id%>"><%= render 'votes/toggle_like', votable: reference %></div>
+    <div class="col-md-1" id="reference-vote-<%=reference.id%>">
+      <toggle-vote
+        :liked="<%= user_signed_in? && current_user.voted_for?(reference) %>"
+        vote-path="<%= reference_vote_path(reference) %>"
+        votable-class="reference"
+        vote-count="<%= reference.get_likes.size.to_s %>"
+      ></toggle-vote>
+    </div>
   <% end %>
   <div class="col-md-<%= show_comments ? 12 : 11 %>">
     <% if show_comments %>

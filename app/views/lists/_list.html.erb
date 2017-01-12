@@ -6,7 +6,12 @@
           <div class="col-md-12">
             <toggle-pin :pinned="<%= current_user.homepage.lists.include?(list) %>" list-slug="<%= list.slug %>"></toggle-pin>
             <span id="list-vote-<%= list.id %>">
-              <%= render 'votes/toggle_like', votable: list %>
+              <toggle-vote
+                :liked="<%= current_user.voted_for?(list) %>"
+                vote-path="<%= list_vote_path(list) %>"
+                votable-class="list"
+                vote-count="<%= list.get_likes.size.to_s %>"
+              ></toggle-vote>
             </span>
             <% if current_user.can_edit? list %>
               <small class="pull-right">
