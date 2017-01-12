@@ -1,23 +1,19 @@
 module Arxiv
-  class Resource
+  class Resource < Arxiv::Manuscript
     # defines the respresentation of a single Arxiv paper
 
     attr_accessor :id, :response, :paper_attributes
 
     def initialize id
       self.id = id.to_s
+      self.response = Arxiv::Http.get_response(id)
 
       # if id not found Arxiv::Error::ManuscriptNotFound is thrown
       # if id is malformed Arxiv::Error::MalformedId is thrown
       # obvious comment is obvious, obvious error name is obvious
-      begin
-        self.response = Arxiv.get(id)
-      rescue Arxiv::Error::ManuscriptNotFound => not_found_error
-        # do nothing
-        puts 'ManuscriptNotFound'
-      rescue Arxiv::Error::MalformedId => bad_id_error
-        # do nothing
-        puts 'MalformedId'
+      title_exists = response.at('//title')
+      if title_exists
+        self.paper_attributes = map_attributes(mapper, response.remove_namespaces!)
       end
     end
 
@@ -28,6 +24,12 @@ module Arxiv
         memo
       end
     end
+
+    # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
+    # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
+
+    # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
+    # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
 
     def mapper
       {
