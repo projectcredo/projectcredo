@@ -65,6 +65,27 @@ Vue.component('toggle-pin', {
   }
 })
 
+Vue.component('toggle-vote', {
+  props: ['liked', 'votePath', 'votableClass', 'voteCount'],
+  template: `
+    <a data-remote="true" :data-method="liked ? 'delete' : 'post'" :href="votePath" rel="nofollow">
+      <button name="button" type="submit" :class="computedClasses">
+        {{ voteCount }}
+      </button>
+    </a>
+  `,
+  computed: {
+    computedClasses() {
+      var classes = {
+        vote: true,
+        active: this.liked
+      }
+      classes[this.votableClass] = true
+      return classes
+    }
+  }
+})
+
 var searchLists = new Vue({
   data: {
     unpinnedLists: [],
