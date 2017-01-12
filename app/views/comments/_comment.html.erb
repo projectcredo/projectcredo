@@ -16,7 +16,7 @@
     <li id="comment-vote-<%= comment.id %>">
       <toggle-vote
         :liked="<%= current_user.voted_for?(comment) %>"
-        vote-path="<%= comment_vote_url(comment) %>"
+        vote-url="<%= comment_vote_url(comment) %>"
         votable-class="comment"
         vote-count="<%= comment.get_likes.size.to_s %>"
       ></toggle-vote>
