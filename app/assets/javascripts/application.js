@@ -123,7 +123,7 @@ var ToggleVote = {
   }
 }
 
-var searchLists = new Vue({
+var searchLists = {
   data: {
     unpinnedLists: [],
     pinnedLists: [],
@@ -185,13 +185,9 @@ var searchLists = new Vue({
       this.query = result
       this.results = []
     }
-  }
-})
-
-var credo = new Vue({
+  },
   components: {
     'toggle-vote': ToggleVote,
     'toggle-pin': TogglePin
   }
-})
-
+}
