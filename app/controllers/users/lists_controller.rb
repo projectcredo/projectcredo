@@ -21,12 +21,20 @@ class Users::ListsController < ApplicationController
   end
 
   def update
-    member = User.find_by username: params[:list].delete(:members)
-    params[:list].delete(:participants) unless current_user == @list.owner
-
-    if member && current_user.can_moderate?(@list)
-      @list.list_memberships.build(user: member, role: :contributor)
+    new_member_list = params[:list][:members].split(",")
+    membership_builds = []
+    if current_user.can_moderate?(@list)
+      new_member_list.each do |m|
+        user = User.find_by username: m
+        membership_builds << ListMembership.new(user: user, role: :contributor)
+      end
+      membership_builds.select {|u| u.user == @list.owner}.first.role = :owner
+      @list.list_memberships.replace(membership_builds)
     end
+
+
+    params[:list].delete(:members)
+    params[:list].delete(:participants) unless current_user == @list.owner
 
     respond_to do |format|
       if @list.update(list_params)

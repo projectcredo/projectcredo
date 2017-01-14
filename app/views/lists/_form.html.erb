@@ -69,20 +69,16 @@
           <label class="col-md-2 control-label">Current contributors</label>
           <div class="col-md-10">
             <% members = list.members.where.not(id: list.owner.id) %>
-            <% if members.any? %>
-              <% members.each do |member| %>
-                <div class="form-control contributor-list">
-                  <%= link_to member.username, user_lists_path(member) %>
-                  <% if current_user_can_moderate?(list) || member == current_user %>
-                    <%= link_to('Remove',
-                          list_member_path(list.id, member.id),
-                          class: "remove-member text-danger pull-right",
-                          method: :delete) %>
-                  <% end %>
-                </div>
-              <% end %>
-            <% else %>
-              <div class="form-control">None</div>
+            <% members.each do |member| %>
+              <div class="form-control contributor-list">
+                <%= link_to member.username, user_lists_path(member) %>
+                <% if current_user_can_moderate?(list) || member == current_user %>
+                  <%= link_to('Remove',
+                        list_member_path(list.id, member.id),
+                        class: "remove-member text-danger pull-right",
+                        method: :delete) %>
+                <% end %>
+              </div>
             <% end %>
           </div>
         </div>
@@ -90,10 +86,9 @@
 
       <div class="form-group">
         <%= f.label :members, 'Add a contributor', class: "col-md-2 control-label"  %>
+        <input name="list[members]" id="list_members" v-bind:value="members"></input>
         <div class="col-md-10">
           <select
-            name="list[members]"
-            id="list_members"
             class="form-control"
             v-bind:disabled="selectDisabled"
             v-model="selected"
