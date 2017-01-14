@@ -69,8 +69,6 @@
         <% end %>
       </div>
     `
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @unpinned_lists) %>
-    searchLists.pinnedLists = <%= raw render('lists/lists.json', lists: @pinned_lists) %>
     searchLists = new Vue(searchLists)
     searchLists.$mount('#search-lists')
   </script>

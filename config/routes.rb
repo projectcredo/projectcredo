@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resources :links, only: :destroy, shallow: true
   end
 
-  resources :lists, only: [:new, :create] do
+  resources :lists, only: [:index, :new, :create] do
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
     resource :pin, controller: 'lists/pins', only: [:create, :destroy]
     resources :members, only: :destroy, controller: 'lists/members'

@@ -43,7 +43,7 @@
         </div>
       </div>
     `
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @lists) %>
+    searchLists = new Vue(searchLists)
     searchLists.$mount('#search-lists')
   </script>
 <% end %>

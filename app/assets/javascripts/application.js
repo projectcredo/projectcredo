@@ -125,16 +125,12 @@ var ToggleVote = {
 
 var searchLists = {
   data: {
-    unpinnedLists: [],
-    pinnedLists: [],
+    allLists: [],
     query: '',
     results: [],
     placeholder: "Search for a list..."
   },
   computed: {
-    allLists: function () {
-      return this.unpinnedLists.concat(this.pinnedLists)
-    },
     allListsById: function() {
       return this.allLists.reduce(function(memo, list) {
         var listId = list.id
@@ -157,6 +153,16 @@ var searchLists = {
       return this.tags.filter(function(tag) {
         return tag.toLowerCase().includes(searchLists.matchQuery)
       }).slice(0,10)
+    },
+    pinnedLists: function() {
+      return this.allLists.filter(function(list) {
+        return list.pinned
+      })
+    },
+    unpinnedLists: function() {
+      return this.allLists.filter(function(list) {
+        return !list.pinned
+      })
     }
   },
   methods: {
@@ -185,6 +191,13 @@ var searchLists = {
       this.query = result
       this.results = []
     }
+  },
+  mounted: function() {
+    var searchLists = this
+    $.get('/lists.json')
+      .done(function(data) {
+        searchLists.allLists = data
+      })
   },
   components: {
     'toggle-vote': ToggleVote,
