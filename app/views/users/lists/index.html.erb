@@ -8,54 +8,6 @@
 
 <% content_for(:page_app) do %>
   <script>
-    searchLists.template = `
-      <div>
-        <div class="row">
-          <div class="form-group col-md-3">
-              <input
-                class="form-control query-input"
-                v-model="query"
-                v-bind:placeholder="placeholder"
-                v-on:keyup="getResults"
-                v-on:keyup.esc="clearResults"
-              >
-
-              <ul class="list-group autocomplete" v-if="this.results.length">
-                <li
-                  class="list-group-item"
-                  v-for="result in results"
-                  v-html="result"
-                  v-on:click="selectResult(result)"
-                >
-                </li>
-              </ul>
-
-          </div>
-        </div>
-
-        <h1>
-          <span><%= "#{@user.username}'s" %> Lists</span>
-          <small>sorted by popularity</small>
-        </h1>
-
-        <div class="cards row">
-          <single-list v-for="list in allLists" v-if="showList(list)"
-            :name="list.name"
-            :id="list.id"
-            :pinned="list.pinned"
-            :slug="list.slug"
-            :voted="list.voted"
-            :votes="list.votes"
-            :editable="list.editable"
-            :owner="list.owner"
-            :tagList="list.tagList"
-            :description="list.description"
-            :updatedAt="list.updatedAt"
-            :commentsCount="list.commentsCount"
-          ></single-list>
-        </div>
-      </div>
-    `
     searchLists = new Vue(searchLists)
     searchLists.$mount('#search-lists')
   </script>
