@@ -69,7 +69,10 @@ var TogglePin = {
         url: toggler.pinPath,
         dataType: 'json'
       })
-        .done(function() {toggler.pinned = !toggler.pinned})
+        .done(function() {
+          toggler.pinned = !toggler.pinned
+          toggler.$emit('recalculate-pins')
+        })
     }
   },
   computed: {
@@ -131,7 +134,7 @@ var SingleList = {
         <div class="panel-body">
           <div class="row">
             <div class="col-md-12">
-              <toggle-pin :initial-pin="pinned" :list-slug="slug"></toggle-pin>
+              <toggle-pin :initial-pin="pinned" :list-slug="slug" @recalculate-pins="recalculatePins"></toggle-pin>
               <span :id="'list-vote-' + id">
                 <toggle-vote
                   :initial-like="voted"
@@ -165,6 +168,11 @@ var SingleList = {
   components: {
     'toggle-vote': ToggleVote,
     'toggle-pin': TogglePin
+  },
+  methods: {
+    recalculatePins: function() {
+      this.$emit('recalculate-pins', this)
+    }
   }
 }
 
@@ -226,6 +234,7 @@ var searchLists = {
             :description="list.description"
             :updatedAt="list.updatedAt"
             :commentsCount="list.commentsCount"
+            @recalculate-pins="recalculatePins"
           ></single-list>
         </div>
 
@@ -257,6 +266,7 @@ var searchLists = {
             :description="list.description"
             :updatedAt="list.updatedAt"
             :commentsCount="list.commentsCount"
+            @recalculate-pins="recalculatePins"
           ></single-list>
         </div>
       </div>
@@ -321,6 +331,13 @@ var searchLists = {
     selectResult: function(result) {
       this.query = result
       this.results = []
+    },
+    recalculatePins: function(toggledList) {
+      this.allLists.forEach(function(list) {
+        if (list.id == toggledList.id) {
+          list.pinned = !list.pinned
+        }
+      })
     }
   },
   mounted: function() {
