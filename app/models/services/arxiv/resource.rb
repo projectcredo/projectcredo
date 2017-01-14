@@ -8,12 +8,8 @@ module Arxiv
       self.id = id.to_s
       self.response = Arxiv::Http.query(id_list: id).remove_namespaces!
 
-      # if id not found Arxiv::Error::ManuscriptNotFound is thrown
-      # if id is malformed Arxiv::Error::MalformedId is thrown
-      # obvious comment is obvious, obvious error name is obvious
-      title_exists = response.xpath('//title')
-      if title_exists
-        puts title_exists
+      # check if paper exists
+      if response.at('//entry//id')
         self.paper_attributes = map_attributes(mapper, response)
       else
         puts 'Arxiv paper ' + id + ' does not exist!'
@@ -23,7 +19,8 @@ module Arxiv
     def map_attributes mapper, data
       mapper.inject({}) do |memo, tuple|
         # for every tuple in mapper do the following
-        # nil values cannot be passed to mapping, i.e. tuple[1]!
+        # mapper cannot have nil values
+        # otherwise it'll be passed to mapping, i.e. tuple[1]!
         attribute, mapping = tuple[0], tuple[1]
         memo[attribute] = mapping.call(data)
         memo
@@ -33,15 +30,25 @@ module Arxiv
     def mapper
       {
         import_source:      lambda { |data| 'arxiv' },
-        title:              lambda { |data| data.xpath('//title') },
+        title:              lambda { |data| data.xpath('//entry//title') },
         publication:        lambda { |data| nil },
         doi:                lambda { |data| nil },
-        arxiv_id:           lambda { |data| data.xpath('arxiv_id') },
-        abstract:           lambda { |data| data.xpath('abstract') },
-        abstract_editable:  lambda { |data| data.xpath('abstract') },
-        published_at:       lambda { |data| data.xpath('created_at') },
+        arxiv_id:           lambda do |data|    
+          # regex taken from Arxiv gem
+
+          # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
+          # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
+
+          # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
+          # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
+
+          data.xpath('//entry//id')
+        end,
+        abstract:           lambda { |data| data.xpath('//entry//summary') },
+        abstract_editable:  lambda { |data| data.xpath('//entry//summary') },
+        published_at:       lambda { |data| data.xpath('//entry//published') },
         # separate into familyname, givenname
-        authors_attributes: lambda { |data| data.xpath('authors') }
+        authors_attributes: lambda { |data| data.xpath('//entry//author') }
       }
     end
   end
