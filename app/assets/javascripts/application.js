@@ -221,7 +221,7 @@ var searchLists = {
               <h2>Create a new list</h2>
             </a>
           </div>
-          <single-list v-for="list in pinnedLists" v-if="showList(list)"
+          <single-list v-for="list in pinnedLists" :key="list.id" v-if="showList(list)"
             :name="list.name"
             :id="list.id"
             :pinned="list.pinned"
@@ -253,7 +253,7 @@ var searchLists = {
               <h2>Create a new list</h2>
             </a>
           </div>
-          <single-list v-for="list in unpinnedLists" v-if="showList(list)"
+          <single-list v-for="list in unpinnedLists" :key="list.id" v-if="showList(list)"
             :name="list.name"
             :id="list.id"
             :pinned="list.pinned"
