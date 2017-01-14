@@ -123,6 +123,51 @@ var ToggleVote = {
   }
 }
 
+var SingleList = {
+  props: ['id', 'pinned', 'slug', 'voted', 'votes', 'editable', 'owner', 'tagList', 'description', 'updatedAt', 'commentsCount', 'name'],
+  template: `
+    <div class="col-md-3 list-card">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-12">
+              <toggle-pin :initial-pin="pinned" list-slug="slug"></toggle-pin>
+              <span :id="'list-vote-' + id">
+                <toggle-vote
+                  :initial-like="voted"
+                  :vote-url="'lists/' + slug + '/vote'"
+                  votable-class="list"
+                  :initial-vote-count="votes"
+                ></toggle-vote>
+              </span>
+              <small class="pull-right" v-if="editable">
+                <a :href="owner + '/' + slug + '/edit'">Edit</a>
+              </small>
+            </div>
+          </div>
+          <h2>
+            <a :href="owner + '/' + slug + '/'">{{ name }}</a> <br>
+            <small> by <a :href="owner + '/'">{{ owner }}</a></small>
+          </h2>
+
+          <a v-for="tag in tagList" class="btn btn-default btn-xs">{{ tag }}</a>
+
+          <p>{{ description }}</p>
+
+          <small><i>
+            Last Update: {{ updatedAt.readable }}
+            <span class="pull-right">{{ commentsCount }} comments</span>
+          </i></small>
+        </div>
+      </div>
+    </div>
+  `,
+  components: {
+    'toggle-vote': ToggleVote,
+    'toggle-pin': TogglePin
+  }
+}
+
 var searchLists = {
   data: {
     allLists: [],
@@ -141,7 +186,7 @@ var searchLists = {
     },
     tags: function() {
       var allTags = this.allLists.reduce(function(memo, list) {
-        return memo.concat(list.tag_list)
+        return memo.concat(list.tagList)
       }, [])
 
       return Array.from(new Set(allTags))
@@ -166,11 +211,10 @@ var searchLists = {
     }
   },
   methods: {
-    showList: function(id) {
+    showList: function(list) {
       if (this.query === '') {return true}
 
-      var list = this.allListsById[id]
-      var searchablAttrs = list.tag_list.concat(list.name, list.description, list.owner)
+      var searchablAttrs = list.tagList.concat(list.name, list.description, list.owner)
       // Only unique values
       searchablAttrs = Array.from(new Set(searchablAttrs))
 
@@ -200,7 +244,6 @@ var searchLists = {
       })
   },
   components: {
-    'toggle-vote': ToggleVote,
-    'toggle-pin': TogglePin
+    'single-list': SingleList
   }
 }
