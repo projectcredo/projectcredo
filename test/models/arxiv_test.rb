@@ -1,8 +1,14 @@
 require 'test_helper'
 
 class ArxivTest < ActiveSupport::TestCase
-  # testing Arxiv gem integration
+  # testing new Arxiv API wrapper
   
+  test "arxiv get response" do
+    assert_nothing_raised{
+      assert_not_nil Arxiv::Http.query '1110.4573'
+    }
+  end
+
   test "arxiv id not found error handling" do
     # no errors should be thrown
     assert_nothing_raised {
