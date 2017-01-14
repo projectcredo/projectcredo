@@ -39,7 +39,20 @@
         </h1>
 
         <div class="cards row">
-          <%= render partial: 'lists/list', collection: @lists %>
+          <single-list v-for="list in allLists" v-if="showList(list)"
+            :name="list.name"
+            :id="list.id"
+            :pinned="list.pinned"
+            :slug="list.slug"
+            :voted="list.voted"
+            :votes="list.votes"
+            :editable="list.editable"
+            :owner="list.owner"
+            :tagList="list.tagList"
+            :description="list.description"
+            :updatedAt="list.updatedAt"
+            :commentsCount="list.commentsCount"
+          ></single-list>
         </div>
       </div>
     `
