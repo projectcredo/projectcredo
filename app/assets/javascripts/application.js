@@ -131,7 +131,7 @@ var SingleList = {
         <div class="panel-body">
           <div class="row">
             <div class="col-md-12">
-              <toggle-pin :initial-pin="pinned" list-slug="slug"></toggle-pin>
+              <toggle-pin :initial-pin="pinned" :list-slug="slug"></toggle-pin>
               <span :id="'list-vote-' + id">
                 <toggle-vote
                   :initial-like="voted"
