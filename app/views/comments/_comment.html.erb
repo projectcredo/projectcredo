@@ -15,7 +15,7 @@
   <ul>
     <li id="comment-vote-<%= comment.id %>">
       <toggle-vote
-        :initial-like="<%= current_user.voted_for?(comment) %>"
+        :initial-like="<%= user_signed_in? && current_user.voted_for?(comment) %>"
         vote-url="<%= comment_vote_url(comment) %>"
         votable-class="comment"
         initial-vote-count="<%= comment.get_likes.size.to_s %>"
