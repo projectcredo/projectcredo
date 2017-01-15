@@ -67,19 +67,20 @@
 
         <div class="form-group">
           <label class="col-md-2 control-label">Current contributors</label>
-          <div class="col-md-10">
+          <div class="col-md-3">
             <% members = list.members.where.not(id: list.owner.id) %>
-            <% members.each do |member| %>
-              <div class="form-control contributor-list">
-                <%= link_to member.username, user_lists_path(member) %>
-                <% if current_user_can_moderate?(list) || member == current_user %>
-                  <%= link_to('Remove',
-                        list_member_path(list.id, member.id),
-                        class: "remove-member text-danger pull-right",
-                        method: :delete) %>
-                <% end %>
+              <div
+                class="form-control contributor-list"
+                v-for="member in members"
+              >
+                <a href="/">{{ member }}</a>
+                <button
+                  class="btn btn-xs btn-default pull-right"
+                  type="button"
+                  v-if="currentUserCanModerate"
+                  v-on:click="removeMember(member)"
+                >X</button>
               </div>
-            <% end %>
           </div>
         </div>
       <% end %>
@@ -128,7 +129,8 @@
         selectDisabled:
           <%= if list.persisted? then !current_user.can_moderate?(list) else false end %>,
         nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@list.owner.username]) %>,
-        members: <%= raw @list.members.map(&:username) %>
+        members: <%= raw @list.members.map(&:username) %>,
+        currentUserCanModerate: <%= current_user_can_moderate?(list) || list.members.include?(current_user) %>
       },
       methods: {
         addMember() {
@@ -138,6 +140,11 @@
             this.nonMembers.splice(index,1);
             this.selected = ''
           }
+        },
+        removeMember(member) {
+          this.nonMembers.push(member);
+          var index = this.members.indexOf(member);
+          this.members.splice(index,1);
         }
       }
     })
