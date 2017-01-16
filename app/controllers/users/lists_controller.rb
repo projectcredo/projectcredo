@@ -20,6 +20,7 @@ class Users::ListsController < ApplicationController
   def edit
     @owner = @list.owner.username
     @members = @list.members.map(&:username)
+    @current_user_can_moderate = current_user.can_moderate?(@list)
   end
 
   def update

@@ -108,7 +108,7 @@
     Vue.component('member', {
       computed: {
         canRemove: function() {
-          return '<%= current_user.username %>' == this.username
+          return '<%= current_user.username %>' == this.username || <%= @current_user_can_moderate %>
         }
       },
       template: `
@@ -132,8 +132,7 @@
         listParticipants: "<%= list.participants %>",
         owner: '<%= @owner %>',
         currentUser: '<%= current_user.username %>',
-        canModerate:
-          <%= if list.persisted? then current_user.can_moderate?(list) else true end %>,
+        canModerate: <%= @current_user_can_moderate %>,
         nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@owner]) %>,
         members: <%= raw @members  %>
       },

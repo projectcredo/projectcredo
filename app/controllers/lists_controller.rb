@@ -18,6 +18,7 @@ class ListsController < ApplicationController
     @list = List.new
     @owner = current_user.username
     @members = [@owner]
+    @current_user_can_moderate = true
   end
 
   # POST /lists
