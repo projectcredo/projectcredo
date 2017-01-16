@@ -18,6 +18,8 @@ class Users::ListsController < ApplicationController
   end
 
   def edit
+    @owner = @list.owner.username
+    @members = @list.members.map(&:username)
   end
 
   def update

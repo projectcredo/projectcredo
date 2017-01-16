@@ -115,11 +115,11 @@
       data: {
         selected: '',
         listParticipants: "<%= list.participants %>",
-        owner: '<%= list.owner.username %>',
+        owner: '<%= @owner %>',
         selectDisabled:
           <%= if list.persisted? then !current_user.can_moderate?(list) else false end %>,
-        nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@list.owner.username]) %>,
-        members: <%= raw @list.members.map(&:username) %>,
+        nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@owner]) %>,
+        members: <%= raw @members  %>,
         currentUserCanModerate: <%= current_user_can_moderate?(list) || list.members.include?(current_user) %>
       },
       computed: {

@@ -16,18 +16,24 @@ class ListsController < ApplicationController
   # GET /lists/new
   def new
     @list = List.new
+    @owner = current_user.username
+    @members = [@owner]
   end
 
   # POST /lists
   # POST /lists.json
   def create
+    new_member_list = params[:list].delete(:members).split(",") - [current_user.username]
     @list = current_user.lists.build(list_params)
-    member = User.find_by username: params[:list].delete(:members)
-    @list.list_memberships.build(user: member, role: :contributor) if member
 
     respond_to do |format|
       if @list.save
         current_user.homepage.lists << @list
+        new_member_list.each do |m|
+          user = User.find_by username: m
+          @list.list_memberships.create(user: user, role: :contributor)
+        end
+
         format.html { redirect_to user_list_path(@list.owner, @list), notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
@@ -40,6 +46,6 @@ class ListsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :participants)
+      params.require(:list).permit(:name, :description, :tag_list, :members, :participants)
     end
 end
