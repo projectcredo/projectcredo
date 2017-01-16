@@ -14,6 +14,7 @@
         </ul>
       </div>
     <% end %>
+    <input name="list[members]" id="list_members" v-bind:value="members" type="hidden"></input>
     <div class="form-horizontal">
       <div class="form-group">
         <%= f.label :name, class: "col-md-2 control-label" %>
@@ -44,7 +45,7 @@
           <%= f.label :participants, 'List participants'%>
           <p><small>(who can add to this list?)</small></p>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-3">
           <%= f.select :participants,
             options_for_select(
               [%w{Public public},%w{Contributors contributors}],
@@ -53,49 +54,36 @@
             {},
             {class: "form-control", disabled: list.persisted? && !(current_user == list.owner)} %>
         </div>
-      </div>
+        <label class="col-md-2 control-label">Current contributors</label>
+        <div class="col-md-3">
+          <div class="form-control contributor-list">
+            <a href="/member">{{ owner }}</a>
+            <b>(owner)</b>
+          </div>
 
-      <% if list.persisted? %>
-        <div class="form-group">
-          <label class="col-md-2 control-label">List owner</label>
-          <div class="col-md-10">
-            <div class="form-control contributor-list">
-              <%= link_to list.owner.username, user_lists_path(list.owner) %>
-            </div>
+          <div
+            class="form-control contributor-list"
+            v-for="member in members"
+            v-if="member != owner"
+          >
+            <a href="/member">{{ member }}</a>
+            <span
+              class="btn-icon remove-button pull-right"
+              type="button"
+              v-if="currentUserCanModerate"
+              v-on:click="removeMember(member)"
+            ></span>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="col-md-2 control-label">Current contributors</label>
-          <div class="col-md-3">
-            <% members = list.members.where.not(id: list.owner.id) %>
-              <div
-                class="form-control contributor-list"
-                v-for="member in members"
-              >
-                <a href="/">{{ member }}</a>
-                <button
-                  class="btn btn-xs btn-default pull-right"
-                  type="button"
-                  v-if="currentUserCanModerate"
-                  v-on:click="removeMember(member)"
-                >X</button>
-              </div>
-          </div>
-        </div>
-      <% end %>
-
-      <div class="form-group">
-        <%= f.label :members, 'Add a contributor', class: "col-md-2 control-label"  %>
-        <input name="list[members]" id="list_members" v-bind:value="members"></input>
-        <div class="col-md-10">
+        <div class="col-md-2">
           <select
             class="form-control"
             v-bind:disabled="selectDisabled"
             v-model="selected"
             v-on:click="addMember()"
           >
-            <option value=""><i>Users</i></option>
+            <option value="">Add a Contributor</option>
             <option
               v-for="nonMember in nonMembers"
               v-bind:value="nonMember"
