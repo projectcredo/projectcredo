@@ -57,30 +57,24 @@
         <label class="col-md-2 control-label">Current contributors</label>
         <div class="col-md-3">
           <div class="form-control contributor-list">
-            <a href="/member">{{ owner }}</a>
+            <a v-bind:href="'/'+owner" >{{ owner }}</a>
             <b>(owner)</b>
           </div>
 
-          <div
+          <member
             class="form-control contributor-list"
             v-for="member in members"
             v-if="member != owner"
             v-bind:disabled="isPublic"
+            v-bind:username="member"
           >
-            <a href="/member">{{ member }}</a>
-            <span
-              class="btn-icon remove-button pull-right"
-              type="button"
-              v-if="currentUserCanModerate && ! isPublic"
-              v-on:click="removeMember(member)"
-            ></span>
-          </div>
+          </member>
         </div>
 
         <div class="col-md-2">
           <select
             class="form-control"
-            v-bind:disabled="selectDisabled || isPublic"
+            v-bind:disabled="! canModerate || isPublic"
             v-model="selected"
             v-on:click="addMember()"
           >
@@ -110,21 +104,37 @@
 
 <% content_for(:page_app) do %>
   <script>
+    Vue.component('member', {
+      template: '\
+        <div>\
+          <a href="/username">{{ username }}</a>\
+          <span\
+            class="btn-icon remove-button pull-right"\
+            type="button"\
+          ></span>\
+        </div>\
+      ',
+      props: ['username']
+    })
+
     var editList = new Vue({
       el: '#list-edit',
       data: {
         selected: '',
         listParticipants: "<%= list.participants %>",
         owner: '<%= @owner %>',
-        selectDisabled:
-          <%= if list.persisted? then !current_user.can_moderate?(list) else false end %>,
+        currentUser: '<%= current_user.username %>',
+        canModerate:
+          <%= if list.persisted? then current_user.can_moderate?(list) else true end %>,
         nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@owner]) %>,
-        members: <%= raw @members  %>,
-        currentUserCanModerate: <%= current_user_can_moderate?(list) || list.members.include?(current_user) %>
+        members: <%= raw @members  %>
       },
       computed: {
         isPublic: function() {
           return this.listParticipants == "public"
+        },
+        isCurrentUser: function(member) {
+          return member == this.currentUser
         }
       },
       methods: {
