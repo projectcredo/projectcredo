@@ -11,10 +11,6 @@ class Users::ListsController < ApplicationController
     else
       @lists = @user.lists.publicly_visible
     end
-
-    searchable_tags = @lists.map(&:tag_list).flatten.uniq
-    titleized_tags = searchable_tags.map!(&:titleize).sort!
-    @tags = titleized_tags.to_json
   end
 
   def show

@@ -66,45 +66,8 @@
 
 <% content_for(:page_app) do %>
   <script>
-    var searchLists = new Vue({
-      el: '#search-lists',
-      data: {
-        selectedTag: 'All Tags',
-        query: '',
-        tags: <%=  raw @tags  %>,
-        results: [],
-        placeholder: "Search for a list..."
-      },
-      computed: {
-        matchQuery() {
-          return this.query.toLowerCase()
-        },
-        matchingTags() {
-          return this.tags.filter(
-                    tag => tag.toLowerCase().includes(this.matchQuery)
-                  ).slice(0,10)
-        }
-      },
-      methods: {
-        showQueriedTag: function(tags) {
-          return this.query === '' || tags.toString().includes(this.matchQuery)
-        },
-        getResults: function() {
-          if (this.query === '') {
-            this.results = []
-          } else {
-            this.results = this.matchingTags
-          }
-        },
-        clearResults: function() {
-          this.query = ''
-          this.results = []
-        },
-        selectResult: function(result) {
-          this.query = result
-          this.results = []
-        }
-      }
-    });
+    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @unpinned_lists) %>
+    searchLists.pinnedLists = <%= raw render('lists/lists.json', lists: @pinned_lists) %>
+    searchLists.$mount('#search-lists')
   </script>
 <% end %>
