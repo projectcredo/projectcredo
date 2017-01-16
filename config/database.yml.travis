@@ -1,9 +1,0 @@
-default: &default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  timeout: 5000
-
-test:
-  <<: *default
-  database: travis_ci_test
