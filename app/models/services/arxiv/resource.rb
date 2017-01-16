@@ -1,8 +1,16 @@
-module Arxiv
+class Arxiv
   class Resource
     # defines the respresentation of a single Arxiv paper
 
     attr_accessor :id, :response, :paper_attributes
+
+    # regex taken from Arxiv gem
+
+    # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
+    # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
+
+    # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
+    # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
 
     def initialize id
       self.id = id.to_s
@@ -33,23 +41,22 @@ module Arxiv
         title:              lambda { |data| data.xpath('//entry//title') },
         publication:        lambda { |data| nil },
         doi:                lambda { |data| nil },
-        arxiv_id:           lambda do |data|    
-          # regex taken from Arxiv gem
-
-          # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
-          # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
-
-          # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
-          # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
-
-          data.xpath('//entry//id')
-        end,
+        arxiv_id:           lambda { |data| data.xpath('//entry//id') },
         abstract:           lambda { |data| data.xpath('//entry//summary') },
         abstract_editable:  lambda { |data| data.xpath('//entry//summary') },
         published_at:       lambda { |data| data.xpath('//entry//published') },
         # separate into familyname, givenname
-        authors_attributes: lambda { |data| data.xpath('//entry//author') }
+        # authors_attributes: lambda { |data| data.xpath('//entry//author') }
+        authors_attributes: lambda do |data|
+          authors = data.xpath('//author//name')
+          authors.map do |author| {
+            given_name: author.text.match(/^.* /).to_s.strip, 
+            family_name: author.text.match(/ [[:alpha:]]*$/).to_s.strip
+            }
+          end
+        end
       }
     end
+
   end
 end

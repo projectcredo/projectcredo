@@ -1,4 +1,4 @@
-module Arxiv
+class Arxiv
   class Http
     # API http response object wrapper
 

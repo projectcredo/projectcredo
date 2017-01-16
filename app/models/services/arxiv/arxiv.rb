@@ -1,4 +1,4 @@
-module Arxiv
+class Arxiv
 # wrapper for Arxiv API
 
   attr_accessor :resource
@@ -7,7 +7,7 @@ module Arxiv
     self.resource = Arxiv::Resource.new locator_id
   end
 
-  def self.get_uid_from_doi
+  def self.get_arxiv_from_doi
     # stand in
   end
 
