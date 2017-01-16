@@ -42,8 +42,8 @@
 
       <div class="form-group">
         <div class="col-md-2 control-label">
-          <%= f.label :participants, 'List participants'%>
-          <p><small>(who can add to this list?)</small></p>
+          <%= f.label :participants, 'List Access'%>
+          <p><small>(who can add papers?)</small></p>
         </div>
         <div class="col-md-3">
           <%= f.select :participants,
@@ -53,6 +53,7 @@
             ),
             {},
             {class: "form-control", disabled: list.persisted? && !(current_user == list.owner), "v-model": "listParticipants"} %>
+            <small>{{ participantsDefinition }}</small>
         </div>
         <label class="col-md-2 control-label">Current contributors</label>
         <div class="col-md-3">
@@ -139,6 +140,13 @@
       computed: {
         isPublic: function() {
           return this.listParticipants == "public"
+        },
+        participantsDefinition: function() {
+          if (this.isPublic) {
+            return 'Public(🔓) lists allow anyone who views this list to add and remove their own references.'
+          } else if (this.listParticipants == 'contributors') {
+            return 'Contributors(🔒) lists only allow contributors to edit or add references to this list.'
+          }
         }
       },
       methods: {
