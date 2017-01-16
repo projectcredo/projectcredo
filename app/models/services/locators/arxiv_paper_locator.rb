@@ -16,24 +16,29 @@ class ArxivPaperLocator
     if paper_attributes
       response = arxiv.resource.response
       paper = Paper.create paper_attributes
-
+      paper.api_import_responses.create(xml: response.body, source_uri: response.uri.to_s)
       return nil if paper.errors.any?
-
-      # parse api import response
-      # paper.api_import_responses.create(json: JSON.parse(response.body), source_uri: response.uri.to_s)
       return paper
     else
       return nil
     end
   end
 
-  # validation check are already implemented by earlier Arxiv components
-  # def valid?
-  #   # Stolen from http://blog.crossref.org/2015/08/doi-regular-expressions.html
-  #   is_doi = locator_id.match(/^10.\d{4,9}\/[^\s]+$/)
+  def valid?
 
-  #   errors << "\"#{locator_id}\" does not match DOI format. Ex: \"10.1371/journal.pone.0001897\"" unless is_doi
+    # regex taken from Arxiv gem
 
-  #   is_doi
-  # end
+    # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
+    # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
+
+    # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
+    # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
+
+    arxiv_format = !!locator_id.match(/\d{4,}\.\d{4,}(?:v\d+)?$/)
+
+    errors << "\"#{locator_id}\" does not match Arxiv ID format. Ex: \"1836.5029v2\"" unless arxiv_format
+
+    arxiv_format
+  end
+
 end

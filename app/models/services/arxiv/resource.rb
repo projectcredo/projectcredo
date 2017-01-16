@@ -4,14 +4,6 @@ class Arxiv
 
     attr_accessor :id, :response, :paper_attributes
 
-    # regex taken from Arxiv gem
-
-    # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
-    # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
-
-    # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
-    # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
-
     def initialize id
       self.id = id.to_s
       self.response = Arxiv::Http.query(id_list: id).remove_namespaces!
@@ -46,7 +38,6 @@ class Arxiv
         abstract_editable:  lambda { |data| data.xpath('//entry//summary') },
         published_at:       lambda { |data| data.xpath('//entry//published') },
         # separate into familyname, givenname
-        # authors_attributes: lambda { |data| data.xpath('//entry//author') }
         authors_attributes: lambda do |data|
           authors = data.xpath('//author//name')
           authors.map do |author| {
