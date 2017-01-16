@@ -52,7 +52,7 @@
               list.participants
             ),
             {},
-            {class: "form-control", disabled: list.persisted? && !(current_user == list.owner)} %>
+            {class: "form-control", disabled: list.persisted? && !(current_user == list.owner), "v-model": "listParticipants"} %>
         </div>
         <label class="col-md-2 control-label">Current contributors</label>
         <div class="col-md-3">
@@ -65,12 +65,13 @@
             class="form-control contributor-list"
             v-for="member in members"
             v-if="member != owner"
+            v-bind:disabled="isPublic"
           >
             <a href="/member">{{ member }}</a>
             <span
               class="btn-icon remove-button pull-right"
               type="button"
-              v-if="currentUserCanModerate"
+              v-if="currentUserCanModerate && ! isPublic"
               v-on:click="removeMember(member)"
             ></span>
           </div>
@@ -79,7 +80,7 @@
         <div class="col-md-2">
           <select
             class="form-control"
-            v-bind:disabled="selectDisabled"
+            v-bind:disabled="selectDisabled || isPublic"
             v-model="selected"
             v-on:click="addMember()"
           >
@@ -113,12 +114,18 @@
       el: '#list-edit',
       data: {
         selected: '',
+        listParticipants: "<%= list.participants %>",
         owner: '<%= list.owner.username %>',
         selectDisabled:
           <%= if list.persisted? then !current_user.can_moderate?(list) else false end %>,
         nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@list.owner.username]) %>,
         members: <%= raw @list.members.map(&:username) %>,
         currentUserCanModerate: <%= current_user_can_moderate?(list) || list.members.include?(current_user) %>
+      },
+      computed: {
+        isPublic: function() {
+          return this.listParticipants == "public"
+        }
       },
       methods: {
         addMember() {
