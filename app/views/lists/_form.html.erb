@@ -67,6 +67,7 @@
             v-if="member != owner"
             v-bind:disabled="isPublic"
             v-bind:username="member"
+            v-on:remove="removeMember(member)"
           >
           </member>
         </div>
@@ -105,15 +106,22 @@
 <% content_for(:page_app) do %>
   <script>
     Vue.component('member', {
-      template: '\
-        <div>\
-          <a href="/username">{{ username }}</a>\
-          <span\
-            class="btn-icon remove-button pull-right"\
-            type="button"\
-          ></span>\
-        </div>\
-      ',
+      computed: {
+        canRemove: function() {
+          return '<%= current_user.username %>' == this.username
+        }
+      },
+      template: `
+        <div>
+          <a href="/username">{{ username }}</a>
+          <span
+            class="btn-icon remove-button pull-right"
+            type="button"
+            v-if="canRemove"
+            v-on:click="$emit('remove')"
+          ></span>
+        </div>
+      `,
       props: ['username']
     })
 
@@ -132,9 +140,6 @@
       computed: {
         isPublic: function() {
           return this.listParticipants == "public"
-        },
-        isCurrentUser: function(member) {
-          return member == this.currentUser
         }
       },
       methods: {
