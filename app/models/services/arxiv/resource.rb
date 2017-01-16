@@ -30,13 +30,13 @@ class Arxiv
     def mapper
       {
         import_source:      lambda { |data| 'arxiv' },
-        title:              lambda { |data| data.xpath('//entry//title') },
+        title:              lambda { |data| data.xpath('//entry//title').text },
         publication:        lambda { |data| nil },
         doi:                lambda { |data| nil },
-        arxiv_id:           lambda { |data| data.xpath('//entry//id') },
-        abstract:           lambda { |data| data.xpath('//entry//summary') },
-        abstract_editable:  lambda { |data| data.xpath('//entry//summary') },
-        published_at:       lambda { |data| data.xpath('//entry//published') },
+        arxiv_id:           lambda { |data| data.xpath('//entry//id').text },
+        abstract:           lambda { |data| data.xpath('//entry//summary').text },
+        abstract_editable:  lambda { |data| data.xpath('//entry//summary').text },
+        published_at:       lambda { |data| data.xpath('//entry//published').text },
         # separate into familyname, givenname
         authors_attributes: lambda do |data|
           authors = data.xpath('//author//name')

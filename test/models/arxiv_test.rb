@@ -17,14 +17,19 @@ class ArxivTest < ActiveSupport::TestCase
 
   test 'arxiv id malformed handling' do
     # no errors should be thrown
-    test_resource = Arxiv::Resource.new '1202.08190'
-    assert_nil test_resource.paper_attributes
+    test_resource = Arxiv::Resource.new '1202.819'
+    assert test_resource.paper_attributes[:title] == 'Error'
+  end
+
+  test 'arxiv id invalid' do
+    test_paper_locator = ArxivPaperLocator.new id: '1202.819'
+    assert !test_paper_locator.valid?
   end
 
   test 'arxiv query result single entry mapping' do
-    # skeleton
     arxiv_resource = Arxiv::Resource.new '1701.00994'
-    assert arxiv_resource.paper_attributes.size == 1
+    title_obj = arxiv_resource.paper_attributes[:title]
+    assert !title_obj.respond_to?(:keys)
   end
 
   test 'arxiv author mapping' do

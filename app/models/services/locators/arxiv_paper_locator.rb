@@ -30,10 +30,7 @@ class ArxivPaperLocator
 
     # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
     # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
-
-    # LEGACY_ID_FORMAT = /^#{LEGACY_URL_FORMAT}/
-    # ID_FORMAT = /^#{CURRENT_URL_FORMAT}/
-
+    
     arxiv_format = !!locator_id.match(/\d{4,}\.\d{4,}(?:v\d+)?$/)
 
     errors << "\"#{locator_id}\" does not match Arxiv ID format. Ex: \"1836.5029v2\"" unless arxiv_format
