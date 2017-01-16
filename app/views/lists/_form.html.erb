@@ -48,7 +48,7 @@
         <div class="col-md-3">
           <%= f.select :participants,
             options_for_select(
-              [%w{Public public},%w{Contributors contributors}],
+              [%w{Public(🌎) public},%w{Contributors(🔒) contributors}],
               list.participants
             ),
             {},
@@ -143,9 +143,9 @@
         },
         participantsDefinition: function() {
           if (this.isPublic) {
-            return 'Public(🔓) lists allow anyone who views this list to add and remove their own references.'
+            return 'Anyone who views this list can add and remove their own references.  Public lists allow greatest the greatest amount of participation and collaboration.'
           } else if (this.listParticipants == 'contributors') {
-            return 'Contributors(🔒) lists only allow contributors to edit or add references to this list.'
+            return 'Only assigned contributors can edit or add references to this list.  This limits curation but gives contributors full control of referenced papers.'
           }
         }
       },
