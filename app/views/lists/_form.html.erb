@@ -39,7 +39,16 @@
           <%= f.text_field :tag_list, value: list.tag_list.join(","), class: "form-control", placeholder: 'Ex: biology, chemistry, physics' %>
         </div>
       </div>
-
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          Owner
+        </label>
+        <div class="col-md-3">
+          <div class="form-control contributor-list">
+            <a :href="'/'+owner" >{{ owner }}</a>
+          </div>
+        </div>
+      </div>
       <div class="form-group">
         <div class="col-md-2 control-label">
           <%= f.label :participants, 'List Access'%>
@@ -53,27 +62,14 @@
             ),
             {},
             {class: "form-control", ":disabled": "! canModerate", "v-model": "listParticipants"} %>
-            <small>{{ participantsDefinition }}</small>
         </div>
-        <label class="col-md-2 control-label">Current contributors</label>
-        <div class="col-md-3">
-          <div class="form-control contributor-list">
-            <a :href="'/'+owner" >{{ owner }}</a>
-            <b>(owner)</b>
-          </div>
-
-          <member
-            class="form-control contributor-list"
-            v-for="member in members"
-            v-if="member != owner"
-            :disabled="isPublic"
-            :username="member"
-            @remove="removeMember(member)"
-          >
-          </member>
+        <div class="col-md-4">
+          <small>{{ participantsDefinition }}</small>
         </div>
-
-        <div class="col-md-2">
+      </div>
+      <div class="form-group">
+        <label class="col-md-2">
+          <div class="control-label">Contributors</div>
           <select
             class="form-control"
             :disabled="! canModerate || isPublic"
@@ -88,6 +84,18 @@
             >
             </option>
           </select>
+        </label>
+
+        <div class="col-md-3">
+          <member
+            class="form-control contributor-list"
+            v-for="member in members"
+            v-if="member != owner"
+            :disabled="isPublic"
+            :username="member"
+            @remove="removeMember(member)"
+          >
+          </member>
         </div>
       </div>
 
