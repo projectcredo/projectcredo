@@ -69,12 +69,21 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    domain_name (0.5.20161129)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
     fabrication (2.16.0)
+    faraday (0.10.0)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.11)
+    gibbon (2.2.4)
+      faraday (>= 0.9.1)
+      multi_json (>= 1.11.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jbuilder (2.5.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -101,6 +110,8 @@ GEM
       minitest (~> 5.8)
       railties (~> 5.0)
     multi_json (1.12.1)
+    multipart-post (2.0.0)
+    netrc (0.11.0)
     nio4r (1.2.1)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -141,6 +152,11 @@ GEM
       nokogiri (~> 1.6.0)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_real_favicon (0.0.6)
+      json (>= 1.7, < 3)
+      rails (>= 3.1)
+      rest-client (~> 2.0)
+      rubyzip (~> 1)
     railties (5.0.0)
       actionpack (= 5.0.0)
       activesupport (= 5.0.0)
@@ -153,6 +169,11 @@ GEM
       ffi (>= 0.5.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rubyzip (1.2.0)
     sass (3.4.22)
     sass-rails (5.0.5)
       railties (>= 4.0.0, < 6)
@@ -179,6 +200,9 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     warden (1.2.6)
       rack (>= 1.0)
     web-console (3.3.1)
@@ -206,6 +230,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise (~> 4.2.0)
   fabrication (~> 2.16.0)
+  gibbon
   jbuilder (~> 2.0)
   jquery-rails (~> 4.1.1)
   listen (~> 3.0.5)
@@ -215,6 +240,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.0)
   rails (>= 5.0.0, < 5.1)
+  rails_real_favicon
   sass-rails (~> 5.0)
   spring
   spring-watcher-listen (~> 2.0.0)
@@ -226,4 +252,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.6
+   1.13.7

@@ -4,7 +4,7 @@
   votable_class = votable.class.to_s.downcase
 %>
 
-<%= form_tag vote_path, method: (liked ? :delete : :post), class: "like-form" do %>
+<%= form_tag vote_path, method: (liked ? :delete : :post), class: "like-form", remote: true do %>
   <%= text_field_tag 'id', votable.id, hidden: true %>
   <%= text_field_tag 'type', votable_class, hidden: true %>
     <%= button_tag(type: 'submit', class: "#{votable_class}-vote #{'active' if liked}") do %>

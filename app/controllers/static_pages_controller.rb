@@ -4,7 +4,9 @@ class StaticPagesController < ApplicationController
   include ActiveSupport::SecurityUtils
 
   def about
-    @tutorial = List.first
+  end
+
+  def how_to
   end
 
   def lets_encrypt

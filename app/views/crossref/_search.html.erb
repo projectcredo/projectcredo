@@ -1,20 +1,80 @@
-<strong>Search for a paper to add</strong>
-<div class="input-group input-group-sm crossref">
-
-  <span class="input-group-addon" id="crossref-submit"><i class="glyphicon glyphicon-search"></i></span>
-  <%=
-    text_field_tag 'crossref-search',
-      nil,
-      class: 'form-control',
-      placeholder: 'Search for a paper',
-      disabled: !(list.accepts_public_contributions? || current_user_can_edit?(list))
-  %>
-  <%= form_for list.references.build, html: {class: 'hidden'} do |f| %>
-    <%= f.hidden_field :list_id, value: list.id %>
-    <%= f.fields_for :locator do |l| %>
-      <%= l.text_field :type, value: 'doi' %>
-      <%= l.text_field :id, id: 'crossref-locator-id' %>
+<div id="search-app">
+  <strong>Search for a paper to add</strong>
+  <div class="input-group input-group-sm crossref">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+    <input
+      class="form-control"
+      v-bind:placeholder="placeholder"
+      v-bind:disabled="searchDisabled"
+      v-model="query"
+      v-on:keydown.esc="clearSearch"
+      v-on:keyup="getResults"
+    >
+    <%= form_for list.references.build, html: {class: 'hidden', 'ref' => "form"} do |f| %>
+      <%= f.hidden_field :list_id, value: list.id %>
+      <%= f.fields_for :locator do |l| %>
+        <%= l.text_field :type, value: 'doi' %>
+        <%= l.text_field :id, 'v-bind:value' => 'doi | stripUrl' %>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+  <ul class="list-group autocomplete" v-if="this.results.length">
+    <li
+      class="list-group-item"
+      v-for="result in results"
+      v-on:click="selectResult(result)"
+      v-html="result.fullCitation"
+    >
+    </li>
+  </ul>
 </div>
-<ul class="hidden list-group" id="crossref-results"></ul>
+
+<% content_for(:page_app) do %>
+  <script>
+    var searchApp = new Vue({
+      el: '#search-app',
+      data: {
+        searchDisabled: <%= !current_user_can_edit?(list) %>,
+        query: '',
+        results: [],
+        doi: '',
+        submitted: false,
+        placeholder: 'Search for a paper'
+      },
+      methods: {
+        clearSearch: function() {
+          this.results = [];
+          this.query = '';
+        },
+        getResults: debounce(
+          function() {
+            if (this.query === '') { return this.results = [] }
+
+            $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
+              if (data.length > 0) {
+                searchApp.results = data;
+              } else {
+                searchApp.results = [{fullCitation: 'No results found.', doi: ''}];
+              };
+            });
+          },
+          200
+        ),
+        selectResult: function(result) {
+          this.doi = result.doi;
+          this.submitted = true;
+          this.searchDisabled = true;
+          this.placeholder = result.fullCitation;
+          this.clearSearch();
+          // This is to give Vue time to update the doi above. It doesn't need much.
+          window.setTimeout(function() { searchApp.$refs.form.submit() }, 50);
+        }
+      },
+      filters: {
+        stripUrl(doiUrl) {
+          return doiUrl.replace('http://dx.doi.org/', '')
+        }
+      }
+    });
+  </script>
+<% end %>

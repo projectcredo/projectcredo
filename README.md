@@ -21,9 +21,18 @@ Project Credo is open-source by design, under a GPLv3 license.
 1. Install docker: https://docs.docker.com/engine/installation/
 1. `git clone https://github.com/briankung/projectcredo.git` (or your favorite protocol)
 1. `cd` into the directory
+1. Create a `.env` file in the root directory
 1. `docker-compose build` whenever you add a gem - in this case, you'll be installing all of them
 1. `docker-compose run app rails db:create db:schema:load db:migrate db:seed` - to create the database, load the schema, migrate any lingering migrations, and then seed with test data
 1. `docker-compose up` to run the rails server
+
+#### .env file
+
+Your `.env` file will be used for supplying your docker instances with environment variables, and docker won't start without it. One of the important ones is `DOCKER_HOST_IP`, which will tell Rails which IP addresses are allowed to see console and debug output.
+
+On Unix-like environments, you can use `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $@` to figure out your IP Address.
+
+This often results in `DOCKER_HOST_IP=172.18.0.1/16`.
 
 ### Visiting the site locally
 

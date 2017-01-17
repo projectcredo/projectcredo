@@ -2,23 +2,30 @@
 <html>
   <head>
     <title><%= "Project Credo#{' | ' if @title}#{@title}" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= render 'layouts/google_analytics' %>
     <link rel="shortcut icon" href="/favicon.ico?v=2">
-  <% if content_for?(:meta_og) %>
-      <%= yield :meta_og %>
-  <% else %>
-    <%= tag :meta, property: "og:type", content: "website" %>
     <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
     <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
     <%= tag :meta, property: "og:image:width", content: "600" %>
     <%= tag :meta, property: "og:image:height", content: "600" %>
-  <% end %>
+    <% if content_for?(:meta_og) %>
+      <%= yield :meta_og %>
+    <% else %>
+      <%= tag :meta, property: "og:type", content: "website" %>
+      <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
+      <%= tag :meta, property: "og:image", content: image_url('pc_logo_square.jpg') %>
+      <%= tag :meta, property: "og:image:width", content: "600" %>
+      <%= tag :meta, property: "og:image:height", content: "600" %>
+      <%= tag :meta, property: "og:description", content: "A collaborative research tool to curate, comment on, and share lists of research.  Our mission is to build a scientific commons for evidence based consensus on a wide range of topics." %>
+    <% end %>
+    <%= render 'application/favicon' %>
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target=".scrollspy" class="<%= @body_class %>">
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -31,12 +38,13 @@
           <%= link_to 'Project Credo', root_path, class:"navbar-brand" %>
           <ul class="nav navbar-nav">
             <li><%= link_to 'Home', root_path %></li>
-            <li><%= link_to 'About', about_path %></li>
           </ul>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><%= link_to 'Sponsor Us','https://www.patreon.com/projectcredo', target: '_blank' %></li>
+            <li><%= link_to 'How To', how_to_path %></li>
+            <li><%= link_to 'About', about_path %></li>
             <%= render 'layouts/user_session_links' %>
           </ul>
         </div>
@@ -49,6 +57,7 @@
     <div class="container<%= '-fluid' if @full_width %>">
       <%= yield %>
     </div>
-    <%= console if Rails.env.development? %>
+    <%= console if Rails.env.development? && ENV['CONSOLE_ENABLED'] %>
   </body>
+  <%= yield(:page_app) %>
 </html>
