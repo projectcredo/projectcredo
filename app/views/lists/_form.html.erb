@@ -57,7 +57,7 @@
         <div class="col-md-3">
           <%= f.select :participants,
             options_for_select(
-              [%w{Public(🌎) public},%w{Contributors(🔒) contributors}],
+              [['🌎 Public', 'public'],['🔒 Contributors' ,'contributors']],
               list.participants
             ),
             {},
