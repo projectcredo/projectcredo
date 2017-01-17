@@ -41,8 +41,8 @@ class Arxiv
         authors_attributes: lambda do |data|
           authors = data.xpath('//author//name')
           authors.map do |author| {
-            given_name: author.text.match(/^.* /).to_s.strip, 
-            family_name: author.text.match(/ [[:alpha:]]*$/).to_s.strip
+            given_name: author.text.rpartition(' ').first,
+            family_name: author.text.rpartition(' ').last
             }
           end
         end
