@@ -4,7 +4,7 @@ MAINTAINER brian@callmekung.com
 # Install apt based dependencies required to run Rails as
 # well as RubyGems. As the Ruby image itself is based on a
 # Debian image, we use apt-get to install those.
-RUN apt-get update && apt-get install -y build-essential nodejs
+RUN apt-get update && apt-get install -y build-essential libqt4-dev libqtwebkit-dev
 
 # Configure the main working directory. This is the base
 # directory used in any further RUN, COPY, and ENTRYPOINT
