@@ -14,7 +14,7 @@
         </ul>
       </div>
     <% end %>
-    <input name="list[members]" id="list_members" v-bind:value="members" type="hidden"></input>
+    <input name="list[members]" id="list_members" :value="members" type="hidden"></input>
     <div class="form-horizontal">
       <div class="form-group">
         <%= f.label :name, class: "col-md-2 control-label" %>
@@ -52,13 +52,13 @@
               list.participants
             ),
             {},
-            {class: "form-control", disabled: list.persisted? && !(current_user == list.owner), "v-model": "listParticipants"} %>
+            {class: "form-control", ":disabled": "! canModerate", "v-model": "listParticipants"} %>
             <small>{{ participantsDefinition }}</small>
         </div>
         <label class="col-md-2 control-label">Current contributors</label>
         <div class="col-md-3">
           <div class="form-control contributor-list">
-            <a v-bind:href="'/'+owner" >{{ owner }}</a>
+            <a :href="'/'+owner" >{{ owner }}</a>
             <b>(owner)</b>
           </div>
 
@@ -66,9 +66,9 @@
             class="form-control contributor-list"
             v-for="member in members"
             v-if="member != owner"
-            v-bind:disabled="isPublic"
-            v-bind:username="member"
-            v-on:remove="removeMember(member)"
+            :disabled="isPublic"
+            :username="member"
+            @remove="removeMember(member)"
           >
           </member>
         </div>
@@ -76,14 +76,14 @@
         <div class="col-md-2">
           <select
             class="form-control"
-            v-bind:disabled="! canModerate || isPublic"
+            :disabled="! canModerate || isPublic"
             v-model="selected"
-            v-on:click="addMember()"
+            @click="addMember()"
           >
             <option value="">Add a Contributor</option>
             <option
               v-for="nonMember in nonMembers"
-              v-bind:value="nonMember"
+              :value="nonMember"
               v-text="nonMember"
             >
             </option>
@@ -119,7 +119,7 @@
             class="btn-icon remove-button pull-right"
             type="button"
             v-if="canRemove"
-            v-on:click="$emit('remove')"
+            @click="$emit('remove')"
           ></span>
         </div>
       `,
