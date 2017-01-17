@@ -24,15 +24,19 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    new_member_list = params[:list].delete(:members).split(",") - [current_user.username]
+    if params[:list][:members]
+      new_member_list = params[:list].delete(:members).split(",") - [current_user.username]
+    end
     @list = current_user.lists.build(list_params)
 
     respond_to do |format|
       if @list.save
         current_user.homepage.lists << @list
-        new_member_list.each do |m|
-          user = User.find_by username: m
-          @list.list_memberships.create(user: user, role: :contributor)
+        if new_member_list
+          new_member_list.each do |m|
+            user = User.find_by username: m
+            @list.list_memberships.create(user: user, role: :contributor)
+          end
         end
 
         format.html { redirect_to user_list_path(@list.owner, @list), notice: 'List was successfully created.' }
