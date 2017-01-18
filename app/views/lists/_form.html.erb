@@ -51,22 +51,22 @@
       </div>
       <div class="form-group">
         <div class="col-md-2 control-label">
-          <%= f.label :participants, 'List Access'%>
+          <%= f.label :access, 'List Access'%>
         </div>
         <div class="col-md-3"
             data-toggle="popover"
             data-placement="right"
             data-trigger="hover"
-            v-bind:data-content="participantsDefinition">
+            v-bind:data-content="accessDefinition">
           <select
-            name="list[participants]"
-            id="list_participants"
+            name="list[access]"
+            id="list_access"
             class="form-control"
-            :disabled="! canModerate"
-            v-model= "listParticipants"
+            :disabled="!canModerate"
+            v-model= "listAccess"
           >
             <option value="public">🌎 Public</option>
-            <option value="contributors">🔒 Contributors</option>
+            <option value="contributors" selected>🔒 Contributors</option>
           </select>
         </div>
       </div>
@@ -78,7 +78,7 @@
         <div class="col-md-3">
           <select
             class="form-control contributor-list"
-            :disabled="! canModerate || isPublic"
+            :disabled="!canModerate || isPublic"
             v-model="selected"
             @click="addMember()"
           >
@@ -141,7 +141,7 @@
       el: '#list-edit',
       data: {
         selected: '',
-        listParticipants: "<%= list.participants %>",
+        listAccess: "<%= list.access %>",
         owner: '<%= @owner %>',
         currentUser: '<%= current_user.username %>',
         canModerate: <%= @current_user_can_moderate %>,
@@ -150,12 +150,12 @@
       },
       computed: {
         isPublic: function() {
-          return this.listParticipants == "public"
+          return this.listAccess == "public"
         },
-        participantsDefinition: function() {
+        accessDefinition: function() {
           if (this.isPublic) {
             return 'Anyone can add and remove their own references.  Public lists allow the greatest amount of participation and collaboration.'
-          } else if (this.listParticipants == 'contributors') {
+          } else if (this.listAccess == 'contributors') {
             return 'Only assigned contributors can edit or add references to this list.  This gives contributors full control over referenced papers.'
           }
         }

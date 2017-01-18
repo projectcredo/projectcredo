@@ -12,7 +12,7 @@
     <% end %>
   <% end %>
 
-  <% if @list.participants == 'contributors' %>
+  <% if @list.access == 'contributors' %>
    <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
   <% else %>
     <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🌎 </span>

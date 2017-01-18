@@ -38,7 +38,7 @@ class Users::ListsController < ApplicationController
 
       params[:list].delete(:members)
     end
-    params[:list].delete(:participants) unless current_user == @list.owner
+    params[:list].delete(:access) unless current_user == @list.owner
 
     respond_to do |format|
       if @list.update(list_params)
@@ -83,7 +83,7 @@ class Users::ListsController < ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :members, :participants)
+      params.require(:list).permit(:name, :description, :tag_list, :members, :access)
     end
 
     def ensure_editable
