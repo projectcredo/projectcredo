@@ -145,7 +145,7 @@
         owner: '<%= @owner %>',
         currentUser: '<%= current_user.username %>',
         canModerate: <%= @current_user_can_moderate %>,
-        nonMembers: <%= raw (User.all.map(&:username) - @list.members.map(&:username) - [@owner]) %>,
+        nonMembers: <%= raw (User.pluck(:username) - @list.members.pluck(:username) - [@owner]) %>,
         members: <%= raw @members  %>
       },
       computed: {
