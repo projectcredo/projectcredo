@@ -25,10 +25,9 @@ class Users::ListsController < ApplicationController
 
   def update
     if params[:list][:members]
-      new_member_list = params[:list][:members].split(",")
       membership_builds = []
       if current_user.can_edit?(@list)
-        new_member_list.each do |m|
+        params[:list][:members].each do |m|
           user = User.find_by username: m
           membership_builds << ListMembership.new(user: user, role: :contributor)
         end

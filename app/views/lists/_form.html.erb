@@ -14,7 +14,7 @@
         </ul>
       </div>
     <% end %>
-    <input name="list[members]" id="list_members" :value="members" type="hidden"></input>
+    <input v-for="member in members" name="list[members][]" id="list_members" :value="member" type="hidden"></input>
     <div class="form-horizontal">
       <div class="form-group">
         <%= f.label :name, class: "col-md-2 control-label" %>

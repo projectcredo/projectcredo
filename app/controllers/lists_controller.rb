@@ -25,7 +25,7 @@ class ListsController < ApplicationController
   # POST /lists.json
   def create
     if params[:list][:members]
-      new_member_list = params[:list].delete(:members).split(",") - [current_user.username]
+      new_member_list = params[:list].delete(:members) - [current_user.username]
     end
     @list = current_user.lists.build(list_params)
 
