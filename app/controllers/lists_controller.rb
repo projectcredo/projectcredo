@@ -17,7 +17,7 @@ class ListsController < ApplicationController
   def new
     @list = List.new
     @owner = current_user.username
-    @members = [@owner]
+    @members = []
     @current_user_can_moderate = true
   end
 
@@ -25,7 +25,7 @@ class ListsController < ApplicationController
   # POST /lists.json
   def create
     if params[:list][:members]
-      new_member_list = params[:list].delete(:members) - [current_user.username]
+      new_member_list = params[:list].delete(:members)
     end
     @list = current_user.lists.build(list_params)
 

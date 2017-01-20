@@ -93,7 +93,6 @@
           <member
             class="form-control contributor-list"
             v-for="member in members"
-            v-if="member != owner"
             :disabled="isPublic"
             :username="member"
             @remove="removeMember(member)"
