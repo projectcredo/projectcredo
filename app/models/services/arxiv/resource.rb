@@ -40,9 +40,11 @@ class Arxiv
         # separate into familyname, givenname
         authors_attributes: lambda do |data|
           authors = data.xpath('//author//name')
-          authors.map do |author| {
-            given_name: author.text.rpartition(' ').first,
-            family_name: author.text.rpartition(' ').last
+          authors.map do |author|
+            name_parts = author.text.rpartition(/\s/)
+            {
+              given_name: name_parts.first,
+              family_name: name_parts.last
             }
           end
         end

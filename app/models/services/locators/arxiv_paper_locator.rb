@@ -25,16 +25,10 @@ class ArxivPaperLocator
   end
 
   def valid?
-
-    # regex taken from Arxiv gem
-
-    # LEGACY_URL_FORMAT = /[^\/]+\/\d+(?:v\d+)?$/
-    # CURRENT_URL_FORMAT = /\d{4,}\.\d{4,}(?:v\d+)?$/
-    
+    # Regex from Arxiv gem: https://github.com/scholastica/arxiv
+    # Legacy format: /[^\/]+\/\d+(?:v\d+)?$/
     arxiv_format = !!locator_id.match(/\d{4,}\.\d{4,}(?:v\d+)?$/)
-
     errors << "\"#{locator_id}\" does not match Arxiv ID format. Ex: \"1836.5029v2\"" unless arxiv_format
-
     arxiv_format
   end
 
