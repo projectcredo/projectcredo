@@ -32,6 +32,7 @@ class List < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :homepages
   has_many :list_memberships, dependent: :destroy
+  accepts_nested_attributes_for :list_memberships
   has_many :papers, through: :references
   has_many :references, dependent: :destroy
   has_many :members, through: :list_memberships, source: :user do
@@ -59,6 +60,18 @@ class List < ApplicationRecord
   validate :validate_tag
 
   # Methods
+  def member_roles
+    members_hash =
+      ListMembership.where(list: self).map do |m|
+        {
+          username: User.find(m.user_id).username,
+          role: m.role
+        }
+      end
+
+    return members_hash
+  end
+
   def owner
     members[:owner].first
   end

@@ -14,7 +14,7 @@
         </ul>
       </div>
     <% end %>
-    <input v-for="member in members" name="list[members][]" id="list_members" :value="member" type="hidden"></input>
+
     <div class="form-horizontal">
       <div class="form-group">
         <%= f.label :name, class: "col-md-2 control-label" %>
@@ -22,6 +22,11 @@
           <%= f.text_field :name, class: "form-control" %>
         </div>
       </div>
+      <membership
+        v-for="(contributor, index) in contributors"
+        :user="contributor"
+        :index="index"
+      ></membership>
 
       <div class="form-group">
         <%= f.label :description, class: "col-md-2 control-label" %>
@@ -44,8 +49,8 @@
           Owner
         </label>
         <div class="col-md-3">
-          <div class="form-control contributor-list">
-            <a :href="'/'+owner" >{{ owner }}</a>
+          <div class="form-control contributor-list" v-for="own in owner">
+            <a :href="'/'+own.username" >{{ own.username }}</a>
           </div>
         </div>
       </div>
@@ -92,9 +97,9 @@
           </select>
           <member
             class="form-control contributor-list"
-            v-for="member in members"
+            v-for="contributor in contributors"
             :disabled="isPublic"
-            :username="member"
+            :user="contributor"
             @remove="removeMember(member)"
           >
           </member>
@@ -124,7 +129,7 @@
       },
       template: `
         <div>
-          <a href="/username">{{ username }}</a>
+          <a :href="'/'+user.username">{{ user.username }}</a>
           <span
             class="btn-icon remove-button pull-right"
             type="button"
@@ -133,7 +138,18 @@
           ></span>
         </div>
       `,
-      props: ['username']
+      props: ['user']
+    })
+
+    Vue.component('membership', {
+      template: `
+        <div>
+          <input type="text" :value="user.role" :name="'list[list_memberships_attributes]['+ index + '][role]'" :id="'list_list_memberships_attributes_'+ index + '_role'">
+          <input type="text" :value="user.username" :name="'list[list_memberships_attributes]['+ index + '][username]'" :id="'list_list_memberships_attributes_'+ index + '_username'">
+        </div>
+
+      `,
+      props: ['user','index']
     })
 
     var editList = new Vue({
@@ -141,11 +157,10 @@
       data: {
         selected: '',
         listAccess: "<%= list.access %>",
-        owner: '<%= @owner %>',
         currentUser: '<%= current_user.username %>',
         canModerate: <%= @current_user_can_moderate %>,
         nonMembers: <%= raw (User.pluck(:username) - @list.members.pluck(:username) - [@owner]) %>,
-        members: <%= raw @members  %>
+        members: []
       },
       computed: {
         isPublic: function() {
@@ -157,12 +172,20 @@
           } else if (this.listAccess == 'contributors') {
             return 'Only assigned contributors can edit or add references to this list.  This gives contributors full control over referenced papers.'
           }
+        },
+        owner() {
+          return this.members.filter(member => member.role == 'owner')
+        },
+        contributors() {
+          return this.members.filter(member => member.role == 'contributor')
         }
       },
       methods: {
         addMember() {
           if(this.selected != '') {
-            this.members.push(this.selected);
+            this.members.push({
+              username: this.selected, role: "contributor"
+            });
             var index = this.nonMembers.indexOf(this.selected);
             this.nonMembers.splice(index,1);
             this.selected = ''
@@ -173,7 +196,15 @@
           var index = this.members.indexOf(member);
           this.members.splice(index,1);
         }
+      },
+     mounted: function() {
+            var editList = this
+            $.get('<%= request.original_fullpath + '.json' %>')
+               .done(function(data) {
+                 editList.members = data
+               })
       }
+
     })
   </script>
 <% end %>

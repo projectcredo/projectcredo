@@ -18,24 +18,24 @@ class Users::ListsController < ApplicationController
   end
 
   def edit
-    @owner = @list.owner.username
-    @members = @list.members.map(&:username) - [@owner]
+    @members = @list.member_roles
     @current_user_can_moderate = current_user.can_moderate?(@list)
   end
 
   def update
 
-    if params[:list][:members] && current_user.can_edit?(@list)
-      members = params[:list][:members].map{|m| User.find_by(username: m)}
-      memberships = members.map do |m|
-        ListMembership.find_or_create_by(list: @list, user: m, role: 'contributor' )
+    if (memberships = params[:list][:list_memberships_attributes]) && current_user.can_edit?(@list)
+      memberships = memberships.map do |m|
+        user = User.find_by(username: m.second[:username])
+        role = m.second[:role]
+        ListMembership.find_or_create_by(list: @list, user: user, role: role )
       end
       memberships << @list.list_memberships.where(role: "owner").first
 
       @list.list_memberships.replace(memberships)
-      params[:list].delete(:members)
-    end
 
+    end
+    params[:list].delete(:list_memberships_attributes)
     params[:list].delete(:access) unless current_user == @list.owner
 
     respond_to do |format|
@@ -81,7 +81,8 @@ class Users::ListsController < ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :members, :access)
+      params.require(:list).permit(:name, :description, :tag_list, :access,
+                                      list_memberships_attributes: [ :username, :role ])
     end
 
     def ensure_editable

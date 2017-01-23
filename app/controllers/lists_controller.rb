@@ -16,8 +16,7 @@ class ListsController < ApplicationController
   # GET /lists/new
   def new
     @list = List.new
-    @owner = current_user.username
-    @members = []
+    @members = {username: current_user.username, role: 'owner'}
     @current_user_can_moderate = true
   end
 
@@ -51,6 +50,7 @@ class ListsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :members, :access)
+      params.require(:list).permit(:name, :description, :tag_list, :members, :access,
+                                    list_memberships_attributes: [ :username, :role ])
     end
 end
