@@ -100,7 +100,7 @@
             v-for="contributor in contributors"
             :disabled="isPublic"
             :user="contributor"
-            @remove="removeMember(member)"
+            @remove="removeMember(contributor)"
           >
           </member>
         </div>
