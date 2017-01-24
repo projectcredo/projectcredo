@@ -199,7 +199,7 @@
       },
      mounted: function() {
             var editList = this
-            $.get('<%= request.original_fullpath + '.json' %>')
+            $.get(window.location.href + '.json')
                .done(function(data) {
                  editList.members = data
                })
