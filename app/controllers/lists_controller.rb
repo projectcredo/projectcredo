@@ -16,7 +16,12 @@ class ListsController < ApplicationController
   # GET /lists/new
   def new
     @list = List.new
-    @members = {username: current_user.username, role: 'owner'}
+
+    @members = User.where.not(id: current_user.id).map do |m|
+      { username: m.username, role: 'nonmember' }
+    end
+
+    @members =  @members.push({username: current_user.username, role: 'owner'})
     @current_user_can_moderate = true
   end
 

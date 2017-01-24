@@ -18,7 +18,10 @@ class Users::ListsController < ApplicationController
   end
 
   def edit
-    @members = @list.member_roles
+    @members = User.where.not(id: @list.list_memberships.pluck(:user_id)).map do |m|
+      { username: m.username, role: 'nonmember' }
+    end
+    @members = @members + @list.member_roles
     @current_user_can_moderate = current_user.can_moderate?(@list)
   end
 

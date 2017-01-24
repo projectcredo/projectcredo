@@ -90,8 +90,8 @@
             <option value="">Add Contributor</option>
             <option
               v-for="nonMember in nonMembers"
-              :value="nonMember"
-              v-text="nonMember"
+              :value="nonMember.username"
+              v-text="nonMember.username"
             >
             </option>
           </select>
@@ -159,7 +159,6 @@
         listAccess: "<%= list.access %>",
         currentUser: '<%= current_user.username %>',
         canModerate: <%= @current_user_can_moderate %>,
-        nonMembers: <%= raw (User.pluck(:username) - @list.members.pluck(:username) - [@owner]) %>,
         members: []
       },
       computed: {
@@ -178,6 +177,9 @@
         },
         contributors() {
           return this.members.filter(member => member.role == 'contributor')
+        },
+        nonMembers() {
+          return this.members.filter(member => member.role == 'nonmember')
         }
       },
       methods: {
