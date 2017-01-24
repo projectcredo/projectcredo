@@ -60,18 +60,6 @@ class List < ApplicationRecord
   validate :validate_tag
 
   # Methods
-  def member_roles
-    members_hash =
-      ListMembership.where(list: self).map do |m|
-        {
-          username: User.find(m.user_id).username,
-          role: m.role
-        }
-      end
-
-    return members_hash
-  end
-
   def owner
     members[:owner].first
   end

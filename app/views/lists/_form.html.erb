@@ -49,8 +49,8 @@
           Owner
         </label>
         <div class="col-md-3">
-          <div class="form-control contributor-list" v-for="own in owner">
-            <a :href="'/'+own.username" >{{ own.username }}</a>
+          <div class="form-control contributor-list">
+            <a :href="'/'+owner" >{{ owner }}</a>
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@
             <option value="">Add Contributor</option>
             <option
               v-for="nonMember in nonMembers"
-              :value="nonMember.username"
+              :value="nonMember"
               v-text="nonMember.username"
             >
             </option>
@@ -161,6 +161,7 @@
         listAccess: '',
         currentUser: '',
         canModerate: false,
+        owner: '',
         members: []
       },
       computed: {
@@ -174,9 +175,6 @@
             return 'Only assigned contributors can edit or add references to this list.  This gives contributors full control over referenced papers.'
           }
         },
-        owner() {
-          return this.members.filter(member => member.role == 'owner')
-        },
         contributors() {
           return this.members.filter(member => member.role == 'contributor')
         },
@@ -187,18 +185,13 @@
       methods: {
         addMember() {
           if(this.selected != '') {
-            this.members.push({
-              username: this.selected, role: "contributor"
-            });
-            var index = this.nonMembers.indexOf(this.selected);
-            this.nonMembers.splice(index,1);
+            this.selected.role = 'contributor'
             this.selected = ''
           }
         },
         removeMember(member) {
-          this.nonMembers.push(member);
-          var index = this.members.indexOf(member);
-          this.members.splice(index,1);
+          member.role = 'nonmember';
+
         }
       },
      mounted: function() {
@@ -209,6 +202,7 @@
                  editList.canModerate = data.can_moderate
                  editList.currentUser = data.current_user
                  editList.listAccess = data.access
+                 editList.owner = data.owner
                })
       }
 
