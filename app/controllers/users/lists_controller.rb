@@ -28,7 +28,7 @@ class Users::ListsController < ApplicationController
       memberships = memberships.map do |m|
         user = User.find_by(username: m.second[:username])
         role = m.second[:role]
-        if (current_user.can_moderate || curent_user == user) && role != 'owner'
+        if (current_user.can_moderate?(@list) || curent_user == user) && role != 'owner'
           ListMembership.find_or_create_by(list: @list, user: user, role: role )
         end
       end

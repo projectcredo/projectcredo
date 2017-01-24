@@ -144,8 +144,8 @@
     Vue.component('membership', {
       template: `
         <div>
-          <input type="text" :value="user.role" :name="'list[list_memberships_attributes]['+ index + '][role]'" :id="'list_list_memberships_attributes_'+ index + '_role'">
-          <input type="text" :value="user.username" :name="'list[list_memberships_attributes]['+ index + '][username]'" :id="'list_list_memberships_attributes_'+ index + '_username'">
+          <input type="hidden" :value="user.role" :name="'list[list_memberships_attributes]['+ index + '][role]'" :id="'list_list_memberships_attributes_'+ index + '_role'">
+          <input type="hidden" :value="user.username" :name="'list[list_memberships_attributes]['+ index + '][username]'" :id="'list_list_memberships_attributes_'+ index + '_username'">
         </div>
 
       `,
