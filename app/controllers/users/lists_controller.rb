@@ -26,9 +26,9 @@ class Users::ListsController < ApplicationController
   def update
 
     if (memberships = params[:list][:list_memberships_attributes]) && current_user.can_edit?(@list)
-      memberships = memberships.map do |m|
-        user = User.find_by(username: m.second[:username])
-        role = m.second[:role]
+      memberships = memberships.map do |k,m|
+        user = User.find_by(username: m[:username])
+        role = m[:role]
         if (current_user.can_moderate?(@list) || curent_user == user) && role != 'owner'
           ListMembership.find_or_create_by(list: @list, user: user, role: role )
         end
