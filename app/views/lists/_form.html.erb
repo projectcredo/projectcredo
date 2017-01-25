@@ -41,7 +41,7 @@
           <p><small>(separated by commas)</small></p>
         </div>
         <div class="col-md-10">
-          <%= f.text_field :tag_list, value: list.tag_list.join(","), class: "form-control", placeholder: 'Ex: biology, chemistry, physics' %>
+          <%= f.text_field :tag_list, value: list.tag_list.join(", "), class: "form-control", placeholder: 'Ex: biology, chemistry, physics' %>
         </div>
       </div>
       <div class="form-group">
@@ -123,7 +123,8 @@
 
 <% content_for(:page_app) do %>
   <script>
-    Vue.component('member', {
+    Vue.component("member", {
+      props: ["user", "canmoderate", "currentuser"],
       computed: {
         canRemove: function() {
           return this.currentUser == this.username || canModerate
@@ -139,19 +140,17 @@
             @click="$emit('remove')"
           ></span>
         </div>
-      `,
-      props: ["user","canmoderate","currentuser"]
+      `
     })
 
     Vue.component('membership', {
+      props: ["user", "index"],
       template: `
         <div>
           <input type="hidden" :value="user.role" :name="'list[list_memberships_attributes]['+ index + '][role]'" :id="'list_list_memberships_attributes_'+ index + '_role'">
           <input type="hidden" :value="user.username" :name="'list[list_memberships_attributes]['+ index + '][username]'" :id="'list_list_memberships_attributes_'+ index + '_username'">
         </div>
-
-      `,
-      props: ['user','index']
+      `
     })
 
     var editList = new Vue({
@@ -165,10 +164,10 @@
         members: []
       },
       computed: {
-        isPublic: function() {
+        isPublic() {
           return this.listAccess == "public"
         },
-        accessDefinition: function() {
+        accessDefinition() {
           if (this.isPublic) {
             return 'Anyone can add and remove their own references.  Public lists allow the greatest amount of participation and collaboration.'
           } else if (this.listAccess == 'contributors') {
@@ -191,21 +190,19 @@
         },
         removeMember(member) {
           member.role = 'nonmember';
-
         }
       },
-     mounted: function() {
-            var editList = this
-            $.get(window.location.href + '.json')
-               .done(function(data) {
-                 editList.members = data.members
-                 editList.canModerate = data.can_moderate
-                 editList.currentUser = data.current_user
-                 editList.listAccess = data.access
-                 editList.owner = data.owner
-               })
+      mounted() {
+        var editList = this
+        $.get(window.location.href + '.json')
+          .done(function(data) {
+            editList.members = data.members
+            editList.canModerate = data.can_moderate
+            editList.currentUser = data.current_user
+            editList.listAccess = data.access
+            editList.owner = data.owner
+          })
       }
-
     })
   </script>
 <% end %>
