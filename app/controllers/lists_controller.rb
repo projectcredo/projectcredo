@@ -18,6 +18,10 @@ class ListsController < ApplicationController
     @list = List.new
   end
 
+  def show
+    @list = List.find_by!(slug: params[:id])
+  end
+
   # POST /lists
   # POST /lists.json
   def create
