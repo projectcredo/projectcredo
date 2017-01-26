@@ -46,4 +46,11 @@ class ArxivTest < ActiveSupport::TestCase
     assert authors[3][:family_name] == 'Tria'
   end
 
+  test 'arxiv journal_ref mapping' do
+    arxiv_resource = Arxiv::Resource.new '1701.04185'
+    publication = arxiv_resource.paper_attributes[:publication]
+    assert publication == 'International Journal of Information Processing,volume 10, issue
+  1, pp. 103 - 114 (2016)'
+  end
+
 end

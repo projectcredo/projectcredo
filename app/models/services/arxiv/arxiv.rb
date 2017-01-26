@@ -1,6 +1,4 @@
 class Arxiv
-# wrapper for Arxiv API
-
   attr_accessor :resource
 
   def initialize locator_id: nil
@@ -10,5 +8,4 @@ class Arxiv
   def self.get_arxiv_from_doi
     # stand in
   end
-
 end

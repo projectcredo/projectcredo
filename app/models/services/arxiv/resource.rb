@@ -12,15 +12,13 @@ class Arxiv
       if response.at('//entry//id')
         self.paper_attributes = map_attributes(mapper, response)
       else
-        puts 'Arxiv paper ' + id + ' does not exist!'
+        # puts 'Arxiv paper ' + id + ' does not exist!'
+        logger.debug "Arxiv paper id does not exist!"
       end
     end
 
     def map_attributes mapper, data
       mapper.inject({}) do |memo, tuple|
-        # for every tuple in mapper do the following
-        # mapper cannot have nil values
-        # otherwise it'll be passed to mapping, i.e. tuple[1]!
         attribute, mapping = tuple[0], tuple[1]
         memo[attribute] = mapping.call(data)
         memo
@@ -31,7 +29,7 @@ class Arxiv
       {
         import_source:      lambda { |data| 'arxiv' },
         title:              lambda { |data| data.xpath('//entry//title').text },
-        publication:        lambda { |data| nil },
+        publication:        lambda { |data| data.xpath('//entry//journal_ref').text },
         doi:                lambda { |data| nil },
         arxiv_id:           lambda { |data| data.xpath('//entry//id').text },
         abstract:           lambda { |data| data.xpath('//entry//summary').text },
