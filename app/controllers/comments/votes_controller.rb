@@ -7,7 +7,7 @@ class Comments::VotesController < ApplicationController
     @comment.order_siblings
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
+      format.json { render nothing: true, status: 204 }
     end
   end
 
@@ -16,16 +16,16 @@ class Comments::VotesController < ApplicationController
     @comment.order_siblings
     respond_to do |format|
       format.html { redirect_to :back, notice: 'You like it!' }
-      format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
+      format.json { render nothing: true, status: 204 }
     end
   end
 
   private
     def votable_params
-      params.permit(:id)
+      params.permit(:comment_id)
     end
 
     def set_comment
-      @comment = Comment.find(votable_params[:id])
+      @comment = Comment.find(votable_params[:comment_id])
     end
 end

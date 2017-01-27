@@ -4,42 +4,11 @@
   @body_class = "list-index"
 %>
 
-<div id="search-lists">
-  <div class="row">
-    <div class="form-group col-md-3">
-        <input
-          class="form-control query-input"
-          v-model="query"
-          v-bind:placeholder="placeholder"
-          v-on:keyup="getResults"
-          v-on:keyup.esc="clearResults"
-        >
-
-        <ul class="list-group autocomplete" v-if="this.results.length">
-          <li
-            class="list-group-item"
-            v-for="result in results"
-            v-html="result"
-            v-on:click="selectResult(result)"
-          >
-          </li>
-        </ul>
-
-    </div>
-  </div>
-
-  <h1>
-    <span><%= "#{@user.username}'s" %> Lists</span>
-    <small>sorted by popularity</small>
-  </h1>
-
-  <div class="cards row">
-    <%= render partial: 'lists/list', collection: @lists %>
-  </div>
+<div id="search-lists"></div>
 
 <% content_for(:page_app) do %>
   <script>
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @lists) %>
+    searchLists = new Vue(searchLists)
     searchLists.$mount('#search-lists')
   </script>
 <% end %>

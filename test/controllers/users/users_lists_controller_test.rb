@@ -6,6 +6,7 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = Fabricate(:user)
     @list = Fabricate(:list, user: @user)
+    require_js
   end
 
   test "guest should get index" do

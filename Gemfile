@@ -44,6 +44,9 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'minitest-rails', '~> 3.0.0'
   gem 'fabrication', '~> 2.16.0'
+  gem 'capybara_minitest_spec'
+  gem 'capybara-webkit'
+  gem "therubyracer"
 end
 
 group :development do
