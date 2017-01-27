@@ -13,7 +13,7 @@ class Arxiv
         self.paper_attributes = map_attributes(mapper, response)
       else
         # puts 'Arxiv paper ' + id + ' does not exist!'
-        logger.debug "Arxiv paper id does not exist!"
+        Rails.logger.info "Arxiv paper {id} id does not exist!"
       end
     end
 
