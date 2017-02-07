@@ -84,7 +84,8 @@
             class="form-control contributor-list"
             :disabled="!canModerate || isPublic"
             v-model="selected"
-            @change="addMember()"
+            @change="addMember"
+            v-if="canModerate"
           >
             <option value="">Add Contributor</option>
             <option
