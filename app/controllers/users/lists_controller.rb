@@ -24,18 +24,18 @@ class Users::ListsController < ApplicationController
   end
 
   def update
+    members = params[:list].delete(:list_members) || []
 
     if current_user.can_edit?(@list)
-      members = params[:list].delete(:list_members) || []
       current_user_can_moderate = current_user.can_moderate?(@list)
 
       memberships = members.map do |member|
         membership_user = User.find_by(username: member)
 
-        if (current_user_can_moderate || curent_user == membership_user)
+        if (current_user_can_moderate || current_user == membership_user)
           ListMembership.find_or_create_by(list: @list, user: membership_user, role: :contributor )
         end
-      end
+      end.compact
       memberships << @list.list_memberships.find_by(user: @list.owner, role: :owner)
       @list.list_memberships.replace(memberships)
     end
