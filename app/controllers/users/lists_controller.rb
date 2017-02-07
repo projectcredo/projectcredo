@@ -18,15 +18,33 @@ class Users::ListsController < ApplicationController
   end
 
   def edit
+    @members = User.where.not(id: @list.list_memberships.pluck(:user_id)).map do |m|
+      { username: m.username, role: 'nonmember' }
+    end
   end
 
   def update
-    member = User.find_by username: params[:list].delete(:members)
-    params[:list].delete(:participants) unless current_user == @list.owner
+    members = params[:list].delete(:list_members) || []
 
-    if member && current_user.can_moderate?(@list)
-      @list.list_memberships.build(user: member, role: :contributor)
+    if current_user.can_edit?(@list)
+
+      if @list.members.include?(current_user) && !members.include?(current_user.username)
+        @list.members.destroy(current_user) unless current_user == @list.owner
+      end
+
+      if current_user.can_moderate?(@list)
+        memberships = members.map do |member|
+          @list.list_memberships.find_or_create_by(
+            user: User.find_by(username: member),
+            role: :contributor
+          )
+        end
+        memberships << @list.list_memberships.find_by(user: @list.owner, role: :owner)
+        @list.list_memberships = memberships
+      end
     end
+
+    params[:list].delete(:access) unless current_user == @list.owner
 
     respond_to do |format|
       if @list.update(list_params)
@@ -71,7 +89,8 @@ class Users::ListsController < ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :members, :participants)
+      params.require(:list).permit(:name, :description, :tag_list, :access,
+                                      list_members: [ :username, :role ])
     end
 
     def ensure_editable

@@ -5,7 +5,7 @@ class List < ApplicationRecord
 
   # Attributes
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
-  enum participants: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
+  enum access: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
 
   # Scopes
   default_scope { joins(:list_memberships).order(cached_votes_up: :desc, updated_at: :desc) }
@@ -32,6 +32,7 @@ class List < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :homepages
   has_many :list_memberships, dependent: :destroy
+  accepts_nested_attributes_for :list_memberships
   has_many :papers, through: :references
   has_many :references, dependent: :destroy
   has_many :members, through: :list_memberships, source: :user do

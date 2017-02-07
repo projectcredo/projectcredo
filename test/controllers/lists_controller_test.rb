@@ -32,6 +32,20 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "user should be able to get list json" do
+    user_2 = Fabricate(:user)
+    list_2 = Fabricate(:list, user: user_2)
+
+    sign_in @user
+    get list_url(list_2), as: :json
+
+    json = JSON.parse(@response.body)
+
+    assert_equal list_2.slug, json["slug"]
+    assert_equal list_2.name, json["name"]
+    assert_equal list_2.description, json["description"]
+  end
+
   test "user should see other user's public list" do
     user_2 = Fabricate(:user)
     list_2 = Fabricate.build(:list, user: user_2)

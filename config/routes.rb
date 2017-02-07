@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   resources :pins, only: [:create, :destroy]
 
-  resources :lists, only: [:new, :create] do
+  resources :lists, only: [:new, :create, :show] do
     resources :references, only: [:show, :create, :destroy]
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
     resources :members, only: :destroy, controller: 'lists/members'
