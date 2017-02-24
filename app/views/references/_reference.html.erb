@@ -32,36 +32,19 @@
        - contributed by <%= link_to reference.user.username, user_lists_path(reference.user) %>
     </div>
 
-    <ul class="nav nav-pills small" role="tablist">
-      <li><%= link_to 'Abstract', '', "data-detail-id" => "abstract-#{reference.id}", class: "paper-detail-tab" %></li>
-      <li><%= link_to 'Details', '', "data-detail-id" => "details-#{reference.id}", class: "paper-detail-tab" %></li>
-      <li><%= render 'references/comments_tab', reference: reference %></li>
-      <% if current_user %>
-        <li>
-          <%= form_for reference, method: :delete do |r| %>
-            <%= r.text_field :id, value: reference.id, hidden: true %>
-          <% end %>
-          <% if reference.user == current_user || current_user.can_moderate?(reference.list) %>
-            <%= link_to('Remove from list', {}, class: 'delete-reference text-danger') %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-
-    <div class="collapse paper-detail well" id="abstract-<%= reference.id %>">
+    <div class="paper-detail well">
       <%= render 'papers/abstract', reference: reference %>
     </div>
 
-    <div class="collapse paper-detail well" id="details-<%= reference.id %>">
+    <div class="paper-detail well">
+      <%= render 'commentables/comments', commentable: reference, list_for_authorization: reference.list %>
+    </div>
+
+    <div class="paper-detail well">
       Links:
       <ul class="links">
         <%= render 'links/links', reference: reference %>
       </ul>
     </div>
-
-    <div class="paper-detail well collapse <%= "in" if show_comments %>" id="comments-<%= reference.id %>">
-      <%= render 'commentables/comments', commentable: reference, list_for_authorization: reference.list %>
-    </div>
-
   </div>
 </div>
