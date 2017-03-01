@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def wrap_on_line_breaks text
+  def transform_text text
     text.to_s.split(/(?:\n\r?|\r\n?)/).map {|s| autolink "<p>#{h s}</p>"}.join.html_safe
   end
 

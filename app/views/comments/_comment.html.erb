@@ -10,7 +10,7 @@
     </strong>
     on <%= l(comment.updated_at, format: '%B, %d %Y %H:%M:%S') %>
   </p>
-  <% comment_content = wrap_on_line_breaks comment.content %>
+  <% comment_content = transform_text comment.content %>
   <%= content_tag(:span, comment_content, class: "content") %>
   <ul>
     <li id="comment-vote-<%= comment.id %>">
