@@ -1,5 +1,7 @@
-<% paper = reference.paper %>
-<% list = reference.list %>
+<%
+  paper = reference.paper
+  list = reference.list
+%>
 
 <% if paper.abstract.present? %>
   <div class='edit-abstract' id="edit-abstract-<%=reference.id%>">
