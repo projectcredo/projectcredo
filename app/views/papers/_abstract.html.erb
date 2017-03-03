@@ -15,7 +15,7 @@
         This abstract was imported and cannot be edited
       <% end %>
     </i>
-    <%= transform_text paper.abstract %>
+    <%= transform_text paper.abstract, highlights: paper.highlights.map(&:substring) %>
   </div>
   <div class='abstract-form hidden'>
     <%= render('papers/abstract_form', paper: paper) %>

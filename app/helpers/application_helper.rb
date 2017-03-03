@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def transform_text text, highlights=[]
+  def transform_text text, highlights: []
     text = html_escape text
     highlights.each do |highlight|
       highlight = html_escape highlight
