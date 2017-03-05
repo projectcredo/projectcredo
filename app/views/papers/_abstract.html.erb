@@ -17,7 +17,9 @@
         This abstract was imported and cannot be edited
       <% end %>
     </i>
-    <%= transform_text paper.abstract, highlights: paper.highlights.map(&:substring) %>
+    <highlightable-text v-on:show-popup="showPopup = true" v-on:hide-popup="showPopup = false">
+      <%= transform_text paper.abstract, highlights: paper.highlights.map(&:substring) %>
+    </highlightable-text>
   </div>
   <div class='abstract-form hidden'>
     <%= render('papers/abstract_form', paper: paper) %>

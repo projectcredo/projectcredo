@@ -20,7 +20,7 @@
 
 </div>
 
-<div class="container">
+<div class="container" id='list-show'>
   <div class="row">
     <div class="col-md-8">
       <p>
@@ -46,4 +46,50 @@
       </div>
     </div>
   </div>
+  <button v-if="showPopup" class="highlight-popup" :style="{left: position().left, top: position().top}">🖊️</button>
 </div>
+
+<% content_for(:page_app) do %>
+  <script>
+    var HighlightableText = {
+      template: `
+        <div class="highlightable-text" @mouseup="showPopup">
+          <slot></slot>
+        </div>
+      `,
+      methods: {
+        showPopup() {
+          var selection = window.getSelection().toString()
+          if (selection.length > 1 && selection.match(/[^\s]/)) {
+            this.$emit('show-popup')
+          } else {
+            this.$emit('hide-popup')
+          }
+        }
+      }
+    }
+
+    var listShow = new Vue({
+      el: '#list-show',
+      data: {
+        showPopup: false
+      },
+      components: {
+        'highlightable-text': HighlightableText
+      },
+      methods: {
+        position() {
+          var range = window.getSelection().getRangeAt(0)
+          var rect = range.getBoundingClientRect()
+          var popupWidth = 30
+          var popupHeight = 30
+
+          return {
+            left: rect.left + window.scrollX + (rect.width / 2) - (popupWidth / 2) + 'px',
+            top: rect.top + window.scrollY - popupHeight + 'px'
+          }
+        }
+      }
+    })
+  </script>
+<% end %>
