@@ -46,7 +46,12 @@
       </div>
     </div>
   </div>
-  <button v-if="showPopup" class="highlight-popup" :style="{left: position().left, top: position().top}">🖊️</button>
+  <button
+    v-if="showPopup"
+    class="highlight-popup"
+    :style="{left: position().left, top: position().top}"
+    @click="submitHighlight"
+  >🖊️</button>
 </div>
 
 <% content_for(:page_app) do %>
@@ -91,6 +96,12 @@
             left: rect.left + window.scrollX + (rect.width / 2) - (popupWidth / 2) + 'px',
             top: rect.top + window.scrollY - popupHeight + 'px'
           }
+        },
+        submitHighlight() {
+          $.post(
+            '/highlights',
+            JSON.stringify({highlight: {substring: window.getSelection().toString()}})
+          )
         }
       }
     })
