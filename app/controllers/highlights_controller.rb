@@ -3,10 +3,14 @@ class HighlightsController < ApplicationController
 
   def create
     paper = Paper.find(params[:paper_id])
-    paper.highlights.create(highlight_params)
+    highlight = paper.highlights.new(highlight_params)
 
     respond_to do |format|
-      format.json { head :created }
+      if highlight.save
+        format.json { head :created }
+      else
+        format.json { render json: highlight.errors, status: :unprocessable_entity }
+      end
     end
   end
 
