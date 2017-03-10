@@ -47,9 +47,9 @@
     </div>
   </div>
   <button
-    v-if="showPopup"
+    v-if="showPopupFlag"
     class="highlight-popup"
-    :style="{left: position().left, top: position().top}"
+    :style="{left: this.highlightLeft+'px', top: this.highlightTop+'px'}"
     @click="submitHighlight"
   >🖊️</button>
 </div>
@@ -58,12 +58,12 @@
   <script>
     var HighlightableText = {
       template: `
-        <div class="highlightable-text" @click="showPopup">
+        <div class="highlightable-text" @click="emitShowPopup">
           <slot></slot>
         </div>
       `,
       methods: {
-        showPopup() {
+        emitShowPopup() {
           var highlight = this
           window.setTimeout(function() {
             var selection = window.getSelection().toString()
@@ -80,27 +80,43 @@
     var listShow = new Vue({
       el: '#list-show',
       data: {
-        showPopup: false
+        showPopupFlag: false,
+        paperId: null,
+        highlightLeft: 0,
+        highlightTop: 0
       },
       components: {
         'highlightable-text': HighlightableText
       },
       methods: {
+        showPopup(showPopupFlag, paperId) {
+          this.showPopupFlag = showPopupFlag
+          if (this.showPopupFlag) {
+            this.paperId = paperId
+            this.position()
+          } else {
+            this.paperId = null
+          }
+        },
         position() {
           var range = window.getSelection().getRangeAt(0)
           var rect = range.getBoundingClientRect()
           var popupWidth = 30
           var popupHeight = 30
 
-          return {
-            left: rect.left + window.scrollX + (rect.width / 2) - (popupWidth / 2) + 'px',
-            top: rect.top + window.scrollY - popupHeight + 'px'
-          }
+          this.highlightLeft = rect.left + window.scrollX + (rect.width / 2) - (popupWidth / 2)
+          this.highlightTop = rect.top + window.scrollY - popupHeight
         },
         submitHighlight() {
           $.post(
-            '/highlights',
-            JSON.stringify({highlight: {substring: window.getSelection().toString()}})
+            '/papers/' + this.paperId + '/highlights',
+            JSON.stringify(
+              {
+                highlight: {
+                  substring: window.getSelection().toString()
+                }
+              }
+            )
           )
         }
       }
