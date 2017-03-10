@@ -108,16 +108,36 @@
           this.highlightTop = rect.top + window.scrollY - popupHeight
         },
         submitHighlight() {
-          $.post(
-            '/papers/' + this.paperId + '/highlights',
-            JSON.stringify(
-              {
-                highlight: {
-                  substring: window.getSelection().toString()
-                }
+          var highlightApp = this
+          var selection = window.getSelection()
+          var selectionText = selection.toString()
+
+          $.ajax({
+            type:'POST',
+            url: '/papers/' + this.paperId + '/highlights',
+            data: {
+              highlight: {substring: selectionText}
+            },
+            // This "complete" syntax is only necessary because jQuery
+            // doesn't understand the "head :created" response. It needs to
+            // parse a json response for .done() to function correctly.
+            complete: function(e) {
+              if (e.status === 201) {
+                var range = selection.getRangeAt(0)
+                var highlightMark = document.createElement('mark')
+
+                highlightMark.appendChild(
+                  document.createTextNode(selectionText)
+                )
+
+                range.deleteContents()
+                range.insertNode(highlightMark)
+              } else {
+                console.log('Highlight creation failed with substring: "' + selectionText + '"')
               }
-            )
-          )
+              highlightApp.showPopupFlag = false
+            }
+          })
         }
       }
     })
