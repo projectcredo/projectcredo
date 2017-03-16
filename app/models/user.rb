@@ -18,6 +18,8 @@ class User < ApplicationRecord
   has_many :authored_lists, class_name: 'List'
   has_many :list_memberships, dependent: :destroy
   has_many :lists, through: :list_memberships do
+  has_many :activies, dependent: :destroy
+  has_many :notifications, dependent: :destroy
     # Adds owner id to lists when created through join table
     def add_user_id attributes
       if attributes.is_a?(Array)
@@ -85,7 +87,7 @@ class User < ApplicationRecord
   private
 
   def subscribe_user_to_all_users_list
-    if Rails.env.production? && !ENV['IS_REVIEW_APP'] 
+    if Rails.env.production? && !ENV['IS_REVIEW_APP']
       gb = Gibbon::Request.new
       gb.lists(ENV['ALLUSERS_LIST_ID']).members.create(body: {email_address: self.email, status: "subscribed", merge_fields: {USERNAME: self.username}})
     end
