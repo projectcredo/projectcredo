@@ -19,14 +19,14 @@ ActiveRecord::Schema.define(version: 20170316162749) do
   create_table "activities", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "activity_type"
-    t.integer  "reference_id"
+    t.integer  "addable_id"
     t.string   "actable_type"
     t.integer  "actable_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["actable_type", "actable_id"], name: "index_activities_on_actable_type_and_actable_id", using: :btree
     t.index ["activity_type", "user_id"], name: "index_activities_on_activity_type_and_user_id", using: :btree
-    t.index ["user_id", "actable_id", "reference_id"], name: "index_activities_on_user_id_and_actable_id_and_reference_id", using: :btree
+    t.index ["user_id", "actable_id", "addable_id"], name: "index_activities_on_user_id_and_actable_id_and_addable_id", using: :btree
   end
 
   create_table "api_import_responses", force: :cascade do |t|

@@ -3,7 +3,7 @@ class CreateActivities < ActiveRecord::Migration[5.0]
     create_table :activities do |t|
       t.integer :user_id
       t.string :activity_type
-      t.integer :reference_id
+      t.integer :addable_id
       t.string :actable_type
       t.integer :actable_id
 
@@ -12,6 +12,6 @@ class CreateActivities < ActiveRecord::Migration[5.0]
 
     add_index  :activities, [:activity_type, :user_id]
     add_index  :activities, [:actable_type, :actable_id]
-    add_index  :activities, [:user_id, :actable_id, :reference_id]
+    add_index  :activities, [:user_id, :actable_id, :addable_id]
   end
 end
