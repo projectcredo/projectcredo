@@ -1,4 +1,21 @@
 <% if user_signed_in? %>
+  <%
+    notifications = current_user.notifications
+    active = notifications.length > 0
+
+  %>
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle notification-button <%= 'notifications' if active %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <%= "(#{current_user.notifications.length})" if active %> <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <% notifications.each do |n| %>
+        <li><a href="#">
+          <%= "#{n.activity.user.username} #{n.activity.activity_type} #{n.activity.actable.paper.title} to #{n.activity.actable.list.name}"  %>
+        </a></li>
+      <% end %>
+    </ul>
+  </li>
   <li><%= link_to 'Edit account', edit_user_registration_path %></li>
   <li><%= link_to 'Sign out', destroy_user_session_path, method: 'delete' %></li>
 <% else %>

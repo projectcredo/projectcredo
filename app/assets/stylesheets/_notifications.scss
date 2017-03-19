@@ -1,0 +1,13 @@
+.notification-button {
+  &:before  {
+    font-family: "Glyphicons Halflings";
+    content: "\e123";
+  }
+
+}
+
+.notifications {
+    &:before  {
+    color: $brand-primary;
+  }
+}
