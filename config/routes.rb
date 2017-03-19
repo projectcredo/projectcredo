@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     resource :vote, controller: 'comments/votes', only: [:create, :destroy]
   end
 
+  resources :notifications, only: [:index]
+
   scope ':username' do
     resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists'
     get ':user_list_id/:id' => 'references#show', as: :user_list_reference
