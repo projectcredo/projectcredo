@@ -66,6 +66,10 @@ class User < ApplicationRecord
     lists.where('list_memberships.role' => :owner).distinct
   end
 
+  def unread_notifications
+    notifications.where(has_read: false)
+  end
+
   before_save { self.email.downcase! if self.email }
   after_create :create_homepage
   after_create :subscribe_user_to_all_users_list
