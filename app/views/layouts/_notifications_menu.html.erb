@@ -10,15 +10,10 @@
     <li class="divider"></li>
     <div class="notifications-wrapper">
       <% current_user.notifications.each do |n| %>
-        <div class="notification-item">
-          <b><%= n.activity.user.username %></b>
-          <%= "#{n.activity.activity_type} '#{truncate(n.activity.actable.paper.title)}' to" %>
-          <b><%= "'#{n.activity.actable.list.name}'" %></b>
-        </div>
-        <li class="divider"></li>
+        <%= render 'layouts/notification', n: n %>
       <% end %>
       <div class="notification-item">
-        <a>see all</a>
+        <%= link_to "see all", notifications_path %>
       </div>
     </div>
   </ul>

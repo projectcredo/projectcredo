@@ -1,1 +1,12 @@
-<%= @notifications %>
+<h3>Notifications</h3>
+<div class="row">
+  <div class="col-md-6">
+    <ul class="notification-index-list">
+      <div>
+        <% @notifications.each do |n| %>
+          <%= render 'layouts/notification', n: n %>
+        <% end %>
+      </div>
+    </ul>
+  </div>
+</div>

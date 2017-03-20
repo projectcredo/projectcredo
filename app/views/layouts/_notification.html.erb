@@ -1,0 +1,8 @@
+<div class="notification-item">
+  <% list = n.activity.actable.list %>
+  <b><%= n.activity.user.username %></b>
+  <%= "#{n.activity.activity_type} '#{truncate(n.activity.actable.paper.title)}' to" %>
+  <b><%= link_to "'#{list.name}'", user_list_path(list.owner, list) %></b>
+  <div class="notification-time"><%= "#{time_ago_in_words n.created_at} ago" %></div>
+</div>
+<li class="notification-divider"></li>
