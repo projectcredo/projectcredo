@@ -3,7 +3,7 @@
   <div class="col-md-6">
     <ul class="notification-index-list">
       <div>
-        <% @notifications.each do |n| %>
+        <% @notifications.reverse.each do |n| %>
           <%= render 'layouts/notification', n: n %>
         <% end %>
       </div>

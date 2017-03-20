@@ -9,7 +9,7 @@
     <div class="notification-heading"><h4 class="menu-title">Notifications</h4></div>
     <li class="divider"></li>
     <div class="notifications-wrapper">
-      <% current_user.notifications.each do |n| %>
+      <% current_user.notifications.reverse.each do |n| %>
         <%= render 'layouts/notification', n: n %>
       <% end %>
       <div class="notification-item">
