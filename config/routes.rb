@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   end
 
   resources :notifications, only: [:index]
+  get '/read_notifications' => 'notifications#read_notifications', as:'read_notifications'
 
   scope ':username' do
     resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists'

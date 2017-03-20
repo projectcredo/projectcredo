@@ -1,20 +1,14 @@
-<%
-  active = current_user.unread_notifications.length > 0
-%>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle notification-button <%= 'unread-notifications' if active %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-    <%= "(#{current_user.unread_notifications.length})" if active %> <span class="caret"></span>
-  </a>
+  <%= render 'layouts/notification_button' %>
   <ul class="dropdown-menu notifications-menu">
     <div class="notification-heading"><h4 class="menu-title">Notifications</h4></div>
-    <li class="divider"></li>
     <div class="notifications-wrapper">
       <% current_user.notifications.reverse.each do |n| %>
         <%= render 'layouts/notification', n: n %>
       <% end %>
-      <div class="notification-item">
-        <%= link_to "see all", notifications_path %>
-      </div>
+    </div>
+    <div class="notification-footer">
+      <%= link_to "see all", notifications_path %>
     </div>
   </ul>
 </li>
