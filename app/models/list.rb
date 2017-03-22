@@ -47,6 +47,7 @@ class List < ApplicationRecord
     end
   end
   has_many :comments, as: :commentable
+  has_many :activites, as: :actable
 
   # Validations
   validates :name,

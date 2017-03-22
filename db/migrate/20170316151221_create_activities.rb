@@ -3,6 +3,7 @@ class CreateActivities < ActiveRecord::Migration[5.0]
     create_table :activities do |t|
       t.integer :user_id
       t.string :activity_type
+      t.string :addable_type
       t.integer :addable_id
       t.string :actable_type
       t.integer :actable_id

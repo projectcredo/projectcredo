@@ -30,7 +30,7 @@ class ReferencesController < ApplicationController
       else
         reference = Reference.create(list_id: list.id, paper_id: paper.id, user_id: current_user.id)
         flash['notice'] = "You added '#{paper.title}' to '#{list.name}'"
-        activity = create_activity(actable: reference, activity_type: "added", addable: reference.paper)
+        activity = create_activity(actable: reference.list, activity_type: "added", addable: reference)
         create_notifications(users: list.members, activity: activity)
       end
     else

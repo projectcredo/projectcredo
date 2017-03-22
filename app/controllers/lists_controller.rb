@@ -1,4 +1,7 @@
 class ListsController < ApplicationController
+  include ActivitiesHelper
+  include NotificationsHelper
+
   before_action :ensure_current_user, except: [:index]
 
   # GET /lists

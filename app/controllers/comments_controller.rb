@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     respond_to do |format|
       if @comment.save
-        activity = create_activity(actable: @comment.commentable, activity_type: "commented on")
+        activity = create_activity(actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
         create_notifications(users: @comment.commentable.members, activity: activity) if @comment.commentable_type == 'List'
 
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }

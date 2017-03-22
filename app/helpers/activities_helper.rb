@@ -3,6 +3,7 @@ module ActivitiesHelper
     Activity.create(user_id: current_user.id,
                         activity_type: activity_type,
                         addable_id: if addable.nil? then nil else addable.id end,
+                        addable_type: if addable.nil? then nil else addable.class.name end,
                         actable_type: actable.class.name,
                         actable_id: actable.id)
   end
