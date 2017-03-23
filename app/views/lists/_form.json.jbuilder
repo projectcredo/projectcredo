@@ -8,7 +8,7 @@ json.members do
     json.username User.find(member.user_id).username
     json.role member.role
   end
-  json.array!(User.where.not(id: @list.list_memberships.pluck(:user_id))) do |nonmember|
+  json.array!(User.where.not(id: @list.list_memberships.pluck(:user_id)) - [current_user]) do |nonmember|
     json.username nonmember.username
     json.role 'nonmember'
   end
