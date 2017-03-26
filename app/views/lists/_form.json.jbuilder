@@ -1,5 +1,5 @@
 json.current_user current_user.username
-json.can_moderate (if @list.persisted? then current_user.can_moderate?(@list) else true end)
+json.can_moderate (if @list.persisted? then current_user.can_edit?(@list) else true end)
 json.access @list.access
 json.owner (if @list.persisted? then @list.owner.username else current_user.username end)
 
