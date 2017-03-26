@@ -3,7 +3,7 @@ json.can_moderate (if @list.persisted? then current_user.can_edit?(@list) else t
 json.access @list.access
 json.owner (if @list.persisted? then @list.owner.username else current_user.username end)
 
-json.members do
+json.all_users do
   json.array!(@list.list_memberships.where.not(role: "owner"))  do |member|
     json.username User.find(member.user_id).username
     json.role member.role
