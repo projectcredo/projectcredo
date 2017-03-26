@@ -25,17 +25,18 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    memberships = params[:list].delete(:list_memberships_attributes)
+    members = params[:list].delete(:list_members)
     @list = current_user.lists.build(list_params)
 
     respond_to do |format|
       if @list.save
         current_user.homepage.lists << @list
-        if memberships
-          memberships.each_value do |m|
-            user = User.find_by(username: m[:username])
-            role = m[:role]
-            @list.list_memberships.create(user: user, role: role)
+        if members
+          members.map do |m|
+            @list.list_memberships.create(
+              user: User.find_by(username: m),
+              role: :contributor
+            )
           end
         end
 
@@ -52,6 +53,6 @@ class ListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
       params.require(:list).permit(:name, :description, :tag_list, :access,
-                                    list_memberships_attributes: [ :username, :role ])
+                                    list_members: [ :username, :role ])
     end
 end

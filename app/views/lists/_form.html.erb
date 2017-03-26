@@ -110,7 +110,14 @@
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit button_name, class: "btn btn-primary" %>
+          <input
+            type="submit"
+            class="btn btn-primary"
+            name="commit"
+            value= <%= button_name %>
+            :data-confirm="currentUserRemovedConfirm"
+            data-disable-with="Update List"
+          >
           <%= link_to 'cancel',
             if list.id then user_list_path(list.user, list) else root_path end
           %>
@@ -164,7 +171,7 @@
         currentUser: '',
         canModerate: false,
         owner: '',
-        members: []
+        allUsers: []
       },
       computed: {
         isPublic() {
@@ -178,10 +185,17 @@
           }
         },
         contributors() {
-          return this.members.filter(member => member.role == 'contributor')
+          return this.allUsers.filter(member => member.role == 'contributor')
         },
         nonMembers() {
-          return this.members.filter(member => member.role == 'nonmember')
+          return this.allUsers.filter(member => member.role == 'nonmember')
+        },
+        currentUserRemovedConfirm() {
+          if (!this.nonMembers.some(member => member.username == this.currentUser) || this.currentUser == this.owner) {
+            return null
+          } else {
+            return "Are you sure you want to remove yourself as a contributor?"
+          }
         }
       },
       methods: {
@@ -199,7 +213,7 @@
         var editList = this
         $.get(window.location.href + '.json')
           .done(function(data) {
-            editList.members = data.members
+            editList.allUsers = data.all_users
             editList.canModerate = data.can_moderate
             editList.currentUser = data.current_user
             editList.listAccess = data.access
