@@ -13,6 +13,7 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "variables";
 @import "cards";
 @import "navbar";
 @import "pin";
@@ -26,6 +27,7 @@
 @import "about";
 @import "how_to";
 @import "sidebar";
+
 
 body {
   padding: 4em 1em;

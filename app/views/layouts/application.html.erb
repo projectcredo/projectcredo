@@ -26,7 +26,7 @@
   </head>
 
   <body data-spy="scroll" data-target=".scrollspy" class="<%= @body_class %>">
-    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <nav class="navbar navbar-fixed-top navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -35,12 +35,24 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <%= link_to 'Project Credo', root_path, class:"navbar-brand" %>
+          <%= link_to root_path do %>
+            <div class="navbar-brand">
+              Project<strong>Credo</strong>
+            </div>
+          <%end%>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li><%= link_to 'Home', root_path %></li>
           </ul>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="q">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search search-icon"></i></button>
+                </div>
+            </div>
+          </form>
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><%= link_to 'Sponsor Us','https://www.patreon.com/projectcredo', target: '_blank' %></li>
             <li><%= link_to 'How To', how_to_path %></li>
