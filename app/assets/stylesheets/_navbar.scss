@@ -95,7 +95,7 @@
       $icon-size: 16px;
       width: $icon-size;
       height: $icon-size;
-      background: transparent asset-url('search-icon.png') no-repeat;
+      background: transparent asset-url("search-icon.png") no-repeat;
       background-size: $icon-size $icon-size;
       border: none;
       position: absolute;

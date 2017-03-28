@@ -45,19 +45,19 @@
           <ul class="nav navbar-nav">
             <li><%= link_to 'Home', root_path %></li>
           </ul>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" name="q">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search search-icon"></i></button>
-                </div>
-            </div>
-          </form>
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><%= link_to 'Sponsor Us','https://www.patreon.com/projectcredo', target: '_blank' %></li>
             <li><%= link_to 'How To', how_to_path %></li>
             <li><%= link_to 'About', about_path %></li>
             <%= render 'layouts/user_session_links' %>
+          </ul>
+          <ul class="navbar-form navbar-search-form">
+            <form role="search">
+              <span class="question_search">
+                <input type="text" class="form-control" placeholder="Search" name="q">
+                <button class="btn btn-default btn-search" type="submit"></button>
+              </span>
+            </form>
           </ul>
         </div>
       </div>
