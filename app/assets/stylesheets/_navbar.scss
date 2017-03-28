@@ -55,6 +55,15 @@
   }
 }
 
+.navbar-left {
+  position: relative;
+  z-index: 101;
+
+  .a {
+    visited: #fff;
+  }
+}
+
 .navbar-form {
   min-height: $navbar-height - 2;
   line-height: $navbar-height - 2;
