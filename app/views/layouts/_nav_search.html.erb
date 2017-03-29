@@ -1,0 +1,9 @@
+<ul class="navbar-form navbar-search-form">
+  <span class="searchbar">
+    <%= form_tag(lists_path, method: "get") %>
+    <form role="search">
+      <input type="text" class="form-control" placeholder="Search" name="q">
+      <button class="btn btn-default btn-search" type="submit"></button>
+    </form>
+  </span>
+</ul>
