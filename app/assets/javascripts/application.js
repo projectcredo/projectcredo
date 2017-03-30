@@ -79,14 +79,13 @@ var searchLists = new Vue({
       return Array.from(new Set(allTags))
     },
     matchQuery: function() {
-      return this.query.toLowerCase()
+      return this.query.split('+').join(' ');;
     },
-    fuseResult: function() {
+    fuseResults: function() {
       var options = {
+        include: ["matches"],
         shouldSort: true,
-        threshold: 0.6,
-        location: 3,
-        distance: 100,
+        tokenize: true,
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
@@ -96,7 +95,7 @@ var searchLists = new Vue({
       };
 
       var fuse = new Fuse(this.allLists, options);
-      return fuse.search(this.query)
+      return fuse.search(this.matchQuery)
     },
     matchingTags: function() {
       return this.tags.filter(function(tag) {
