@@ -81,6 +81,23 @@ var searchLists = new Vue({
     matchQuery: function() {
       return this.query.toLowerCase()
     },
+    fuseResult: function() {
+      var options = {
+        shouldSort: true,
+        threshold: 0.6,
+        location: 3,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "name",
+          "owner"
+        ]
+      };
+
+      var fuse = new Fuse(this.allLists, options);
+      return fuse.search(this.query)
+    },
     matchingTags: function() {
       return this.tags.filter(function(tag) {
         return tag.toLowerCase().includes(searchLists.matchQuery)
