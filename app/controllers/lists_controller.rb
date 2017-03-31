@@ -5,9 +5,13 @@ class ListsController < ApplicationController
   # GET /lists.json
   def index
     if current_user
-      lists = current_user.visible_lists
-      @pinned_lists = current_user.visible_lists.merge(current_user.homepage.lists.distinct)
-      @unpinned_lists = current_user.visible_lists.where.not(id: @pinned_lists.pluck(:id))
+      @visible_lists =
+        current_user.visible_lists.each do |list|
+          list.pinned = current_user.homepage.lists.include?(list)
+        end
+
+      @pinned_lists = @visible_lists
+      @unpinned_lists = @visible_lists
     else
       lists = @unpinned_lists = List.publicly_visible
     end

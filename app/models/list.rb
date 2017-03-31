@@ -6,6 +6,7 @@ class List < ApplicationRecord
   # Attributes
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
   enum access: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
+  attr_accessor :pinned
 
   # Scopes
   default_scope { joins(:list_memberships).order(cached_votes_up: :desc, updated_at: :desc) }

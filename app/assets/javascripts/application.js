@@ -53,6 +53,7 @@ debounce = function(func, wait, immediate) {
 
 var searchLists = new Vue({
   data: {
+    allLists: [],
     unpinnedLists: [],
     pinnedLists: [],
     query: '',
@@ -60,13 +61,9 @@ var searchLists = new Vue({
     placeholder: "Search for a list..."
   },
   computed: {
-    allLists: function () {
-      return this.unpinnedLists.concat(this.pinnedLists)
-    },
     allListsById: function() {
       return this.allLists.reduce(function(memo, list) {
         var listId = list.id
-        delete list.id
         memo[listId+''] = list
         return memo
       }, {})
@@ -83,14 +80,16 @@ var searchLists = new Vue({
     },
     fuseResults: function() {
       var options = {
-        include: ["matches"],
+        id: "id",
         shouldSort: true,
         tokenize: true,
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
           "name",
-          "owner"
+          "owner",
+          "tag_list",
+          "description"
         ]
       };
 
@@ -107,12 +106,7 @@ var searchLists = new Vue({
     showList: function(id) {
       if (this.query === '') {return true}
 
-      var list = this.allListsById[id]
-      var searchablAttrs = list.tag_list.concat(list.name, list.description, list.owner)
-      // Only unique values
-      searchablAttrs = Array.from(new Set(searchablAttrs))
-
-      return searchablAttrs.toString().toLowerCase().includes(this.query)
+      return this.fuseResults.includes(id)
     },
     getResults: function() {
       if (this.query === '') {

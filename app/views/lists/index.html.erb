@@ -66,8 +66,7 @@
 
 <% content_for(:page_app) do %>
   <script>
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @unpinned_lists) %>
-    searchLists.pinnedLists = <%= raw render('lists/lists.json', lists: @pinned_lists) %>
+    searchLists.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
     var query = window.location.search.split("&q=")[1]
     searchLists.query = (query == undefined) ? "" : query
     searchLists.$mount('#search-lists')
