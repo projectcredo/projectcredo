@@ -60,14 +60,12 @@ var searchLists = new Vue({
     results: [],
     placeholder: "Search for a list..."
   },
+  filters: {
+    truncate(string, length) {
+      return string.substring(0, length) + (string.length < length ? '' : '...');
+    }
+  },
   computed: {
-    allListsById: function() {
-      return this.allLists.reduce(function(memo, list) {
-        var listId = list.id
-        memo[listId+''] = list
-        return memo
-      }, {})
-    },
     tags: function() {
       var allTags = this.allLists.reduce(function(memo, list) {
         return memo.concat(list.tag_list)
@@ -76,13 +74,14 @@ var searchLists = new Vue({
       return Array.from(new Set(allTags))
     },
     matchQuery: function() {
-      return this.query.split('+').join(' ');;
+      return this.query.split('+').join(' ');
     },
     fuseResults: function() {
+      if (this.query === '') {return this.allLists}
       var options = {
-        id: "id",
-        shouldSort: true,
         tokenize: true,
+        shouldSort: true,
+        threshold: 0.4,
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
@@ -94,7 +93,7 @@ var searchLists = new Vue({
       };
 
       var fuse = new Fuse(this.allLists, options);
-      return fuse.search(this.matchQuery)
+      return fuse.search(this.matchQuery);
     },
     matchingTags: function() {
       return this.tags.filter(function(tag) {

@@ -1,0 +1,5 @@
+.tag {
+  @extend .btn, .btn-default, .btn-xs;
+  font-size: 12px;
+  margin-right: 2px;
+}

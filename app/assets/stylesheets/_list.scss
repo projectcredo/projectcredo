@@ -47,6 +47,34 @@
 
 .list-index {
   background-color: $gray-lighter;
+
+  .list-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .list-body {
+    font-size: 16px;
+  }
+
+  .timestamp {
+    font-size: 12px;
+    color: $gray-light;
+  }
+
+  .list-footer {
+    margin-top: 20px;
+    color: $gray-light;
+  }
+
+  .comment-count {
+      &:after    {
+      font-family: "Glyphicons Halflings";
+      content: "\e111";
+      font-size: 12px;
+
+    }
+  }
 }
 
 .list-group.autocomplete {

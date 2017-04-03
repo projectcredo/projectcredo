@@ -41,27 +41,39 @@
           <h2>Create a new list</h2>
         <% end %>
       </div>
-      <%= render @pinned_lists %>
-    </div>
+      <%# render @visible_lists %>
+      <div v-for="result in fuseResults">
 
-  <% end %>
+        <div class="col-md-3 list-card">
+          <div class="panel panel-default">
+            <div class="panel-body">
 
-  <% if @unpinned_lists.present? %>
-    <div class="row">
-      <div class="col-md-12">
-        <h1>Lists</h1>
+              <a :href="result.owner" class="timestamp">
+                {{result.owner}} updated {{result.updated_at}} ago
+              </a>
+              <div><a v-for="tag in result.tag_list" class="tag">
+                {{tag}}
+              </a></div>
+              <div class="list-title"><a :href="result.link">{{result.name}}</a></div>
+
+              <p class="list-body">{{result.description, 300 | truncate }}</p>
+
+              <div class="list-footer">
+                <span class="comment-count">
+                  {{result.comments_count}}
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="cards row">
-      <div class="col-md-3">
-        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-          <h2>Create a new list</h2>
-        <% end %>
-      </div>
-      <%= render @unpinned_lists %>
-    </div>
+
   <% end %>
+
 </div>
 
 <% content_for(:page_app) do %>
