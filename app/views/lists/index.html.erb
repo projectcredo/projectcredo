@@ -59,6 +59,17 @@
               <p class="list-body">{{result.description, 300 | truncate }}</p>
 
               <div class="list-footer">
+
+                <a
+                  class="list-pin">
+                  {{result.pins}}
+                </a>
+
+                <a
+                  class="list-vote">
+                  {{result.likes}}
+                </a>
+
                 <span class="comment-count">
                   {{result.comments_count}}
                 </span>

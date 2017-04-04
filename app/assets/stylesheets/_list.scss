@@ -65,16 +65,36 @@
   .list-footer {
     margin-top: 20px;
     color: $gray-light;
-  }
 
-  .comment-count {
+    .list-pin {
+      color: $gray-light;
+      margin-right: 20px;
+      &:after  {
+        font-family: "Glyphicons Halflings";
+        content: "\e146";
+        font-size: 12px;
+      }
+    }
+
+    .list-vote {
+      color: $gray-light;
+      margin-right: 20px;
+      &:after  {
+        font-family: "Glyphicons Halflings";
+        content: "\e005";
+        font-size: 12px;
+      }
+    }
+
+    .comment-count {
       &:after    {
-      font-family: "Glyphicons Halflings";
-      content: "\e111";
-      font-size: 12px;
-
+        font-family: "Glyphicons Halflings";
+        content: "\e111";
+        font-size: 12px;
+      }
     }
   }
+
 }
 
 .list-group.autocomplete {
