@@ -59,17 +59,22 @@
               <p class="list-body">{{result.description, 300 | truncate }}</p>
 
               <div class="list-footer">
-
                 <a
-                  class="list-pin">
+                  class="list-pin"
+                  v-bind:class="{'toggled': result.pinned}"
+                  v-on:click="togglePin(result)"
+                  remote="true"
+                >
                   {{result.pins}}
                 </a>
-
                 <a
-                  class="list-vote">
+                  class="list-vote"
+                  v-bind:class="{'toggled': result.liked}"
+                  v-on:click="toggleLike(result)"
+                  remote="true"
+                >
                   {{result.likes}}
                 </a>
-
                 <span class="comment-count">
                   {{result.comments_count}}
                 </span>

@@ -121,6 +121,70 @@ var searchLists = new Vue({
     selectResult: function(result) {
       this.query = result
       this.results = []
+    },
+    likeList: function(list) {
+      var params = {
+        id: list.id,
+        type: "list"
+      };
+      $.ajax({
+        url: list.like_path,
+        type: 'POST',
+        data: params
+      })
+    },
+    unlikeList: function(list) {
+      var params = {
+        id: list.id,
+        type: "list"
+      };
+      $.ajax({
+        url: list.like_path,
+        type: 'DELETE',
+        data: params
+      })
+    },
+    toggleLike: function(list) {
+      if(list.liked) {
+        this.unlikeList(list)
+        list.liked = false
+        list.likes = list.likes - 1
+      } else {
+        this.likeList(list)
+        list.liked = true
+        list.likes = list.likes + 1
+      }
+    },
+    pinList: function(list) {
+      var params = {
+        id: list.slug
+      };
+      $.ajax({
+        url: "/pins",
+        type: 'POST',
+        data: params
+      })
+    },
+    unpinList: function(list) {
+      var params = {
+        id: list.slug
+      };
+      $.ajax({
+        url: "/pins/" + list.slug,
+        type: 'DELETE',
+        data: params
+      })
+    },
+    togglePin: function(list) {
+      if(list.pinned) {
+        this.unpinList(list)
+        list.pinned = false
+        list.pins = list.pins - 1
+      } else {
+        this.pinList(list)
+        list.pinned = true
+        list.pins = list.pins + 1
+      }
     }
   }
 });
