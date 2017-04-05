@@ -13,7 +13,7 @@ class ListsController < ApplicationController
       @pinned_lists = @visible_lists
       @unpinned_lists = @visible_lists
     else
-      lists = @unpinned_lists = List.publicly_visible
+      @visible_lists = List.publicly_visible
     end
   end
 
