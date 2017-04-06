@@ -34,12 +34,52 @@
   </h1>
 
   <div class="cards row">
-    <%= render partial: 'lists/list', collection: @lists %>
+    <div v-for="result in fuseResults">
+      <div class="col-md-3 list-card">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <a :href="result.owner" class="timestamp">
+              {{result.owner}} updated {{result.updated_at}} ago
+            </a>
+            <div><a v-for="tag in result.tag_list" class="tag">
+              {{tag}}
+            </a></div>
+
+            <div class="list-title"><a :href="result.link">{{result.name}}</a></div>
+
+            <p class="list-body">{{result.description, 300 | truncate }}</p>
+
+            <div class="list-footer">
+              <a
+                class="list-pin"
+                v-bind:class="{'toggled': result.pinned}"
+                v-on:click="togglePin(result)"
+                remote="true"
+              >
+                {{result.pins}}
+              </a>
+              <a
+                class="list-vote"
+                v-bind:class="{'toggled': result.liked}"
+                v-on:click="toggleLike(result)"
+                remote="true"
+              >
+                {{result.likes}}
+              </a>
+              <span class="comment-count">
+                {{result.comments_count}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 <% content_for(:page_app) do %>
   <script>
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @lists) %>
+    searchLists.signedIn = <%= user_signed_in? %>
+    searchLists.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
     searchLists.$mount('#search-lists')
   </script>
 <% end %>
