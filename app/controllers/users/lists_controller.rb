@@ -8,11 +8,11 @@ class Users::ListsController < ApplicationController
   def index
     if current_user
       @visible_lists =
-        @user.lists.visible_to(current_user).each do |list|
+        @user.visible_lists.ranked.each do |list|
           list.pinned = current_user.homepage.lists.include?(list)
         end
     else
-      @visible_lists = @user.lists.publicly_visible
+      @visible_lists = @user.lists.publicly_visible.ranked
     end
   end
 

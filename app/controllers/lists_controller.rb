@@ -10,7 +10,7 @@ class ListsController < ApplicationController
           list.pinned = current_user.homepage.lists.include?(list)
         end
     else
-      @visible_lists = List.publicly_visible
+      @visible_lists = List.publicly_visible.ranked
     end
   end
 
