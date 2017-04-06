@@ -35,44 +35,11 @@
 
   <div class="cards row">
     <div v-for="result in fuseResults">
-      <div class="col-md-3 list-card">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <a :href="result.owner" class="timestamp">
-              {{result.owner}} updated {{result.updated_at}} ago
-            </a>
-            <div><a v-for="tag in result.tag_list" class="tag">
-              {{tag}}
-            </a></div>
-
-            <div class="list-title"><a :href="result.link">{{result.name}}</a></div>
-
-            <p class="list-body">{{result.description, 300 | truncate }}</p>
-
-            <div class="list-footer">
-              <a
-                class="list-pin"
-                v-bind:class="{'toggled': result.pinned}"
-                v-on:click="togglePin(result)"
-                remote="true"
-              >
-                {{result.pins}}
-              </a>
-              <a
-                class="list-vote"
-                v-bind:class="{'toggled': result.liked}"
-                v-on:click="toggleLike(result)"
-                remote="true"
-              >
-                {{result.likes}}
-              </a>
-              <span class="comment-count">
-                {{result.comments_count}}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <list-card
+        :list="result"
+        :signed-in="signedIn"
+      >
+      </list-card>
     </div>
   </div>
 

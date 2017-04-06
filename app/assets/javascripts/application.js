@@ -134,7 +134,7 @@ Vue.component("list-card", {
         type: "list"
       };
       $.ajax({
-        url: list.like_path +'.js',
+        url: list.like_path,
         type: 'POST',
         data: params,
       })
@@ -149,7 +149,7 @@ Vue.component("list-card", {
         type: "list"
       };
       $.ajax({
-        url: list.like_path  +'.js',
+        url: list.like_path,
         type: 'DELETE',
         data: params,
       })
@@ -174,7 +174,7 @@ Vue.component("list-card", {
         id: list.slug
       };
       $.ajax({
-        url: "/pins.js",
+        url: "/pins",
         type: 'POST',
         data: params
       })
