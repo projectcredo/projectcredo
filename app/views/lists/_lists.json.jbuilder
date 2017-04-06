@@ -4,7 +4,7 @@ json.array!(lists) do |list|
   json.link user_list_path(list.owner, list)
   json.tag_list list.tag_list
   json.comments_count list.comments.map {|c| c.self_and_descendants.length}.inject(0,&:+)
-  json.likes list.get_likes.size
+  json.likes list.cached_votes_up
   json.liked user_signed_in? && current_user.voted_for?(list)
   json.like_path polymorphic_path([list, :vote])
   json.pins list.homepages.size

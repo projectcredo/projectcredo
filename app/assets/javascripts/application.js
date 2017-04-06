@@ -226,20 +226,20 @@ Vue.component("list-card", {
 
           <div class="list-footer">
             <a
-              class="list-pin"
-              v-bind:class="{'toggled': list.pinned}"
-              v-on:click="togglePin(list)"
-              remote="true"
-            >
-              {{list.pins}}
-            </a>
-            <a
               class="list-vote"
               v-bind:class="{'toggled': list.liked}"
               v-on:click="toggleLike(list)"
               remote="true"
             >
               {{list.likes}}
+            </a>
+            <a
+              class="list-pin"
+              v-bind:class="{'toggled': list.pinned}"
+              v-on:click="togglePin(list)"
+              remote="true"
+            >
+              {{list.pins}}
             </a>
             <span class="comment-count">
               {{list.comments_count}}

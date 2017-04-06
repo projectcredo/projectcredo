@@ -6,12 +6,9 @@ class ListsController < ApplicationController
   def index
     if current_user
       @visible_lists =
-        current_user.visible_lists.each do |list|
+        current_user.visible_lists.ranked.each do |list|
           list.pinned = current_user.homepage.lists.include?(list)
         end
-
-      @pinned_lists = @visible_lists
-      @unpinned_lists = @visible_lists
     else
       @visible_lists = List.publicly_visible
     end
