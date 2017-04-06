@@ -69,7 +69,7 @@
 
     a:hover{
       text-decoration: none;
-      color: #00d1b2;
+      color: $primary-color;
     }
 
     .list-pin {
@@ -98,7 +98,7 @@
     }
 
    .toggled {
-      color: #00d1b2;
+      color: $primary-color;
     }
   }
 

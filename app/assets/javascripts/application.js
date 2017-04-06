@@ -53,6 +53,7 @@ debounce = function(func, wait, immediate) {
 
 var searchLists = new Vue({
   data: {
+    signedIn: false,
     allLists: [],
     unpinnedLists: [],
     pinnedLists: [],
@@ -128,9 +129,13 @@ var searchLists = new Vue({
         type: "list"
       };
       $.ajax({
-        url: list.like_path,
+        url: list.like_path +'.js',
         type: 'POST',
-        data: params
+        data: params,
+      })
+      .done(function(){
+        list.liked = true
+        list.likes = list.likes + 1
       })
     },
     unlikeList: function(list) {
@@ -139,20 +144,24 @@ var searchLists = new Vue({
         type: "list"
       };
       $.ajax({
-        url: list.like_path,
+        url: list.like_path  +'.js',
         type: 'DELETE',
-        data: params
+        data: params,
+      })
+      .done(function(){
+        list.liked = false
+        list.likes = list.likes - 1
       })
     },
     toggleLike: function(list) {
-      if(list.liked) {
-        this.unlikeList(list)
-        list.liked = false
-        list.likes = list.likes - 1
+      if(this.signedIn) {
+        if(list.liked) {
+          this.unlikeList(list)
+        } else {
+          this.likeList(list)
+        }
       } else {
-        this.likeList(list)
-        list.liked = true
-        list.likes = list.likes + 1
+        window.location.href = '/users/sign_in';
       }
     },
     pinList: function(list) {
@@ -160,9 +169,13 @@ var searchLists = new Vue({
         id: list.slug
       };
       $.ajax({
-        url: "/pins",
+        url: "/pins.js",
         type: 'POST',
         data: params
+      })
+      .done(function(){
+        list.pinned = true
+        list.pins = list.pins + 1
       })
     },
     unpinList: function(list) {
@@ -174,16 +187,20 @@ var searchLists = new Vue({
         type: 'DELETE',
         data: params
       })
-    },
-    togglePin: function(list) {
-      if(list.pinned) {
-        this.unpinList(list)
+      .done(function(){
         list.pinned = false
         list.pins = list.pins - 1
+      })
+    },
+    togglePin: function(list) {
+      if(this.signedIn) {
+        if(list.pinned) {
+          this.unpinList(list)
+        } else {
+          this.pinList(list)
+        }
       } else {
-        this.pinList(list)
-        list.pinned = true
-        list.pins = list.pins + 1
+        window.location.href = '/users/sign_in';
       }
     }
   }
