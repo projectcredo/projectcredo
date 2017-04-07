@@ -18,6 +18,3 @@
 
 .env
 **/.DS_Store
-
-#Add node_modules to your gitignore because you don’t want to commit those.
-echo '/node_modules' >> .gitignore
