@@ -15,7 +15,7 @@ class Comments::VotesController < ApplicationController
     current_user.unlike @comment
     @comment.order_siblings
     respond_to do |format|
-      format.html { redirect_to :back, notice: 'You like it!' }
+      format.html { redirect_to :back, notice: 'You unlike it!' }
       format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
     end
   end
