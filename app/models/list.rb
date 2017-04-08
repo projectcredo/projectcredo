@@ -6,12 +6,19 @@ class List < ApplicationRecord
   # Attributes
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
   enum access: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
+  attr_accessor :pinned
 
   # Scopes
-  default_scope { joins(:list_memberships).order(cached_votes_up: :desc, updated_at: :desc) }
-  scope :publicly_visible, -> { where(visibility: :public).distinct }
+  scope :ranked, -> {
+    joins(:homepages)
+    .group(:id)
+    .select('lists.*,COUNT( distinct homepages.id) AS pins')
+    .order('lists.cached_votes_up DESC, pins DESC, lists.updated_at DESC')
+  }
+  scope :publicly_visible, -> { joins(:list_memberships).where(visibility: :public).distinct }
   scope :visible_to, ->(user) do
-    where(<<~QUERY
+    joins(:list_memberships)
+    .where(<<~QUERY
         visibility = #{List.visibilities[:public]}
         OR (
           list_memberships.user_id = #{user.id}

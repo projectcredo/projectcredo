@@ -34,12 +34,19 @@
   </h1>
 
   <div class="cards row">
-    <%= render partial: 'lists/list', collection: @lists %>
+    <div v-for="result in fuseResults">
+      <list-card
+        :list="result"
+        :signed-in="signedIn"
+      >
+      </list-card>
+    </div>
   </div>
 
 <% content_for(:page_app) do %>
   <script>
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @lists) %>
+    searchLists.signedIn = <%= user_signed_in? %>
+    searchLists.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
     searchLists.$mount('#search-lists')
   </script>
 <% end %>
