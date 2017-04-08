@@ -24,7 +24,5 @@ module Projectcredo
       g.test_framework      :minitest, spec: true, fixture_replacement: :fabrication
       g.fixture_replacement :fabrication, dir: "test/fabricators"
     end
-
-    config.assets.paths << Rails.root.join('node_modules')
   end
 end
