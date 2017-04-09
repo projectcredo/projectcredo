@@ -55,7 +55,7 @@ debounce = function(func, wait, immediate) {
 Vue.component("list-card", {
   props: ["list", "signedIn"],
   filters: {
-    truncate(string, length) {
+    truncate: function(string, length) {
       return string.substring(0, length) + (string.length < length ? '' : '...');
     }
   },
@@ -141,46 +141,7 @@ Vue.component("list-card", {
       }
     }
   },
-  template: `
-    <div class="col-md-3 list-card">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <a :href="list.owner" class="timestamp">
-            {{list.owner}} updated {{list.updated_at}} ago
-          </a>
-          <div><a v-for="tag in list.tag_list" class="tag">
-            {{tag}}
-          </a></div>
-
-          <div class="list-title"><a :href="list.link">{{list.name}}</a></div>
-
-          <p class="list-body">{{list.description, 300 | truncate }}</p>
-
-          <div class="list-footer">
-            <a
-              class="list-vote"
-              v-bind:class="{'toggled': list.liked}"
-              v-on:click="toggleLike(list)"
-              remote="true"
-            >
-              {{list.likes}}
-            </a>
-            <a
-              class="list-pin"
-              v-bind:class="{'toggled': list.pinned}"
-              v-on:click="togglePin(list)"
-              remote="true"
-            >
-              {{list.pins}}
-            </a>
-            <span class="comment-count">
-              {{list.comments_count}}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  `
+  template: '#list-card'
 })
 
 var searchLists = new Vue({
