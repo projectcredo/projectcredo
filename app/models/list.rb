@@ -10,9 +10,9 @@ class List < ApplicationRecord
 
   # Scopes
   scope :ranked, -> {
-    joins(:homepages)
+    joins("LEFT JOIN homepages_lists ON lists.id = homepages_lists.list_id")
     .group(:id)
-    .select('lists.*,COUNT( distinct homepages.id) AS pins')
+    .select('lists.*,COUNT( distinct homepages_lists.homepage_id) AS pins')
     .order('lists.cached_votes_up DESC, pins DESC, lists.updated_at DESC')
   }
   scope :publicly_visible, -> { joins(:list_memberships).where(visibility: :public).distinct }
