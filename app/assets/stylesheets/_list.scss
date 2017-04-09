@@ -1,23 +1,16 @@
-.list-card {
-  /* These are technically the same, but use both */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
 .new-list {
   color: $gray;
   text-align: center;
-  height: 250px;
-  padding-top: 50px;
+  height: 180px;
+  padding: 15px;
   display: block;
   opacity: 0.6;
+  word-wrap:break-word;
+
+
+  h3 {
+    margin-top: 0;
+  }
 
   &:hover{
     opacity: 1;
@@ -47,6 +40,21 @@
 
 .list-index {
   background-color: $gray-lighter;
+
+  .list-card {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+
+    clear: left;
+  }
 
   .list-title {
     font-size: 14px;
