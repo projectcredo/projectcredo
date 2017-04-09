@@ -28,48 +28,31 @@
     </div>
   </div>
 
-  <% if @pinned_lists.present? %>
-    <div class="row">
-      <div class="col-md-12">
-        <h1>Pinned Lists</h1>
-      </div>
+
+  <div class="cards row">
+    <div class="col-md-3">
+      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
+        <h2>Create a new list</h2>
+      <% end %>
     </div>
 
-    <div class="cards row">
-      <div class="col-md-3">
-        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-          <h2>Create a new list</h2>
-        <% end %>
-      </div>
-      <%= render @pinned_lists %>
+    <div v-for="result in fuseResults">
+      <list-card
+        :list="result"
+        :signed-in="signedIn"
+      >
+      </list-card>
     </div>
 
-  <% end %>
-
-  <% if @unpinned_lists.present? %>
-    <div class="row">
-      <div class="col-md-12">
-        <h1>Lists</h1>
-      </div>
-    </div>
-
-    <div class="cards row">
-      <div class="col-md-3">
-        <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-          <h2>Create a new list</h2>
-        <% end %>
-      </div>
-      <%= render @unpinned_lists %>
-    </div>
-  <% end %>
+  </div>
 </div>
 
 <% content_for(:page_app) do %>
   <%= render 'lists/list_card' %>
   <script>
-    searchLists.unpinnedLists = <%= raw render('lists/lists.json', lists: @unpinned_lists) %>
-    searchLists.pinnedLists = <%= raw render('lists/lists.json', lists: @pinned_lists) %>
-    query = window.location.search.split("&q=")[1]
+    searchLists.signedIn = <%= user_signed_in? %>
+    searchLists.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
+    var query = window.location.search.split("&q=")[1]
     searchLists.query = (query == undefined) ? "" : query
     searchLists.$mount('#search-lists')
   </script>

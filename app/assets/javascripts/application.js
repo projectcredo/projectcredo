@@ -146,24 +146,13 @@ Vue.component("list-card", {
 
 var searchLists = new Vue({
   data: {
-    unpinnedLists: [],
-    pinnedLists: [],
+    signedIn: false,
+    allLists: [],
     query: '',
     results: [],
     placeholder: "Search for a list..."
   },
   computed: {
-    allLists: function () {
-      return this.unpinnedLists.concat(this.pinnedLists)
-    },
-    allListsById: function() {
-      return this.allLists.reduce(function(memo, list) {
-        var listId = list.id
-        delete list.id
-        memo[listId+''] = list
-        return memo
-      }, {})
-    },
     tags: function() {
       var allTags = this.allLists.reduce(function(memo, list) {
         return memo.concat(list.tag_list)
@@ -172,7 +161,26 @@ var searchLists = new Vue({
       return Array.from(new Set(allTags))
     },
     matchQuery: function() {
-      return this.query.toLowerCase()
+      return this.query.split('+').join(' ');
+    },
+    fuseResults: function() {
+      if (this.query === '') {return this.allLists}
+      var options = {
+        tokenize: true,
+        shouldSort: true,
+        threshold: 0.4,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "name",
+          "owner",
+          "tag_list",
+          "description"
+        ]
+      };
+
+      var fuse = new Fuse(this.allLists, options);
+      return fuse.search(this.matchQuery);
     },
     matchingTags: function() {
       return this.tags.filter(function(tag) {
@@ -184,12 +192,7 @@ var searchLists = new Vue({
     showList: function(id) {
       if (this.query === '') {return true}
 
-      var list = this.allListsById[id]
-      var searchablAttrs = list.tag_list.concat(list.name, list.description, list.owner)
-      // Only unique values
-      searchablAttrs = Array.from(new Set(searchablAttrs))
-
-      return searchablAttrs.toString().toLowerCase().includes(this.query)
+      return this.fuseResults.includes(id)
     },
     getResults: function() {
       if (this.query === '') {
@@ -208,4 +211,3 @@ var searchLists = new Vue({
     }
   }
 });
-
