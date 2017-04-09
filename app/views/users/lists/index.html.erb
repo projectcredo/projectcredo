@@ -1,12 +1,13 @@
 <%
   @title = "#{@user.username}'s lists"
-  @full_width = true
+  @full_width = false
   @body_class = "list-index"
 %>
 
 <div id="search-lists">
   <div class="row">
-    <div class="form-group col-md-3">
+    <div class="col-md-3">
+      <div class="form-group">
         <input
           class="form-control query-input"
           v-model="query"
@@ -24,24 +25,28 @@
           >
           </li>
         </ul>
+      </div>
 
+      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
+        <h3>Create a new list</h3>
+      <% end %>
+    </div>
+    <div class="col-md-9">
+      <h1>
+        <span><%= "#{@user.username}'s" %> Lists</span>
+        <small>sorted by popularity</small>
+      </h1>
+
+      <div v-for="result in fuseResults">
+        <list-card
+          :list="result"
+          :signed-in="signedIn"
+        >
+        </list-card>
+      </div>
     </div>
   </div>
-
-  <h1>
-    <span><%= "#{@user.username}'s" %> Lists</span>
-    <small>sorted by popularity</small>
-  </h1>
-
-  <div class="cards row">
-    <div v-for="result in fuseResults">
-      <list-card
-        :list="result"
-        :signed-in="signedIn"
-      >
-      </list-card>
-    </div>
-  </div>
+</div>
 
 <% content_for(:page_app) do %>
   <%= render 'lists/list_card' %>
