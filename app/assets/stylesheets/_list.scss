@@ -41,6 +41,10 @@
 .list-index {
   background-color: $gray-lighter;
 
+  button.filter-btn {
+    @extend .btn, .btn-primary, .btn-lg
+  }
+
   .list-card {
     /* These are technically the same, but use both */
     overflow-wrap: break-word;

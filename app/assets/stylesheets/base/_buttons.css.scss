@@ -1,0 +1,24 @@
+.btn-primary,
+.btn-primary:visited,
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover {
+      background-color: $dark-color;
+      border-color: $dark-color;
+    }
+}
+
+.btn-primary.active,
+.btn-primary.active:hover,
+.btn-primary.active:visited,
+.btn-primary.active:focus {
+    background-color: $dark-color;
+    border-color: $dark-color;
+}
+
+a {
+  color: $dark-color;
+}
