@@ -191,8 +191,16 @@ var searchLists = new Vue({
         results = this.fuseResults
       }
 
-      if(this.filterPins) { results = results.filter(list => list.pinned) }
-      if(this.filterLikes) { results = results.filter(list => list.liked) }
+      if(this.filterPins) {
+        results = results.filter(function(list){
+          return list.pinned
+        })
+      }
+      if(this.filterLikes) {
+        results = results.filter(function(list){
+          return list.liked
+        })
+      }
 
       return results
 
