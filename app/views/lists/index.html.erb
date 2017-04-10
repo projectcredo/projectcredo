@@ -7,26 +7,7 @@
 <div id="search-lists">
   <div class="row">
     <div class="col-md-3">
-      <div class="form-group">
-        <input
-          class="form-control query-input"
-          v-model="query"
-          v-bind:placeholder="placeholder"
-          v-on:keyup="getResults"
-          v-on:keyup.esc="clearResultsAndQuery"
-          v-on:keyup.enter="clearResults"
-        >
-
-        <ul class="list-group autocomplete" v-if="this.results.length">
-          <li
-            class="list-group-item"
-            v-for="result in results"
-            v-html="result"
-            v-on:click="selectResult(result)"
-          >
-          </li>
-        </ul>
-      </div>
+    <%= render 'lists/search_index' %>
 
       <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
         <h3>Create a new list</h3>
