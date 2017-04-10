@@ -14,7 +14,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "variables";
-@import "cards";
+@import 'base/*';
 @import "navbar";
 @import "pin";
 @import "publication";
@@ -27,6 +27,7 @@
 @import "about";
 @import "how_to";
 @import "sidebar";
+@import "tag";
 
 
 body {

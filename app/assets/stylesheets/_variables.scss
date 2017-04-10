@@ -1,9 +1,10 @@
 // Colors
-$primary-color:       #04a8d4;
+$primary-color:       #64D6BD;
 $secondary-color:     #f4785b;
 $light-gray-color:    #f1f1f1;
-$dark-color:          #4b4b4b;
-$darkest-color:       #3a3a3a;
+$dark-color:          darken(#64D6BD,20%);
+$darkest-color:       darken(#64D6BD,25%);
+$brand-primary:       #64D6BD;
 
 
 // Navbar

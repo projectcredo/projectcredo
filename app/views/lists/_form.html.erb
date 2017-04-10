@@ -100,8 +100,8 @@
             v-for="contributor in contributors"
             :disabled="isPublic"
             :user="contributor"
-            :canmoderate="canModerate"
-            :currentuser="currentUser"
+            :can-moderate="canModerate"
+            :current-user="currentUser"
             @remove="removeMember(contributor)"
           >
           </member>
@@ -131,10 +131,10 @@
 <% content_for(:page_app) do %>
   <script>
     Vue.component("member", {
-      props: ["user", "canmoderate", "currentuser"],
+      props: ["user", "canModerate", "currentUser"],
       computed: {
         canRemove: function() {
-          return this.currentUser == this.username || canModerate
+          return this.currentUser == this.username || this.canModerate
         }
       },
       template: `

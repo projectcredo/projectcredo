@@ -20,12 +20,3 @@ button.comment-vote.active {
 
   @extend .btn, .btn-default, .btn-sm;
 }
-
-.list-vote {
-  &:before  {
-    font-family: "Glyphicons Halflings";
-    content: "\e125";
-  }
-
-  @extend .btn, .btn-default, .btn-sm, .pull-left;
-}

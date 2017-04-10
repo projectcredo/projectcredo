@@ -51,26 +51,110 @@ debounce = function(func, wait, immediate) {
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
+// List Card Component for List Indexes
+Vue.component("list-card", {
+  props: ["list", "signedIn"],
+  filters: {
+    truncate: function(string, length) {
+      return string.substring(0, length) + (string.length < length ? '' : '...');
+    }
+  },
+  methods: {
+    likeList: function(list) {
+      var params = {
+        id: list.id,
+        type: "list"
+      };
+      $.ajax({
+        url: list.like_path,
+        type: 'POST',
+        data: params,
+      })
+      .done(function(){
+        list.liked = true
+        list.likes = list.likes + 1
+      })
+    },
+    unlikeList: function(list) {
+      var params = {
+        id: list.id,
+        type: "list"
+      };
+      $.ajax({
+        url: list.like_path,
+        type: 'DELETE',
+        data: params,
+      })
+      .done(function(){
+        list.liked = false
+        list.likes = list.likes - 1
+      })
+    },
+    toggleLike: function(list) {
+      if(this.signedIn) {
+        if(list.liked) {
+          this.unlikeList(list)
+        } else {
+          this.likeList(list)
+        }
+      } else {
+        window.location.href = '/users/sign_in';
+      }
+    },
+    pinList: function(list) {
+      var params = {
+        id: list.slug
+      };
+      $.ajax({
+        url: "/pins",
+        type: 'POST',
+        data: params
+      })
+      .done(function(){
+        list.pinned = true
+        list.pins = list.pins + 1
+      })
+    },
+    unpinList: function(list) {
+      var params = {
+        id: list.slug
+      };
+      $.ajax({
+        url: "/pins/" + list.slug,
+        type: 'DELETE',
+        data: params
+      })
+      .done(function(){
+        list.pinned = false
+        list.pins = list.pins - 1
+      })
+    },
+    togglePin: function(list) {
+      if(this.signedIn) {
+        if(list.pinned) {
+          this.unpinList(list)
+        } else {
+          this.pinList(list)
+        }
+      } else {
+        window.location.href = '/users/sign_in';
+      }
+    }
+  },
+  template: '#list-card'
+})
+
 var searchLists = new Vue({
   data: {
-    unpinnedLists: [],
-    pinnedLists: [],
+    signedIn: false,
+    allLists: [],
     query: '',
     results: [],
-    placeholder: "Search for a list..."
+    placeholder: "Search for a list...",
+    filterPins: false,
+    filterLikes: false,
   },
   computed: {
-    allLists: function () {
-      return this.unpinnedLists.concat(this.pinnedLists)
-    },
-    allListsById: function() {
-      return this.allLists.reduce(function(memo, list) {
-        var listId = list.id
-        delete list.id
-        memo[listId+''] = list
-        return memo
-      }, {})
-    },
     tags: function() {
       var allTags = this.allLists.reduce(function(memo, list) {
         return memo.concat(list.tag_list)
@@ -79,7 +163,47 @@ var searchLists = new Vue({
       return Array.from(new Set(allTags))
     },
     matchQuery: function() {
-      return this.query.toLowerCase()
+      return this.query.split('+').join(' ');
+    },
+    fuseResults: function() {
+      var options = {
+        tokenize: true,
+        shouldSort: true,
+        threshold: 0.4,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "name",
+          "owner",
+          "tag_list",
+          "description"
+        ]
+      };
+
+      var fuse = new Fuse(this.allLists, options);
+      return fuse.search(this.matchQuery);
+    },
+    showResults: function() {
+      var results = []
+      if (this.query === '') {
+        results = this.allLists
+      } else {
+        results = this.fuseResults
+      }
+
+      if(this.filterPins) {
+        results = results.filter(function(list){
+          return list.pinned
+        })
+      }
+      if(this.filterLikes) {
+        results = results.filter(function(list){
+          return list.liked
+        })
+      }
+
+      return results
+
     },
     matchingTags: function() {
       return this.tags.filter(function(tag) {
@@ -91,12 +215,7 @@ var searchLists = new Vue({
     showList: function(id) {
       if (this.query === '') {return true}
 
-      var list = this.allListsById[id]
-      var searchablAttrs = list.tag_list.concat(list.name, list.description, list.owner)
-      // Only unique values
-      searchablAttrs = Array.from(new Set(searchablAttrs))
-
-      return searchablAttrs.toString().toLowerCase().includes(this.query)
+      return this.fuseResults.includes(id)
     },
     getResults: function() {
       if (this.query === '') {
@@ -105,13 +224,30 @@ var searchLists = new Vue({
         this.results = this.matchingTags
       }
     },
-    clearResults: function() {
+    clearResultsAndQuery: function() {
       this.query = ''
+      this.results = []
+    },
+    clearResults: function() {
       this.results = []
     },
     selectResult: function(result) {
       this.query = result
       this.results = []
+    },
+    toggleFilterPins: function() {
+      if(this.filterPins) {
+        this.filterPins = false;
+      } else {
+        this.filterPins = true;
+      }
+    },
+    toggleFilterLikes: function() {
+      if(this.filterLikes) {
+        this.filterLikes = false;
+      } else {
+        this.filterLikes = true;
+      }
     }
   }
 });

@@ -1,0 +1,20 @@
+<div class="form-group">
+  <input
+    class="form-control query-input"
+    v-model="query"
+    v-bind:placeholder="placeholder"
+    v-on:keyup="getResults"
+    v-on:keyup.esc="clearResultsAndQuery"
+    v-on:keyup.enter="clearResults"
+  >
+
+  <ul class="list-group autocomplete" v-if="this.results.length">
+    <li
+      class="list-group-item"
+      v-for="result in results"
+      v-html="result"
+      v-on:click="selectResult(result)"
+    >
+    </li>
+  </ul>
+</div>
