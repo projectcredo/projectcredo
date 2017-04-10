@@ -42,7 +42,7 @@
   background-color: $gray-lighter;
 
   button.filter-btn {
-    @extend .btn, .btn-primary, .btn-lg
+    @extend .btn, .btn-primary
   }
 
   .list-card {

@@ -150,7 +150,9 @@ var searchLists = new Vue({
     allLists: [],
     query: '',
     results: [],
-    placeholder: "Search for a list..."
+    placeholder: "Search for a list...",
+    filterPins: false,
+    filterLikes: false,
   },
   computed: {
     tags: function() {
@@ -164,7 +166,6 @@ var searchLists = new Vue({
       return this.query.split('+').join(' ');
     },
     fuseResults: function() {
-      if (this.query === '') {return this.allLists}
       var options = {
         tokenize: true,
         shouldSort: true,
@@ -181,6 +182,20 @@ var searchLists = new Vue({
 
       var fuse = new Fuse(this.allLists, options);
       return fuse.search(this.matchQuery);
+    },
+    showResults: function() {
+      var results = []
+      if (this.query === '') {
+        results = this.allLists
+      } else {
+        results = this.fuseResults
+      }
+
+      if(this.filterPins) { results = results.filter(list => list.pinned) }
+      if(this.filterLikes) { results = results.filter(list => list.liked) }
+
+      return results
+
     },
     matchingTags: function() {
       return this.tags.filter(function(tag) {
@@ -201,13 +216,30 @@ var searchLists = new Vue({
         this.results = this.matchingTags
       }
     },
-    clearResults: function() {
+    clearResultsAndQuery: function() {
       this.query = ''
+      this.results = []
+    },
+    clearResults: function() {
       this.results = []
     },
     selectResult: function(result) {
       this.query = result
       this.results = []
+    },
+    toggleFilterPins: function() {
+      if(this.filterPins) {
+        this.filterPins = false;
+      } else {
+        this.filterPins = true;
+      }
+    },
+    toggleFilterLikes: function() {
+      if(this.filterLikes) {
+        this.filterLikes = false;
+      } else {
+        this.filterLikes = true;
+      }
     }
   }
 });

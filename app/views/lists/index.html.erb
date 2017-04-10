@@ -13,7 +13,8 @@
           v-model="query"
           v-bind:placeholder="placeholder"
           v-on:keyup="getResults"
-          v-on:keyup.esc="clearResults"
+          v-on:keyup.esc="clearResultsAndQuery"
+          v-on:keyup.enter="clearResults"
         >
 
         <ul class="list-group autocomplete" v-if="this.results.length">
@@ -31,14 +32,27 @@
         <h3>Create a new list</h3>
       <% end %>
 
-      <h3>Filters by:</h3>
-      <button class="filter-btn active">Your Pins</button>
-      <button class="filter-btn">Your Likes</button>
+      <div v-if="signedIn">
+        <h3>Filters by:</h3>
+        <button
+          class="filter-btn"
+          v-bind:class="{'active': filterPins}"
+          @click="toggleFilterPins"
+        >
+          Your Pins
+        </button>
+        <button
+          class="filter-btn"
+          v-bind:class="{'active': filterLikes}"
+          @click="toggleFilterLikes"
+        >
+          Your Likes
+        </button>
+      </div>
     </div>
-
     <div class="col-md-9">
       <h1> </h1>
-      <div v-for="result in fuseResults">
+      <div v-for="result in showResults">
         <list-card
           :list="result"
           :signed-in="signedIn"

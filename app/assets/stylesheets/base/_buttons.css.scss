@@ -4,6 +4,7 @@
 .btn-primary:focus {
     background-color: $primary-color;
     border-color: $primary-color;
+    outline: none !important;
 
     &:hover {
       background-color: $dark-color;
