@@ -7,29 +7,9 @@
 <div id="search-lists">
   <div class="row">
     <div class="col-md-3">
-      <div class="form-group">
-        <input
-          class="form-control query-input"
-          v-model="query"
-          v-bind:placeholder="placeholder"
-          v-on:keyup="getResults"
-          v-on:keyup.esc="clearResults"
-        >
-
-        <ul class="list-group autocomplete" v-if="this.results.length">
-          <li
-            class="list-group-item"
-            v-for="result in results"
-            v-html="result"
-            v-on:click="selectResult(result)"
-          >
-          </li>
-        </ul>
-      </div>
-
-      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-        <h3>Create a new list</h3>
-      <% end %>
+      <%= render 'lists/search_index' %>
+      <%= render 'lists/new_list_btn' %>
+      <%= render 'lists/index_filters' %>
     </div>
     <div class="col-md-9">
       <h1>
@@ -37,7 +17,7 @@
         <small>sorted by popularity</small>
       </h1>
 
-      <div v-for="result in fuseResults">
+      <div v-for="result in showResults">
         <list-card
           :list="result"
           :signed-in="signedIn"

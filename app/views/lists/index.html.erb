@@ -7,29 +7,9 @@
 <div id="search-lists">
   <div class="row">
     <div class="col-md-3">
-    <%= render 'lists/search_index' %>
-
-      <%= link_to new_list_path, class: "btn panel panel-default new-list" do %>
-        <h3>Create a new list</h3>
-      <% end %>
-
-      <div v-if="signedIn">
-        <h3>Filters by:</h3>
-        <button
-          class="filter-btn"
-          v-bind:class="{'active': filterPins}"
-          @click="toggleFilterPins"
-        >
-          Your Pins
-        </button>
-        <button
-          class="filter-btn"
-          v-bind:class="{'active': filterLikes}"
-          @click="toggleFilterLikes"
-        >
-          Your Likes
-        </button>
-      </div>
+      <%= render 'lists/search_index' %>
+      <%= render 'lists/new_list_btn' %>
+      <%= render 'lists/index_filters' %>
     </div>
     <div class="col-md-9">
       <h1> </h1>
