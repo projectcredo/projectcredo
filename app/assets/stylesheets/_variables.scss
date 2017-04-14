@@ -1,0 +1,18 @@
+// Colors
+$primary-color:       #64D6BD;
+$secondary-color:     #f4785b;
+$light-gray-color:    #f1f1f1;
+$dark-color:          darken(#64D6BD,20%);
+$darkest-color:       darken(#64D6BD,25%);
+$brand-primary:       #64D6BD;
+
+
+// Navbar
+$navbar-border-color: rgba(#fff, .1);
+$navbar-height: 50px;
+
+$searchbar-left-postion: 225px;
+$searchbar-right-position: 400px;
+
+$default-border-color: shade($light-gray-color, 10%);
+$default-border: $default-border-color solid 1px;

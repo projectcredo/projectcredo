@@ -4,13 +4,11 @@ class PinsController < ApplicationController
 
   def create
     @pinned_lists << List.find_by(slug: list_params[:id])
-    redirect_to :back
   end
 
   def destroy
     list = @pinned_lists.find_by(slug: list_params[:id])
     @pinned_lists = @pinned_lists.delete(list)
-    redirect_to :back
   end
 
   private

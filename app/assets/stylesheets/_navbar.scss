@@ -1,30 +1,140 @@
-.navbar .navbar-form {
-  padding: 0;
-  margin-right: 0;
-  margin-left: 0;
-  border: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
+.navbar-default {
+  background: $darkest-color;
+  color: #fff;
+  min-height: $navbar-height;
 
-.clear {
-  width: 1%;
-  display: table-column;
-}
+  .navbar-nav > li > a {
+    color: #fff !important;
+    border-left: solid 1px $navbar-border-color;
+    font-size: 12px;
+    transition: all .2s ease-in-out;
+    line-height: $navbar-height - 30;
 
-@media(max-width:767px) {
-
-  .navbar .navbar-form {
-    padding-left: 15px;
-    padding-right: 0;
+    &:hover {
+      color: #fff;
+      background: $primary-color;
+    }
   }
 
-  .navbar .navbar-form .input-group {
-    padding-right: 15px;
+  .dropdown-toggle:active, .open .dropdown-toggle {
+    background:$primary-color !important;
+    color:#fff !important;
   }
 
-  .navbar .navbar-form .form-control {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+  .navbar-brand {
+    position: relative;
+    z-index: 100;
+    color: rgba(#fff, .5);
+    font-weight: 300;
+    line-height: $navbar-height - 30;
+
+    strong {
+      color: rgba(#fff, .9);
+    }
+
+    &:hover {
+      color: #fff;
+      strong {
+        color: #fff;
+      }
+    }
+  }
+  .search-icon {
+    width: 24px; height: 24px;
+  }
+
+  .navbar-toggle {
+    margin-top: ($navbar-height - 34) / 2;
+    margin-bottom: ($navbar-height - 34) / 2;
+  }
+}
+
+.navbar-right {
+  position: relative;
+  z-index: 101;
+
+  li:last-child {
+    > a {
+      padding-right: 30px;
+    }
+  }
+}
+
+.navbar-left {
+  position: relative;
+  z-index: 101;
+
+  .a {
+    visited: #fff;
+  }
+}
+
+.navbar-form {
+  min-height: $navbar-height - 2;
+  line-height: $navbar-height - 2;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.navbar {
+  li > a.highlight {
+    background: shade($primary-color, 10%);
+  }
+}
+
+.navbar-search-form {
+  position: relative;
+
+  .searchbar {
+    position: absolute;
+    top: 0;
+    right: $searchbar-right-position;
+    bottom: 0;
+    left: $searchbar-left-postion;
+
+    input[type=text] {
+      width: 100%;
+      border-radius: 0;
+      background: $primary-color;
+      padding-right: 30px;
+      color: #fff;
+      font-weight: 600;
+
+      &:focus {
+        background: $darkest-color;
+      }
+    }
+
+    .btn-search {
+      $icon-size: 16px;
+      width: $icon-size;
+      height: $icon-size;
+      background: transparent asset-url("search-icon.png") no-repeat;
+      background-size: $icon-size $icon-size;
+      border: none;
+      position: absolute;
+      top: ($navbar-height - $icon-size) / 2;
+      right: 15px;
+    }
+  }
+}
+
+body.question-list .question-list-link,
+body.add-question .add-question-link,
+body.how-to .how-to-link,
+body.about .about-link,
+body.settings .settings-link,
+body.sign-in .sign-in-link,
+body.sign-up .sign-up-link{
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    left: 0;
+    right: 0;
+    background: $secondary-color;
   }
 }

@@ -5,7 +5,7 @@ class Lists::VotesController < ApplicationController
     list = List.find(votable_params[:id])
     current_user.likes list
     respond_to do |format|
-      format.html { redirect_to :back, notice: 'You like it!' }
+      format.html { redirect_to :back }
       format.js { render 'votes/toggle_like.js.erb', locals: {votable: list} }
     end
   end
@@ -14,7 +14,7 @@ class Lists::VotesController < ApplicationController
     list = List.find(votable_params[:id])
     current_user.unlike list
     respond_to do |format|
-      format.html { redirect_to :back, notice: 'You unlike it!' }
+      format.html { redirect_to :back }
       format.js { render 'votes/toggle_like.js.erb', locals: {votable: list} }
     end
   end

@@ -8,11 +8,12 @@ class ListsController < ApplicationController
   # GET /lists.json
   def index
     if current_user
-      lists = current_user.visible_lists
-      @pinned_lists = current_user.visible_lists.merge(current_user.homepage.lists.distinct)
-      @unpinned_lists = current_user.visible_lists.where.not(id: @pinned_lists.pluck(:id))
+      @visible_lists =
+        current_user.visible_lists.ranked.each do |list|
+          list.pinned = current_user.homepage.lists.include?(list)
+        end
     else
-      lists = @unpinned_lists = List.publicly_visible
+      @visible_lists = List.publicly_visible.ranked
     end
   end
 
@@ -28,17 +29,18 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    memberships = params[:list].delete(:list_memberships_attributes)
+    members = params[:list].delete(:list_members)
     @list = current_user.lists.build(list_params)
 
     respond_to do |format|
       if @list.save
         current_user.homepage.lists << @list
-        if memberships
-          memberships.each_value do |m|
-            user = User.find_by(username: m[:username])
-            role = m[:role]
-            @list.list_memberships.create(user: user, role: role)
+        if members
+          members.map do |m|
+            @list.list_memberships.create(
+              user: User.find_by(username: m),
+              role: :contributor
+            )
           end
         end
 
@@ -55,6 +57,6 @@ class ListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
       params.require(:list).permit(:name, :description, :tag_list, :access,
-                                    list_memberships_attributes: [ :username, :role ])
+                                    list_members: [ :username, :role ])
     end
 end

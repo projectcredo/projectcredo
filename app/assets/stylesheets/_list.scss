@@ -1,23 +1,16 @@
-.list-card {
-  /* These are technically the same, but use both */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
 .new-list {
   color: $gray;
   text-align: center;
-  height: 250px;
-  padding-top: 50px;
+  height: 180px;
+  padding: 15px;
   display: block;
   opacity: 0.6;
+  word-wrap:break-word;
+
+
+  h3 {
+    margin-top: 0;
+  }
 
   &:hover{
     opacity: 1;
@@ -47,6 +40,80 @@
 
 .list-index {
   background-color: $gray-lighter;
+
+  button.filter-btn {
+    @extend .btn, .btn-primary
+  }
+
+  .list-card {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+
+    clear: left;
+  }
+
+  .list-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .list-body {
+    font-size: 16px;
+  }
+
+  .timestamp {
+    font-size: 12px;
+    color: $gray-light;
+  }
+
+  .list-footer {
+    margin-top: 20px;
+    color: $gray-light;
+    font-size: 16px;
+
+    a:hover{
+      text-decoration: none;
+      color: $primary-color;
+    }
+
+    .list-pin {
+      color: $gray-light;
+      margin-right: 20px;
+      &:after  {
+        font-family: "Glyphicons Halflings";
+        content: "\e146";
+      }
+    }
+
+    .list-vote {
+      color: $gray-light;
+      margin-right: 20px;
+      &:after  {
+        font-family: "Glyphicons Halflings";
+        content: "\e005";
+      }
+    }
+
+    .comment-count {
+      &:after    {
+        font-family: "Glyphicons Halflings";
+        content: "\e111";
+      }
+    }
+
+   .toggled {
+      color: $primary-color;
+    }
+  }
+
 }
 
 .list-group.autocomplete {

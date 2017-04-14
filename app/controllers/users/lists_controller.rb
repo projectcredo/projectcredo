@@ -10,9 +10,12 @@ class Users::ListsController < ApplicationController
 
   def index
     if current_user
-      @lists = @user.lists.visible_to(current_user)
+      @visible_lists =
+        @user.lists.visible_to(current_user).ranked.each do |list|
+          list.pinned = current_user.homepage.lists.include?(list)
+        end
     else
-      @lists = @user.lists.publicly_visible
+      @visible_lists = @user.lists.publicly_visible.ranked
     end
   end
 
@@ -31,27 +34,29 @@ class Users::ListsController < ApplicationController
 
     if current_user.can_edit?(@list)
 
-      if @list.members.include?(current_user) && !members.include?(current_user.username)
-        @list.members.destroy(current_user) unless current_user == @list.owner
-      end
+      remove_current_user =  @list.members.include?(current_user) && !members.include?(current_user.username) && current_user != @list.owner
 
-      if current_user.can_moderate?(@list)
-        memberships = members.map do |member|
-          @list.list_memberships.find_or_create_by(
-            user: User.find_by(username: member),
-            role: :contributor
-          )
-        end
-        memberships << @list.list_memberships.find_by(user: @list.owner, role: :owner)
-        @list.list_memberships = memberships
+      memberships = members.map do |member|
+        @list.list_memberships.find_or_create_by(
+          user: User.find_by(username: member),
+          role: :contributor
+        )
       end
+      memberships << @list.list_memberships.find_by(user: @list.owner, role: :owner)
+      @list.list_memberships = memberships
     end
 
     params[:list].delete(:access) unless current_user == @list.owner
 
     respond_to do |format|
       if @list.update(list_params)
-        format.html { redirect_back(fallback_location: user_list_path(@list.user, @list), notice: 'List was successfully updated.') }
+        format.html {
+          if remove_current_user
+            redirect_to user_list_path(@list.user, @list), notice: 'List was successfully updated and you have removed yourself as a contributor'
+          else
+            redirect_back(fallback_location: user_list_path(@list.user, @list), notice: 'List was successfully updated.')
+          end
+        }
         format.json { render :show, status: :ok, location: @list }
       else
         format.html { render :edit }
