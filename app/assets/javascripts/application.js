@@ -66,9 +66,9 @@ Vue.component("list-card", {
         type: "list"
       };
       $.ajax({
-        url: list.like_path,
+        url: list.like_path + ".json",
         type: 'POST',
-        data: params,
+        data: params
       })
       .done(function(){
         list.liked = true
@@ -81,9 +81,9 @@ Vue.component("list-card", {
         type: "list"
       };
       $.ajax({
-        url: list.like_path,
+        url: list.like_path + ".json",
         type: 'DELETE',
-        data: params,
+        data: params
       })
       .done(function(){
         list.liked = false
@@ -106,7 +106,7 @@ Vue.component("list-card", {
         id: list.slug
       };
       $.ajax({
-        url: "/pins",
+        url: "/pins.json",
         type: 'POST',
         data: params
       })
@@ -120,7 +120,7 @@ Vue.component("list-card", {
         id: list.slug
       };
       $.ajax({
-        url: "/pins/" + list.slug,
+        url: "/pins/" + list.slug  + ".json",
         type: 'DELETE',
         data: params
       })

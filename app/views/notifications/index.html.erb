@@ -6,6 +6,7 @@
         <% @notifications.reverse.each do |n| %>
           <%= render 'layouts/notification', n: n %>
         <% end %>
+        <div class="notification-item"><b>Welcome to Project Credo! You signed up <%= time_ago_in_words(current_user.created_at) %> ago.</b></div>
       </div>
     </ul>
   </div>

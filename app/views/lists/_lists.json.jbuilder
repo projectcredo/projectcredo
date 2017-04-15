@@ -9,4 +9,5 @@ json.array!(lists) do |list|
   json.like_path polymorphic_path([list, :vote])
   json.pins list.homepages.size
   json.owner list.owner.username
+  json.loading false
 end

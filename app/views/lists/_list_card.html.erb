@@ -12,7 +12,6 @@
           <div class="list-title"><a :href="list.link">{{list.name}}</a></div>
 
           <p class="list-body">{{list.description, 300 | truncate }}</p>
-
           <div class="list-footer">
             <a
               class="list-vote"
@@ -21,7 +20,15 @@
               remote="true"
             >
               {{list.likes}}
+              <span
+                class="spinner"
+                v-if="list.loading"
+              >
+                <span class="double-bounce1"></span>
+                <span class="double-bounce2"></span>
+              </span>
             </a>
+
             <a
               class="list-pin"
               v-bind:class="{'toggled': list.pinned}"
