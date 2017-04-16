@@ -1,7 +1,4 @@
 class Users::ListsController < ApplicationController
-  include ActivitiesHelper
-  include NotificationsHelper
-
   before_action :ensure_current_user, except: [:index, :show]
   before_action :set_user
   before_action :set_list, except: :index

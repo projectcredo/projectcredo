@@ -54,12 +54,6 @@ debounce = function(func, wait, immediate) {
 // List Card Component for List Indexes
 Vue.component("list-card", {
   props: ["list", "signedIn"],
-  data: function() {
-    return {
-      likeIsLoading: false,
-      pinIsLoading: false
-    }
-  },
   filters: {
     truncate: function(string, length) {
       return string.substring(0, length) + (string.length < length ? '' : '...');
@@ -72,14 +66,13 @@ Vue.component("list-card", {
         type: "list"
       };
       $.ajax({
-        url: list.like_path + ".json",
+        url: list.like_path,
         type: 'POST',
-        data: params
+        data: params,
       })
       .done(function(){
         list.liked = true
         list.likes = list.likes + 1
-        list.loading = false
       })
     },
     unlikeList: function(list) {
@@ -88,14 +81,14 @@ Vue.component("list-card", {
         type: "list"
       };
       $.ajax({
-        url: list.like_path + ".json",
+        url: list.like_path,
         type: 'DELETE',
-        data: params
+        data: params,
       })
       .done(function(){
         list.liked = false
         list.likes = list.likes - 1
-      });
+      })
     },
     toggleLike: function(list) {
       if(this.signedIn) {
@@ -113,7 +106,7 @@ Vue.component("list-card", {
         id: list.slug
       };
       $.ajax({
-        url: "/pins.json",
+        url: "/pins",
         type: 'POST',
         data: params
       })
@@ -127,7 +120,7 @@ Vue.component("list-card", {
         id: list.slug
       };
       $.ajax({
-        url: "/pins/" + list.slug  + ".json",
+        url: "/pins/" + list.slug,
         type: 'DELETE',
         data: params
       })

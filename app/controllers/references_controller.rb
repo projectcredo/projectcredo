@@ -1,7 +1,4 @@
 class ReferencesController < ApplicationController
-  include ActivitiesHelper
-  include NotificationsHelper
-
   LOCATOR_CLASSES = {
     'doi' => DoiPaperLocator,
     'link' => LinkPaperLocator,
@@ -28,10 +25,8 @@ class ReferencesController < ApplicationController
       if Reference.exists? list_id: list.id, paper_id: paper.id
         flash['notice'] = "'#{paper.title}' has already been added to this list"
       else
-        reference = Reference.create(list_id: list.id, paper_id: paper.id, user_id: current_user.id)
+        Reference.create(list_id: list.id, paper_id: paper.id, user_id: current_user.id)
         flash['notice'] = "You added '#{paper.title}' to '#{list.name}'"
-        activity = create_activity(actable: reference.list, activity_type: "added", addable: reference)
-        create_notifications(users: list.members, activity: activity)
       end
     else
       logger.debug "No paper found for: #{locator_params.inspect}"
