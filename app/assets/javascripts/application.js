@@ -99,13 +99,11 @@ Vue.component("list-card", {
     },
     toggleLike: function(list) {
       if(this.signedIn) {
-        this.likeIsLoading = true
         if(list.liked) {
           this.unlikeList(list)
         } else {
           this.likeList(list)
         }
-        this.likeIsLoading = false
       } else {
         window.location.href = '/users/sign_in';
       }
@@ -139,14 +137,12 @@ Vue.component("list-card", {
       })
     },
     togglePin: function(list) {
-      this.pinIsLoading = true
       if(this.signedIn) {
         if(list.pinned) {
           this.unpinList(list)
         } else {
           this.pinList(list)
         }
-        this.pinIsLoading = false
       } else {
         window.location.href = '/users/sign_in';
       }
