@@ -1,4 +1,4 @@
 commentContent = $("#comment-<%= @comment.id %> > .content")
-commentContent.html("<%= escape_javascript wrap_on_line_breaks(@comment.content) %>")
+commentContent.html("<%= escape_javascript transform_text(@comment.content) %>")
 editLink = $("#comment-<%= @comment.id %>").find("a.edit-comment").first()
 editLink.parent('li').toggleClass('hidden', false);

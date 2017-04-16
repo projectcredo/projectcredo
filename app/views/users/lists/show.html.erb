@@ -20,7 +20,7 @@
 
 </div>
 
-<div class="container">
+<div class="container" id='list-show'>
   <div class="row">
     <div class="col-md-8">
       <p>
@@ -29,7 +29,7 @@
         <% end %>
       </p>
       <strong>Description</strong>
-      <%= wrap_on_line_breaks @list.description %>
+      <%= transform_text @list.description %>
       <%= render 'crossref/search', list: @list %>
       <%= render 'lists/add_reference', list: @list %>
       <% reference_count = @list.references.count %>
@@ -46,4 +46,100 @@
       </div>
     </div>
   </div>
+  <button
+    v-if="showPopupFlag"
+    class="highlight-popup"
+    :style="{left: this.highlightLeft+'px', top: this.highlightTop+'px'}"
+    @click="submitHighlight"
+  >🖊️</button>
 </div>
+
+<% content_for(:page_app) do %>
+  <script>
+    var HighlightableText = {
+      template: `
+        <div class="highlightable-text" @click="emitShowPopup">
+          <slot></slot>
+        </div>
+      `,
+      methods: {
+        emitShowPopup() {
+          var highlight = this
+          window.setTimeout(function() {
+            var selection = window.getSelection().toString()
+            if (selection.length > 1 && selection.match(/[^\s]/)) {
+              highlight.$emit('show-popup')
+            } else {
+              highlight.$emit('hide-popup')
+            }
+          }, 300)
+        }
+      }
+    }
+
+    var listShow = new Vue({
+      el: '#list-show',
+      data: {
+        showPopupFlag: false,
+        paperId: null,
+        highlightLeft: 0,
+        highlightTop: 0
+      },
+      components: {
+        'highlightable-text': HighlightableText
+      },
+      methods: {
+        showPopup(showPopupFlag, paperId) {
+          this.showPopupFlag = showPopupFlag
+          if (this.showPopupFlag) {
+            this.paperId = paperId
+            this.position()
+          } else {
+            this.paperId = null
+          }
+        },
+        position() {
+          var range = window.getSelection().getRangeAt(0)
+          var rect = range.getBoundingClientRect()
+          var popupWidth = 30
+          var popupHeight = 30
+
+          this.highlightLeft = rect.left + window.scrollX + (rect.width / 2) - (popupWidth / 2)
+          this.highlightTop = rect.top + window.scrollY - popupHeight
+        },
+        submitHighlight() {
+          var highlightApp = this
+          var selection = window.getSelection()
+          var selectionText = selection.toString()
+
+          $.ajax({
+            type:'POST',
+            url: '/papers/' + this.paperId + '/highlights',
+            data: {
+              highlight: {substring: selectionText}
+            },
+            // This "complete" syntax is only necessary because jQuery
+            // doesn't understand the "head :created" response. It needs to
+            // parse a json response for .done() to function correctly.
+            complete: function(e) {
+              if (e.status === 201) {
+                var range = selection.getRangeAt(0)
+                var highlightMark = document.createElement('mark')
+
+                highlightMark.appendChild(
+                  document.createTextNode(selectionText)
+                )
+
+                range.deleteContents()
+                range.insertNode(highlightMark)
+              } else {
+                console.log('Highlight creation failed with substring: "' + selectionText + '"')
+              }
+              highlightApp.showPopupFlag = false
+            }
+          })
+        }
+      }
+    })
+  </script>
+<% end %>

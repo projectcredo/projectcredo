@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :papers, only: [:show, :edit, :update] do
     resources :links, only: :destroy, shallow: true
+    post 'highlights' => 'highlights#create'
   end
 
   resources :pins, only: [:create, :destroy]
