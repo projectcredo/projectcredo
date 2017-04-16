@@ -10,25 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316162749) do
+ActiveRecord::Schema.define(version: 20170118165238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "citext"
-
-  create_table "activities", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "activity_type"
-    t.string   "addable_type"
-    t.integer  "addable_id"
-    t.string   "actable_type"
-    t.integer  "actable_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["actable_type", "actable_id"], name: "index_activities_on_actable_type_and_actable_id", using: :btree
-    t.index ["activity_type", "user_id"], name: "index_activities_on_activity_type_and_user_id", using: :btree
-    t.index ["user_id", "actable_id", "addable_id"], name: "index_activities_on_user_id_and_actable_id_and_addable_id", using: :btree
-  end
 
   create_table "api_import_responses", force: :cascade do |t|
     t.text     "xml"
@@ -125,15 +111,6 @@ ActiveRecord::Schema.define(version: 20170316162749) do
     t.index ["slug"], name: "index_lists_on_slug", using: :btree
     t.index ["user_id", "name"], name: "index_lists_on_user_id_and_name", using: :btree
     t.index ["user_id"], name: "index_lists_on_user_id", using: :btree
-  end
-
-  create_table "notifications", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "activity_id"
-    t.boolean  "has_read"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["activity_id"], name: "index_notifications_on_activity_id", using: :btree
   end
 
   create_table "papers", force: :cascade do |t|
