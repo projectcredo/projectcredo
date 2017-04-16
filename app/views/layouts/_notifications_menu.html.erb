@@ -1,0 +1,18 @@
+<li class="dropdown">
+  <%= render 'layouts/notification_button' %>
+  <ul class="dropdown-menu notifications-menu">
+    <div class="notification-heading"><h4 class="menu-title">Notifications</h4></div>
+    <div class="notifications-wrapper">
+      <% if current_user.notifications.present? %>
+        <% current_user.notifications.reverse.each do |n| %>
+          <%= render 'layouts/notification', n: n %>
+        <% end %>
+      <% else %>
+        <div class="notification-item">Welcome to Project Credo. No new activity yet!</div>
+      <% end %>
+    </div>
+    <div class="notification-footer">
+      <%= link_to "see all", notifications_path %>
+    </div>
+  </ul>
+</li>

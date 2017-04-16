@@ -1,0 +1,13 @@
+<h3>Notifications</h3>
+<div class="row">
+  <div class="col-md-6">
+    <ul class="notification-index-list">
+      <div>
+        <% @notifications.reverse.each do |n| %>
+          <%= render 'layouts/notification', n: n %>
+        <% end %>
+        <div class="notification-item"><b>Welcome to Project Credo! You signed up <%= time_ago_in_words(current_user.created_at) %> ago.</b></div>
+      </div>
+    </ul>
+  </div>
+</div>
