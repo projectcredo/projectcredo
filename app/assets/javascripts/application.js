@@ -54,7 +54,7 @@ debounce = function(func, wait, immediate) {
 // List Card Component for List Indexes
 Vue.component("list-card", {
   props: ["list", "signedIn"],
-  data() {
+  data: function() {
     return {
       likeIsLoading: false,
       pinIsLoading: false
