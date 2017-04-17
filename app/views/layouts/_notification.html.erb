@@ -1,7 +1,0 @@
-<div class="notification-item <%= 'unread' if !n.has_read %>">
-  <b><%= n.username %></b>
-  <%= "#{n.activity.activity_type} '#{truncate(n.added)}' #{n.preposition}" %>
-  <b><%= link_to "'#{truncate(n.actable.name)}'", user_list_path(n.actable.owner, n.actable) %></b>
-  <div class="notification-time"><%= "#{time_ago_in_words n.created_at} ago" %></div>
-</div>
-<li class="notification-divider"></li>
