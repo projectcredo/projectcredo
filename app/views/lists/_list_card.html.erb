@@ -17,6 +17,7 @@
               class="list-vote"
               v-bind:class="{'toggled': list.liked}"
               v-on:click="toggleLike(list)"
+              v-show="!likeIsLoading"
             >
               {{list.likes}}
             </a>
@@ -31,6 +32,7 @@
               class="list-pin"
               v-bind:class="{'toggled': list.pinned}"
               v-on:click="togglePin(list)"
+              v-show="!pinIsLoading"
             >
               {{list.pins}}
             </a>

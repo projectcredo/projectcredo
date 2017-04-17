@@ -67,6 +67,7 @@ Vue.component("list-card", {
   },
   methods: {
     likeList: function(list) {
+      var self = this;
       var params = {
         id: list.id,
         type: "list"
@@ -79,10 +80,12 @@ Vue.component("list-card", {
       .done(function(){
         list.liked = true
         list.likes = list.likes + 1
-        list.loading = false
+        self.likeIsLoading = false
       })
+
     },
     unlikeList: function(list) {
+      var self = this;
       var params = {
         id: list.id,
         type: "list"
@@ -95,22 +98,24 @@ Vue.component("list-card", {
       .done(function(){
         list.liked = false
         list.likes = list.likes - 1
+        self.likeIsLoading = false
       });
+
     },
     toggleLike: function(list) {
-      if(this.signedIn) {
+      if(!this.signedIn) {
+        window.location.href = '/users/sign_in';
+      } else if(!this.likeIsLoading) {
         this.likeIsLoading = true
         if(list.liked) {
           this.unlikeList(list)
         } else {
           this.likeList(list)
         }
-        this.likeIsLoading = false
-      } else {
-        window.location.href = '/users/sign_in';
       }
     },
     pinList: function(list) {
+      var self = this;
       var params = {
         id: list.slug
       };
@@ -122,9 +127,11 @@ Vue.component("list-card", {
       .done(function(){
         list.pinned = true
         list.pins = list.pins + 1
+        self.pinIsLoading = false
       })
     },
     unpinList: function(list) {
+      var self = this;
       var params = {
         id: list.slug
       };
@@ -136,19 +143,19 @@ Vue.component("list-card", {
       .done(function(){
         list.pinned = false
         list.pins = list.pins - 1
+        self.pinIsLoading = false
       })
     },
     togglePin: function(list) {
-      this.pinIsLoading = true
-      if(this.signedIn) {
+      if(!this.signedIn) {
+        window.location.href = '/users/sign_in';
+      } else if(!this.pinIsLoading) {
+        this.pinIsLoading = true
         if(list.pinned) {
           this.unpinList(list)
         } else {
           this.pinList(list)
         }
-        this.pinIsLoading = false
-      } else {
-        window.location.href = '/users/sign_in';
       }
     }
   },
