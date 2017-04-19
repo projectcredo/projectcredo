@@ -269,3 +269,21 @@ var searchLists = new Vue({
     }
   }
 });
+
+
+var activityFeed = new Vue({
+  data: {
+    signedIn: false,
+    allLists: [],
+    filterPins: false
+  },
+  methods: {
+    toggleFilterPins: function() {
+      if(this.filterPins) {
+        this.filterPins = false;
+      } else {
+        this.filterPins = true;
+      }
+    }
+  }
+});
