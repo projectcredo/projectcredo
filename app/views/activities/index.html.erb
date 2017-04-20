@@ -26,7 +26,7 @@
 </div>
 
 <% content_for(:page_app) do %>
-  <%= render 'lists/list_card' %>
+  <%= render 'activities/activity_card' %>
   <script>
     activityFeed.signedIn = <%= user_signed_in? %>
     activityFeed.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
