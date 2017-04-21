@@ -54,7 +54,7 @@ class List < ApplicationRecord
     end
   end
   has_many :comments, as: :commentable
-  has_many :activites, as: :actable
+  has_many :activities, as: :actable, dependent: :destroy
 
   # Validations
   validates :name,
@@ -103,4 +103,5 @@ class List < ApplicationRecord
       errors.add(:tag_list, "cannot contain special characters") unless tag =~ /\A[\p{N}\p{L} ]+\z/
     end
   end
+
 end
