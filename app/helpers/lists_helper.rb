@@ -13,7 +13,7 @@ module ListsHelper
 
   def recent_activity list
     if list.activities.empty?
-      return 'no recent activity'
+      return []
     end
 
     recent_activities = list.activities.last(20)
@@ -25,13 +25,13 @@ module ListsHelper
     activity << adds_by_users.map do |user, adds|
       username = User.find(user).username
       papers_count = pluralize(adds.flatten.length, 'paper')
-      "#{username} added #{adds_count} papers"
+      "#{username} added #{papers_count}"
     end
 
     commenters = grouped_activities["commented"].pluck(:user_id).uniq
     last_3_commenters = commenters.last(3).map{|c| User.find(c).username}.to_sentence
-    more_cmts_cnt = pluralize(commenters.length - 3, 'other')
-    more_cmts_msg = "and #{more_cmts_cnt}" if more_cmts_cnt > 0
+    more_cmts_cnt = commenters.length - 3
+    more_cmts_msg = "and #{pluralize(more_cmts_cnt, 'other')}" if more_cmts_cnt > 0
 
     activity << "#{last_3_commenters} #{more_cmts_msg}commented"
 
