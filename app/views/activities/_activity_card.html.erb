@@ -2,12 +2,19 @@
   <div class="list-card">
       <div class="panel panel-default">
         <div class="panel-body">
-          <a :href="list.owner" class="timestamp">
-            {{list.owner}} updated {{list.updated_at}} ago
-          </a>
-
           <div class="list-title"><a :href="list.link">{{list.name}}</a></div>
+          <a :href="list.owner" class="timestamp">
+            created by {{list.owner}}
+          </a>
+          <div
+            v-for="activity in list.activities.last_activity"
+          >
+            {{activity}}
+          </div>
           <div class="list-footer">
+            <p class="timestamp">
+              Updated {{list.updated_at}} ago ({{list.activities.message}})
+            </p>
             <a
               class="list-vote"
               v-bind:class="{'toggled': list.liked}"

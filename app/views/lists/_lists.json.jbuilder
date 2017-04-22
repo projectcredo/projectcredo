@@ -10,7 +10,25 @@ json.array!(lists) do |list|
   json.like_path polymorphic_path([list, :vote])
   json.pins list.homepages.size
   json.owner list.owner.username
+
   if @include_activities
-    json.activities recent_activity(list)
+    json.activities do |json|
+      json.message recent_activity_msg(list)
+
+      json.last_activity list.activities.last(5) do |a|
+        json.user a.user.username
+        json.activity_type a.activity_type
+        json.addable case a.activity_type
+          when 'added'
+            a.addable.paper.title
+          when 'commented'
+            a.addable.content
+        end
+        json.addable_href case a.activity_type
+          when 'added'
+            a.addable.paper.direct_link
+        end
+      end
+    end
   end
 end

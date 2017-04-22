@@ -11,30 +11,28 @@ module ListsHelper
     current_user && current_user.can_view?(list)
   end
 
-  def recent_activity list
+  def recent_activity_msg list
+
+    #only if List has activities
     if list.activities.empty?
-      return []
+      return nil
     end
 
+    #set the definition of recent activities you want to show
     recent_activities = list.activities.last(20)
+
+    #group activities based on activity typet
     grouped_activities = recent_activities.group_by(&:activity_type)
 
-    activity = []
+    #references added
+    papers_added = grouped_activities["added"].length
+    adds_msg = "#{pluralize(papers_added, 'paper')} added"
 
-    adds_by_users = grouped_activities["added"].group_by(&:user_id)
-    activity << adds_by_users.map do |user, adds|
-      username = User.find(user).username
-      papers_count = pluralize(adds.flatten.length, 'paper')
-      "#{username} added #{papers_count}"
-    end
+    commenters = grouped_activities["commented"].pluck(:user_id).uniq.length
+    comments_msg = "#{pluralize(commenters, 'person')} commented"
 
-    commenters = grouped_activities["commented"].pluck(:user_id).uniq
-    last_3_commenters = commenters.last(3).map{|c| User.find(c).username}.to_sentence
-    more_cmts_cnt = commenters.length - 3
-    more_cmts_msg = "and #{pluralize(more_cmts_cnt, 'other')}" if more_cmts_cnt > 0
+    activity_msg = [adds_msg,comments_msg].to_sentence
 
-    activity << "#{last_3_commenters} #{more_cmts_msg}commented"
-
-    return activity.flatten
+    return activity_msg
   end
 end

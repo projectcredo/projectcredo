@@ -67,4 +67,14 @@ class Paper < ApplicationRecord
     end
   end
 
+  def direct_link
+    if self.doi.present?
+      "http://dx.doi.org/#{self.doi}"
+    elsif self.pubmed_id.present?
+      "https://www.ncbi.nlm.nih.gov/pubmed/#{self.pubmed_id}"
+    else
+      self.links.first.url
+    end
+  end
+
 end
