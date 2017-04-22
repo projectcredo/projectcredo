@@ -18,7 +18,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     user_2 = Fabricate(:user)
     list_2 = Fabricate(:list, user: user_2)
 
-    get root_url
+    get lists_path
 
     assert_includes @response.body, @list.name
     assert_includes @response.body, list_2.name
@@ -51,12 +51,12 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     list_2 = Fabricate.build(:list, user: user_2)
 
     sign_in @user
-    get root_url
+    get lists_path
 
     refute_includes @response.body, list_2.name
     list_2.save
 
-    get root_url
+    get lists_path
     assert_includes @response.body, list_2.name
   end
 
@@ -65,7 +65,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     list_2 = Fabricate(:list, user: user_2, visibility: :private)
 
     sign_in @user
-    get root_url
+    get lists_path
 
     refute_includes @response.body, list_2.name
   end
@@ -74,7 +74,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     list_2 = Fabricate(:list, user: @user, visibility: :private)
 
     sign_in @user
-    get root_url
+    get lists_path
 
     assert_includes @response.body, list_2.name
   end
