@@ -1,6 +1,6 @@
 json.array!(lists) do |list|
   json.extract! list, :id, :name, :description, :slug, :created_at
-  json.pinned current_user.homepage.lists.include?(list)
+  json.pinned current_user ? current_user.homepage.lists.include?(list) : false
   json.updated_at time_ago_in_words(list.updated_at)
   json.link user_list_path(list.owner, list)
   json.tag_list list.tag_list

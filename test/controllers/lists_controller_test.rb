@@ -9,7 +9,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "guest should get index" do
-    get root_url
+    get lists_path
     assert_response :success
     assert_includes @response.body, @list.name
   end
