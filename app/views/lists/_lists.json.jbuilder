@@ -15,14 +15,15 @@ json.array!(lists) do |list|
     json.activities do |json|
       json.message recent_activity_msg(list)
 
-      json.last_activity list.activities.last(5) do |a|
+      json.last_activity list.activities.last(3) do |a|
         json.user a.user.username
-        json.activity_type a.activity_type
+        json.type a.activity_type
+        json.updated_at time_ago_in_words(a.updated_at)
         json.addable case a.activity_type
           when 'added'
-            a.addable.paper.title
+            truncate(a.addable.paper.title, length: 150)
           when 'commented'
-            a.addable.content
+            truncate(a.addable.content, length: 250)
         end
         json.addable_href case a.activity_type
           when 'added'

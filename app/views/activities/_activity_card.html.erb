@@ -2,19 +2,44 @@
   <div class="list-card">
       <div class="panel panel-default">
         <div class="panel-body">
-          <div class="list-title"><a :href="list.link">{{list.name}}</a></div>
-          <a :href="list.owner" class="timestamp">
-            created by {{list.owner}}
-          </a>
+          <div class="list-title">
+            <a :href="list.link">{{list.name}}</a>
+            <a :href="list.owner" class="timestamp">
+              created by {{list.owner}}
+            </a>
+          </div>
+          <div>
+            {{list.description, 300 | truncate }}
+          </div>
           <div
+            class="list-activity-row"
             v-for="activity in list.activities.last_activity"
           >
-            {{activity}}
+            <div
+              class="col-md-1"
+              :class="activity.type">
+            </div>
+
+            <div class="col-md-11">
+              <a
+                :href="activity.addable_href"
+                v-text="activity.addable"
+                v-if="activity.type == 'added'"
+              >
+              </a>
+              <span
+                v-if="activity.type == 'commented'"
+              >
+               "{{activity.addable}}"
+              </span>
+              <div class="timestamp">
+                {{activity.user}}
+                {{activity.type}}
+                {{activity.updated_at}}
+                </div>
+            </div>
           </div>
           <div class="list-footer">
-            <p class="timestamp">
-              Updated {{list.updated_at}} ago ({{list.activities.message}})
-            </p>
             <a
               class="list-vote"
               v-bind:class="{'toggled': list.liked}"

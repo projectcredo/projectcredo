@@ -144,3 +144,27 @@
   margin-top: 20px;
   font-size: 20px;
 }
+
+.list-activity-row {
+  margin: 20px 0 20px 0;
+
+  .commented {
+    &:before    {
+      font-family: "Glyphicons Halflings";
+      content: "\e111";
+      font-size: 2em;
+      width: 50%;
+    }
+  }
+
+  .added {
+    &:before    {
+      font-family: "Glyphicons Halflings";
+      content: "\e142";
+      font-size: 2em;
+      width: 50%;
+    }
+  }
+
+  @extend .row
+}
