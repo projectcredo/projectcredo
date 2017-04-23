@@ -42,6 +42,8 @@
   background-color: $gray-lighter;
 
   button.filter-btn {
+    margin-bottom: 5px;
+    display: block;
     @extend .btn, .btn-primary
   }
 

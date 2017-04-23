@@ -6,9 +6,11 @@
 <div id="activity-feed">
   <div class="row">
     <div class="col-md-3">
-      <%= render 'activities/activities_index_filters' %>
       <h4></h4>
       <%= render 'lists/new_list_btn' %>
+      <% if current_user %>
+        <%= render 'activities/activities_index_filters' %>
+      <% end %>
     </div>
     <div class="col-md-9">
       <h4>Research Activity</h4>

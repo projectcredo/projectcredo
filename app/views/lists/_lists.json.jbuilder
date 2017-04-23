@@ -15,7 +15,7 @@ json.array!(lists) do |list|
     json.activities do |json|
       json.message recent_activity_msg(list)
 
-      json.last_activity list.activities.last(3) do |a|
+      json.last_activity list.activities.last(3).reverse do |a|
         json.user a.user.username
         json.type a.activity_type
         json.updated_at time_ago_in_words(a.updated_at)
