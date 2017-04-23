@@ -13,22 +13,12 @@ json.array!(lists) do |list|
 
   if @include_activities
     json.activities do |json|
-      json.message recent_activity_msg(list)
-
       json.last_activity list.activities.last(3).reverse do |a|
-        json.user a.user.username
+        json.user a.sentence_parts[:username]
         json.type a.activity_type
         json.updated_at time_ago_in_words(a.updated_at)
-        json.addable case a.activity_type
-          when 'added'
-            truncate(a.addable.paper.title, length: 150)
-          when 'commented'
-            truncate(a.addable.content, length: 250)
-        end
-        json.addable_href case a.activity_type
-          when 'added'
-            a.addable.paper.direct_link
-        end
+        json.addable a.sentence_parts[:added]
+        json.addable_href a.sentence_parts[:paper_direct_link]
       end
     end
   end

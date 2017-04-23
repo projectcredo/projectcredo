@@ -1,7 +1,16 @@
+<%
+  added = truncate(n.activity.sentence_parts[:added])
+  preposition = n.activity.sentence_parts[:preposition]
+  username = n.activity.sentence_parts[:username]
+  list_name = truncate(n.activity.actable.name)
+  list_url =  user_list_path(n.activity.actable.owner, n.activity.actable)
+  type = n.activity.activity_type
+%>
+
 <div class="notification-item <%= 'unread' if !n.has_read %>">
-  <b><%= n.username %></b>
-  <%= "#{n.activity.activity_type} '#{truncate(n.added)}' #{n.preposition}" %>
-  <b><%= link_to "'#{truncate(n.actable.name)}'", user_list_path(n.actable.owner, n.actable) %></b>
+  <b><%= username %></b>
+  <%= "#{type} '#{added}' #{preposition}" %>
+  <b><%= link_to "'#{list_name}'", list_url%></b>
   <div class="notification-time"><%= "#{time_ago_in_words n.created_at} ago" %></div>
 </div>
 <li class="notification-divider"></li>
