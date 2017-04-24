@@ -13,7 +13,8 @@
           </div>
           <div
             class="list-activity-row"
-            v-for="activity in list.activities.last_activity"
+            v-for="(activity, index) in list.activities.last_activity"
+            v-show="showMore ? true : index < 3"
           >
             <div
               class="col-md-1"
@@ -44,6 +45,13 @@
                 </div>
             </div>
           </div>
+          <a
+            v-if="list.activities.last_activity.length > 3"
+            v-text="showMore ? 'see less...' : 'see more..'"
+            @click="showMore = !showMore"
+          >
+          </a>
+
           <div class="list-footer">
             <a
               class="list-vote"

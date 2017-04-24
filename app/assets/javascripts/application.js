@@ -57,7 +57,8 @@ Vue.component("list-card", {
   data: function() {
     return {
       likeIsLoading: false,
-      pinIsLoading: false
+      pinIsLoading: false,
+      showMore: false
     }
   },
   filters: {

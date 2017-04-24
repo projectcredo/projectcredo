@@ -13,7 +13,7 @@ json.array!(lists) do |list|
 
   if @include_activities
     json.activities do |json|
-      json.last_activity list.activities.last(3).reverse do |a|
+      json.last_activity list.activities.last(10).reverse do |a|
         json.user a.sentence_parts[:username]
         json.type a.activity_type
         json.updated_at time_ago_in_words(a.updated_at)
