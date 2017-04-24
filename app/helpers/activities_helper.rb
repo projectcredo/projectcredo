@@ -7,4 +7,9 @@ module ActivitiesHelper
                         actable_type: actable.class.name,
                         actable_id: actable.id)
   end
+
+  def create_activity_and_notifications(actable: ,activity_type:, users: ,addable: nil)
+    activity = create_activity(actable: actable, activity_type: activity_type, addable: addable)
+    create_notifications(users: users, activity: activity)
+  end
 end

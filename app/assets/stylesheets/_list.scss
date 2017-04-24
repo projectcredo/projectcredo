@@ -168,5 +168,14 @@
     }
   }
 
+  .created {
+    &:before    {
+      font-family: "Glyphicons Halflings";
+      content: "\e081";
+      font-size: 2em;
+      width: 50%;
+    }
+  }
+
   @extend .row
 }

@@ -66,6 +66,10 @@ class User < ApplicationRecord
     lists.where('list_memberships.role' => :owner).distinct
   end
 
+  def role(list)
+    ListMembership.find_by(list: list, user: self).role
+  end
+
   def unread_notifications
     notifications.where(has_read: false)
   end

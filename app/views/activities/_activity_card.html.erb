@@ -32,6 +32,11 @@
               >
                "{{activity.addable, 150 | truncate }}"
               </span>
+              <span
+                v-if="activity.type == 'created'"
+              >
+               This list was created!
+              </span>
               <div class="timestamp">
                 {{activity.user}}
                 {{activity.type}}

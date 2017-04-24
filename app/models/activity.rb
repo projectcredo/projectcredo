@@ -8,19 +8,20 @@ class Activity < ApplicationRecord
   validates :user_id, :activity_type, :actable_type, :actable_id, presence: true
 
   def sentence_parts
-    sentence_parts = Hash.new
+    parts = Hash.new
     case self.activity_type
     when "commented"
-      sentence_parts[:added] = self.addable.content
-      sentence_parts[:preposition] = "on"
+      parts[:added] = self.addable.content
+      parts[:preposition] = "on"
     when "added"
-      sentence_parts[:added] = self.addable.paper.title
-      sentence_parts[:preposition] = "to"
-      sentence_parts[:paper_direct_link] = self.addable.paper.direct_link
+      parts[:added] = self.addable.paper.title
+      parts[:preposition] = "to"
+      parts[:paper_direct_link] = self.addable.paper.direct_link
+    when "created"
     end
 
-    sentence_parts[:username] = self.user.username
+    parts[:username] = self.user.username
 
-    return sentence_parts
+    return parts
   end
 end

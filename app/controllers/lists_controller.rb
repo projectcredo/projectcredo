@@ -41,6 +41,12 @@ class ListsController < ApplicationController
           end
         end
 
+        create_activity_and_notifications(
+          actable: @list,
+          activity_type: "created",
+          users: @list.members
+        )
+
         format.html { redirect_to user_list_path(@list.owner, @list), notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
