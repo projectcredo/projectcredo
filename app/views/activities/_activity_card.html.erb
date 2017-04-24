@@ -23,14 +23,14 @@
             <div class="col-md-11">
               <a
                 :href="activity.addable_href"
-                v-text="activity.addable"
                 v-if="activity.type == 'added'"
               >
+                {{activity.addable, 150 | truncate}}
               </a>
               <span
                 v-if="activity.type == 'commented'"
               >
-               "{{activity.addable}}"
+               "{{activity.addable, 150 | truncate }}"
               </span>
               <div class="timestamp">
                 {{activity.user}}
