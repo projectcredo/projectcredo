@@ -58,7 +58,7 @@ class List < ApplicationRecord
       ListMembership.create(attrs)
     end
   end
-  has_many :comments, as: :commentable
+  has_many :comments, as: :commentable, dependent: :destroy
   has_many :activities, as: :actable, dependent: :destroy
 
   # Validations
