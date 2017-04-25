@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root 'lists#index'
+
+  root 'activities#index'
   get '/about' => 'static_pages#about'
   get '/how-to' => 'static_pages#how_to'
   get '/.well-known/acme-challenge/:id' => 'static_pages#lets_encrypt'
@@ -28,6 +29,8 @@ Rails.application.routes.draw do
 
   resources :notifications, only: [:index]
   get '/read_notifications' => 'notifications#read_notifications', as:'read_notifications'
+
+  resources :activities, only: [:index]
 
   scope ':username' do
     resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists'

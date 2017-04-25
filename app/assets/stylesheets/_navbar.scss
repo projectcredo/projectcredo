@@ -92,6 +92,10 @@
     bottom: 0;
     left: $searchbar-left-postion;
 
+    input[type=text]::placeholder {
+      color: #fff;
+    }
+
     input[type=text] {
       width: 100%;
       border-radius: 0;

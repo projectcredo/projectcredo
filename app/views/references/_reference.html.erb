@@ -1,13 +1,4 @@
 <% paper = reference.paper %>
-<% direct_link =
-  if paper.doi.present?
-    "http://dx.doi.org/#{paper.doi}"
-  elsif paper.pubmed_id.present?
-    "https://www.ncbi.nlm.nih.gov/pubmed/#{paper.pubmed_id}"
-  else
-    paper.links.first.url
-  end
-%>
 
 <div class="row paper-show">
   <% if not show_comments %>
@@ -18,7 +9,7 @@
       <%= yield(:paper_title) %>
     <% else %>
       <h4 class="paper-title">
-        <%= link_to paper.title, direct_link, target: '_blank' %>
+        <%= link_to paper.title, paper.direct_link, target: '_blank' %>
       </h4>
     <% end %>
 

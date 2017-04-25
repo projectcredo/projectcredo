@@ -57,7 +57,8 @@ Vue.component("list-card", {
   data: function() {
     return {
       likeIsLoading: false,
-      pinIsLoading: false
+      pinIsLoading: false,
+      showMore: false
     }
   },
   filters: {
@@ -230,11 +231,6 @@ var searchLists = new Vue({
     }
   },
   methods: {
-    showList: function(id) {
-      if (this.query === '') {return true}
-
-      return this.fuseResults.includes(id)
-    },
     getResults: function() {
       if (this.query === '') {
         this.results = []
@@ -252,19 +248,23 @@ var searchLists = new Vue({
     selectResult: function(result) {
       this.query = result
       this.results = []
-    },
+    }
+  }
+});
+
+
+var activityFeed = new Vue({
+  data: {
+    signedIn: false,
+    allLists: [],
+    filterPins: false
+  },
+  methods: {
     toggleFilterPins: function() {
       if(this.filterPins) {
         this.filterPins = false;
       } else {
         this.filterPins = true;
-      }
-    },
-    toggleFilterLikes: function() {
-      if(this.filterLikes) {
-        this.filterLikes = false;
-      } else {
-        this.filterLikes = true;
       }
     }
   }

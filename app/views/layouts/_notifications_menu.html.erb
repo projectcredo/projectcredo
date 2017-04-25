@@ -4,7 +4,7 @@
     <div class="notification-heading"><h4 class="menu-title">Notifications</h4></div>
     <div class="notifications-wrapper">
       <% if current_user.notifications.present? %>
-        <% current_user.notifications.reverse.each do |n| %>
+        <% current_user.notifications.last(20).reverse.each do |n| %>
           <%= render 'layouts/notification', n: n %>
         <% end %>
       <% else %>

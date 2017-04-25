@@ -1,0 +1,37 @@
+<%
+  @title = 'Home'
+  @body_class = "list-index"
+%>
+
+<div id="activity-feed">
+  <div class="row">
+    <div class="col-md-3">
+      <h4></h4>
+      <%= render 'lists/new_list_btn' %>
+      <% if current_user %>
+        <%= render 'activities/activities_index_filters' %>
+      <% end %>
+    </div>
+    <div class="col-md-9">
+      <h4>Research Activity</h4>
+      <div v-for="list in allLists"
+        v-if="list.pinned || !filterPins"
+        >
+        <list-card
+          :list="list"
+          :signed-in="signedIn"
+        >
+        </list-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for(:page_app) do %>
+  <%= render 'activities/activity_card' %>
+  <script>
+    activityFeed.signedIn = <%= user_signed_in? %>
+    activityFeed.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
+    activityFeed.$mount('#activity-feed')
+  </script>
+<% end %>
