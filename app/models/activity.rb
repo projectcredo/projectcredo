@@ -1,4 +1,6 @@
 class Activity < ApplicationRecord
+  enum activity_type: {created: 10, added: 20, commented: 30 }
+
   belongs_to :user
   belongs_to :actable, polymorphic: true
   belongs_to :addable, polymorphic: true

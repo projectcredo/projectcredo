@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170424232813) do
+ActiveRecord::Schema.define(version: 20170425064824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "citext"
 
   create_table "activities", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "activity_type"
+    t.integer  "user_id",       null: false
+    t.integer  "activity_type", null: false
     t.string   "addable_type"
     t.integer  "addable_id"
-    t.string   "actable_type"
-    t.integer  "actable_id"
+    t.string   "actable_type",  null: false
+    t.integer  "actable_id",    null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["actable_type", "actable_id"], name: "index_activities_on_actable_type_and_actable_id", using: :btree
