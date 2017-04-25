@@ -16,9 +16,9 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     respond_to do |format|
       if @comment.save
-        activity = create_activity(actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
-        create_notifications(users: @comment.commentable.members, activity: activity) if @comment.commentable_type == 'List'
-
+        if @comment.commentable_type == 'List'
+          create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
+        end
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @comment }
         format.js do
