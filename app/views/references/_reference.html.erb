@@ -5,16 +5,14 @@
   <td><%= time_ago_in_words(paper.published_at) if paper.published_at.present? %></td>
   <td>
     <% paper.authors.each do |a| %>
-      <div><%=a.full_name%></div>
+      <div><a class="author-link"><%=a.full_name%></a></div>
     <% end %>
   </td>
   <td>
-    <%= link_to paper.title, paper.direct_link, target: '_blank' %>
-    <div class='reference-metadata'>
-      <%= render 'papers/metadata', paper: paper %>
+    <div>
       <%= render 'papers/tags', paper: paper %>
     </div>
-
+    <%= link_to paper.title, paper.direct_link, target: '_blank' %>
     <div class="reference-detail">
       <%= link_to 'permalink', user_list_reference_path(reference.list.user, reference.list, reference) %>
        - contributed by <%= link_to reference.user.username, user_lists_path(reference.user) %>

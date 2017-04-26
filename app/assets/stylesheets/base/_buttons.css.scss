@@ -12,6 +12,15 @@
     }
 }
 
+.btn-link {
+    color: $dark-color;
+    text-decoration: underline;
+
+    &:hover {
+      color: $primary-color;
+    }
+}
+
 .btn-primary.active,
 .btn-primary.active:hover,
 .btn-primary.active:visited,
@@ -23,3 +32,4 @@
 a {
   color: $dark-color;
 }
+
