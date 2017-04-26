@@ -14,7 +14,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr is="reference-row">
+      <tr
+        is="reference-row"
+        v-for="reference in allReferences"
+        :reference="reference"
+        :signed-in="signedIn"
+        >
       </tr>
     </tbody>
   </table>
@@ -24,14 +29,72 @@
   <%= render 'users/lists/reference_row' %>
   <script>
     Vue.component("reference-row", {
-      props: [],
+      props: ["reference","signedIn"],
+      data: function() {
+        return {
+          recommendIsLoading: false,
+          showMore: false
+        }
+      },
+      methods: {
+        recommend: function(reference) {
+          var self = this;
+          var params = {
+            id: reference.id,
+            type: "list"
+          };
+          $.ajax({
+            url: reference.recommend_path + ".json",
+            type: 'POST',
+            data: params
+          })
+          .done(function(){
+            reference.recommended = true
+            reference.recommends = reference.recommends + 1
+            self.recommendIsLoading = false
+          })
+
+        },
+        unrecommend: function(reference) {
+          var self = this;
+          var params = {
+            id: reference.id,
+            type: "reference"
+          };
+          $.ajax({
+            url: reference.recommend_path + ".json",
+            type: 'DELETE',
+            data: params
+          })
+          .done(function(){
+            reference.recommended = false
+            reference.recommends = reference.recommends - 1
+            self.recommendIsLoading = false
+          });
+
+        },
+        toggleRecommend: function(reference) {
+          if(!this.signedIn) {
+            window.location.href = '/users/sign_in';
+          } else if(!this.recommendIsLoading) {
+            this.recommendIsLoading = true
+            if(reference.recommended) {
+              this.unrecommend(reference)
+            } else {
+              this.recommend(reference)
+            }
+          }
+        }
+      },
       template: '#reference-row'
     })
     var referenceListApp = new Vue({
       data: {
+        signedIn: false,
         allReferences: []
       }
     });
+    referenceListApp.signedIn = <%= user_signed_in? %>
     referenceListApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>
     referenceListApp.$mount('#reference-list')
   </script>

@@ -12,11 +12,14 @@ button.comment-vote.active {
   color: $link-color;
 }
 
-.reference-vote {
-  &:before  {
+.recommend {
+  color: $gray-light;
+  &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
   }
+}
 
-  @extend .btn, .btn-default, .btn-sm;
+.toggled {
+  color: $primary-color;
 }

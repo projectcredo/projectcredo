@@ -1,7 +1,21 @@
 <script type="text/x-template" id="reference-row">
   <tr>
     <td>
-      hello
+      <a
+        class="recommend"
+        v-bind:class="{'toggled': reference.recommended}"
+        v-on:click="toggleRecommend(reference)"
+        v-show="!recommendIsLoading"
+      >
+        {{reference.recommends}}
+      </a>
+      <span
+        class="spinner"
+        v-show="recommendIsLoading"
+      >
+        <span class="double-bounce1"></span>
+        <span class="double-bounce2"></span>
+      </span>
     </td>
   </tr>
 </script>
