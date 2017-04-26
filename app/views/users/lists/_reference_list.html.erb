@@ -4,7 +4,7 @@
     <%= render 'papers/sort_by' %>
     <i><%= reference_count%> papers added to this list</i>
   <% end %>
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th></th>
@@ -14,19 +14,25 @@
       </tr>
     </thead>
     <tbody>
-      <%= render partial: 'references/reference', collection: @references %>
+      <tr is="reference-row">
+      </tr>
     </tbody>
   </table>
 </div>
 
 <% content_for(:page_app) do %>
+  <%= render 'users/lists/reference_row' %>
   <script>
+    Vue.component("reference-row", {
+      props: [],
+      template: '#reference-row'
+    })
     var referenceListApp = new Vue({
-      el: '#reference-list',
       data: {
         allReferences: []
       }
     });
     referenceListApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>
+    referenceListApp.$mount('#reference-list')
   </script>
 <% end %>
