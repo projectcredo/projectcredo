@@ -37,7 +37,19 @@
         <%= render 'papers/sort_by' %>
         <i><%= reference_count%> papers added to this list</i>
       <% end %>
-      <%= render partial: 'references/reference', collection: @references %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Recommended</th>
+            <th>Age</th>
+            <th>Authors</th>
+            <th>Paper</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render partial: 'references/reference', collection: @references %>
+        </tbody>
+      </table>
     </div>
     <div class="col-md-4 list-comments">
       <strong>Comments on <%= @list.name %></strong>
