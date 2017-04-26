@@ -1,0 +1,32 @@
+<div id="reference-list">
+  <% reference_count = @list.references.count %>
+  <% if reference_count > 0 %>
+    <%= render 'papers/sort_by' %>
+    <i><%= reference_count%> papers added to this list</i>
+  <% end %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Age</th>
+        <th>Authors</th>
+        <th>Paper</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'references/reference', collection: @references %>
+    </tbody>
+  </table>
+</div>
+
+<% content_for(:page_app) do %>
+  <script>
+    var referenceListApp = new Vue({
+      el: '#reference-list',
+      data: {
+        allReferences: []
+      }
+    });
+    referenceListApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>
+  </script>
+<% end %>

@@ -1,6 +1,6 @@
 <% paper = reference.paper %>
 
-<tr class="paper-show">
+<tr>
   <td id="reference-vote-<%=reference.id%>"><%= render 'votes/toggle_like', votable: reference %></td>
   <td><%= paper.age if paper.published_at.present? %></td>
   <td>

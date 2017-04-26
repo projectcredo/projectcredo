@@ -32,24 +32,7 @@
       <%= wrap_on_line_breaks @list.description %>
       <%= render 'crossref/search', list: @list %>
       <%= render 'lists/add_reference', list: @list %>
-      <% reference_count = @list.references.count %>
-      <% if reference_count > 0 %>
-        <%= render 'papers/sort_by' %>
-        <i><%= reference_count%> papers added to this list</i>
-      <% end %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Age</th>
-            <th>Authors</th>
-            <th>Paper</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= render partial: 'references/reference', collection: @references %>
-        </tbody>
-      </table>
+      <%= render 'users/lists/reference_list', list: @list %>
     </div>
     <div class="col-md-4 list-comments">
       <strong>Comments on <%= @list.name %></strong>
@@ -59,3 +42,4 @@
     </div>
   </div>
 </div>
+

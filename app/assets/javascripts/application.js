@@ -171,7 +171,7 @@ var searchLists = new Vue({
     results: [],
     placeholder: "Search for a list...",
     filterPins: false,
-    filterLikes: false,
+    filterLikes: false
   },
   computed: {
     tags: function() {
