@@ -17,5 +17,13 @@
         <span class="double-bounce2"></span>
       </span>
     </td>
+    <td
+    v-if="reference.paper.published_at"
+    >
+      {{reference.paper.published_at}}
+    </td>
+    <td>
+      {{reference.paper.title}}
+    </td>
   </tr>
 </script>
