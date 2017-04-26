@@ -77,4 +77,12 @@ class Paper < ApplicationRecord
     end
   end
 
+  def age
+    if self.published_at
+      now = Time.now.utc.to_date
+      age = now.year - self.published_at.year - ((now.month > self.published_at.month || (now.month == self.published_at.month && now.day >= self.published_at.day)) ? 0 : 1)
+      return age < 1 ? '< 1' : age
+    end
+  end
+
 end

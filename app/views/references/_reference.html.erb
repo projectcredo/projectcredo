@@ -2,7 +2,7 @@
 
 <tr class="paper-show">
   <td id="reference-vote-<%=reference.id%>"><%= render 'votes/toggle_like', votable: reference %></td>
-  <td><%= time_ago_in_words(paper.published_at) if paper.published_at.present? %></td>
+  <td><%= paper.age if paper.published_at.present? %></td>
   <td>
     <% paper.authors.each do |a| %>
       <div><a class="author-link"><%=a.full_name%></a></div>
