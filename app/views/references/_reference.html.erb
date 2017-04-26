@@ -1,18 +1,11 @@
 <% paper = reference.paper %>
 
 <div class="row paper-show">
-  <% if not show_comments %>
-    <div class="col-md-1" id="reference-vote-<%=reference.id%>"><%= render 'votes/toggle_like', votable: reference %></div>
-  <% end %>
-  <div class="col-md-<%= show_comments ? 12 : 11 %>">
-    <% if show_comments %>
-      <%= yield(:paper_title) %>
-    <% else %>
-      <h4 class="paper-title">
-        <%= link_to paper.title, paper.direct_link, target: '_blank' %>
-      </h4>
-    <% end %>
-
+  <div class="col-md-1" id="reference-vote-<%=reference.id%>"><%= render 'votes/toggle_like', votable: reference %></div>
+  <div class="col-md-11">
+    <h4 class="paper-title">
+      <%= link_to paper.title, paper.direct_link, target: '_blank' %>
+    </h4>
     <div class='reference-metadata'>
       <%= render 'papers/metadata', paper: paper %>
       <%= render 'papers/tags', paper: paper %>
@@ -50,7 +43,7 @@
       </ul>
     </div>
 
-    <div class="paper-detail well collapse <%= "in" if show_comments %>" id="comments-<%= reference.id %>">
+    <div class="paper-detail well collapse" id="comments-<%= reference.id %>">
       <%= render 'commentables/comments', commentable: reference, list_for_authorization: reference.list %>
     </div>
 
