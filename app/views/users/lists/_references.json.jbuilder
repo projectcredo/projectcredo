@@ -6,5 +6,8 @@ json.array!(references) do |r|
   json.recommends r.cached_votes_up
   json.recommended user_signed_in? && current_user.voted_for?(r)
   json.recommend_path polymorphic_path([r, :vote])
+  json.abstract (r.paper.abstract.nil? ? '' : r.paper.abstract)
+  json.authors r.paper.authors
+  json.comments r.comments
   json.paper r.paper
 end

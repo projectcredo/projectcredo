@@ -1,29 +1,91 @@
 <script type="text/x-template" id="reference-row">
-  <tr>
-    <td>
-      <a
-        class="recommend"
-        v-bind:class="{'toggled': reference.recommended}"
-        v-on:click="toggleRecommend(reference)"
-        v-show="!recommendIsLoading"
+  <tbody>
+    <tr>
+      <td>
+        <a
+          class="recommend"
+          v-bind:class="{'toggled': reference.recommended}"
+          @click="toggleRecommend(reference)"
+          v-show="!recommendIsLoading"
+        >
+          {{reference.recommends}}
+        </a>
+        <span
+          class="spinner"
+          v-show="recommendIsLoading"
+        >
+          <span class="double-bounce1"></span>
+          <span class="double-bounce2"></span>
+        </span>
+      </td>
+      <td
+      v-if="reference.paper.published_at"
       >
-        {{reference.recommends}}
-      </a>
-      <span
-        class="spinner"
-        v-show="recommendIsLoading"
-      >
-        <span class="double-bounce1"></span>
-        <span class="double-bounce2"></span>
-      </span>
-    </td>
-    <td
-    v-if="reference.paper.published_at"
+        {{reference.paper.published_at}}
+      </td>
+      <td>
+        {{reference.paper.title}}
+      </td>
+      <td>
+        <a
+          class="show-details"
+          :class="{'toggled': showPaperDetails}"
+          v-if="hasPaperDetails"
+          @click="showPaperDetails = !showPaperDetails"
+        ></a>
+      </td>
+    </tr>
+    <tr
+      v-if="showPaperDetails"
+      class="reference-detail"
     >
-      {{reference.paper.published_at}}
-    </td>
-    <td>
-      {{reference.paper.title}}
-    </td>
-  </tr>
+      <td colspan="4">
+        <p class="header">
+          <a
+            class="tag"
+            v-for="tag in reference.tag_list"
+            v-text="tag"
+          >
+          </a>
+        </p>
+        <p class="header" v-if="reference.authors">
+        Authors
+          <a
+            class="tag"
+            v-for="author in reference.authors"
+            v-text="author.full_name"
+          >
+          </a>
+        </p>
+        <div v-if="reference.comments_count > 0">
+          <span class="header">Notes and Highlights</span>
+          {{reference.comments}}
+        </div>
+        <div v-if="reference.abstract">
+          <span class="header">Abstract</span>
+          <div
+            v-if="truncateAbstract"
+            @click.stop="truncateAbstract = !truncateAbstract"
+          >
+            {{reference.abstract, 300 | truncate}}
+            <button
+              class="btn-link"
+              @click.stop="truncateAbstract = !truncateAbstract"
+            >
+              see more
+            </button>
+          </div>
+          <div v-else>
+            {{reference.abstract}}
+            <button
+              class="btn-link"
+              @click.stop="truncateAbstract = !truncateAbstract"
+            >
+              see less
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
 </script>

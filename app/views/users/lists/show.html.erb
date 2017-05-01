@@ -21,6 +21,7 @@
 </div>
 
 <div class="container">
+
   <div class="row">
     <div class="col-md-8">
       <p>
@@ -34,10 +35,12 @@
       <%= render 'lists/add_reference', list: @list %>
       <%= render 'users/lists/reference_list', list: @list %>
     </div>
-    <div class="col-md-4 list-comments">
-      <strong>Comments on <%= @list.name %></strong>
-      <div id="comments-<%= @list.id %>">
-        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+    <div class="col-md-4">
+      <div class="list-comments">
+        <strong>Comments on <%= @list.name %></strong>
+        <div id="comments-<%= @list.id %>">
+          <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+        </div>
       </div>
     </div>
   </div>

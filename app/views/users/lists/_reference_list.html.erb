@@ -4,22 +4,22 @@
     <%= render 'papers/sort_by' %>
     <i><%= reference_count%> papers added to this list</i>
   <% end %>
-  <table class="table table-hover">
+
+  <table class="table">
     <thead>
       <tr>
-        <th></th>
+        <th width="50"></th>
         <th>Age</th>
         <th>Paper</th>
+        <th width="50"></th>
       </tr>
     </thead>
-    <tbody>
-      <tr
+    <tbody
         is="reference-row"
         v-for="reference in allReferences"
         :reference="reference"
         :signed-in="signedIn"
         >
-      </tr>
     </tbody>
   </table>
 </div>
@@ -32,7 +32,14 @@
       data: function() {
         return {
           recommendIsLoading: false,
-          showMore: false
+          hoverPaperDetails: false,
+          showPaperDetails: false,
+          truncateAbstract: true
+        }
+      },
+      computed: {
+        hasPaperDetails: function() {
+          return this.reference.authors.length > 0 || this.reference.comments.length > 0 || this.reference.tag_list.length > 0 || this.reference.abstract !== ''
         }
       },
       methods: {
@@ -52,7 +59,6 @@
             reference.recommends = reference.recommends + 1
             self.recommendIsLoading = false
           })
-
         },
         unrecommend: function(reference) {
           var self = this;
@@ -83,7 +89,7 @@
               this.recommend(reference)
             }
           }
-        }
+        },
       },
       template: '#reference-row'
     })

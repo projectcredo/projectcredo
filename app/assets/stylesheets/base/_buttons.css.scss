@@ -12,9 +12,12 @@
     }
 }
 
-.btn-link {
+.btn-link,
+.btn-link:visited,
+.btn-link:focus,
+.btn-link:hover {
     color: $dark-color;
-    text-decoration: underline;
+    text-decoration: none;
 
     &:hover {
       color: $primary-color;
@@ -33,3 +36,43 @@ a {
   color: $dark-color;
 }
 
+.show-details {
+  color: $gray-light;
+  text-decoration: none;
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e114";
+  }
+
+  @extend .btn, .btn-link
+}
+/* Buttons for voting */
+
+button.comment-vote {
+  @extend .btn, .btn-link, .btn-xs;
+  color: $gray-light;
+
+  &:before  {
+    font-family: "Glyphicons Halflings";
+    content: "\e253";
+  }
+}
+
+button.comment-vote.active {
+  color: $link-color;
+}
+
+.recommend {
+  text-decoration: none;
+  color: $gray-light;
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e125";
+  }
+
+  @extend .btn, .btn-link
+}
+
+.toggled {
+  color: $primary-color;
+}
