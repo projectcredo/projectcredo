@@ -19,9 +19,9 @@
         </span>
       </td>
       <td
-      v-if="reference.paper.published_at"
+        align="center"
       >
-        {{reference.paper.published_at}}
+        <b v-if="reference.paper.published_at">{{reference.age}}</b>
       </td>
       <td>
         {{reference.paper.title}}
@@ -70,6 +70,7 @@
             {{reference.abstract, 300 | truncate}}
             <button
               class="btn-link"
+              v-if="reference.abstract.length > 300"
               @click.stop="truncateAbstract = !truncateAbstract"
             >
               see more

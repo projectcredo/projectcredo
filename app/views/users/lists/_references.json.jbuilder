@@ -9,5 +9,6 @@ json.array!(references) do |r|
   json.abstract (r.paper.abstract.nil? ? '' : r.paper.abstract)
   json.authors r.paper.authors
   json.comments r.comments
+  json.age r.paper.age
   json.paper r.paper
 end
