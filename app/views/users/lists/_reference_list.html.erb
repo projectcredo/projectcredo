@@ -28,8 +28,69 @@
 </div>
 
 <% content_for(:page_app) do %>
+  <%= render 'users/lists/notes_highlights' %>
   <%= render 'users/lists/reference_row' %>
   <script>
+    Vue.component("note", {
+      props: ["note","signedIn"],
+      data: function() {
+        return {
+          upvoteIsLoading: false,
+          truncateNote: true
+        }
+      },
+      methods: {
+        upvote: function(note) {
+          var self = this;
+          var params = {
+            id: note.id,
+            type: "comment"
+          };
+          $.ajax({
+            url: note.upvote_path + ".json",
+            type: 'POST',
+            data: params
+          })
+          .done(function(){
+            note.upvoted = true
+            note.upvotes = note.upvotes + 1
+            self.upvoteIsLoading = false
+          })
+        },
+        unupvote: function(note) {
+          var self = this;
+          var params = {
+            id: note.id,
+            type: "comment"
+          };
+          $.ajax({
+            url: note.upvote_path + ".json",
+            type: 'DELETE',
+            data: params
+          })
+          .done(function(){
+            note.upvoted = false
+            note.upvotes = note.upvotes - 1
+            self.upvoteIsLoading = false
+          });
+
+        },
+        toggleUpvote: function(note) {
+          if(!this.signedIn) {
+            window.location.href = '/users/sign_in';
+          } else if(!this.upvoteIsLoading) {
+            this.upvoteIsLoading = true
+            if(note.upvoted) {
+              this.unupvote(note)
+            } else {
+              this.upvote(note)
+            }
+          }
+        },
+      },
+      template: '#note'
+    })
+
     Vue.component("reference-row", {
       props: ["reference","signedIn"],
       data: function() {
@@ -42,7 +103,7 @@
       },
       computed: {
         hasPaperDetails: function() {
-          return this.reference.authors.length > 0 || this.reference.comments.length > 0 || this.reference.tag_list.length > 0 || this.reference.abstract !== ''
+          return this.reference.authors.length > 0 || this.reference.notes.length > 0 || this.reference.tag_list.length > 0 || this.reference.abstract !== ''
         }
       },
       methods: {
@@ -95,7 +156,7 @@
         },
       },
       template: '#reference-row'
-    })
+    });
     var referenceListApp = new Vue({
       data: {
         signedIn: false,

@@ -3,7 +3,7 @@
     <tr>
       <td>
         <a
-          class="recommend"
+          class="vote recommend"
           v-bind:class="{'toggled': reference.recommended}"
           @click="toggleRecommend(reference)"
           v-show="!recommendIsLoading"
@@ -40,6 +40,16 @@
       class="reference-detail"
     >
       <td colspan="4">
+        <div v-if="reference.notes.length > 0">
+          <span class="header">Notes and Highlights</span>
+          <div v-for="note in reference.notes">
+            <note
+              :note="note"
+              :signed-in="signedIn"
+            >
+            </note>
+          </div>
+        </div>
         <p class="header">
           <a
             class="tag"
@@ -48,7 +58,7 @@
           >
           </a>
         </p>
-        <p class="header" v-if="reference.authors">
+        <p class="header" v-if="reference.authors.length > 0">
         Authors
           <a
             class="tag"
@@ -57,10 +67,6 @@
           >
           </a>
         </p>
-        <div v-if="reference.comments_count > 0">
-          <span class="header">Notes and Highlights</span>
-          {{reference.comments}}
-        </div>
         <div v-if="reference.abstract">
           <span class="header">Abstract</span>
           <div
@@ -70,7 +76,7 @@
             {{reference.abstract, 300 | truncate}}
             <button
               class="btn-link"
-              v-if="reference.abstract.length > 300"
+              v-if="reference.abstract.length > 30"
               @click.stop="truncateAbstract = !truncateAbstract"
             >
               see more

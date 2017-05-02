@@ -63,15 +63,27 @@ button.comment-vote.active {
   color: $link-color;
 }
 
-.recommend {
+.vote {
   text-decoration: none;
   color: $gray-light;
+
+  @extend .btn, .btn-link
+}
+
+.recommend {
+
   &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
   }
+}
 
-  @extend .btn, .btn-link
+.upvote {
+  margin-right: 10px;
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e125";
+  }
 }
 
 .toggled {
