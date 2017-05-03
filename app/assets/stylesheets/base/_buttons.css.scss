@@ -70,7 +70,7 @@ button.comment-vote.active {
   @extend .btn, .btn-link
 }
 
-.recommend {
+.vote.reference {
 
   &:after  {
     font-family: "Glyphicons Halflings";
@@ -78,8 +78,9 @@ button.comment-vote.active {
   }
 }
 
-.upvote {
+.vote.comment {
   margin-right: 10px;
+  border: none;
   &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";

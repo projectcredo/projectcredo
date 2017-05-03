@@ -16,10 +16,10 @@ json.array!(references) do |r|
     json.id n.id
     json.type n.class.to_s.downcase
     json.content n.content
-    json.upvotes n.cached_votes_up
-    json.upvoted user_signed_in? && current_user.voted_for?(n)
+    json.votes n.cached_votes_up
+    json.voted user_signed_in? && current_user.voted_for?(n)
+    json.vote_path polymorphic_path([n, :vote])
     json.updated_at n.updated_at
     json.user User.find(n.user_id).username
-    json.upvote_path polymorphic_path([n, :vote])
   end
 end

@@ -38,10 +38,14 @@
       <td colspan="4">
         <div v-if="reference.notes.length > 0">
           <span class="header">Notes and Highlights</span>
-          <div v-for="note in reference.notes">
+          <div v-for="note in reference.notes" class="note">
+            <vote
+              :voteable="note"
+              :signed-in="signedIn"
+            >
+            </vote>
             <note
               :note="note"
-              :signed-in="signedIn"
             >
             </note>
           </div>

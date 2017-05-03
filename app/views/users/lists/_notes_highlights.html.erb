@@ -1,20 +1,5 @@
 <script type="text/x-template" id="note">
-  <div class="note">
-    <a
-      class="upvote vote"
-      v-bind:class="{'toggled': note.upvoted}"
-      @click="toggleUpvote(note)"
-      v-show="!upvoteIsLoading"
-    >
-      {{note.upvotes}}
-    </a>
-    <span
-      class="spinner"
-      v-show="upvoteIsLoading"
-    >
-      <span class="double-bounce1"></span>
-      <span class="double-bounce2"></span>
-    </span>
+  <span>
     {{note.content, 300 | truncate}}
-  </div>
+  </span>
 </script>

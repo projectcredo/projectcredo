@@ -1,8 +1,7 @@
 <script type="text/x-template" id="vote">
-  <div>
+  <span>
     <a
-      class="vote recommend"
-      v-bind:class="{'toggled': voteable.voted}"
+      :class="[{'toggled': this.voteable.voted}, 'vote', voteable.type]"
       @click="toggleVote(voteable)"
       v-show="!isLoading"
     >
@@ -15,5 +14,5 @@
       <span class="double-bounce1"></span>
       <span class="double-bounce2"></span>
     </span>
-  </div>
+  </span>
 </script>
