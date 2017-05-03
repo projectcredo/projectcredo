@@ -1,4 +1,40 @@
 <div id="reference-list">
+
+  <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal" v-if="referenceInModal.paper" :reference="referenceInModal">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{referenceInModal.paper.title}}</h4>
+        </div>
+        <div class="modal-body">
+          <p class="header">
+            <a
+              class="tag"
+              v-for="tag in referenceInModal.tag_list"
+              v-text="tag"
+            >
+            </a>
+          </p>
+          <p class="header" v-if="referenceInModal.authors.length > 0">
+          Authors
+            <a
+              class="tag"
+              v-for="author in referenceInModal.authors"
+              v-text="author.full_name"
+            >
+            </a>
+          </p>
+        <abstract :abstract="referenceInModal.abstract"></abstract>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <% reference_count = @list.references.count %>
   <% if reference_count > 0 %>
     <%= render 'papers/sort_by' %>
@@ -11,7 +47,6 @@
         <th width="50"></th>
         <th width="50">
           Age
-          <div class="th2">(Years)</div>
         </th>
         <th>Paper</th>
         <th width="50"></th>
@@ -19,7 +54,9 @@
     </thead>
     <tbody
         is="reference-row"
-        v-for="reference in allReferences"
+        v-for="(reference,index) in allReferences"
+        v-on:selected="selectReference(index)"
+        :index="index"
         :reference="reference"
         :signed-in="signedIn"
         >
@@ -29,8 +66,19 @@
 
 <% content_for(:page_app) do %>
   <%= render 'users/lists/notes_highlights' %>
+  <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <script>
+    Vue.component("abstract", {
+      props: ["abstract"],
+      data: function() {
+        return {
+          truncateAbstract: true
+        }
+      },
+      template: '#abstract'
+    })
+
     Vue.component("note", {
       props: ["note","signedIn"],
       data: function() {
@@ -92,7 +140,7 @@
     })
 
     Vue.component("reference-row", {
-      props: ["reference","signedIn"],
+      props: ["reference","index","signedIn"],
       data: function() {
         return {
           recommendIsLoading: false,
@@ -160,7 +208,16 @@
     var referenceListApp = new Vue({
       data: {
         signedIn: false,
+        truncateAbstract: true,
+        indexIndexInModal: 0,
+        referenceInModal: {},
         allReferences: []
+      },
+      methods: {
+        selectReference: function(index) {
+          this.referenceIndexInModal = index
+          this.referenceInModal = this.allReferences[index];
+        }
       }
     });
     referenceListApp.signedIn = <%= user_signed_in? %>

@@ -52,8 +52,13 @@ debounce = function(func, wait, immediate) {
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
 // List Card Component for List Indexes
-Vue.filter('truncate', function(string, length) {
-  return string.substring(0, length) + (string.length < length ? '' : '...');
+Vue.filter('truncate', function(string, length, truncate) {
+  if (typeof truncate === 'undefined') { truncate = 'true'; }
+  if(truncate) {
+    return string.substring(0, length) + (string.length < length ? '' : '...');
+  } else{
+    return string
+  }
 })
 
 Vue.component("list-card", {

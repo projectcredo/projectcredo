@@ -24,7 +24,13 @@
         <b v-if="reference.paper.published_at">{{reference.age}}</b>
       </td>
       <td>
-        {{reference.paper.title}}
+        <a
+          data-toggle="modal"
+          data-target="#referenceModal"
+          @click="$emit('selected',index)"
+        >
+          {{reference.paper.title}}
+        </a>
       </td>
       <td>
         <a
@@ -67,31 +73,7 @@
           >
           </a>
         </p>
-        <div v-if="reference.abstract">
-          <span class="header">Abstract</span>
-          <div
-            v-if="truncateAbstract"
-            @click.stop="truncateAbstract = !truncateAbstract"
-          >
-            {{reference.abstract, 300 | truncate}}
-            <button
-              class="btn-link"
-              v-if="reference.abstract.length > 30"
-              @click.stop="truncateAbstract = !truncateAbstract"
-            >
-              see more
-            </button>
-          </div>
-          <div v-else>
-            {{reference.abstract}}
-            <button
-              class="btn-link"
-              @click.stop="truncateAbstract = !truncateAbstract"
-            >
-              see less
-            </button>
-          </div>
-        </div>
+        <abstract :abstract="reference.abstract"></abstract>
       </td>
     </tr>
   </tbody>

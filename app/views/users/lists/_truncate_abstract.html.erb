@@ -1,0 +1,15 @@
+<script type="text/x-template" id="abstract">
+  <div v-if="abstract">
+    <span class="header">Abstract</span>
+    <div>
+      {{abstract, 300, truncateAbstract | truncate}}
+    </div>
+    <button
+      class="btn-link"
+      v-if="abstract.length > 300"
+      @click.stop="truncateAbstract = !truncateAbstract"
+    >
+      {{truncateAbstract ? 'see more' : 'see less'}}
+    </button>
+  </div>
+</script>
