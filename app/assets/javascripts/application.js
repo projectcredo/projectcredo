@@ -59,7 +59,66 @@ Vue.filter('truncate', function(string, length, truncate) {
   } else{
     return string
   }
-})
+});
+
+Vue.component("vote", {
+  props: ["voteable", "signedIn"],
+  data: function() {
+  return {
+    isLoading: false
+    }
+  },
+  methods: {
+    vote: function(voteable) {
+      var self = this;
+      var params = {
+        id: voteable.id,
+        type: voteable.type
+      };
+      $.ajax({
+        url: voteable.vote_path + ".json",
+        type: 'POST',
+        data: params
+      })
+      .done(function(){
+        voteable.voted = true
+        voteable.votes = voteable.votes + 1
+        self.isLoading = false
+      });
+    },
+    unvote: function(voteable) {
+      var self = this;
+      var params = {
+        id: voteable.id,
+        type: voteable.type
+      };
+      $.ajax({
+        url: voteable.vote_path + ".json",
+        type: 'DELETE',
+        data: params
+      })
+      .done(function(){
+        voteable.voted = false
+        voteable.votes = voteable.votes - 1
+        self.isLoading = false
+      });
+
+    },
+    toggleVote: function(voteable) {
+      if(!this.signedIn) {
+        window.location.href = '/users/sign_in';
+      } else if(!this.isLoading) {
+        this.isLoading = true
+        if(voteable.voted) {
+          this.unvote(voteable)
+        } else {
+          this.vote(voteable)
+        }
+      }
+    },
+  },
+  template: '#vote'
+});
 
 Vue.component("list-card", {
   props: ["list", "signedIn"],

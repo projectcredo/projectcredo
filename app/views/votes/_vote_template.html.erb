@@ -1,0 +1,19 @@
+<script type="text/x-template" id="vote">
+  <div>
+    <a
+      class="vote recommend"
+      v-bind:class="{'toggled': voteable.voted}"
+      @click="toggleVote(voteable)"
+      v-show="!isLoading"
+    >
+      {{voteable.votes}}
+    </a>
+    <span
+      class="spinner"
+      v-show="isLoading"
+    >
+      <span class="double-bounce1"></span>
+      <span class="double-bounce2"></span>
+    </span>
+  </div>
+</script>

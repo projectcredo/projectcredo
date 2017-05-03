@@ -2,21 +2,11 @@
   <tbody>
     <tr>
       <td>
-        <a
-          class="vote recommend"
-          v-bind:class="{'toggled': reference.recommended}"
-          @click="toggleRecommend(reference)"
-          v-show="!recommendIsLoading"
+        <vote
+          :voteable="reference"
+          :signed-in="signedIn"
         >
-          {{reference.recommends}}
-        </a>
-        <span
-          class="spinner"
-          v-show="recommendIsLoading"
-        >
-          <span class="double-bounce1"></span>
-          <span class="double-bounce2"></span>
-        </span>
+        </vote>
       </td>
       <td
         align="center"
