@@ -19,7 +19,7 @@
     color: $dark-color;
     text-decoration: none;
     padding: 0;
-
+    outline:none;
     &:hover {
       color: $primary-color;
     }
@@ -89,4 +89,26 @@ button.comment-vote.active {
 
 .toggled {
   color: $primary-color;
+}
+
+.edit-btn {
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e065";
+  }
+
+  @extend .btn, .btn-link
+}
+
+.form-btns {
+  font-size: 12px;
+
+  .cancel-link {
+    @extend .btn, .btn-link
+  }
+
+  .submit-btn {
+    @extend .btn, .btn-primary, .btn-xs
+  }
+
 }

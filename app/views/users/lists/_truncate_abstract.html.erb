@@ -1,9 +1,6 @@
 <script type="text/x-template" id="abstract">
-  <div v-if="abstract">
-    <span class="header">Abstract</span>
-    <div>
-      {{abstract, 250, truncateAbstract | truncate}}
-    </div>
+  <div>
+    {{abstract, 250, truncateAbstract | truncate}}
     <button
       class="btn-link"
       v-if="abstract.length > 250"

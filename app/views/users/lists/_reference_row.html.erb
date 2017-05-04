@@ -2,15 +2,9 @@
   <tbody>
     <tr>
       <td>
-        <vote
-          :voteable="reference"
-          :signed-in="signedIn"
-        >
-        </vote>
+        <vote :voteable="reference" :signed-in="signedIn"></vote>
       </td>
-      <td
-        align="center"
-      >
+      <td align="center" >
         <b v-if="reference.paper.published_at">{{reference.age}}</b>
       </td>
       <td>
@@ -31,43 +25,30 @@
         ></a>
       </td>
     </tr>
+
     <tr
       v-if="showPaperDetails"
       class="reference-detail"
     >
       <td colspan="4">
         <div v-if="reference.notes.length > 0">
-          <span class="header">Notes and Highlights</span>
+          <div class="header">Notes and Highlights</div>
           <div v-for="note in reference.notes" class="note">
-            <vote
-              :voteable="note"
-              :signed-in="signedIn"
-            >
-            </vote>
-            <note
-              :note="note"
-            >
-            </note>
+            <vote :voteable="note" :signed-in="signedIn"></vote>
+            <note :note="note"></note>
           </div>
         </div>
-        <p class="header">
-          <a
-            class="tag"
-            v-for="tag in reference.tag_list"
-            v-text="tag"
-          >
-          </a>
+        <p>
+          <a class="tag" v-for="tag in reference.tag_list" v-text="tag"> </a>
         </p>
         <p class="header" v-if="reference.authors.length > 0">
-        Authors
-          <a
-            class="tag"
-            v-for="author in reference.authors"
-            v-text="author.full_name"
-          >
-          </a>
+          Authors
+          <a class="tag" v-for="author in reference.authors" v-text="author.full_name"></a>
         </p>
-        <abstract :abstract="reference.abstract"></abstract>
+        <div v-if="reference.abstract">
+          <span class="header">Abstract</span>
+          <abstract :abstract="reference.abstract"></abstract>
+        </div>
       </td>
     </tr>
   </tbody>

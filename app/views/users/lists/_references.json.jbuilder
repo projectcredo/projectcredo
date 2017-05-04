@@ -7,6 +7,7 @@ json.array!(references) do |r|
   json.voted user_signed_in? && current_user.voted_for?(r)
   json.vote_path polymorphic_path([r, :vote])
   json.abstract (r.paper.abstract.nil? ? '' : r.paper.abstract)
+  json.abstract_editable (current_user_can_edit?(r.list) || (current_user && r.list.accepts_public_contributions?))
   json.authors r.paper.authors
   json.age r.paper.age
   json.paper r.paper

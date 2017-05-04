@@ -12,26 +12,50 @@
         </div>
         <div class="modal-body">
           <div>
-            <a
-              class="tag"
+            <b>Tags</b>
+            <a class="tag"
               v-for="tag in selectedReference.tag_list"
               v-text="tag"
             >
             </a>
           </div>
-          <p class="header" v-if="selectedReference.authors.length > 0">
-          Authors
+          <div class="header" v-if="selectedReference.authors.length > 0">
+            <b>Authors</b>
             <a
               class="tag"
               v-for="author in selectedReference.authors"
               v-text="author.full_name"
             >
             </a>
-          </p>
+          </div>
+          <div>
+            <b>Abstract</b>
+            <a
+              class="edit-btn"
+              data-toggle="tooltip"
+              data-placement="right"
+              v-if="selectedReference.abstract_editable"
+              @click="showAbstractForm = !showAbstractForm"
+              :title="selectedReference.abstract == '' ? 'Add an abstract' : 'Edit this abstract'"
+            ></a>
+          </div>
           <div v-if="selectedReference.abstract == ''">
-            <div class="header">Abstract</div>
-            No Abstract found
-
+            <div v-show="!showAbstractForm">No abstract was imported</div>
+            <div v-if="showAbstractForm">
+              <div class="form-group">
+                <textarea
+                  rows="10"
+                  class="form-control"
+                  placeholder="No abstract was imported.  Submitted abstracts will be labeled as user generated."
+                ></textarea>
+              </div>
+              <div class="form-btns">
+                <a class="cancel-link" @click="showAbstractForm=false">
+                  cancel
+                </a>
+                <button class="submit-btn">Submit</button>
+              </div>
+            </div>
           </div>
           <abstract :abstract="selectedReference.abstract"></abstract>
         </div>
@@ -116,6 +140,7 @@
         truncateAbstract: true,
         indexIndexInModal: 0,
         selectedReference: {},
+        showAbstractForm: false,
         allReferences: []
       },
       methods: {
