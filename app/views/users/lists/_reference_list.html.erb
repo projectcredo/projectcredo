@@ -11,23 +11,43 @@
           </h4>
         </div>
         <div class="modal-body">
-          <div>
+          <p>
             <b>Tags</b>
             <a class="tag"
-              v-for="tag in selectedRef.tag_list"
-              v-text="tag"
+              v-for="(tag,index) in selectedRef.tag_list"
             >
+              {{tag}}
+              <button
+                class="tag-remove"
+                v-show="showTagForm"
+                @click="removeTag(index)"
+              >
+              </button>
             </a>
-          </div>
-          <div class="header" v-if="selectedRef.authors.length > 0">
+            <a
+              class="edit-btn"
+              v-if="editsAllowed"
+              @click="showTagForm = !showTagForm"
+            ></a>
+            <div v-show="showTagForm">
+              <input
+                class="form-control tag-form"
+                v-model="newTag"
+                placeholder="Hit enter to add a tag"
+                @keyup.enter="addTag"
+              >
+              </input>
+            </div>
+          </p>
+          <p class="header" v-if="selectedRef.authors.length > 0">
             <b>Authors</b>
             <a
-              class="tag"
+              class="author-tag"
               v-for="author in selectedRef.authors"
               v-text="author.full_name"
             >
             </a>
-          </div>
+          </p>
           <div>
             <b>Abstract</b>
             <span
@@ -51,12 +71,12 @@
               data-toggle="tooltip"
               data-placement="right"
               v-if="selectedRef.abstract_editable  && editsAllowed"
-              @click="showAbstractForm = !showAbstractForm"
+              @click="editAbstract = !editAbstract"
               :title="refHasAbstract ? 'Edit this abstract' : 'Add an abstract'"
             ></a>
           </div>
-          <div v-if="!refHasAbstract">No abstract was imported</div>
-          <div v-if="editsAllowed" v-show="showAbstractForm">
+          <div v-if="!refHasAbstract" v-show="!editAbstract">No abstract was imported</div>
+          <div v-if="editsAllowed" v-show="editAbstract">
             <div class="form-group">
               <textarea
                 rows="10"
@@ -75,7 +95,7 @@
               </a>
             </div>
           </div>
-          <abstract v-if="refHasAbstract" v-show="!showAbstractForm" :abstract="selectedRef.abstract"></abstract>
+          <abstract v-if="refHasAbstract" v-show="!editAbstract" :abstract="selectedRef.abstract"></abstract>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -160,7 +180,9 @@
         referenceIndexInModal: 0,
         selectedRef: {},
         refHasAbstract: false,
-        showAbstractForm: false,
+        editAbstract: false,
+        showTagForm: false,
+        newTag: '',
         allReferences: []
       },
       computed: {
@@ -170,12 +192,14 @@
       },
       methods: {
         selectReference: function(index) {
-          this.referenceIndexInModal = index
+          this.referenceIndexInModal = index;
           this.selectedRef = this.allReferences[index];
-          this.refHasAbstract = this.selectedRef.abstract != ''
+          this.refHasAbstract = this.selectedRef.abstract != '';
+          this.editAbstract = false;
+          this.showTagForm = false;
         },
         cancelAbstractForm: function() {
-          this.showAbstractForm = false
+          this.editAbstract = false
           this.selectedRef.abstract_form = this.selectedRef.abstract
         },
         submitAbstract: function(reference) {
@@ -193,9 +217,37 @@
           })
           .done(function(){
             self.refHasAbstract = true
-            self.showAbstractForm = false
+            self.editAbstract = false
             reference.abstract = reference.abstract_form
           })
+        },
+        submitTags: function() {
+          var tag_list = this.selectedRef.tag_list
+          if(this.selectedRef.tag_list.length == 0){ tag_list =[""]}
+
+          var params = {
+            paper: {
+              tag_list: tag_list
+            }
+          };
+          $.ajax({
+            url: "/papers/" + this.selectedRef.paper.id  + ".json",
+            type: 'PATCH',
+            data: params
+          })
+          .done(function(){
+          })
+        },
+        addTag: function() {
+          if(this.newTag != '') {
+            this.selectedRef.tag_list.push(this.newTag)
+            this.newTag = ''
+            this.submitTags()
+          }
+        },
+        removeTag: function(index){
+          this.selectedRef.tag_list.splice(index,1)
+          this.submitTags()
         }
       }
     });
