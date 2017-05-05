@@ -1,63 +1,81 @@
 <div id="reference-list">
 
-  <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal" v-if="selectedReference.paper" :reference="selectedReference">
+  <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal" v-if="selectedRef.paper" :reference="selectedRef">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">
-            {{selectedReference.paper.title}}
-            <a class="modal-link" :href="selectedReference.direct_link" target="_blank"></a>
+            {{selectedRef.paper.title}}
+            <a class="modal-link" :href="selectedRef.direct_link" target="_blank"></a>
           </h4>
         </div>
         <div class="modal-body">
           <div>
             <b>Tags</b>
             <a class="tag"
-              v-for="tag in selectedReference.tag_list"
+              v-for="tag in selectedRef.tag_list"
               v-text="tag"
             >
             </a>
           </div>
-          <div class="header" v-if="selectedReference.authors.length > 0">
+          <div class="header" v-if="selectedRef.authors.length > 0">
             <b>Authors</b>
             <a
               class="tag"
-              v-for="author in selectedReference.authors"
+              v-for="author in selectedRef.authors"
               v-text="author.full_name"
             >
             </a>
           </div>
           <div>
             <b>Abstract</b>
+            <span
+              v-if="!selectedRef.abstract_editable"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="this abstract was imported from a validated source"
+            >
+             - imported
+            </span>
+            <span
+              v-if="selectedRef.abstract_editable && refHasAbstract"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="this abstract was user generated and not validated"
+            >
+              - user generated
+            </span>
             <a
               class="edit-btn"
               data-toggle="tooltip"
               data-placement="right"
-              v-if="selectedReference.abstract_editable"
+              v-if="selectedRef.abstract_editable  && editsAllowed"
               @click="showAbstractForm = !showAbstractForm"
-              :title="selectedReference.abstract == '' ? 'Add an abstract' : 'Edit this abstract'"
+              :title="refHasAbstract ? 'Edit this abstract' : 'Add an abstract'"
             ></a>
           </div>
-          <div v-if="selectedReference.abstract == ''">
-            <div v-show="!showAbstractForm">No abstract was imported</div>
-            <div v-if="showAbstractForm">
-              <div class="form-group">
-                <textarea
-                  rows="10"
-                  class="form-control"
-                  placeholder="No abstract was imported.  Submitted abstracts will be labeled as user generated."
-                ></textarea>
-              </div>
-              <div class="form-btns">
-                <a class="cancel-link" @click="showAbstractForm=false">
-                  cancel
-                </a>
-                <button class="submit-btn">Submit</button>
-              </div>
+          <div v-if="!refHasAbstract">No abstract was imported</div>
+          <div v-if="editsAllowed" v-show="showAbstractForm">
+            <div class="form-group">
+              <textarea
+                rows="10"
+                class="form-control"
+                placeholder="No abstract was imported.  Submitted abstracts will be labeled as user generated."
+                v-model="selectedRef.abstract_form"
+              ></textarea>
+            </div>
+            <div class="form-btns">
+              <button class="submit-btn" @click="submitAbstract(selectedRef)">Submit</button>
+              <a
+                class="cancel-link"
+                @click="cancelAbstractForm"
+              >
+                cancel
+              </a>
             </div>
           </div>
-          <abstract :abstract="selectedReference.abstract"></abstract>
+          <abstract v-if="refHasAbstract" v-show="!showAbstractForm" :abstract="selectedRef.abstract"></abstract>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -137,20 +155,52 @@
     var referenceListApp = new Vue({
       data: {
         signedIn: false,
+        userCanEdit: false,
         truncateAbstract: true,
-        indexIndexInModal: 0,
-        selectedReference: {},
+        referenceIndexInModal: 0,
+        selectedRef: {},
+        refHasAbstract: false,
         showAbstractForm: false,
         allReferences: []
+      },
+      computed: {
+        editsAllowed: function() {
+          return this.signedIn && this.userCanEdit
+        }
       },
       methods: {
         selectReference: function(index) {
           this.referenceIndexInModal = index
-          this.selectedReference = this.allReferences[index];
+          this.selectedRef = this.allReferences[index];
+          this.refHasAbstract = this.selectedRef.abstract != ''
+        },
+        cancelAbstractForm: function() {
+          this.showAbstractForm = false
+          this.selectedRef.abstract_form = this.selectedRef.abstract
+        },
+        submitAbstract: function(reference) {
+          var self = this;
+          var paper = reference.paper
+          var params = {
+            paper: {
+              abstract: reference.abstract_form
+            }
+          };
+          $.ajax({
+            url: "/papers/" + paper.id  + ".json",
+            type: 'PATCH',
+            data: params
+          })
+          .done(function(){
+            self.refHasAbstract = true
+            self.showAbstractForm = false
+            reference.abstract = reference.abstract_form
+          })
         }
       }
     });
     referenceListApp.signedIn = <%= user_signed_in? %>
+    referenceListApp.userCanEdit = <%= current_user_can_edit?(list) || list.accepts_public_contributions? %>
     referenceListApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>
     referenceListApp.$mount('#reference-list')
   </script>

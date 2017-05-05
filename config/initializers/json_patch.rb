@@ -1,0 +1,1 @@
+Mime::Type.register 'application/json-patch+json', :json_patch
