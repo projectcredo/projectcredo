@@ -15,6 +15,12 @@
         >
           {{reference.paper.title}}
         </a>
+        <div class="authors" v-if="reference.authors.length > 0">
+          by
+          <span v-for="(author,index) in reference.authors" >
+            <span class="author-link">{{author.full_name}}</span><span v-if="index+1 < reference.authors.length">, </span>
+          </span>
+        </div>
       </td>
       <td>
         <a
@@ -28,9 +34,12 @@
 
     <tr
       v-if="showPaperDetails"
-      class="reference-detail"
+      class="ref-details"
     >
       <td colspan="4">
+        <div class="section" v-if="reference.tag_list.length > 0">
+          <a class="tag" v-for="tag in reference.tag_list" v-text="tag"></a>
+        </div>
         <div v-if="reference.notes.length > 0">
           <div class="header">Notes and Highlights</div>
           <div v-for="note in reference.notes" class="note">
@@ -38,14 +47,6 @@
             <note :note="note"></note>
           </div>
         </div>
-        <p class="header">
-          Tags
-          <a class="tag" v-for="tag in reference.tag_list" v-text="tag"> </a>
-        </p>
-        <p class="header" v-if="reference.authors.length > 0">
-          Authors
-          <a class="author-tag" v-for="author in reference.authors" v-text="author.full_name"></a>
-        </p>
         <div v-if="reference.abstract">
           <span class="header">Abstract</span>
           <abstract :abstract="reference.abstract"></abstract>

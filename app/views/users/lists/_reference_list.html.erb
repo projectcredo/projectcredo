@@ -9,8 +9,14 @@
             {{selectedRef.paper.title}}
             <a class="modal-link" :href="selectedRef.direct_link" target="_blank"></a>
           </h4>
-          <p>
-            <b>Tags</b>
+          <div class="authors" v-if="selectedRef.authors.length > 0">
+            by
+            <span v-for="(author,index) in selectedRef.authors" >
+              <span class="author-link">{{author.full_name}}</span><span v-if="index+1 < selectedRef.authors.length">, </span>
+            </span>
+          </div>
+          <div>
+            <span v-if="selectedRef.tag_list == 0">Add tags</span>
             <a class="tag"
               v-for="(tag,index) in selectedRef.tag_list"
             >
@@ -36,7 +42,7 @@
               >
               </input>
             </div>
-          </p>
+          </div>
         </div>
         <div class="modal-body">
           <p>
@@ -64,16 +70,6 @@
               <vote :voteable="note" :signed-in="signedIn"></vote>
               <note :note="note"></note>
             </div>
-          </p>
-
-          <p class="header" v-if="selectedRef.authors.length > 0">
-            <b>Authors</b>
-            <a
-              class="author-tag"
-              v-for="author in selectedRef.authors"
-              v-text="author.full_name"
-            >
-            </a>
           </p>
           <div>
             <b>Abstract</b>
@@ -204,7 +200,7 @@
       },
       computed: {
         hasPaperDetails: function() {
-          return this.reference.authors.length > 0 || this.reference.notes.length > 0 || this.reference.tag_list.length > 0 || this.reference.abstract !== ''
+          return this.reference.notes.length > 0 || this.reference.tag_list.length > 0 || this.reference.abstract !== ''
         }
       },
       template: '#reference-row'
