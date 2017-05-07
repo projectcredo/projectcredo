@@ -8,7 +8,6 @@ json.array!(references) do |r|
   json.vote_path polymorphic_path([r, :vote])
   json.abstract (r.paper.abstract.nil? ? '' : r.paper.abstract)
   json.abstract_editable r.paper.abstract_editable
-  json.abstract_form (r.paper.abstract.nil? ? '' : r.paper.abstract)
   json.authors r.paper.authors
   json.age r.paper.age
   json.paper r.paper

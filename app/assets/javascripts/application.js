@@ -48,6 +48,7 @@ debounce = function(func, wait, immediate) {
   };
 };
 
+
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 

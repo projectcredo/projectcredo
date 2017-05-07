@@ -38,12 +38,13 @@
             <note :note="note"></note>
           </div>
         </div>
-        <p>
+        <p class="header">
+          Tags
           <a class="tag" v-for="tag in reference.tag_list" v-text="tag"> </a>
         </p>
         <p class="header" v-if="reference.authors.length > 0">
           Authors
-          <a class="tag" v-for="author in reference.authors" v-text="author.full_name"></a>
+          <a class="author-tag" v-for="author in reference.authors" v-text="author.full_name"></a>
         </p>
         <div v-if="reference.abstract">
           <span class="header">Abstract</span>

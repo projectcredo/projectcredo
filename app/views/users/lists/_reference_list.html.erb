@@ -9,8 +9,6 @@
             {{selectedRef.paper.title}}
             <a class="modal-link" :href="selectedRef.direct_link" target="_blank"></a>
           </h4>
-        </div>
-        <div class="modal-body">
           <p>
             <b>Tags</b>
             <a class="tag"
@@ -31,7 +29,7 @@
             ></a>
             <div v-show="showTagForm">
               <input
-                class="form-control tag-form"
+                class="form-control input-sm tag-form"
                 v-model="newTag"
                 placeholder="Hit enter to add a tag"
                 @keyup.enter="addTag"
@@ -39,6 +37,35 @@
               </input>
             </div>
           </p>
+        </div>
+        <div class="modal-body">
+          <p>
+            <b>Notes and Highlights</b>
+            <div class="form-group">
+              <textarea
+                rows="3"
+                v-model="selectedRef.note_form"
+                v-if="editsAllowed"
+                class='form-control comment-box'
+                placeholder='help summarize this paper, what are some key takeaways?'
+              >
+              </textarea>
+            </div>
+            <div class="form-btns">
+              <button
+                class="submit-btn"
+                @click="submitNote"
+                v-show="selectedRef.note_form !=''"
+              >
+                Submit
+              </button>
+            </div>
+            <div v-for="note in selectedRef.notes" class="note">
+              <vote :voteable="note" :signed-in="signedIn"></vote>
+              <note :note="note"></note>
+            </div>
+          </p>
+
           <p class="header" v-if="selectedRef.authors.length > 0">
             <b>Authors</b>
             <a
@@ -98,8 +125,18 @@
           <abstract v-if="refHasAbstract" v-show="!editAbstract" :abstract="selectedRef.abstract"></abstract>
         </div>
         <div class="modal-footer">
+          <button
+            class="btn btn-primary"
+            @click="selectReference(referenceIndexInModal - 1)"
+            v-show="referenceIndexInModal != 0"
+          >Previous</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Next</button>
+          <button
+            class="btn btn-primary"
+            @click="selectReference(referenceIndexInModal + 1)"
+            v-show="referenceIndexInModal != (allReferences.length -1)"
+
+          >Next</button>
         </div>
       </div>
     </div>
@@ -188,7 +225,17 @@
       computed: {
         editsAllowed: function() {
           return this.signedIn && this.userCanEdit
+        },
+        showNoteSubmit: function() {
+          return this.selectedRef.note_form != ''
         }
+      },
+      mounted: function() {
+        this.allReferences.forEach(function(reference) {
+          Vue.set(reference, 'abstract_form', reference.abstract)
+          Vue.set(reference, 'note_form', '')
+        })
+
       },
       methods: {
         selectReference: function(index) {
@@ -248,6 +295,29 @@
         removeTag: function(index){
           this.selectedRef.tag_list.splice(index,1)
           this.submitTags()
+        },
+        submitNote: function() {
+          var self = this
+          var params = {
+            comment: {
+              content: this.selectedRef.note_form,
+              commentable_type: 'Reference',
+              commentable_id: this.selectedRef.id
+            }
+          };
+          $.ajax({
+            url: "/comments.json",
+            type: 'POST',
+            data: params
+          })
+          .done(function(newNote){
+            self.selectedRef.note_form = ''
+            newNote.voted = false
+            newNote.votes = 0
+            newNote.type ="comment"
+            newNote.vote_path = "/comments/" + newNote.id + "/vote"
+            self.selectedRef.notes.push(newNote)
+          })
         }
       }
     });

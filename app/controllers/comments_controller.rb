@@ -19,8 +19,8 @@ class CommentsController < ApplicationController
         if @comment.commentable_type == 'List'
           create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
         end
+        format.json {render :json => @comment }
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
         format.js do
           commentable = @comment.root.commentable
           is_top_level = !!@comment.commentable
@@ -34,7 +34,7 @@ class CommentsController < ApplicationController
         end
       else
         format.html { redirect_to :back }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.json {render :json => @comment }
       end
     end
   end
@@ -91,7 +91,7 @@ class CommentsController < ApplicationController
       parameters = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
       valid_type = %w{List Reference}.include? parameters[:commentable_type]
       if !valid_type
-        logger.debug "Comment with invalid parent type by #{current_user.email} with params: #{parameters.inspect}"
+        logger.debug "Comment with invalid parent type by #{current_user.username} with params: #{parameters.inspect}"
         parameters[:commentable_type] = nil
       end
       parameters

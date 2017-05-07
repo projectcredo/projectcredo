@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
   end
 
-  resources :comments, only: [:create, :edit, :update, :destroy] do
+  resources :comments, only: [:create, :edit, :update, :destroy], defaults: {format: :json} do
     resource :vote, controller: 'comments/votes', only: [:create, :destroy]
   end
 
