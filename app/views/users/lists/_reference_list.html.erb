@@ -65,7 +65,7 @@
               </div>
             </div>
             <div class="nothing-yet" v-if="selectedRef.notes.length == 0">No notes yet...</div>
-            <div v-for="note in selectedRef.notes" class="note">
+            <div v-for="(note,index) in selectedRef.notes" class="note">
               <note :note="note"></note>
               <div class="note-btns">
                 <vote :voteable="note" :signed-in="signedIn"></vote>
@@ -76,6 +76,7 @@
                 </button>
                 <button
                   v-if="editsAllowed"
+                  @click="deleteNote(note,index)"
                 >
                   delete
                 </button>
@@ -337,7 +338,19 @@
             newNote.votes = 0
             newNote.type ="comment"
             newNote.vote_path = "/comments/" + newNote.id + "/vote"
+            newNote.time_ago = "now"
+            newNote.user = self.currentUser
             self.selectedRef.notes.push(newNote)
+          })
+        },
+        deleteNote: function(note,index) {
+          var self = this
+          $.ajax({
+            url: "/comments/" + note.id + ".json",
+            type: 'DELETE'
+          })
+          .done(function(res){
+            self.selectedRef.notes.splice(index,1)
           })
         }
       }

@@ -69,13 +69,13 @@ class CommentsController < ApplicationController
       if current_user.can_moderate?(list_for_authorization) || @comment.user == current_user
         @comment.destroy
         format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
-        format.json { head :no_content }
+        format.json {render :json => {}, :status => :no_content}
         format.js { render 'destroy.js.erb', locals: {commentable: commentable} }
       else
         flash[:alert] = 'You do not have permission to moderate this list.'
-
         format.html { redirect_back fallback_location: user_list_path(list_for_authorization.owner, list_for_authorization) }
         format.js { ajax_redirect_to(user_list_path(list_for_authorization.owner, list_for_authorization)) }
+        format.json
       end
     end
   end
