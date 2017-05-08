@@ -62,6 +62,25 @@ Vue.filter('truncate', function(string, length, truncate) {
   }
 });
 
+Vue.filter('cite', function(reference) {
+  var mainAuthor  = ''
+  var year =  ''
+  var seperator = ''
+  var pub = reference.publication
+
+  if(reference.authors.length> 0) {
+    mainAuthor = reference.authors[0].family_name
+  }
+  if(reference.paper.published_at != '') {
+    year = new Date(reference.paper.published_at).getFullYear()
+  }
+  var joinedCitation = $.grep([year, mainAuthor, pub], Boolean).join(", ");
+
+  if(pub != '' || year != '') {
+    return "[" + joinedCitation + "]"
+  }
+});
+
 Vue.component("vote", {
   props: ["voteable", "signedIn"],
   data: function() {

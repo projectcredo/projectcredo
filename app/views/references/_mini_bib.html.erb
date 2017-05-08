@@ -1,0 +1,12 @@
+<script type="text/x-template" id="mini-bib">
+  <div class="authors" v-if="reference.authors.length > 0">
+    by
+    <span v-for="(author,index) in reference.authors" >
+      <span class="author-link">{{author.full_name}}</span><span v-if="index+1 < reference.authors.length">, </span>
+    </span>
+    <span class="author-link"> · {{reference | cite}}</span>
+  </div>
+  <div v-else>
+    <span class="authors author-link">{{reference | cite}}</span>
+  </div>
+</script>

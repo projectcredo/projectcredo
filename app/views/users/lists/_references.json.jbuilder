@@ -10,6 +10,7 @@ json.array!(references) do |r|
   json.abstract_editable r.paper.abstract_editable
   json.authors r.paper.authors
   json.age r.paper.age
+  json.publication r.paper.publication.nil? ? '' : r.paper.publication.titleize
   json.paper r.paper
   json.direct_link r.paper.direct_link
   json.comments r.comments

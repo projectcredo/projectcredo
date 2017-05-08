@@ -1,5 +1,12 @@
 <script type="text/x-template" id="note">
   <span>
-    {{note.content, 300 | truncate}}
+    {{note.content, 250, truncateNote | truncate}}
+    <button
+      class="btn-link"
+      v-if="note.content.length > 250"
+      @click.stop="truncateNote = !truncateNote"
+    >
+      {{truncateNote ? 'see more' : 'see less'}}
+    </button>
   </span>
 </script>
