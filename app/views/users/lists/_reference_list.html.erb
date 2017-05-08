@@ -66,8 +66,20 @@
             </div>
             <div class="nothing-yet" v-if="selectedRef.notes.length == 0">No notes yet...</div>
             <div v-for="note in selectedRef.notes" class="note">
-              <vote :voteable="note" :signed-in="signedIn"></vote>
               <note :note="note"></note>
+              <div class="note-btns">
+                <vote :voteable="note" :signed-in="signedIn"></vote>
+                <button
+                  v-if="isCurrentUser(note.user)"
+                >
+                  edit
+                </button>
+                <button
+                  v-if="editsAllowed"
+                >
+                  delete
+                </button>
+              </div>
             </div>
           </div>
           <div>
@@ -217,6 +229,7 @@
     var referenceListApp = new Vue({
       data: {
         signedIn: false,
+        currentUser: '',
         userCanEdit: false,
         truncateAbstract: true,
         referenceIndexInModal: 0,
@@ -243,6 +256,9 @@
 
       },
       methods: {
+        isCurrentUser: function(username) {
+          return this.currentUser == username
+        },
         selectReference: function(index) {
           this.referenceIndexInModal = index;
           this.selectedRef = this.allReferences[index];
@@ -327,6 +343,7 @@
       }
     });
     referenceListApp.signedIn = <%= user_signed_in? %>
+    referenceListApp.currentUser = '<%= current_user ? current_user.username : '' %>'
     referenceListApp.userCanEdit = <%= current_user_can_edit?(list) || list.accepts_public_contributions? %>
     referenceListApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>
     referenceListApp.$mount('#reference-list')

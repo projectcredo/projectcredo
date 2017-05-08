@@ -15,6 +15,8 @@
 //= require bootstrap-sprockets
 //= require_tree .
 
+
+src="jquery.timeago.js"
 // debounce stolen from Underscore.js 1.8.3
 debounce = function(func, wait, immediate) {
   var timeout, args, context, timestamp, result;

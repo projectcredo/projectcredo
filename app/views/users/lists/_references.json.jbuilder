@@ -21,7 +21,9 @@ json.array!(references) do |r|
     json.votes n.cached_votes_up
     json.voted user_signed_in? && current_user.voted_for?(n)
     json.vote_path polymorphic_path([n, :vote])
+    json.created_at n.created_at
     json.updated_at n.updated_at
+    json.time_ago time_ago_in_words(n.created_at)
     json.user User.find(n.user_id).username
   end
 end
