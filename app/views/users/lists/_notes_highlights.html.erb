@@ -1,6 +1,6 @@
 <script type="text/x-template" id="note">
   <span>
-    {{note.content, 250, truncateNote | truncate}}
+    <span class="newlines">{{note.content, 250, truncateNote | truncate}}</span>
     <button
       class="btn-link"
       v-if="note.content.length > 250"

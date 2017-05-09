@@ -64,6 +64,10 @@ Vue.filter('truncate', function(string, length, truncate) {
   }
 });
 
+Vue.filter('wrapBreaks', function(string) {
+  return string.replace(/(?:\r\n|\r|\n)/g, '<br />');
+});
+
 Vue.filter('cite', function(reference) {
   var mainAuthor  = ''
   var year =  ''

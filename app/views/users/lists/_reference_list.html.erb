@@ -364,7 +364,7 @@
             newNote.user = self.currentUser
             newNote.edit_form = newNote.content
             newNote.editNote = false
-            self.selectedRef.notes.push(newNote)
+            self.selectedRef.notes.unshift(newNote)
           })
         },
         deleteNote: function(note,index) {

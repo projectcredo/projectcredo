@@ -14,7 +14,7 @@ json.array!(references) do |r|
   json.paper r.paper
   json.direct_link r.paper.direct_link
   json.comments r.comments
-  json.notes r.comments.order('cached_votes_up DESC, created_at ASC') do |n|
+  json.notes r.comments.order('cached_votes_up DESC, created_at DESC') do |n|
     json.id n.id
     json.type n.class.to_s.downcase
     json.content n.content

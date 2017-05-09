@@ -1,6 +1,6 @@
 <script type="text/x-template" id="abstract">
   <div>
-    {{abstract, 250, truncateAbstract | truncate}}
+    <span class="newlines">{{abstract, 250, truncateAbstract | truncate}}</span>
     <button
       class="btn-link"
       v-if="abstract.length > 250"
