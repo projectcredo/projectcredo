@@ -102,6 +102,7 @@ button.comment-vote.active {
 
 .form-btns {
   font-size: 12px;
+  @extend .form-group;
 
   .cancel-link {
     @extend .btn, .btn-link

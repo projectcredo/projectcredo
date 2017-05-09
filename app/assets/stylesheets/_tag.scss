@@ -2,16 +2,6 @@
   font-size: 12px;
 }
 
-.tags-form {
-  .form-group {
-    padding: 0;
-  }
-
-  .form-control {
-    width: 70%;
-  }
-}
-
 .tag {
   @extend .btn, .btn-default, .btn-xs;
   font-size: 12px;
@@ -43,7 +33,7 @@
 
 .tag-form {
   width: 50%;
-  margin: 0 0 5px 35px;
+  margin: 0 0 5px 0;
 }
 
 .close-form {

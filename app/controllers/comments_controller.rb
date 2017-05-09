@@ -43,6 +43,8 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1.json
   def update
     unless @comment.user == current_user
+      commentable = @comment.root.commentable
+      list = get_commentable_root_list commentable
       flash[:alert] = "You do not have permission to edit this comment"
       return redirect_back(fallback_location: user_list_path(list.owner, list))
     end
@@ -50,7 +52,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.update(comment_params)
         format.html { redirect_to :back, notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
+        format.json {render :json => @comment }
         format.js { render 'update.js.erb', locals: {commentable: @comment.root.commentable} }
       else
         format.html { redirect_to :back, notice: 'Comment was not updated.' }
