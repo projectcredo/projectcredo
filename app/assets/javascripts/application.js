@@ -15,8 +15,6 @@
 //= require bootstrap-sprockets
 //= require_tree .
 
-
-src="jquery.timeago.js"
 // debounce stolen from Underscore.js 1.8.3
 debounce = function(func, wait, immediate) {
   var timeout, args, context, timestamp, result;
@@ -50,7 +48,6 @@ debounce = function(func, wait, immediate) {
   };
 };
 
-
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
@@ -64,14 +61,9 @@ Vue.filter('truncate', function(string, length, truncate) {
   }
 });
 
-Vue.filter('wrapBreaks', function(string) {
-  return string.replace(/(?:\r\n|\r|\n)/g, '<br />');
-});
-
 Vue.filter('cite', function(reference) {
   var mainAuthor  = ''
   var year =  ''
-  var seperator = ''
   var pub = reference.publication
 
   if(reference.authors.length> 0) {
@@ -90,9 +82,9 @@ Vue.filter('cite', function(reference) {
 Vue.component("vote", {
   props: ["voteable", "signedIn"],
   data: function() {
-  return {
-    isLoading: false
-    }
+    return {
+      isLoading: false
+      }
   },
   methods: {
     vote: function(voteable) {
