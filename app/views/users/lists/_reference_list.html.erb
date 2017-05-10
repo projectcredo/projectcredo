@@ -9,13 +9,13 @@
           <h4 class="modal-title">
             <vote :voteable="selectedRef" :signed-in="signedIn"></vote>
             {{selectedRef.paper.title}}
-            <a class="modal-link" :href="selectedRef.direct_link" target="_blank"></a>
+            <a class="modal-link" :href="selectedRef.paper.direct_link" target="_blank"></a>
           </h4>
-          <mini-bib :reference="selectedRef"></mini-bib>
+          <mini-bib :r="selectedRef"></mini-bib>
           <div>
-            <span v-if="selectedRef.tag_list == 0 && editsAllowed">Add tags</span>
+            <span v-if="selectedRef.paper.tag_list == 0 && editsAllowed">Add tags</span>
             <a class="tag"
-              v-for="(tag,index) in selectedRef.tag_list"
+              v-for="(tag,index) in selectedRef.paper.tag_list"
             >
               {{tag}}
               <button
@@ -114,31 +114,23 @@
           <div>
             <b>Abstract</b>
             <span
-              v-if="!selectedRef.abstract_editable"
+              v-if="hasAbstract"
               data-toggle="tooltip"
               data-placement="right"
-              title="this abstract was imported from a validated source"
+              :title="abstractImported ? 'this abstract was imported from a validated source' : 'this abstract was user generated and not validated'"
+              v-text="abstractImported ? ' - imported' : ' - user generated' "
             >
-             - imported
-            </span>
-            <span
-              v-if="selectedRef.abstract_editable && refHasAbstract"
-              data-toggle="tooltip"
-              data-placement="right"
-              title="this abstract was user generated and not validated"
-            >
-              - user generated
             </span>
             <a
               class="edit-btn"
               data-toggle="tooltip"
               data-placement="right"
-              v-if="selectedRef.abstract_editable  && editsAllowed"
+              v-if="selectedRef.paper.abstract_editable  && editsAllowed"
               @click="editAbstract = !editAbstract"
-              :title="refHasAbstract ? 'Edit this abstract' : 'Add an abstract'"
+              :title="hasAbstract ? 'Edit this abstract' : 'Add an abstract'"
             ></a>
           </div>
-          <div class="nothing-yet" v-if="!refHasAbstract" v-show="!editAbstract">No abstract was imported...</div>
+          <div class="nothing-yet" v-if="!hasAbstract" v-show="!editAbstract">No abstract was imported...</div>
           <div v-if="editsAllowed" v-show="editAbstract">
             <div class="form-group">
               <textarea
@@ -158,7 +150,7 @@
               </a>
             </div>
           </div>
-          <abstract v-if="refHasAbstract" v-show="!editAbstract" :abstract="selectedRef.abstract"></abstract>
+          <abstract v-if="hasAbstract" v-show="!editAbstract" :abstract="selectedRef.paper.abstract"></abstract>
         </div>
         <div class="modal-footer">
           <button
@@ -224,7 +216,7 @@
     })
 
     Vue.component("mini-bib", {
-      props: ["reference"],
+      props: ["r"],
       template: '#mini-bib'
     })
 
@@ -250,7 +242,7 @@
       },
       computed: {
         hasPaperDetails: function() {
-          return this.r.notes.length > 0 || this.r.tag_list.length > 0 || this.r.abstract !== ''
+          return this.r.notes.length > 0 || this.r.paper.tag_list.length > 0 || this.r.paper.abstract != null
         }
       },
       template: '#reference-row'
@@ -264,7 +256,7 @@
         referenceIndexInModal: 0,
         selectedRef: {},
         showAllNotes: false,
-        refHasAbstract: false,
+        hasAbstract: false,
         editAbstract: false,
         showTagForm: false,
         newTag: '',
@@ -276,11 +268,14 @@
         },
         showNoteSubmit: function() {
           return this.selectedRef.note_form != ''
+        },
+        abstractImported: function() {
+          return !this.selectedRef.paper.abstract_editable && this.hasAbstract
         }
       },
       mounted: function() {
         this.allReferences.forEach(function(reference) {
-          Vue.set(reference, 'abstract_form', reference.abstract)
+          Vue.set(reference, 'abstract_form', reference.paper.abstract)
           Vue.set(reference, 'note_form', '')
           reference.notes.forEach(function(note) {
             Vue.set(note, 'editNote', false)
@@ -296,7 +291,7 @@
         selectReference: function(index) {
           this.referenceIndexInModal = index;
           this.selectedRef = this.allReferences[index];
-          this.refHasAbstract = this.selectedRef.abstract != '';
+          this.hasAbstract = this.selectedRef.paper.abstract != null;
           this.editAbstract = false;
           this.showTagForm = false;
         },
@@ -318,14 +313,14 @@
             data: params
           })
           .done(function(){
-            self.refHasAbstract = true
+            self.hasAbstract = true
             self.editAbstract = false
-            reference.abstract = reference.abstract_form
+            reference.paper.abstract = reference.abstract_form
           })
         },
         submitTags: function() {
-          var tag_list = this.selectedRef.tag_list
-          if(this.selectedRef.tag_list.length == 0){ tag_list =[""]}
+          var tag_list = this.selectedRef.paper.tag_list
+          if(this.selectedRef.paper.tag_list.length == 0){ tag_list =[""]}
 
           var params = {
             paper: {
@@ -342,13 +337,13 @@
         },
         addTag: function() {
           if(this.newTag != '') {
-            this.selectedRef.tag_list.push(this.newTag)
+            this.selectedRef.paper.tag_list.push(this.newTag)
             this.newTag = ''
             this.submitTags()
           }
         },
         removeTag: function(index){
-          this.selectedRef.tag_list.splice(index,1)
+          this.selectedRef.paper.tag_list.splice(index,1)
           this.submitTags()
         },
         submitNote: function() {

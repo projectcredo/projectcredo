@@ -15,7 +15,7 @@
         >
           {{r.paper.title}}
         </a>
-        <mini-bib :reference="r"></mini-bib>
+        <mini-bib :r="r"></mini-bib>
       </td>
       <td>
         <a
@@ -32,8 +32,8 @@
       class="ref-details"
     >
       <td colspan="4">
-        <div class="section" v-if="r.tag_list.length > 0">
-          <a class="tag" v-for="tag in r.tag_list" v-text="tag"></a>
+        <div class="section" v-if="r.paper.tag_list.length > 0">
+          <a class="tag" v-for="tag in r.paper.tag_list" v-text="tag"></a>
         </div>
         <div v-if="r.notes.length > 0">
           <div class="header">Notes and Highlights</div>
@@ -42,9 +42,9 @@
             <note :note="note"></note>
           </div>
         </div>
-        <div v-if="r.abstract">
+        <div v-if="r.paper.abstract != null">
           <span class="header">Abstract</span>
-          <abstract :abstract="r.abstract"></abstract>
+          <abstract :abstract="r.paper.abstract"></abstract>
         </div>
       </td>
     </tr>

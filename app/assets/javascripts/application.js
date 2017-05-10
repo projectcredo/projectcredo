@@ -64,13 +64,16 @@ Vue.filter('truncate', function(string, length, truncate) {
 Vue.filter('cite', function(reference) {
   var mainAuthor  = ''
   var year =  ''
-  var pub = reference.publication
+  var pub = ''
 
-  if(reference.authors.length> 0) {
-    mainAuthor = reference.authors[0].family_name
+  if(reference.paper.authors.length> 0) {
+    mainAuthor = reference.paper.authors[0].family_name
   }
-  if(reference.paper.published_at == '') {
+  if(reference.paper.published_at != null) {
     year = new Date(reference.paper.published_at).getFullYear()
+  }
+  if(reference.paper.publication != null) {
+    pub = reference.paper.publication
   }
   var joinedCitation = $.grep([year, mainAuthor, pub], Boolean).join(", ");
 

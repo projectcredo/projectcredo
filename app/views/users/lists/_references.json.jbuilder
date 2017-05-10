@@ -1,32 +1,25 @@
 json.array!(references) do |r|
+  json.ignore_nil!
   json.extract! r, :id, :created_at
   json.type r.class.to_s.downcase
-  json.tag_list r.paper.tag_list
   json.votes r.cached_votes_up
   json.voted user_signed_in? && current_user.voted_for?(r)
   json.vote_path polymorphic_path([r, :vote])
-  json.abstract (r.paper.abstract.nil? ? '' : r.paper.abstract)
-  json.abstract_editable r.paper.abstract_editable
-  json.authors r.paper.authors
-  json.publication r.paper.publication.nil? ? '' : r.paper.publication.titleize
-  json.paper r.paper
-  json.pap do |json|
+  json.paper do |json|
     json.(r.paper,
       :id,
       :abstract_editable,
       :abstract,
-      :publication,
       :published_at,
       :pubmed_id,
       :doi,
       :title
     )
+    json.publication r.paper.publication.titleize if r.paper.publication.present?
     json.links r.paper.links
-    json.tags_list r.paper.tag_list
+    json.tag_list r.paper.tag_list
     json.authors r.paper.authors
-    json.direct_link r.paper.direct_link
   end
-  json.direct_link r.paper.direct_link
   json.notes r.comments.order('cached_votes_up DESC, created_at DESC') do |n|
     json.id n.id
     json.type n.class.to_s.downcase
