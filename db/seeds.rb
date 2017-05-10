@@ -58,7 +58,12 @@ ActiveRecord::Base.transaction do
     r1 = l.references.create(paper: p1, user: u)
     r2 = l.references.create(paper: p2, user: u)
 
-    r1.comments.find_or_create_by_path comments
-    r2.comments.find_or_create_by_path comments
+    c1 = r1.comments.find_or_create_by_path comments
+    c2 = r2.comments.find_or_create_by_path comments
+
+    a1 = create_activity(actable: l, activity_type: 'added', addable:r1)
+    a2 = create_activity(actable: l, activity_type: 'added', addable:r2)
+    a3 = create_activity(actable: l, activity_type: 'commented', addable:c1)
+    a4 = create_activity(actable: l, activity_type: 'commented', addable:c2)
   end
 end
