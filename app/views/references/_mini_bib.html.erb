@@ -4,9 +4,9 @@
     <span v-for="(author,index) in r.paper.authors" >
       <span class="author-link">{{author.full_name}}</span><span v-if="index+1 < r.paper.authors.length">, </span>
     </span>
-    <span class="author-link"> · {{r | cite}}</span>
+    <span class="author-link text-capitalize"> · {{r | cite}}</span>
   </div>
   <div v-else>
-    <span class="authors author-link">{{r | cite}}</span>
+    <span class="authors author-link text-capitalize">{{r | cite}}</span>
   </div>
 </script>

@@ -15,7 +15,7 @@ json.array!(references) do |r|
       :doi,
       :title
     )
-    json.publication r.paper.publication.titleize if r.paper.publication.present?
+    json.publication r.paper.publication
     json.links r.paper.links
     json.tag_list r.paper.tag_list
     json.authors r.paper.authors

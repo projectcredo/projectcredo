@@ -9,7 +9,7 @@
           <h4 class="modal-title">
             <vote :voteable="selectedRef" :signed-in="signedIn"></vote>
             {{selectedRef.paper.title}}
-            <a class="modal-link" :href="selectedRef.paper.direct_link" target="_blank"></a>
+            <a class="modal-external-link" :href="selectedRef.paper.direct_link" target="_blank"></a>
           </h4>
           <mini-bib :r="selectedRef"></mini-bib>
           <div>
@@ -43,8 +43,8 @@
         </div>
 
         <div class="modal-body">
-          <div class="section">
-            <b>Notes and Highlights</b>
+          <div class="modal-section">
+            <div class="modal-section-header">Notes and Highlights</div>
             <div v-if="editsAllowed">
               <div class="form-group">
                 <textarea
@@ -111,8 +111,9 @@
           >
           </a>
           </div>
-          <div>
-            <b>Abstract</b>
+          <div class="modal-section">
+          <div class="modal-section-header">
+            Abstract
             <span
               v-if="hasAbstract"
               data-toggle="tooltip"
@@ -151,6 +152,7 @@
             </div>
           </div>
           <abstract v-if="hasAbstract" v-show="!editAbstract" :abstract="selectedRef.paper.abstract"></abstract>
+        </div>
         </div>
         <div class="modal-footer">
           <button
