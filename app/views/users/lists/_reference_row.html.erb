@@ -5,7 +5,7 @@
         <vote :voteable="reference" :signed-in="signedIn"></vote>
       </td>
       <td align="center" >
-        <b v-if="reference.paper.published_at">{{reference.age}}</b>
+        <b v-if="reference.paper.published_at">{{reference.paper.published_at | age}}</b>
       </td>
       <td>
         <a

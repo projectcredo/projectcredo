@@ -79,6 +79,15 @@ Vue.filter('cite', function(reference) {
   }
 });
 
+Vue.filter('age', function(date) {
+  if(date){
+    now = new Date();
+    date = new Date(date)
+    age = now.getFullYear() - date.getFullYear() - ((now.getMonth() > date.getMonth() || (now.getMonth() == date.getDate())) ? 0 : 1)
+    return age < 1 ? '< 1' : age
+  }
+});
+
 Vue.component("vote", {
   props: ["voteable", "signedIn"],
   data: function() {

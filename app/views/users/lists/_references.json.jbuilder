@@ -1,7 +1,6 @@
 json.array!(references) do |r|
   json.extract! r, :id, :created_at
   json.type r.class.to_s.downcase
-  json.permalink user_list_reference_path(r.list.user, r.list, r)
   json.tag_list r.paper.tag_list
   json.votes r.cached_votes_up
   json.voted user_signed_in? && current_user.voted_for?(r)
@@ -9,7 +8,6 @@ json.array!(references) do |r|
   json.abstract (r.paper.abstract.nil? ? '' : r.paper.abstract)
   json.abstract_editable r.paper.abstract_editable
   json.authors r.paper.authors
-  json.age r.paper.age
   json.publication r.paper.publication.nil? ? '' : r.paper.publication.titleize
   json.paper r.paper
   json.direct_link r.paper.direct_link
