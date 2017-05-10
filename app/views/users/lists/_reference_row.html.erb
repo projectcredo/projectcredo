@@ -37,7 +37,7 @@
         </div>
         <div v-if="reference.notes.length > 0">
           <div class="header">Notes and Highlights</div>
-          <div v-for="note in reference.notes" class="note">
+          <div v-for="note in reference.notes.slice(0,3)" class="note">
             <vote :voteable="note" :signed-in="signedIn"></vote>
             <note :note="note"></note>
           </div>
