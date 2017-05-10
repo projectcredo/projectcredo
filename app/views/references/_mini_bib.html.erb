@@ -7,6 +7,11 @@
     <span class="author-link text-capitalize"> · {{r | cite}}</span>
   </div>
   <div v-else>
-    <span class="authors author-link text-capitalize">{{r | cite}}</span>
+    <span
+      v-if="r.paper.publication != null || r.paper.published_at != null"
+      class="authors author-link text-capitalize"
+    >
+      {{r | cite}}
+    </span>
   </div>
 </script>
