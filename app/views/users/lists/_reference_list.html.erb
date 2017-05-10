@@ -112,47 +112,65 @@
           </a>
           </div>
           <div class="modal-section">
-          <div class="modal-section-header">
-            Abstract
-            <span
-              v-if="hasAbstract"
-              data-toggle="tooltip"
-              data-placement="right"
-              :title="abstractImported ? 'this abstract was imported from a validated source' : 'this abstract was user generated and not validated'"
-              v-text="abstractImported ? ' - imported' : ' - user generated' "
-            >
-            </span>
-            <a
-              class="edit-btn"
-              data-toggle="tooltip"
-              data-placement="right"
-              v-if="selectedRef.paper.abstract_editable  && editsAllowed"
-              @click="editAbstract = !editAbstract"
-              :title="hasAbstract ? 'Edit this abstract' : 'Add an abstract'"
-            ></a>
-          </div>
-          <div class="nothing-yet" v-if="!hasAbstract" v-show="!editAbstract">No abstract was imported...</div>
-          <div v-if="editsAllowed" v-show="editAbstract">
-            <div class="form-group">
-              <textarea
-                rows="10"
-                class="form-control"
-                placeholder="No abstract was imported.  Submitted abstracts will be labeled as user generated."
-                v-model="selectedRef.abstract_form"
-              ></textarea>
-            </div>
-            <div class="form-btns">
-              <button class="submit-btn" @click="submitAbstract(selectedRef)">Submit</button>
-              <a
-                class="cancel-link"
-                @click="cancelAbstractForm"
+            <div class="modal-section-header">
+              Abstract
+              <span
+                v-if="hasAbstract"
+                data-toggle="tooltip"
+                data-placement="right"
+                :title="abstractImported ? 'this abstract was imported from a validated source' : 'this abstract was user generated and not validated'"
+                v-text="abstractImported ? ' - imported' : ' - user generated' "
               >
-                cancel
-              </a>
+              </span>
+              <a
+                class="edit-btn"
+                data-toggle="tooltip"
+                data-placement="right"
+                v-if="selectedRef.paper.abstract_editable  && editsAllowed"
+                @click="editAbstract = !editAbstract"
+                :title="hasAbstract ? 'Edit this abstract' : 'Add an abstract'"
+              ></a>
             </div>
+            <div class="nothing-yet" v-if="!hasAbstract" v-show="!editAbstract">No abstract was imported...</div>
+            <div v-if="editsAllowed" v-show="editAbstract">
+              <div class="form-group">
+                <textarea
+                  rows="10"
+                  class="form-control"
+                  placeholder="No abstract was imported.  Submitted abstracts will be labeled as user generated."
+                  v-model="selectedRef.abstract_form"
+                ></textarea>
+              </div>
+              <div class="form-btns">
+                <button class="submit-btn" @click="submitAbstract(selectedRef)">Submit</button>
+                <a
+                  class="cancel-link"
+                  @click="cancelAbstractForm"
+                >
+                  cancel
+                </a>
+              </div>
+            </div>
+            <abstract v-if="hasAbstract" v-show="!editAbstract" :abstract="selectedRef.paper.abstract"></abstract>
           </div>
-          <abstract v-if="hasAbstract" v-show="!editAbstract" :abstract="selectedRef.paper.abstract"></abstract>
-        </div>
+
+          <div class="modal-section">
+            <div class="modal-section-header">Details</div>
+            <ul class="list-unstyled">
+              <li v-if="selectedRef.paper.doi != null">
+                DOI:
+                <a :href="'http://dx.doi.org/'+selectedRef.paper.doi" target="_blank">{{selectedRef.paper.doi}}</a>
+              </li>
+              <li v-if="selectedRef.paper.pubmed_id != null">
+                Pubmed:
+                <a :href="'https://www.ncbi.nlm.nih.gov/pubmed/'+selectedRef.paper.pubmed_id" target="_blank">{{selectedRef.paper.pubmed_id}}</a>
+              </li>
+              <div v-if="selectedRef.paper.links.length > 0">Direct Links:</div>
+              <li v-for="link in selectedRef.paper.links">
+                <a :href="link.url" target="_blank" v-text="link.url"></a>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="modal-footer">
           <button
