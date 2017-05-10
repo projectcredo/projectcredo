@@ -2,10 +2,10 @@
   <tbody>
     <tr>
       <td>
-        <vote :voteable="reference" :signed-in="signedIn"></vote>
+        <vote :voteable="r" :signed-in="signedIn"></vote>
       </td>
       <td align="center" >
-        <b v-if="reference.paper.published_at">{{reference.paper.published_at | age}}</b>
+        <b v-if="r.paper.published_at">{{r.paper.published_at | age}}</b>
       </td>
       <td>
         <a
@@ -13,9 +13,9 @@
           data-target="#referenceModal"
           @click="$emit('selected',index)"
         >
-          {{reference.paper.title}}
+          {{r.paper.title}}
         </a>
-        <mini-bib :reference="reference"></mini-bib>
+        <mini-bib :reference="r"></mini-bib>
       </td>
       <td>
         <a
@@ -32,19 +32,19 @@
       class="ref-details"
     >
       <td colspan="4">
-        <div class="section" v-if="reference.tag_list.length > 0">
-          <a class="tag" v-for="tag in reference.tag_list" v-text="tag"></a>
+        <div class="section" v-if="r.tag_list.length > 0">
+          <a class="tag" v-for="tag in r.tag_list" v-text="tag"></a>
         </div>
-        <div v-if="reference.notes.length > 0">
+        <div v-if="r.notes.length > 0">
           <div class="header">Notes and Highlights</div>
-          <div v-for="note in reference.notes.slice(0,3)" class="note">
+          <div v-for="note in r.notes.slice(0,3)" class="note">
             <vote :voteable="note" :signed-in="signedIn"></vote>
             <note :note="note"></note>
           </div>
         </div>
-        <div v-if="reference.abstract">
+        <div v-if="r.abstract">
           <span class="header">Abstract</span>
-          <abstract :abstract="reference.abstract"></abstract>
+          <abstract :abstract="r.abstract"></abstract>
         </div>
       </td>
     </tr>

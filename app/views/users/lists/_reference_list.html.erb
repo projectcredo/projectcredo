@@ -199,7 +199,7 @@
         v-for="(reference,index) in allReferences"
         v-on:selected="selectReference(index)"
         :index="index"
-        :reference="reference"
+        :r="reference"
         :signed-in="signedIn"
         >
     </tbody>
@@ -239,7 +239,7 @@
     })
 
     Vue.component("reference-row", {
-      props: ["reference","index","signedIn"],
+      props: ["r","index","signedIn"],
       data: function() {
         return {
           recommendIsLoading: false,
@@ -250,7 +250,7 @@
       },
       computed: {
         hasPaperDetails: function() {
-          return this.reference.notes.length > 0 || this.reference.tag_list.length > 0 || this.reference.abstract !== ''
+          return this.r.notes.length > 0 || this.r.tag_list.length > 0 || this.r.abstract !== ''
         }
       },
       template: '#reference-row'
