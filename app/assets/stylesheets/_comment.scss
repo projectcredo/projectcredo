@@ -45,9 +45,6 @@
   }
 }
 
-.newlines{
-  white-space:pre-line;
-}
 .note {
   font-size: 14px;
   padding: 0px 0px 20px 0px;
@@ -56,7 +53,6 @@
     color: $gray-light;
   }
 }
-
 
 .note-btns {
   > button {

@@ -35,13 +35,3 @@
   width: 50%;
   margin: 0 0 5px 0;
 }
-
-.close-form {
-  font-size: 1.2em;
-  z-index: 99999;
-  &:before  {
-    font-family: "Glyphicons Halflings";
-    content: "\e088";
-  }
-  @extend .btn, .btn-link
-}
