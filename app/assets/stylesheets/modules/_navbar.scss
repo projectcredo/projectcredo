@@ -21,6 +21,12 @@
     color:#fff !important;
   }
 
+  @media (max-width: 767px) {
+    ul.dropdown-menu > li > a {
+      color: $white !important;
+    }
+  }
+
   .navbar-brand {
     position: relative;
     z-index: 100;
