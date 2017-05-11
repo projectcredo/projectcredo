@@ -19,8 +19,8 @@ class CommentsController < ApplicationController
         if @comment.commentable_type == 'List'
           create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
         end
+        format.json {render :json => @comment }
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
         format.js do
           commentable = @comment.root.commentable
           is_top_level = !!@comment.commentable
@@ -34,7 +34,7 @@ class CommentsController < ApplicationController
         end
       else
         format.html { redirect_to :back }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.json {render :json => @comment }
       end
     end
   end
@@ -43,6 +43,8 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1.json
   def update
     unless @comment.user == current_user
+      commentable = @comment.root.commentable
+      list = get_commentable_root_list commentable
       flash[:alert] = "You do not have permission to edit this comment"
       return redirect_back(fallback_location: user_list_path(list.owner, list))
     end
@@ -50,7 +52,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.update(comment_params)
         format.html { redirect_to :back, notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
+        format.json {render :json => @comment }
         format.js { render 'update.js.erb', locals: {commentable: @comment.root.commentable} }
       else
         format.html { redirect_to :back, notice: 'Comment was not updated.' }
@@ -69,13 +71,13 @@ class CommentsController < ApplicationController
       if current_user.can_moderate?(list_for_authorization) || @comment.user == current_user
         @comment.destroy
         format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
-        format.json { head :no_content }
+        format.json {render :json => {}, :status => :no_content}
         format.js { render 'destroy.js.erb', locals: {commentable: commentable} }
       else
         flash[:alert] = 'You do not have permission to moderate this list.'
-
         format.html { redirect_back fallback_location: user_list_path(list_for_authorization.owner, list_for_authorization) }
         format.js { ajax_redirect_to(user_list_path(list_for_authorization.owner, list_for_authorization)) }
+        format.json
       end
     end
   end
@@ -91,7 +93,7 @@ class CommentsController < ApplicationController
       parameters = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
       valid_type = %w{List Reference}.include? parameters[:commentable_type]
       if !valid_type
-        logger.debug "Comment with invalid parent type by #{current_user.email} with params: #{parameters.inspect}"
+        logger.debug "Comment with invalid parent type by #{current_user.username} with params: #{parameters.inspect}"
         parameters[:commentable_type] = nil
       end
       parameters

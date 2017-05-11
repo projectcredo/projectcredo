@@ -1,5 +1,37 @@
+.tags-list {
+  font-size: 12px;
+}
+
 .tag {
   @extend .btn, .btn-default, .btn-xs;
   font-size: 12px;
-  margin-right: 2px;
+  margin: 0 2px 2px 0;
+  color: $white;
+  background-color: $primary-color;
+  border: none;
+}
+
+.tag:hover {
+    background-color: $dark-color;
+    color: $white;
+}
+
+.tag-remove {
+  color: $white;
+  font-size: 1em;
+  &:before  {
+    content: "\00a0\00a0x";
+  }
+  @extend .btn, .btn-link
+}
+
+.author-tag {
+  @extend .btn, .btn-default, .btn-xs;
+  font-size: 12px;
+  margin: 0 2px 2px 0;
+}
+
+.tag-form {
+  width: 50%;
+  margin: 0 0 5px 0;
 }

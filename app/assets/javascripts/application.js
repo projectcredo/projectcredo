@@ -52,6 +52,104 @@ debounce = function(func, wait, immediate) {
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
 // List Card Component for List Indexes
+Vue.filter('truncate', function(string, length, truncate) {
+  if (typeof truncate === 'undefined') { truncate = 'true'; }
+  if(truncate) {
+    return string.substring(0, length) + (string.length < length ? '' : '...');
+  } else{
+    return string
+  }
+});
+
+Vue.filter('cite', function(reference) {
+  var mainAuthor  = ''
+  var year =  ''
+  var pub = ''
+
+  if(reference.paper.authors.length> 0) {
+    mainAuthor = reference.paper.authors[0].family_name
+  }
+  if(reference.paper.published_at != null) {
+    year = new Date(reference.paper.published_at).getFullYear()
+  }
+  if(reference.paper.publication != null) {
+    pub = reference.paper.publication
+  }
+  var joinedCitation = $.grep([year, mainAuthor, pub], Boolean).join(", ");
+
+  if(pub != '' || year != '') {
+    return "[" + joinedCitation + "]"
+  }
+});
+
+Vue.filter('age', function(date) {
+  if(date){
+    now = new Date();
+    date = new Date(date)
+    age = now.getFullYear() - date.getFullYear() - ((now.getMonth() > date.getMonth() || (now.getMonth() == date.getDate())) ? 0 : 1)
+    return age < 1 ? '< 1' : age
+  }
+});
+
+Vue.component("vote", {
+  props: ["voteable", "signedIn"],
+  data: function() {
+    return {
+      isLoading: false
+      }
+  },
+  methods: {
+    vote: function(voteable) {
+      var self = this;
+      var params = {
+        id: voteable.id,
+        type: voteable.type
+      };
+      $.ajax({
+        url: voteable.vote_path + ".json",
+        type: 'POST',
+        data: params
+      })
+      .done(function(){
+        voteable.voted = true
+        voteable.votes = voteable.votes + 1
+        self.isLoading = false
+      });
+    },
+    unvote: function(voteable) {
+      var self = this;
+      var params = {
+        id: voteable.id,
+        type: voteable.type
+      };
+      $.ajax({
+        url: voteable.vote_path + ".json",
+        type: 'DELETE',
+        data: params
+      })
+      .done(function(){
+        voteable.voted = false
+        voteable.votes = voteable.votes - 1
+        self.isLoading = false
+      });
+
+    },
+    toggleVote: function(voteable) {
+      if(!this.signedIn) {
+        window.location.href = '/users/sign_in';
+      } else if(!this.isLoading) {
+        this.isLoading = true
+        if(voteable.voted) {
+          this.unvote(voteable)
+        } else {
+          this.vote(voteable)
+        }
+      }
+    },
+  },
+  template: '#vote'
+});
+
 Vue.component("list-card", {
   props: ["list", "signedIn"],
   data: function() {
@@ -59,11 +157,6 @@ Vue.component("list-card", {
       likeIsLoading: false,
       pinIsLoading: false,
       showMore: false
-    }
-  },
-  filters: {
-    truncate: function(string, length) {
-      return string.substring(0, length) + (string.length < length ? '' : '...');
     }
   },
   methods: {
@@ -171,7 +264,7 @@ var searchLists = new Vue({
     results: [],
     placeholder: "Search for a list...",
     filterPins: false,
-    filterLikes: false,
+    filterLikes: false
   },
   computed: {
     tags: function() {

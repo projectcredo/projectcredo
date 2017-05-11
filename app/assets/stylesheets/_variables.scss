@@ -5,6 +5,7 @@ $light-gray-color:    #f1f1f1;
 $dark-color:          darken(#64D6BD,20%);
 $darkest-color:       darken(#64D6BD,25%);
 $brand-primary:       #64D6BD;
+$white:               #ffffff;
 
 
 // Navbar
@@ -16,3 +17,9 @@ $searchbar-right-position: 400px;
 
 $default-border-color: shade($light-gray-color, 10%);
 $default-border: $default-border-color solid 1px;
+
+// Styling classes
+
+.newlines{
+  white-space:pre-line;
+}

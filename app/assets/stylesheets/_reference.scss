@@ -10,10 +10,29 @@
   }
 }
 
-.reference-detail {
-  font-size: 12px;
+.ref-details {
+  .header {
+    font-weight: bold;
+  }
+  .section {
+    margin-bottom: 10px;
+  }
 }
 
-.reference-metadata {
+.author-link {
+  color: $gray-light;
   font-size: 12px;
+  display: inline-block;
+  @extend .btn, .btn-link;
+}
+
+.authors {
+ color: $gray-light;
+ font-size: 12px;
+
+}
+
+.nothing-yet {
+  font-style: italic;
+  color: $gray-light
 }

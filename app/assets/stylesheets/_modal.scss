@@ -1,0 +1,20 @@
+.modal-body {
+  .modal-section-header{
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  .modal-section:not(:last-child){
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $gray-lighter;
+  }
+}
+
+.modal-external-link {
+  text-decoration: none;
+  &:before    {
+    font-family: "Glyphicons Halflings";
+    content: "\e144";
+    width: 50%;
+  }
+}
