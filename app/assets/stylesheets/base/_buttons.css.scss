@@ -1,3 +1,16 @@
+.remove-button {
+  @extend .btn-default;
+  @extend .glyphicon;
+  @extend .glyphicon-remove-circle;
+  color: $gray-light;
+  background: none;
+}
+
+.remove-button:hover {
+  background: none;
+  text-decoration: none;
+}
+
 .btn-primary,
 .btn-primary:visited,
 .btn-primary:active,
