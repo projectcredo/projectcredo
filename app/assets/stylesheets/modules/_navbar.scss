@@ -21,6 +21,12 @@
     color:#fff !important;
   }
 
+  @media (max-width: 767px) {
+    ul.dropdown-menu > li > a {
+      color: $white !important;
+    }
+  }
+
   .navbar-brand {
     position: relative;
     z-index: 100;
@@ -91,6 +97,16 @@
     right: $searchbar-right-position;
     bottom: 0;
     left: $searchbar-left-postion;
+
+    @media (max-width: 767px) {
+      top: 5px;
+      left: 10px;
+      right: 10px;
+
+      .btn-search{
+        display: none;
+      }
+    }
 
     input[type=text]::placeholder {
       color: #fff;

@@ -15,21 +15,9 @@
 @import "bootstrap";
 @import "variables";
 @import 'base/*';
-@import "navbar";
-@import "pin";
-@import "publication";
-@import "sort";
-@import "comment";
-@import "reference";
-@import "list";
-@import "paper";
-@import "about";
-@import "how_to";
-@import "sidebar";
-@import "notifications";
-@import "tag";
-@import "spinner";
-@import "modal";
+@import 'modules/*';
+@import 'utilities/*';
+@import 'list_show/*';
 
 body {
   padding: 4em 1em;
@@ -42,19 +30,6 @@ body {
 
 input[placeholder] {
   text-overflow: ellipsis;
-}
-
-.remove-button {
-  @extend .btn-default;
-  @extend .glyphicon;
-  @extend .glyphicon-remove-circle;
-  color: $gray-light;
-  background: none;
-}
-
-.remove-button:hover {
-  background: none;
-  text-decoration: none;
 }
 
 .flash-messages {
