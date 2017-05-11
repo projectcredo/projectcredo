@@ -22,12 +22,12 @@
   margin-bottom: 600px
   }
 
-@media(max-width:992px){
-   .affix {
-     position: static;
-     width: auto;
-     top: 0;
+  @media(max-width:992px){
+    .affix {
+      position: static;
+      width: auto;
+      top: 0;
     }
-}
+  }
 
 }
