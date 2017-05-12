@@ -2,30 +2,32 @@
 
 <div class="row list-show">
   <div class="col-md-8">
-    <div class="list-main-header">
-      <div class= "list-title"><%= @list.name %></div>
-      <%= render 'list_details' %>
-      <% if @list.tag_list.any? %>
-        <div class="list-tags">
-          <% @list.tag_list.each do |tag| %>
-            <a class="tag"><%= tag %></a>
-          <% end %>
-        </div>
-      <% end %>
+    <div class="list-section">
+      <div class="list-section-h1">
+        <div class= "list-title"><%= @list.name %></div>
+        <%= render 'list_details' %>
+        <% if @list.tag_list.any? %>
+          <div class="list-tags">
+            <% @list.tag_list.each do |tag| %>
+              <a class="tag"><%= tag %></a>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
     <div class="list-section">
-      <div class="list-section-header">Description</div>
+      <div class="list-section-h2">Description</div>
       <%= wrap_on_line_breaks @list.description %>
     </div>
 
     <div class="list-section">
-      <div class="list-section-header">Notes and Highlights</div>
+      <div class="list-section-h2">Notes and Highlights</div>
       Coming Soon
     </div>
 
     <div class="list-section">
-      <div class="list-section-header">
+      <div class="list-section-h2">
           <% if @list.references.count > 0 %>
             <%= @list.references.count %> Papers
           <% end %>
@@ -45,8 +47,8 @@
       <% end %>
     </div>
 
-    <div class="list-comments">
-      <strong>Comments on <%= @list.name %></strong>
+    <div class="list-section">
+      <div class="list-section-h3">Comments</div>
       <div id="comments-<%= @list.id %>">
         <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
       </div>

@@ -176,7 +176,23 @@
   .list-section {
     margin-bottom: 20px;
 
-    .list-section-header {
+    .list-section-h1 {
+      .list-title {
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .list-details {
+        color: $gray-light;
+        font-size: 18px;
+      }
+
+      .list-tags {
+        padding: 5px 0;
+      }
+    }
+
+    .list-section-h2 {
       margin-bottom: 10px;
       background-color: $primary-color;
       color: $white;
@@ -184,22 +200,15 @@
       font-weight: bold;
       font-size: 18px;
     }
-  }
 
-  .list-main-header {
-    margin-bottom: 20px;
-    .list-title {
-      font-size: 28px;
+    .list-section-h3 {
+      margin-bottom: 10px;
+      background-color: $gray-lighter;
+      color: $primary-color;
+      padding: 5px;
       font-weight: bold;
-    }
-
-    .list-details {
-      color: $gray-light;
-      font-size: 18px;
-    }
-
-    .list-tags {
-      padding: 5px 0;
+      font-size: 14px;
     }
   }
+
 }
