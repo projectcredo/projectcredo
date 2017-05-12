@@ -1,1 +1,0 @@
-json.partial! 'lists/form.json'

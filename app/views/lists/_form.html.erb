@@ -208,18 +208,14 @@
         removeMember(member) {
           member.role = 'nonmember';
         }
-      },
-      mounted() {
-        var editList = this
-        $.get(window.location.href + '.json')
-          .done(function(data) {
-            editList.allUsers = data.all_users
-            editList.canModerate = data.can_moderate
-            editList.currentUser = data.current_user
-            editList.listAccess = data.access
-            editList.owner = data.owner
-          })
       }
     })
+
+    editList.allUsers = <%= raw render('lists/all_users.json', list: @list) %>
+    editList.currentUser = '<%= current_user.username %>'
+    editList.canModerate = <%= (if @list.persisted? then current_user.can_edit?(@list) else true end) %>
+    editList.listAccess = '<%= @list.access %>'
+    editList.owner = '<%= (if @list.persisted? then @list.owner.username else current_user.username end) %>'
+    editList.$mount('#list-edit')
   </script>
 <% end %>
