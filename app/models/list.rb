@@ -103,6 +103,10 @@ class List < ApplicationRecord
     slug
   end
 
+  def others
+    members[:contributor] +  members[:moderator]
+  end
+
   def validate_tag
     tag_list.each do |tag|
       errors.add(:tag_list, "cannot contain special characters") unless tag =~ /\A[\p{N}\p{L} ]+\z/

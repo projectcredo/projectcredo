@@ -24,18 +24,25 @@
   }
 }
 
-.list-title {
-  font-size: 28px;
-  font-weight: bold;
-}
+.list-main-header {
+  margin-bottom: 20px;
+  .list-title {
+    font-size: 28px;
+    font-weight: bold;
+  }
 
-.list-nav {
-  color: #777777;
-  font-size: 12px;
+  .list-details {
+    color: $gray-light;
+    font-size: 18px;
+  }
 }
 
 .contributor-list {
   margin-bottom: 5px;
+}
+
+.list-tags {
+  padding: 5px 0;
 }
 
 .list-index {
