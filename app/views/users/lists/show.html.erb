@@ -1,6 +1,6 @@
 <%= render 'list_head', list: @list %>
 
-<div class="row">
+<div class="row list-show">
   <div class="col-md-8">
     <div class="list-main-header">
       <div class= "list-title"><%= @list.name %></div>
@@ -14,11 +14,27 @@
       <% end %>
     </div>
 
-    <strong>Description</strong>
-    <%= wrap_on_line_breaks @list.description %>
-    <%= render 'crossref/search', list: @list %>
-    <%= render 'lists/add_reference', list: @list %>
-    <%= render 'users/lists/reference_list', list: @list %>
+    <div class="list-section">
+      <div class="list-section-header">Description</div>
+      <%= wrap_on_line_breaks @list.description %>
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-header">Notes and Highlights</div>
+      Coming Soon
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-header">
+          <% if @list.references.count > 0 %>
+            <%= @list.references.count %> Papers
+          <% end %>
+      </div>
+      <%= render 'papers/sort_by' %>
+      <%= render 'crossref/search', list: @list %>
+      <%= render 'lists/add_reference', list: @list %>
+      <%= render 'users/lists/reference_list', list: @list %>
+    </div>
   </div>
   <div class="col-md-4">
     <div class="edit-section">

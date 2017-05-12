@@ -24,27 +24,12 @@
   }
 }
 
-.list-main-header {
-  margin-bottom: 20px;
-  .list-title {
-    font-size: 28px;
-    font-weight: bold;
-  }
-
-  .list-details {
-    color: $gray-light;
-    font-size: 18px;
-  }
-}
-
 .contributor-list {
   margin-bottom: 5px;
 }
 
-.list-tags {
-  padding: 5px 0;
-}
 
+//Lists Index
 .list-index {
   background-color: $gray-lighter;
 
@@ -185,4 +170,36 @@
   }
 
   @extend .row
+}
+
+.list-show {
+  .list-section {
+    margin-bottom: 20px;
+
+    .list-section-header {
+      margin-bottom: 10px;
+      background-color: $primary-color;
+      color: $white;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+
+  .list-main-header {
+    margin-bottom: 20px;
+    .list-title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .list-details {
+      color: $gray-light;
+      font-size: 18px;
+    }
+
+    .list-tags {
+      padding: 5px 0;
+    }
+  }
 }
