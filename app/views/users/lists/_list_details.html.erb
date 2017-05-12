@@ -6,7 +6,27 @@
   <% end %>
 
   curated by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>
-   <%= "and #{pluralize(@list.others.length, 'other')}" if @list.others.any? %>
+
+  <% if @list.others.any? %>
+    and
+    <span
+      tabindex="0"
+      class="btn-link"
+      data-container="body"
+      data-toggle="popover"
+      data-placement="top"
+      data-html="true"
+      data-content=
+        "<%=
+          @list.others.map do |user|
+            link_to user.username, user_lists_path(user)
+          end.join(', ')
+        %>"
+      data-trigger="focus">
+      <%= pluralize(@list.others.length, 'other') %>
+    </span>
+  <% end %>
+
    on <%= @list.created_at.strftime("%B %d, %Y") %>
 
 </div>
