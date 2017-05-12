@@ -48,13 +48,20 @@
     </div>
 
     <div class="list-section">
-      <div class="list-section-h3">Comments</div>
-      <div id="comments-<%= @list.id %>">
-        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+      <div class="list-section-h3">Media Mentions</div>
+      <div class="sidebar-body">
+        Coming Soon
       </div>
     </div>
 
+    <div class="list-section">
+      <div class="list-section-h3">Comments</div>
+      <div id="comments-<%= @list.id %>" class="sidebar-body">
+        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+      </div>
+    </div>
   </div>
+
 </div>
 
 

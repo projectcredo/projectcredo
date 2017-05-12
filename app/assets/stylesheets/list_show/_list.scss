@@ -202,12 +202,16 @@
     }
 
     .list-section-h3 {
-      margin-bottom: 10px;
       background-color: $gray-lighter;
-      color: $primary-color;
+      color: $dark-color;
       padding: 5px;
       font-weight: bold;
       font-size: 14px;
+    }
+
+    .sidebar-body {
+      background-color: $gray-lightest;
+      padding: 15px 10px;
     }
   }
 
