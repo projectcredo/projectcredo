@@ -17,7 +17,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th width="50"></th>
+        <th width="50" @click="sortBy('votes')">Recs</th>
         <th width="50">
           Age
         </th>
@@ -27,7 +27,7 @@
     </thead>
     <tbody
         is="reference-row"
-        v-for="(reference,index) in allReferences"
+        v-for="(reference,index) in filteredData"
         v-on:selected="selectReference(index)"
         :index="index"
         :r="reference"
@@ -99,6 +99,8 @@
         editAbstract: false,
         showTagForm: false,
         newTag: '',
+        sortKey:'',
+        sortOrders: {'votes': -1, 'age': 1},
         allReferences: []
       },
       computed: {
@@ -110,6 +112,19 @@
         },
         abstractImported: function() {
           return !this.selectedRef.paper.abstract_editable && this.hasAbstract
+        },
+        filteredData: function () {
+          var sortKey = 'votes'
+          var order = this.sortOrders['votes']
+          var data = this.allReferences
+          if (sortKey) {
+            data = data.slice().sort(function (a, b) {
+              a = a[sortKey]
+              b = b[sortKey]
+              return (a === b ? 0 : a > b ? 1 : -1) * order
+            })
+          }
+          return data
         }
       },
       mounted: function() {
@@ -124,6 +139,10 @@
 
       },
       methods: {
+        sortBy: function (key) {
+          this.sortKey = key
+          this.sortOrders[key] = this.sortOrders[key] * -1
+        },
         selectReference: function(index) {
           this.referenceIndexInModal = index;
           this.selectedRef = this.allReferences[index];
