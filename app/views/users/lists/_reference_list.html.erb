@@ -17,9 +17,13 @@
   <table class="table">
     <thead>
       <tr>
-        <th width="50" @click="sortBy('votes')">Votes</th>
-        <th width="50" @click="sortBy('age')">
+        <th width="60" @click="sortBy('votes')" :class="{ active: sortKey == 'votes' }">
+          Votes
+          <span class="table-sort" :class="sortOrders['votes'] > 0 ? 'asc' : 'dsc'">
+        </th>
+        <th width="50" @click="sortBy('age')" :class="{ active: sortKey == 'age' }">
           Age
+          <span class="table-sort" :class="sortOrders['age'] < 0 ? 'asc' : 'dsc'">
         </th>
         <th>Paper</th>
         <th width="50"></th>
