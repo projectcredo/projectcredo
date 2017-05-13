@@ -17,8 +17,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th width="50" @click="sortBy('votes')">Recs</th>
-        <th width="50">
+        <th width="50" @click="sortBy('votes')">Votes</th>
+        <th width="50" @click="sortBy('age')">
           Age
         </th>
         <th>Paper</th>
@@ -100,7 +100,7 @@
         showTagForm: false,
         newTag: '',
         sortKey:'',
-        sortOrders: {'votes': -1, 'age': 1},
+        sortOrders: {'age': 1, 'votes': -1},
         allReferences: []
       },
       computed: {
@@ -114,13 +114,18 @@
           return !this.selectedRef.paper.abstract_editable && this.hasAbstract
         },
         filteredData: function () {
-          var sortKey = 'votes'
-          var order = this.sortOrders['votes']
+          var sortKey = this.sortKey
+          var order = this.sortOrders[sortKey]
           var data = this.allReferences
           if (sortKey) {
             data = data.slice().sort(function (a, b) {
-              a = a[sortKey]
-              b = b[sortKey]
+              if(sortKey == 'age'){
+                a = a.paper['published_at']
+                b = b.paper['published_at']
+              } else {
+                a = a[sortKey]
+                b = b[sortKey]
+              }
               return (a === b ? 0 : a > b ? 1 : -1) * order
             })
           }
