@@ -45,7 +45,7 @@
     <div class="note-btns">
       <vote :voteable="note" :signed-in="signedIn"></vote>
       <button
-        v-if="isCurrentUser(note.user)"
+        v-if="currentUser == note.user"
         @click="note.editNote = !note.editNote"
       >
         edit
