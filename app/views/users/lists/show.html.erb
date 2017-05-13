@@ -1,45 +1,67 @@
 <%= render 'list_head', list: @list %>
 
-<h2 class= "list-title"><%= @list.name %></h2>
-<div class="list-nav">
-  by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>
-  <% if current_user %>
-    <% if current_user.can_edit? @list %>
-     - <%= link_to 'Edit', edit_user_list_path(@list.owner, @list) %>
-   <% end %>
-    <% if @list.owner == current_user %>
-       - <%= link_to 'Delete List', user_list_path(@list.owner, @list), data: { confirm: 'Are you sure?' }, method: :delete %>
-    <% end %>
-  <% end %>
-
-  <% if @list.access == 'contributors' %>
-   <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
-  <% else %>
-    <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🌎 </span>
-  <% end %>
-</div>
-
-<div class="container">
-
-  <div class="row">
-    <div class="col-md-8">
-      <p>
-        <% @list.tag_list.each do |tag| %>
-          <a class="btn btn-default btn-xs"><%= tag %></a>
+<div class="row list-show">
+  <div class="col-md-8">
+    <div class="list-section">
+      <div class="list-section-h1">
+        <div class= "list-title"><%= @list.name %></div>
+        <%= render 'list_details' %>
+        <% if @list.tag_list.any? %>
+          <div class="list-tags">
+            <% @list.tag_list.each do |tag| %>
+              <a class="tag"><%= tag %></a>
+            <% end %>
+          </div>
         <% end %>
-      </p>
-      <strong>Description</strong>
+      </div>
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-h2">Description</div>
       <%= wrap_on_line_breaks @list.description %>
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-h2">Notes and Highlights</div>
+      Coming Soon
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-h2">
+          <% if @list.references.count > 0 %>
+            <%= @list.references.count %> Papers
+          <% end %>
+      </div>
+      <%= render 'papers/sort_by' %>
       <%= render 'crossref/search', list: @list %>
       <%= render 'lists/add_reference', list: @list %>
       <%= render 'users/lists/reference_list', list: @list %>
     </div>
-    <div class="col-md-4 list-comments">
-      <strong>Comments on <%= @list.name %></strong>
-      <div id="comments-<%= @list.id %>">
+  </div>
+  <div class="col-md-4">
+    <div class="edit-section">
+      <% if current_user %>
+        <% if current_user.can_edit? @list %>
+          <%= link_to 'Edit this list', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
+       <% end %>
+      <% end %>
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-h3">Media Mentions</div>
+      <div class="sidebar-body">
+        Coming Soon
+      </div>
+    </div>
+
+    <div class="list-section">
+      <div class="list-section-h3">Comments</div>
+      <div id="comments-<%= @list.id %>" class="sidebar-body">
         <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
       </div>
     </div>
   </div>
+
 </div>
+
 

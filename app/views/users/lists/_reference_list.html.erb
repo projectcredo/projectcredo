@@ -14,12 +14,6 @@
     </div>
   </div>
 
-  <% reference_count = @list.references.count %>
-  <% if reference_count > 0 %>
-    <%= render 'papers/sort_by' %>
-    <i><%= reference_count%> papers added to this list</i>
-  <% end %>
-
   <table class="table">
     <thead>
       <tr>

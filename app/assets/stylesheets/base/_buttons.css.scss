@@ -126,3 +126,20 @@ button.comment-vote.active {
   }
 
 }
+
+.edit-section {
+  height: 44px;
+  margin-bottom: 20px;
+}
+
+.edit-list-btn {
+  font-weight: bold;
+  font-size: 16px;
+
+  &:before  {
+    font-family: "Glyphicons Halflings";
+    content: "\270f\00a0";
+    vertical-align: middle;
+  }
+  @extend .btn, .btn-primary, .btn-lg, .pull-right;
+}

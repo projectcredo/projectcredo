@@ -24,19 +24,12 @@
   }
 }
 
-.list-title {
-  margin: 5px 0 0 0;
-}
-
-.list-nav {
-  color: #777777;
-  font-size: 12px;
-}
-
 .contributor-list {
   margin-bottom: 5px;
 }
 
+
+//Lists Index
 .list-index {
   background-color: $gray-lighter;
 
@@ -177,4 +170,51 @@
   }
 
   @extend .row
+}
+
+//List Show
+
+.list-show {
+  .list-section {
+    margin-bottom: 30px;
+
+    .list-section-h1 {
+      .list-title {
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .list-details {
+        color: $gray-light;
+        font-size: 18px;
+      }
+
+      .list-tags {
+        padding: 5px 0;
+      }
+    }
+
+    .list-section-h2 {
+      margin-bottom: 10px;
+      background-color: $primary-color;
+      color: $white;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .list-section-h3 {
+      background-color: $gray-lighter;
+      color: $dark-color;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .sidebar-body {
+      background-color: $gray-lightest;
+      padding: 15px 10px;
+    }
+  }
+
 }
