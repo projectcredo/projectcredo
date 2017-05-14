@@ -33,7 +33,7 @@
     >
       <td colspan="4">
         <div class="section" v-if="r.paper.tag_list.length > 0">
-          <a class="tag" v-for="tag in r.paper.tag_list" v-text="tag"></a>
+          <a class="tag" v-for="tag in r.paper.tag_list" v-text="tag" @click="filter(tag)"></a>
         </div>
         <div v-if="r.notes.length > 0">
           <div class="header">Notes and Highlights</div>

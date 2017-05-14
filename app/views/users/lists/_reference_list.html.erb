@@ -41,6 +41,7 @@
         is="reference-row"
         v-for="(reference,index) in filteredData"
         v-on:selected="selectReference(index)"
+        v-on:filter="addToFilter($event)"
         :index="index"
         :r="reference"
         :signed-in="signedIn"
@@ -56,6 +57,8 @@
   <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <script>
+    var bus = new Vue();
+
     Vue.component("abstract", {
       props: ["abstract"],
       data: function() {
@@ -68,6 +71,11 @@
 
     Vue.component("mini-bib", {
       props: ["r"],
+      methods:{
+        filter: function(add) {
+          this.$parent.$emit('filter', add)
+        }
+      },
       template: '#mini-bib'
     })
 
@@ -94,6 +102,11 @@
       computed: {
         hasPaperDetails: function() {
           return this.r.notes.length > 0 || this.r.paper.tag_list.length > 0 || this.r.paper.abstract != null
+        }
+      },
+      methods:{
+        filter: function(add) {
+          this.$emit('filter', add)
         }
       },
       template: '#reference-row'
@@ -172,12 +185,18 @@
             Vue.set(note, 'edit_form', note.content)
           })
         })
-
       },
       methods: {
         sortBy: function (key) {
           this.sortKey = key
           this.sortOrders[key] = this.sortOrders[key] * -1
+        },
+        addToFilter: function(add) {
+          if(this.filterKey) {
+              this.filterKey += ' ' + add
+          } else {
+              this.filterKey = add
+          }
         },
         selectReference: function(index) {
           this.referenceIndexInModal = index;
