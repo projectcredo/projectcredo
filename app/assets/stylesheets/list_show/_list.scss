@@ -213,12 +213,14 @@
 
     .quick-add {
       margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid;
 
       .crossref {
         margin-bottom: 10px;
       }
 
-      form.add_reference {
+      .add-reference {
         height: 20px;
       }
     }

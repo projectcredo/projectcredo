@@ -13,7 +13,15 @@
       </div>
     </div>
   </div>
-  <input v-model="filterKey"></input>
+  <div class="row">
+    <div class="col-xs-offset-6 col-xs-6">
+      <input
+        class="pull-right form-control"
+        v-model="filterKey"
+        placeholder="Search this list for..."
+      ></input>
+    </div>
+  </div>
   <table class="table">
     <thead>
       <tr>
