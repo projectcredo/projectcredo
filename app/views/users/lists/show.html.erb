@@ -1,6 +1,6 @@
 <%= render 'list_head', list: @list %>
 
-<div class="row list-show">
+<div class="row list-show" id="list-show">
   <div class="col-md-8">
     <div class="list-section">
       <div class="list-section-h1">
@@ -36,7 +36,12 @@
         <%= render 'crossref/search', list: @list %>
         <%= render 'lists/add_reference', list: @list %>
       </div>
-      <%= render 'users/lists/reference_list', list: @list %>
+      <reference-list
+        :signed-in="signedIn"
+        :current-user="currentUser"
+        :user-can-edit="userCanEdit"
+        :all-references="allReferences"
+      ></reference-list>
     </div>
   </div>
   <div class="col-md-4">

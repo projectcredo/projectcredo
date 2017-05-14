@@ -1,51 +1,52 @@
-<div id="reference-list">
-
-  <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal" v-if="selectedRef.paper" :reference="selectedRef">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <%= render 'users/lists/modal/modal_header' %>
-        <div class="modal-body">
-          <%= render 'users/lists/modal/section_notes_and_highlights' %>
-          <%= render 'users/lists/modal/section_abstract' %>
-          <%= render 'users/lists/modal/section_details' %>
+<script type="text/x-template" id="reference-list">
+  <div>
+    <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal" v-if="selectedRef.paper" :reference="selectedRef">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <%= render 'users/lists/modal/modal_header' %>
+          <div class="modal-body">
+            <%= render 'users/lists/modal/section_notes_and_highlights' %>
+            <%= render 'users/lists/modal/section_abstract' %>
+            <%= render 'users/lists/modal/section_details' %>
+          </div>
+          <%= render 'users/lists/modal/modal_footer' %>
         </div>
-        <%= render 'users/lists/modal/modal_footer' %>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-offset-6 col-xs-6">
-      <input
-        class="pull-right form-control"
-        v-model="filterKey"
-        placeholder="Search this list for..."
-      ></input>
+    <div class="row">
+      <div class="col-xs-offset-6 col-xs-6">
+        <input
+          class="pull-right form-control"
+          v-model="filterKey"
+          placeholder="Search this list for..."
+        ></input>
+      </div>
     </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th width="60" @click="sortBy('votes')" :class="{ active: sortKey == 'votes' }">
+            Votes
+            <span class="table-sort" :class="sortOrders['votes'] > 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th width="50" @click="sortBy('age')" :class="{ active: sortKey == 'age' }">
+            Age
+            <span class="table-sort" :class="sortOrders['age'] < 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th>Paper</th>
+          <th width="50"></th>
+        </tr>
+      </thead>
+      <tbody
+          is="reference-row"
+          v-for="(reference,index) in filteredData"
+          v-on:selected="selectReference(index)"
+          v-on:filter="addToFilter($event)"
+          :index="index"
+          :r="reference"
+          :signed-in="signedIn"
+          >
+      </tbody>
+    </table>
   </div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th width="60" @click="sortBy('votes')" :class="{ active: sortKey == 'votes' }">
-          Votes
-          <span class="table-sort" :class="sortOrders['votes'] > 0 ? 'asc' : 'dsc'">
-        </th>
-        <th width="50" @click="sortBy('age')" :class="{ active: sortKey == 'age' }">
-          Age
-          <span class="table-sort" :class="sortOrders['age'] < 0 ? 'asc' : 'dsc'">
-        </th>
-        <th>Paper</th>
-        <th width="50"></th>
-      </tr>
-    </thead>
-    <tbody
-        is="reference-row"
-        v-for="(reference,index) in filteredData"
-        v-on:selected="selectReference(index)"
-        v-on:filter="addToFilter($event)"
-        :index="index"
-        :r="reference"
-        :signed-in="signedIn"
-        >
-    </tbody>
-  </table>
-</div>
+</script>
