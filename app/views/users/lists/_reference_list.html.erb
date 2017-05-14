@@ -13,13 +13,25 @@
       </div>
     </div>
   </div>
-
+  <div class="row">
+    <div class="col-xs-offset-6 col-xs-6">
+      <input
+        class="pull-right form-control"
+        v-model="filterKey"
+        placeholder="Search this list for..."
+      ></input>
+    </div>
+  </div>
   <table class="table">
     <thead>
       <tr>
-        <th width="50"></th>
-        <th width="50">
+        <th width="60" @click="sortBy('votes')" :class="{ active: sortKey == 'votes' }">
+          Votes
+          <span class="table-sort" :class="sortOrders['votes'] > 0 ? 'asc' : 'dsc'">
+        </th>
+        <th width="50" @click="sortBy('age')" :class="{ active: sortKey == 'age' }">
           Age
+          <span class="table-sort" :class="sortOrders['age'] < 0 ? 'asc' : 'dsc'">
         </th>
         <th>Paper</th>
         <th width="50"></th>
@@ -27,8 +39,9 @@
     </thead>
     <tbody
         is="reference-row"
-        v-for="(reference,index) in allReferences"
+        v-for="(reference,index) in filteredData"
         v-on:selected="selectReference(index)"
+        v-on:filter="addToFilter($event)"
         :index="index"
         :r="reference"
         :signed-in="signedIn"
@@ -44,6 +57,8 @@
   <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <script>
+    var bus = new Vue();
+
     Vue.component("abstract", {
       props: ["abstract"],
       data: function() {
@@ -56,6 +71,11 @@
 
     Vue.component("mini-bib", {
       props: ["r"],
+      methods:{
+        filter: function(add) {
+          this.$parent.$emit('filter', add)
+        }
+      },
       template: '#mini-bib'
     })
 
@@ -84,6 +104,11 @@
           return this.r.notes.length > 0 || this.r.paper.tag_list.length > 0 || this.r.paper.abstract != null
         }
       },
+      methods:{
+        filter: function(add) {
+          this.$emit('filter', add)
+        }
+      },
       template: '#reference-row'
     });
     var referenceListApp = new Vue({
@@ -99,6 +124,9 @@
         editAbstract: false,
         showTagForm: false,
         newTag: '',
+        filterKey: '',
+        sortKey:'',
+        sortOrders: {'age': 1, 'votes': -1},
         allReferences: []
       },
       computed: {
@@ -110,6 +138,42 @@
         },
         abstractImported: function() {
           return !this.selectedRef.paper.abstract_editable && this.hasAbstract
+        },
+        filteredData: function () {
+          var sortKey = this.sortKey
+          var filterKey = this.filterKey
+          var order = this.sortOrders[sortKey]
+          var data = this.allReferences
+          var fuseOptions = {
+            tokenize: true,
+            shouldSort: true,
+            threshold: 0.4,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+              "paper.title",
+              "paper.authors.full_name",
+              "paper.tag_list",
+              "paper.abstract"
+            ]
+          };
+          if(filterKey) {
+            var fuse = new Fuse(data, fuseOptions);
+            data = fuse.search(this.filterKey);
+          }
+          if (sortKey) {
+            data = data.slice().sort(function (a, b) {
+              if(sortKey == 'age'){
+                a = a.paper['published_at']
+                b = b.paper['published_at']
+              } else {
+                a = a[sortKey]
+                b = b[sortKey]
+              }
+              return (a === b ? 0 : a > b ? 1 : -1) * order
+            })
+          }
+          return data
         }
       },
       mounted: function() {
@@ -121,11 +185,18 @@
             Vue.set(note, 'edit_form', note.content)
           })
         })
-
       },
       methods: {
-        isCurrentUser: function(username) {
-          return this.currentUser == username
+        sortBy: function (key) {
+          this.sortKey = key
+          this.sortOrders[key] = this.sortOrders[key] * -1
+        },
+        addToFilter: function(add) {
+          if(this.filterKey) {
+              this.filterKey += ' ' + add
+          } else {
+              this.filterKey = add
+          }
         },
         selectReference: function(index) {
           this.referenceIndexInModal = index;

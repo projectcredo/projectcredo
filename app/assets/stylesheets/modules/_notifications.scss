@@ -4,8 +4,8 @@
   display: table;
   text-align: center;
 
-    &:before  {
-      display: table-cell;
+  &:before  {
+    display: table-cell;
     vertical-align: middle;
     font-family: "Glyphicons Halflings";
     content: "\e123";

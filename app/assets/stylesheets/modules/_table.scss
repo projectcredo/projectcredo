@@ -1,0 +1,21 @@
+th {
+  font-size: 12px;
+  .table-sort.dsc {
+    &:after  {
+      font-family: "Glyphicons Halflings";
+      content: "\e252";
+      font-size: 8px;
+    }
+  }
+  .table-sort.asc {
+    &:after  {
+      font-family: "Glyphicons Halflings";
+      content: "\e253";
+      font-size: 8px;
+    }
+  }
+}
+
+th.active {
+  color: $brand-primary;
+}

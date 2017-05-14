@@ -175,6 +175,8 @@
 //List Show
 
 .list-show {
+  margin-bottom: 50px;
+
   .list-section {
     margin-bottom: 30px;
 
@@ -209,6 +211,20 @@
       padding: 5px;
       font-weight: bold;
       font-size: 14px;
+    }
+
+    .quick-add {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid;
+
+      .crossref {
+        margin-bottom: 10px;
+      }
+
+      .add-reference {
+        height: 20px;
+      }
     }
 
     .sidebar-body {

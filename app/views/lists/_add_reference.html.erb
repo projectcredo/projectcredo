@@ -1,8 +1,9 @@
-<%= form_for list.references.build, html: {class: 'form-inline', id: 'add-reference'} do |f| %>
-  <%= f.hidden_field :list_id, value: list.id %>
-  <div class="add-paper">
+<div class="add-reference">
+  <%= form_for list.references.build, html: {class: 'form-inline', id: 'add-reference'} do |f| %>
+    <%= f.hidden_field :list_id, value: list.id %>
+
     <%= f.fields_for :locator do |l| %>
-      <div class="form-group add-reference col-md-12">
+      <div class="form-group col-md-12">
         <%= l.hidden_field :type, 'v-bind:value' => 'locatorType' %>
         <i>
           Or add a paper by
@@ -26,8 +27,8 @@
         </div>
       </div>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>
 
 <% content_for(:page_app) do %>
   <script>
