@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-
+  <input v-model="filterKey"></input>
   <table class="table">
     <thead>
       <tr>
@@ -103,6 +103,7 @@
         editAbstract: false,
         showTagForm: false,
         newTag: '',
+        filterKey: '',
         sortKey:'',
         sortOrders: {'age': 1, 'votes': -1},
         allReferences: []
@@ -119,8 +120,26 @@
         },
         filteredData: function () {
           var sortKey = this.sortKey
+          var filterKey = this.filterKey
           var order = this.sortOrders[sortKey]
           var data = this.allReferences
+          var fuseOptions = {
+            tokenize: true,
+            shouldSort: true,
+            threshold: 0.4,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+              "paper.title",
+              "paper.authors.full_name",
+              "paper.tag_list",
+              "paper.abstract"
+            ]
+          };
+          if(filterKey) {
+            var fuse = new Fuse(data, fuseOptions);
+            data = fuse.search(this.filterKey);
+          }
           if (sortKey) {
             data = data.slice().sort(function (a, b) {
               if(sortKey == 'age'){

@@ -32,8 +32,10 @@
             <%= @list.references.count %> Papers
           <% end %>
       </div>
-      <%= render 'crossref/search', list: @list %>
-      <%= render 'lists/add_reference', list: @list %>
+      <div class="quick-add">
+        <%= render 'crossref/search', list: @list %>
+        <%= render 'lists/add_reference', list: @list %>
+      </div>
       <%= render 'users/lists/reference_list', list: @list %>
     </div>
   </div>

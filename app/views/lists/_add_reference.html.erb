@@ -1,32 +1,32 @@
 <%= form_for list.references.build, html: {class: 'form-inline', id: 'add-reference'} do |f| %>
   <%= f.hidden_field :list_id, value: list.id %>
-  <div class="add-paper">
-    <%= f.fields_for :locator do |l| %>
-      <div class="form-group add-reference col-md-12">
-        <%= l.hidden_field :type, 'v-bind:value' => 'locatorType' %>
-        <i>
-          Or add a paper by
-          <%= link_to "DOI", '', '@click.prevent': "setLocatorType('doi')" %>,
-          <%= link_to "Pubmed ID", '', '@click.prevent': "setLocatorType('pubmed')" %>,
-          or <%= link_to "URL", '', '@click.prevent': "setLocatorType('link')" %>
-        </i>
-        <div class="form-group" v-if='showLocatorFields'>
-          <%= l.text_field  :id,
-                            class: "form-control paper-locator input-sm",
-                            'v-bind:placeholder' => 'locatorIdPlaceholder' %>
 
-          <%= l.text_field  :title,
-                            placeholder: 'Required - Ex: Regulation of the Neural Circuitry of Emotion',
-                            class: "form-control paper-title input-sm",
-                            'v-if' => 'showTitleField' %>
-          <%= f.submit "Submit",
-                class: "btn btn-primary btn-xs",
-                disabled: !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>
-          <%= link_to "cancel", '', '@click.prevent' => 'cancelAdd' %>
-        </div>
+  <%= f.fields_for :locator do |l| %>
+    <div class="form-group add-reference col-md-12">
+      <%= l.hidden_field :type, 'v-bind:value' => 'locatorType' %>
+      <i>
+        Or add a paper by
+        <%= link_to "DOI", '', '@click.prevent': "setLocatorType('doi')" %>,
+        <%= link_to "Pubmed ID", '', '@click.prevent': "setLocatorType('pubmed')" %>,
+        or <%= link_to "URL", '', '@click.prevent': "setLocatorType('link')" %>
+      </i>
+      <div class="form-group" v-if='showLocatorFields'>
+        <%= l.text_field  :id,
+                          class: "form-control paper-locator input-sm",
+                          'v-bind:placeholder' => 'locatorIdPlaceholder' %>
+
+        <%= l.text_field  :title,
+                          placeholder: 'Required - Ex: Regulation of the Neural Circuitry of Emotion',
+                          class: "form-control paper-title input-sm",
+                          'v-if' => 'showTitleField' %>
+        <%= f.submit "Submit",
+              class: "btn btn-primary btn-xs",
+              disabled: !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>
+        <%= link_to "cancel", '', '@click.prevent' => 'cancelAdd' %>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+
 <% end %>
 
 <% content_for(:page_app) do %>

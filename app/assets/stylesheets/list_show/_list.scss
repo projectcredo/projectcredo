@@ -211,6 +211,18 @@
       font-size: 14px;
     }
 
+    .quick-add {
+      margin-bottom: 20px;
+
+      .crossref {
+        margin-bottom: 10px;
+      }
+
+      form.add_reference {
+        height: 20px;
+      }
+    }
+
     .sidebar-body {
       background-color: $gray-lightest;
       padding: 15px 10px;
