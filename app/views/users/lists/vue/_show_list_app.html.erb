@@ -5,12 +5,14 @@
   <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <%= render 'users/lists/reference_list' %>
+  <%= render 'crossref/crossref_search', list: @list %>
   <script>
     <%= render 'users/lists/vue/components/abstract.js' %>
     <%= render 'users/lists/vue/components/mini_bib.js' %>
     <%= render 'users/lists/vue/components/note.js' %>
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
+    <%= render 'crossref/crossref_search.js' %>
     var listShowApp = new Vue({
       data: {
         signedIn: false,

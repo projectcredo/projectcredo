@@ -33,7 +33,7 @@
           <% end %>
       </div>
       <div class="quick-add">
-        <%= render 'crossref/search', list: @list %>
+        <crossref-search :user-can-edit="userCanEdit"></crossref-search>
         <%= render 'lists/add_reference', list: @list %>
       </div>
       <reference-list
@@ -67,5 +67,5 @@
       </div>
     </div>
   </div>
-  <%= render 'users/lists/vue/reference_list', list: @list %>
+  <%= render 'users/lists/vue/show_list_app', list: @list %>
 </div>

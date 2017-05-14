@@ -1,0 +1,33 @@
+<script type="text/x-template" id="crossref-search">
+  <div>
+    <strong>Quick Add</strong>
+    <div class="input-group input-group-sm crossref">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+      <input
+        class="form-control"
+        v-bind:placeholder="placeholder"
+        v-bind:disabled="!userCanEdit"
+        v-model="query"
+        v-on:keydown.esc="clearSearch"
+        v-on:keyup="getResults"
+      >
+      <%= form_for list.references.build, html: {class: 'hidden', 'ref' => "form"} do |f| %>
+        <%= f.hidden_field :list_id, value: list.id %>
+        <%= f.fields_for :locator do |l| %>
+          <%= l.text_field :type, value: 'doi' %>
+          <%= l.text_field :id, 'v-bind:value' => 'doi | stripUrl' %>
+        <% end %>
+      <% end %>
+    </div>
+    <ul class="list-group autocomplete" v-if="this.results.length">
+      <li
+        class="list-group-item"
+        v-for="result in results"
+        v-on:click="selectResult(result)"
+        v-html="result.fullCitation"
+      >
+      </li>
+    </ul>
+  </div>
+</script>
+
