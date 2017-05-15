@@ -1,7 +1,8 @@
 <% content_for(:page_app) do %>
   <%= render 'votes/vote_template' %>
   <%= render 'references/mini_bib' %>
-  <%= render 'users/lists/notes_highlights' %>
+  <%= render 'users/lists/note' %>
+  <%= render 'users/lists/notes' %>
   <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <%= render 'users/lists/reference_list' %>
@@ -11,6 +12,7 @@
     <%= render 'users/lists/vue/components/abstract.js' %>
     <%= render 'users/lists/vue/components/mini_bib.js' %>
     <%= render 'users/lists/vue/components/note.js' %>
+    <%= render 'users/lists/vue/components/notes.js' %>
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
     <%= render 'crossref/crossref_search.js' %>
@@ -21,6 +23,13 @@
         currentUser: '',
         userCanEdit: false,
         allReferences: []
+      },
+      computed: {
+        notes: function() {
+          var notes = this.allReferences.map(function(r) {return r.notes;});
+          notes = [].concat.apply([], notes)
+          return notes
+        }
       }
     });
     listShowApp.signedIn = <%= user_signed_in? %>;
