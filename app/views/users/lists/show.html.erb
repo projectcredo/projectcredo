@@ -34,7 +34,7 @@
       </div>
       <div class="quick-add">
         <crossref-search :user-can-edit="userCanEdit"></crossref-search>
-        <%= render 'lists/add_reference', list: @list %>
+        <add-by-locator></add-by-locator>
       </div>
       <reference-list
         :signed-in="signedIn"

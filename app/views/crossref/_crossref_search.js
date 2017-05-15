@@ -1,4 +1,4 @@
-Vue.component('crossref-search', {
+var crossrefSearch = Vue.component('crossref-search', {
   template: '#crossref-search',
   props: ['userCanEdit'],
   data: function() {
@@ -18,25 +18,26 @@ Vue.component('crossref-search', {
     getResults: debounce(
       function() {
         if (this.query === '') { return this.results = [] }
-
+        self = this
         $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
           if (data.length > 0) {
-            searchApp.results = data;
+            self.results = data;
           } else {
-            searchApp.results = [{fullCitation: 'No results found.', doi: ''}];
+            self.results = [{fullCitation: 'No results found.', doi: ''}];
           };
         });
       },
       200
     ),
     selectResult: function(result) {
+      self = this
       this.doi = result.doi;
       this.submitted = true;
       this.searchDisabled = true;
       this.placeholder = result.fullCitation;
       this.clearSearch();
       // This is to give Vue time to update the doi above. It doesn't need much.
-      window.setTimeout(function() { searchApp.$refs.form.submit() }, 50);
+      window.setTimeout(function() { self.$refs.form.submit() }, 50);
     }
   },
   filters: {
