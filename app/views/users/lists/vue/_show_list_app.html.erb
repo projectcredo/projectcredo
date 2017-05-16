@@ -20,9 +20,58 @@
         signedIn: false,
         currentUser: '',
         userCanEdit: false,
+        filterKey: '',
+        sortKey:'',
+        sortOrders: {'age': 1, 'votes': -1},
         allReferences: []
       },
+      mounted: function() {
+        this.allReferences.forEach(function(reference) {
+          Vue.set(reference, 'abstract_form', reference.paper.abstract)
+          Vue.set(reference, 'note_form', '')
+          reference.notes.forEach(function(note) {
+            Vue.set(note, 'editNote', false)
+            Vue.set(note, 'edit_form', note.content)
+          })
+        })
+      },
       computed: {
+        filteredData: function () {
+          var sortKey = this.sortKey
+          var filterKey = this.filterKey
+          var order = this.sortOrders[sortKey]
+          var data = this.allReferences
+          var fuseOptions = {
+            tokenize: true,
+            shouldSort: true,
+            threshold: 0.4,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+              "paper.title",
+              "paper.authors.full_name",
+              "paper.tag_list",
+              "paper.abstract"
+            ]
+          };
+          if(filterKey) {
+            var fuse = new Fuse(data, fuseOptions);
+            data = fuse.search(this.filterKey);
+          }
+          if (sortKey) {
+            data = data.slice().sort(function (a, b) {
+              if(sortKey == 'age'){
+                a = a.paper['published_at']
+                b = b.paper['published_at']
+              } else {
+                a = a[sortKey]
+                b = b[sortKey]
+              }
+              return (a === b ? 0 : a > b ? 1 : -1) * order
+            })
+          }
+          return data
+        },
         notes: function() {
           var self = this
           var notes = this.allReferences.map(function(r) {
@@ -34,6 +83,15 @@
           });
           notes = [].concat.apply([], notes)
           return notes
+        }
+      },
+      methods: {
+        addToFilter: function(add) {
+          if(this.filterKey) {
+              this.filterKey += ' ' + add
+          } else {
+              this.filterKey = add
+          }
         }
       }
     });

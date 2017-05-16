@@ -12,13 +12,24 @@
               <a class="tag"><%= tag %></a>
             <% end %>
           </div>
+          <%= wrap_on_line_breaks @list.description %>
         <% end %>
       </div>
     </div>
 
+    <div class="row list-filter">
+      <div class="col-xs-6">
+        <input
+          class="pull-right form-control"
+          v-model="filterKey"
+          placeholder="Search this list for..."
+        ></input>
+      </div>
+    </div>
+
     <div class="list-section">
-      <div class="list-section-h2">Description</div>
-      <%= wrap_on_line_breaks @list.description %>
+      <div class="list-section-h2">Summaries</div>
+      Comming Soon
     </div>
 
     <div class="list-section">
@@ -51,7 +62,11 @@
         :signed-in="signedIn"
         :current-user="currentUser"
         :user-can-edit="userCanEdit"
-        :all-references="allReferences"
+        :filtered-data="filteredData"
+        :filter-key="filterKey"
+        :sort-key="sortKey"
+        :sort-orders="sortOrders"
+        v-on:filter="addToFilter($event)"
       ></reference-list>
     </div>
   </div>

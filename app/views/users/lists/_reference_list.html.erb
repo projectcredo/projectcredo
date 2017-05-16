@@ -13,15 +13,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-offset-6 col-xs-6">
-        <input
-          class="pull-right form-control"
-          v-model="filterKey"
-          placeholder="Search this list for..."
-        ></input>
-      </div>
-    </div>
     <table class="table">
       <thead>
         <tr>
@@ -41,7 +32,6 @@
           is="reference-row"
           v-for="(reference,index) in filteredData"
           v-on:selected="selectReference(index)"
-          v-on:filter="addToFilter($event)"
           :index="index"
           :r="reference"
           :signed-in="signedIn"

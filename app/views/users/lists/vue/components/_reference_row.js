@@ -15,7 +15,7 @@ Vue.component("reference-row", {
   },
   methods:{
     filter: function(add) {
-      this.$emit('filter', add)
+      this.$parent.$emit('filter', add)
     }
   },
   template: '#reference-row'

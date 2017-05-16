@@ -1,5 +1,5 @@
 Vue.component("reference-list", {
-  props: ["signedIn", "currentUser", "userCanEdit", "allReferences"],
+  props: ["signedIn", "currentUser", "userCanEdit", "filteredData", "filterKey","sortKey","sortOrders"],
   template: '#reference-list',
   data: function() {
     return {
@@ -10,10 +10,7 @@ Vue.component("reference-list", {
       hasAbstract: false,
       editAbstract: false,
       showTagForm: false,
-      newTag: '',
-      filterKey: '',
-      sortKey:'',
-      sortOrders: {'age': 1, 'votes': -1},
+      newTag: ''
     }
   },
   computed: {
@@ -25,65 +22,12 @@ Vue.component("reference-list", {
     },
     abstractImported: function() {
       return !this.selectedRef.paper.abstract_editable && this.hasAbstract
-    },
-    filteredData: function () {
-      var sortKey = this.sortKey
-      var filterKey = this.filterKey
-      var order = this.sortOrders[sortKey]
-      var data = this.allReferences
-      var fuseOptions = {
-        tokenize: true,
-        shouldSort: true,
-        threshold: 0.4,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys: [
-          "paper.title",
-          "paper.authors.full_name",
-          "paper.tag_list",
-          "paper.abstract"
-        ]
-      };
-      if(filterKey) {
-        var fuse = new Fuse(data, fuseOptions);
-        data = fuse.search(this.filterKey);
-      }
-      if (sortKey) {
-        data = data.slice().sort(function (a, b) {
-          if(sortKey == 'age'){
-            a = a.paper['published_at']
-            b = b.paper['published_at']
-          } else {
-            a = a[sortKey]
-            b = b[sortKey]
-          }
-          return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
-      }
-      return data
     }
-  },
-  mounted: function() {
-    this.allReferences.forEach(function(reference) {
-      Vue.set(reference, 'abstract_form', reference.paper.abstract)
-      Vue.set(reference, 'note_form', '')
-      reference.notes.forEach(function(note) {
-        Vue.set(note, 'editNote', false)
-        Vue.set(note, 'edit_form', note.content)
-      })
-    })
   },
   methods: {
     sortBy: function (key) {
       this.sortKey = key
       this.sortOrders[key] = this.sortOrders[key] * -1
-    },
-    addToFilter: function(add) {
-      if(this.filterKey) {
-          this.filterKey += ' ' + add
-      } else {
-          this.filterKey = add
-      }
     },
     selectReference: function(index) {
       this.referenceIndexInModal = index;
