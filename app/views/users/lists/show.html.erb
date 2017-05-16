@@ -23,9 +23,20 @@
 
     <div class="list-section">
       <div class="list-section-h2">Notes and Highlights</div>
-
+      <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
+      <table class="notes-table">
+        <tbody>
+          <tr v-for="n in notes" class="note-row">
+            <td class="note-vote">
+              <vote :voteable="n.note" :signed-in="signedIn"></vote>
+            </td>
+            <td class="note-content">
+              <note :note="n.note"><span class="text-capitalize"slot="citation"> · <a>{{n.citation}}</a></span></note>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
     <div class="list-section">
       <div class="list-section-h2">
           <% if @list.references.count > 0 %>

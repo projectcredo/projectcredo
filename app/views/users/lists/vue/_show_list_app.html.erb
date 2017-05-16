@@ -2,7 +2,6 @@
   <%= render 'votes/vote_template' %>
   <%= render 'references/mini_bib' %>
   <%= render 'users/lists/note' %>
-  <%= render 'users/lists/notes' %>
   <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <%= render 'users/lists/reference_list' %>
@@ -12,7 +11,6 @@
     <%= render 'users/lists/vue/components/abstract.js' %>
     <%= render 'users/lists/vue/components/mini_bib.js' %>
     <%= render 'users/lists/vue/components/note.js' %>
-    <%= render 'users/lists/vue/components/notes.js' %>
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
     <%= render 'crossref/crossref_search.js' %>
@@ -26,7 +24,14 @@
       },
       computed: {
         notes: function() {
-          var notes = this.allReferences.map(function(r) {return r.notes;});
+          var self = this
+          var notes = this.allReferences.map(function(r) {
+            var citation = self.$options.filters.cite(r);
+            var notes = r.notes.map(function(n){
+              return {'note': n, 'citation': citation}
+            })
+            return notes
+          });
           notes = [].concat.apply([], notes)
           return notes
         }

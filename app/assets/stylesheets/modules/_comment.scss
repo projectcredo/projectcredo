@@ -44,6 +44,9 @@
     }
   }
 }
+.notes{
+  @extend .list-unstyled;
+}
 
 .note {
   font-size: 14px;
@@ -58,5 +61,22 @@
   > button {
     margin-right: 8px;
     @extend .btn-link;
+  }
+}
+
+table.notes-table {
+  .note-row {
+    height: 70px;
+    td.note-content{
+      padding: 20px;
+    }
+  }
+
+  td.note-vote {
+    valign: top;
+  }
+  .vote.comment {
+    width: 80px;
+    font-size: 18px;
   }
 }

@@ -1,15 +1,5 @@
 <script type="text/x-template" id="note">
-  <span>
-    <span class="newlines">{{note.content, 250, truncateNote | truncate}}</span>
-    <button
-      class="btn-link"
-      v-if="note.content.length > 250"
-      @click.stop="truncateNote = !truncateNote"
-    >
-      {{truncateNote ? 'see more' : 'see less'}}
-    </button>
-    <div class="note-details">
-      {{note.user}} · {{note.time_ago}}
-    </div>
-  </span>
+  <div v-for="note in notes">
+    <note :note="note"></note>
+  </div>
 </script>
