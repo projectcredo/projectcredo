@@ -25,9 +25,8 @@ Vue.component("reference-list", {
     }
   },
   methods: {
-    sortBy: function (key) {
-      this.sortKey = key
-      this.sortOrders[key] = this.sortOrders[key] * -1
+    sort: function (key) {
+      this.$emit('sort', key)
     },
     selectReference: function(index) {
       this.referenceIndexInModal = index;
