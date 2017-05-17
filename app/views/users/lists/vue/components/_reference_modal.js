@@ -25,7 +25,7 @@ Vue.component("reference-modal", {
   },
   computed: {
     hasAbstract: function() {
-      return this.selectedRef.paper.abstract != null;
+      return this.selectedRef.paper.abstract != undefined;
     },
     editsAllowed: function() {
       return this.signedIn && this.userCanEdit
