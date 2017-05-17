@@ -19,6 +19,7 @@
     <%= render 'crossref/add_by_locator.js' %>
     var listShowApp = new Vue({
       data: {
+        list: {},
         signedIn: false,
         currentUser: '',
         userCanEdit: false,
@@ -81,7 +82,7 @@
           var notes = this.filteredData.map(function(r,index) {
             var citation = self.$options.filters.cite(r);
             var notes = r.notes.map(function(n){
-              return {'note': n, 'citation': citation}
+              return {'note': n, 'citation': citation, 'rIndex': index}
             })
             return notes
           });
@@ -107,6 +108,7 @@
         }
       }
     });
+    listShowApp.list = <%= raw render('users/lists/list.json', list: @list) %>
     listShowApp.signedIn = <%= user_signed_in? %>;
     listShowApp.currentUser = '<%= current_user ? current_user.username : '' %>';
     listShowApp.userCanEdit = <%= current_user_can_edit?(list) || list.accepts_public_contributions? %>;

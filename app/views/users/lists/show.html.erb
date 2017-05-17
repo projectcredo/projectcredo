@@ -44,7 +44,13 @@
             <td class="note-content">
               <note :note="n.note">
                 <span class="text-capitalize"slot="citation">
-                   · <a @click="selectReference(n.r-index)">{{n.citation}}</a>
+                   ·
+                  <a
+                    data-toggle="modal"
+                    data-target="#referenceModal"
+                    @click="selectReference(n.rIndex)"
+                  >{{n.citation}}
+                  </a>
                 </span>
               </note>
             </td>
