@@ -5,6 +5,7 @@
   <%= render 'truncate_abstract' %>
   <%= render 'users/lists/reference_row' %>
   <%= render 'users/lists/reference_list' %>
+  <%= render 'users/lists/modal/template_reference_modal' %>
   <%= render 'crossref/crossref_search', list: @list %>
   <%= render 'crossref/add_by_locator', list: @list %>
   <script>
@@ -13,6 +14,7 @@
     <%= render 'users/lists/vue/components/note.js' %>
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
+    <%= render 'users/lists/vue/components/reference_modal.js' %>
     <%= render 'crossref/crossref_search.js' %>
     <%= render 'crossref/add_by_locator.js' %>
     var listShowApp = new Vue({
@@ -20,6 +22,8 @@
         signedIn: false,
         currentUser: '',
         userCanEdit: false,
+        referenceIndexInModal: 0,
+        selectedRef: {},
         filterKey: '',
         sortKey:'',
         sortOrders: {'age': 1, 'votes': -1},
@@ -86,6 +90,10 @@
         }
       },
       methods: {
+        selectReference: function(index) {
+          this.referenceIndexInModal = index;
+          this.selectedRef = this.filteredData[index];
+        },
         addToFilter: function(add) {
           if(this.filterKey) {
               this.filterKey += ' ' + add

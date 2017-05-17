@@ -17,6 +17,16 @@
       </div>
     </div>
 
+    <reference-modal
+      :signed-in="signedIn"
+      :current-user="currentUser"
+      :user-can-edit="userCanEdit"
+      :selected-ref="selectedRef"
+      :reference-index-in-modal="referenceIndexInModal"
+      :ref-count="filteredData.length"
+      v-on:select-ref="selectReference($event)"
+    ></reference-modal>
+
     <div class="row list-filter">
       <div class="col-xs-6">
         <input
@@ -68,6 +78,7 @@
         :sort-orders="sortOrders"
         v-on:sort="sortBy($event)"
         v-on:filter="addToFilter($event)"
+        v-on:select-ref="selectReference($event)"
       ></reference-list>
     </div>
   </div>

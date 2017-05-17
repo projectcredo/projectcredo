@@ -16,6 +16,9 @@ Vue.component("reference-row", {
   methods:{
     filter: function(add) {
       this.$parent.$emit('filter', add)
+    },
+    selectReference: function(index) {
+      this.$parent.$emit('select-ref', index)
     }
   },
   template: '#reference-row'
