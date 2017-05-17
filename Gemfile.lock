@@ -152,6 +152,8 @@ GEM
       nokogiri (~> 1.6.0)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_autolink (1.1.6)
+      rails (> 3.1)
     rails_real_favicon (0.0.6)
       json (>= 1.7, < 3)
       rails (>= 3.1)
@@ -240,6 +242,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.0)
   rails (>= 5.0.0, < 5.1)
+  rails_autolink
   rails_real_favicon
   rake
   sass-rails (~> 5.0)
@@ -253,4 +256,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.7
+   1.14.6

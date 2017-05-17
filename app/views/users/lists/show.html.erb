@@ -12,7 +12,7 @@
               <a class="tag"><%= tag %></a>
             <% end %>
           </div>
-          <%= wrap_on_line_breaks @list.description %>
+          <div v-html="list.description,  | truncate"></div>
         <% end %>
       </div>
     </div>

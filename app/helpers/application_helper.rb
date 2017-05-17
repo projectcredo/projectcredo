@@ -1,6 +1,8 @@
 module ApplicationHelper
   def wrap_on_line_breaks text
-    text.to_s.split(/(?:\n\r?|\r\n?)/).map {|s| autolink "<p>#{h s}</p>"}.join.html_safe
+    text.to_s.split(/(?:\n\r?|\r\n?)/).map do |s|
+      auto_link("<p>#{h s}</p>", :html => { :target => '_blank' })
+    end.join.html_safe
   end
 
   def autolink text
