@@ -82,8 +82,12 @@ Vue.component("reference-modal", {
       })
     },
     addTag: function() {
+      var self = this
       if(this.newTag != '') {
-        this.selectedRef.paper.tag_list.push(this.newTag)
+        var tags = this.newTag.split(",")
+        tags.forEach(function(t){
+          self.selectedRef.paper.tag_list.push(t.trim())
+        })
         this.newTag = ''
         this.submitTags()
       }

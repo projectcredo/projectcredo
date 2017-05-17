@@ -27,16 +27,6 @@
       v-on:select-ref="selectReference($event)"
     ></reference-modal>
 
-    <div class="row list-filter">
-      <div class="col-xs-6">
-        <input
-          class="pull-right form-control"
-          v-model="filterKey"
-          placeholder="Search this list for..."
-        ></input>
-      </div>
-    </div>
-
     <div class="list-section">
       <div class="list-section-h2">Summaries</div>
       Comming Soon
@@ -52,7 +42,11 @@
               <vote :voteable="n.note" :signed-in="signedIn"></vote>
             </td>
             <td class="note-content">
-              <note :note="n.note"><span class="text-capitalize"slot="citation"> · <a>{{n.citation}}</a></span></note>
+              <note :note="n.note">
+                <span class="text-capitalize"slot="citation">
+                   · <a @click="selectReference(n.r-index)">{{n.citation}}</a>
+                </span>
+              </note>
             </td>
           </tr>
         </tbody>
@@ -89,6 +83,16 @@
           <%= link_to 'Edit this list', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
        <% end %>
       <% end %>
+    </div>
+
+    <div class="row list-filter list-section">
+      <div class="col-xs-12">
+        <input
+          class="pull-right form-control"
+          v-model="filterKey"
+          placeholder="Search this list for..."
+        ></input>
+      </div>
     </div>
 
     <div class="list-section">

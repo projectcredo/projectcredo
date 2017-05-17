@@ -78,7 +78,7 @@
         },
         notes: function() {
           var self = this
-          var notes = this.allReferences.map(function(r) {
+          var notes = this.filteredData.map(function(r,index) {
             var citation = self.$options.filters.cite(r);
             var notes = r.notes.map(function(n){
               return {'note': n, 'citation': citation}
