@@ -12,7 +12,7 @@
               <a class="tag"><%= tag %></a>
             <% end %>
           </div>
-          <div v-html="list.description,  | truncate"></div>
+          <div v-html="list.description, 250 | truncate"></div>
         <% end %>
       </div>
     </div>
