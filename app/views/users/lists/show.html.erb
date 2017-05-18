@@ -12,7 +12,15 @@
               <a class="tag"><%= tag %></a>
             <% end %>
           </div>
-          <div v-html="list.description, 250 | truncate"></div>
+          <div v-html="displayedListDesc"></div>
+          <button
+            class="btn-link"
+            v-if="list.description.length > 350"
+            @click.stop="listDescTruncated = !listDescTruncated"
+          >
+            {{listDescTruncated ? 'see more' : 'see less'}}
+          </button>
+
         <% end %>
       </div>
     </div>

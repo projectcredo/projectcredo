@@ -28,6 +28,7 @@
         filterKey: '',
         sortKey:'',
         sortOrders: {'age': 1, 'votes': -1},
+        listDescTruncated: true,
         allReferences: []
       },
       mounted: function() {
@@ -41,6 +42,9 @@
         })
       },
       computed: {
+        displayedListDesc: function() {
+          return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
+        },
         filteredData: function () {
           var sortKey = this.sortKey
           var filterKey = this.filterKey
