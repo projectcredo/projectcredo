@@ -62,7 +62,7 @@ Vue.filter('truncate', function(string, length, truncate) {
       s = s.substring(0,string.lastIndexOf("<a target"));
     }
     return s  + '...'
-  } else{
+  } else {
     return string
   }
 });
