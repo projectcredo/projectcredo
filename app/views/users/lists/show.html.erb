@@ -45,7 +45,7 @@
       <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
       <table class="notes-table">
         <tbody>
-          <tr v-for="n in notes" class="note-row">
+          <tr v-for="n in notes.slice(0,notesShown)" class="note-row">
             <td class="note-vote">
               <vote :voteable="n.note" :signed-in="signedIn"></vote>
             </td>
@@ -65,6 +65,13 @@
           </tr>
         </tbody>
       </table>
+      <button
+        class="btn-link"
+        v-if="notes.length > 3"
+        @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
+      >
+        {{notesShown == 3 ? 'see more' : 'see less'}}
+      </button>
     </div>
     <div class="list-section">
       <div class="list-section-h2">
