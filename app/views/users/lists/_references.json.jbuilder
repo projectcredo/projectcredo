@@ -1,5 +1,4 @@
 json.array!(references) do |r|
-  json.ignore_nil!
   json.extract! r, :id, :created_at
   json.type r.class.to_s.downcase
   json.votes r.cached_votes_up

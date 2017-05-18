@@ -54,9 +54,15 @@ debounce = function(func, wait, immediate) {
 // List Card Component for List Indexes
 Vue.filter('truncate', function(string, length, truncate) {
   if (typeof truncate === 'undefined') { truncate = 'true'; }
-  if(truncate) {
-    return string.substring(0, length) + (string.length < length ? '' : '...');
-  } else{
+  if(truncate && string.length > length) {
+    var s = string.substring(0, length);
+    var openLinkCount = (s.match("<a target") || []).length;
+    var closeLinkCount = (s.match("</a>") || []).length;
+    if(openLinkCount != closeLinkCount) {
+      s = s.substring(0,string.lastIndexOf("<a target"));
+    }
+    return s  + '...'
+  } else {
     return string
   }
 });

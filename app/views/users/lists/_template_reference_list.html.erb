@@ -1,0 +1,28 @@
+<script type="text/x-template" id="reference-list">
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th width="60" @click="sort('votes')" :class="{ active: sortKey == 'votes' }">
+            Votes
+            <span class="table-sort" :class="sortOrders['votes'] > 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th width="50" @click="sort('age')" :class="{ active: sortKey == 'age' }">
+            Age
+            <span class="table-sort" :class="sortOrders['age'] < 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th>Paper</th>
+          <th width="50"></th>
+        </tr>
+      </thead>
+      <tbody
+          is="reference-row"
+          v-for="(reference,index) in filteredData"
+          :index="index"
+          :r="reference"
+          :signed-in="signedIn"
+          >
+      </tbody>
+    </table>
+  </div>
+</script>

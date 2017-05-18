@@ -143,3 +143,14 @@ button.comment-vote.active {
   }
   @extend .btn, .btn-primary, .btn-lg, .pull-right;
 }
+
+.quick-add-toggle{
+  margin: 5px 0 5px 0;
+
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e142";
+    vertical-align: middle;
+  }
+  @extend .btn, .btn-link;
+}

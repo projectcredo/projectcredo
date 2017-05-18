@@ -177,6 +177,10 @@
 .list-show {
   margin-bottom: 50px;
 
+  .list-filter {
+    margin-bottom: 10px;
+  }
+
   .list-section {
     margin-bottom: 30px;
 
@@ -223,7 +227,10 @@
       }
 
       .add-reference {
-        height: 20px;
+        height: 50px;
+        .locator-fields{
+          padding: 0;
+        }
       }
     }
 

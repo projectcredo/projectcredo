@@ -1,6 +1,6 @@
 <%= render 'list_head', list: @list %>
 
-<div class="row list-show">
+<div class="row list-show" id="list-show">
   <div class="col-md-8">
     <div class="list-section">
       <div class="list-section-h1">
@@ -13,19 +13,68 @@
             <% end %>
           </div>
         <% end %>
+          <div v-html="displayedListDesc"></div>
+          <button
+            class="btn-link"
+            v-if="list.description.length > 350"
+            @click.stop="listDescTruncated = !listDescTruncated"
+          >
+            {{listDescTruncated ? 'see more' : 'see less'}}
+          </button>
       </div>
     </div>
 
+    <reference-modal
+      :signed-in="signedIn"
+      :current-user="currentUser"
+      :edits-allowed="editsAllowed"
+      :selected-ref="selectedRef"
+      :reference-index-in-modal="referenceIndexInModal"
+      :ref-count="filteredData.length"
+      v-on:select-ref="selectReference($event)"
+    ></reference-modal>
+
     <div class="list-section">
-      <div class="list-section-h2">Description</div>
-      <%= wrap_on_line_breaks @list.description %>
+      <div class="list-section-h2">Summaries</div>
+      Comming Soon
     </div>
 
     <div class="list-section">
       <div class="list-section-h2">Notes and Highlights</div>
-      Coming Soon
+      <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
+      <table class="notes-table">
+        <tbody>
+          <tr v-for="n in notes.slice(0,notesShown)" class="note-row">
+            <td class="note-vote">
+              <vote :voteable="n.note" :signed-in="signedIn"></vote>
+            </td>
+            <td class="note-content">
+              <note :note="n.note" class="note">
+                <span class="text-capitalize"slot="citation">
+                   ·
+                  <a
+                    data-toggle="modal"
+                    data-target="#referenceModal"
+                    @click="selectReference(n.rIndex)"
+                  >{{n.citation}}
+                  </a>
+                </span>
+              </note>
+            </td>
+          </tr>
+          <tr class="note-row" v-if="notes.length > 3">
+            <td class="text-center">
+              <button
+                class="btn-link"
+                @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
+              >
+                {{notesShown == 3 ? 'see more' : 'see less'}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
     <div class="list-section">
       <div class="list-section-h2">
           <% if @list.references.count > 0 %>
@@ -33,10 +82,24 @@
           <% end %>
       </div>
       <div class="quick-add">
-        <%= render 'crossref/search', list: @list %>
-        <%= render 'lists/add_reference', list: @list %>
+        <button class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
+          Quick Add Paper
+        </button>
+        <div v-show="showQuickAdd">
+          <crossref-search :edits-allowed="editsAllowed"></crossref-search>
+          <add-by-locator></add-by-locator>
+        </div>
       </div>
-      <%= render 'users/lists/reference_list', list: @list %>
+      <reference-list
+        :signed-in="signedIn"
+        :filtered-data="filteredData"
+        :filter-key="filterKey"
+        :sort-key="sortKey"
+        :sort-orders="sortOrders"
+        v-on:sort="sortBy($event)"
+        v-on:filter="addToFilter($event)"
+        v-on:select-ref="selectReference($event)"
+      ></reference-list>
     </div>
   </div>
   <div class="col-md-4">
@@ -46,6 +109,16 @@
           <%= link_to 'Edit this list', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
        <% end %>
       <% end %>
+    </div>
+
+    <div class="row list-filter list-section">
+      <div class="col-xs-12">
+        <input
+          class="pull-right form-control"
+          v-model="filterKey"
+          placeholder="Search this list for..."
+        ></input>
+      </div>
     </div>
 
     <div class="list-section">
@@ -62,5 +135,5 @@
       </div>
     </div>
   </div>
-
+  <%= render 'users/lists/vue/show_list_app', list: @list %>
 </div>
