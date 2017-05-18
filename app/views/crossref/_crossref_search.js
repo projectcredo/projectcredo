@@ -1,6 +1,6 @@
 var crossrefSearch = Vue.component('crossref-search', {
   template: '#crossref-search',
-  props: ['userCanEdit'],
+  props: ['editsAllowed'],
   data: function() {
     return {
       query: '',

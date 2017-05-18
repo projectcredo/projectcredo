@@ -27,7 +27,7 @@
     <reference-modal
       :signed-in="signedIn"
       :current-user="currentUser"
-      :user-can-edit="userCanEdit"
+      :edits-allowed="editsAllowed"
       :selected-ref="selectedRef"
       :reference-index-in-modal="referenceIndexInModal"
       :ref-count="filteredData.length"
@@ -86,14 +86,11 @@
           Quick Add Paper
         </button>
         <div v-show="showQuickAdd">
-          <crossref-search :user-can-edit="userCanEdit"></crossref-search>
+          <crossref-search :edits-allowed="editsAllowed"></crossref-search>
           <add-by-locator></add-by-locator>
         </div>
       </div>
       <reference-list
-        :signed-in="signedIn"
-        :current-user="currentUser"
-        :user-can-edit="userCanEdit"
         :filtered-data="filteredData"
         :filter-key="filterKey"
         :sort-key="sortKey"

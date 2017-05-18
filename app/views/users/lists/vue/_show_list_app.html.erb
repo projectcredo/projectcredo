@@ -47,6 +47,9 @@
         displayedListDesc: function() {
           return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
         },
+        editsAllowed: function() {
+          return this.signedIn && this.userCanEdit
+        },
         filteredData: function () {
           var sortKey = this.sortKey
           var filterKey = this.filterKey
