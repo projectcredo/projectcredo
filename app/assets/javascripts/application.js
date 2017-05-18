@@ -57,7 +57,7 @@ Vue.filter('truncate', function(string, length, truncate) {
   if(truncate && string.length > length) {
     var s = string.substring(0, length);
     var openLinkCount = (s.match("<a target") || []).length;
-    var closeLinkCount = (s.match("<a>") || []).length;
+    var closeLinkCount = (s.match("</a>") || []).length;
     if(openLinkCount != closeLinkCount) {
       s = s.substring(0,string.lastIndexOf("<a target"));
     }
