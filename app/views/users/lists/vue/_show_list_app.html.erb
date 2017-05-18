@@ -91,6 +91,13 @@
             return notes
           });
           notes = [].concat.apply([], notes)
+          notes = notes.sort(function(a,b) {
+            if(b.note.votes < a.note.votes) return -1;
+            if(b.note.votes > a.note.votes) return 1;
+            if(b.note.created_at < a.note.created_at) return -1;
+            if(b.note.created_at > a.note.created_at) return 1;
+            return 0;
+          })
           return notes
         }
       },
