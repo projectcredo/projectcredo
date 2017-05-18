@@ -63,11 +63,10 @@
               </note>
             </td>
           </tr>
-          <tr class="note-row">
+          <tr class="note-row" v-if="notes.length > 3">
             <td class="text-center">
               <button
                 class="btn-link"
-                v-if="notes.length > 3"
                 @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
               >
                 {{notesShown == 3 ? 'see more' : 'see less'}}
