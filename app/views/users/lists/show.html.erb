@@ -50,7 +50,7 @@
               <vote :voteable="n.note" :signed-in="signedIn"></vote>
             </td>
             <td class="note-content">
-              <note :note="n.note">
+              <note :note="n.note" class="note">
                 <span class="text-capitalize"slot="citation">
                    ·
                   <a
@@ -63,15 +63,19 @@
               </note>
             </td>
           </tr>
+          <tr class="note-row">
+            <td class="text-center">
+              <button
+                class="btn-link"
+                v-if="notes.length > 3"
+                @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
+              >
+                {{notesShown == 3 ? 'see more' : 'see less'}}
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
-      <button
-        class="btn-link"
-        v-if="notes.length > 3"
-        @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
-      >
-        {{notesShown == 3 ? 'see more' : 'see less'}}
-      </button>
     </div>
     <div class="list-section">
       <div class="list-section-h2">
@@ -80,8 +84,13 @@
           <% end %>
       </div>
       <div class="quick-add">
-        <crossref-search :user-can-edit="userCanEdit"></crossref-search>
-        <add-by-locator></add-by-locator>
+        <button class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
+          Quick Add Paper
+        </button>
+        <div v-show="showQuickAdd">
+          <crossref-search :user-can-edit="userCanEdit"></crossref-search>
+          <add-by-locator></add-by-locator>
+        </div>
       </div>
       <reference-list
         :signed-in="signedIn"
