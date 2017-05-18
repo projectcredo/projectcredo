@@ -109,10 +109,12 @@
           this.selectedRef = this.filteredData[index];
         },
         addToFilter: function(add) {
-          if(this.filterKey) {
-              this.filterKey += ' ' + add
-          } else {
-              this.filterKey = add
+          if(!this.filterKey.match(add)) {
+            if(this.filterKey) {
+                this.filterKey += ' ' + add
+            } else {
+                this.filterKey = add
+            }
           }
         },
         sortBy: function (key) {
