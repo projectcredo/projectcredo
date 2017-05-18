@@ -12,6 +12,7 @@
               <a class="tag"><%= tag %></a>
             <% end %>
           </div>
+        <% end %>
           <div v-html="displayedListDesc"></div>
           <button
             class="btn-link"
@@ -20,8 +21,6 @@
           >
             {{listDescTruncated ? 'see more' : 'see less'}}
           </button>
-
-        <% end %>
       </div>
     </div>
 
