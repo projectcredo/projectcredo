@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170425064824) do
+ActiveRecord::Schema.define(version: 20170523180234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,16 @@ ActiveRecord::Schema.define(version: 20170425064824) do
     t.index ["cached_votes_up", "created_at"], name: "index_references_on_cached_votes_up_and_created_at", order: {"cached_votes_up"=>:desc, "created_at"=>:desc}, using: :btree
     t.index ["list_id", "paper_id"], name: "index_references_on_list_id_and_paper_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_references_on_user_id", using: :btree
+  end
+
+  create_table "summaries", force: :cascade do |t|
+    t.integer  "user_id",         null: false
+    t.integer  "list_id",         null: false
+    t.text     "content",         null: false
+    t.integer  "evidence_rating", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["list_id", "user_id", "evidence_rating"], name: "index_summaries_on_list_id_and_user_id_and_evidence_rating", using: :btree
   end
 
   create_table "taggings", force: :cascade do |t|

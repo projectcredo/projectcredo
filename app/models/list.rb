@@ -47,6 +47,7 @@ class List < ApplicationRecord
   accepts_nested_attributes_for :list_memberships
   has_many :papers, through: :references
   has_many :references, dependent: :destroy
+  has_many :summaries, dependent: :destroy
   has_many :members, through: :list_memberships, source: :user do
     def [] role
       where("list_memberships.role = ?", ListMembership.roles.fetch(role))

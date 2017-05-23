@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :list_memberships, dependent: :destroy
   has_many :activies, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :summaries, dependent: :destroy
   has_many :lists, through: :list_memberships do
     # Adds owner id to lists when created through join table
     def add_user_id attributes
