@@ -1,0 +1,30 @@
+<div class="list-show" id="list-show">
+  <div class="list-section">
+    <div class="list-section-h1">
+      <div class= "list-title"><%= @list.name %></div>
+      <%= render 'users/lists/list_details' %>
+    </div>
+  </div>
+
+  <div class="list-section">
+    <%
+      summary = @summary
+      list = @list
+    %>
+    <% url = if summary.persisted? then user_list_summary_path(@list.owner, @list) else user_list_summaries_path(@list.owner, @list) end  %>
+    <%= form_for(summary, url: url) do |f| %>
+      <% if summary.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(summary.errors.count, "error") %> prohibited this summary from being saved:</h2>
+
+          <ul>
+            <% summary.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
+</div>

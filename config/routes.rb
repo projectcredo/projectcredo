@@ -33,7 +33,9 @@ Rails.application.routes.draw do
   resources :activities, only: [:index]
 
   scope ':username' do
-    resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists'
+    resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists' do
+      resources :summaries, except: [:index, :show], controller: 'users/lists/summaries'
+    end
     get ':user_list_id/:id' => 'references#show', as: :user_list_reference
   end
 

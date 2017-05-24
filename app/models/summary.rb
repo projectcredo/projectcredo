@@ -4,8 +4,6 @@ class Summary < ApplicationRecord
   belongs_to :user
   belongs_to :list
 
-  has_many :notifications, dependent: :destroy
-
   validates :user_id, :list_id, :content, :evidence_rating, presence: true
   validates :content, length: { maximum: 2000 }
 
