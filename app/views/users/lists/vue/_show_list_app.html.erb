@@ -31,6 +31,7 @@
         notesShown: 3,
         listDescTruncated: true,
         showQuickAdd: false,
+        summaries:[],
         allReferences: []
       },
       mounted: function() {
@@ -129,6 +130,7 @@
     listShowApp.list = <%= raw render('users/lists/list.json', list: @list) %>
     listShowApp.signedIn = <%= user_signed_in? %>;
     listShowApp.currentUser = '<%= current_user ? current_user.username : '' %>';
+    listShowApp.summaries = <%= raw render('users/lists/list_summaries.json', summaries: @list.summaries) %>;
     listShowApp.userCanEdit = <%= current_user_can_edit?(list) || list.accepts_public_contributions? %>;
     listShowApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>;
     listShowApp.$mount('#list-show');
