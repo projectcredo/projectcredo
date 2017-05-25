@@ -7,7 +7,16 @@ class Users::Lists::SummariesController < ApplicationController
   end
 
   def create
-    Summary.create(summary_params, list: @list, user: current_user)
+    @summary = @list.summaries.build(summary_params)
+    @summary.user = current_user
+
+    respond_to do |format|
+      if @summary.save
+        format.html {redirect_to user_list_path(@list.owner, @list), notice: 'Thank you for creating a summary.'}
+      else
+        format.html { render 'new'}
+      end
+    end
   end
 
   def edit
