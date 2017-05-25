@@ -7,4 +7,11 @@ class Summary < ApplicationRecord
   validates :user_id, :list_id, :content, :evidence_rating, presence: true
   validates :content, length: { maximum: 2000 }
 
+  def evidence_ratings
+    [
+      'incomplete',
+      'mixed',
+      'conclusive'
+    ]
+  end
 end

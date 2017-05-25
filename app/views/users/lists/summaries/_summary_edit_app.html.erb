@@ -1,0 +1,87 @@
+<% content_for(:page_app) do %>
+  <%= render 'votes/template_vote' %>
+  <%= render 'references/template_mini_bib' %>
+  <%= render 'users/lists/template_note' %>
+  <%= render 'users/lists/template_truncate_abstract' %>
+  <%= render 'users/lists/template_reference_row' %>
+  <%= render 'users/lists/template_reference_list' %>
+  <script>
+    <%= render 'users/lists/vue/components/mini_bib.js' %>
+    <%= render 'users/lists/vue/components/note.js' %>
+    <%= render 'users/lists/vue/components/abstract.js' %>
+    <%= render 'users/lists/vue/components/reference_row.js' %>
+    <%= render 'users/lists/vue/components/reference_list.js' %>
+    var summaryFormApp = new Vue({
+      data: {
+        signedIn: false,
+        list: {},
+        selectedRef: {},
+        filterKey: '',
+        sortKey:'',
+        sortOrders: {'age': 1, 'votes': -1},
+        allReferences: []
+      },
+      computed: {
+        filteredData: function () {
+          var sortKey = this.sortKey
+          var filterKey = this.filterKey
+          var order = this.sortOrders[sortKey]
+          var data = this.allReferences
+          var fuseOptions = {
+            tokenize: true,
+            shouldSort: true,
+            threshold: 0.4,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+              "paper.title",
+              "paper.authors.full_name",
+              "paper.tag_list",
+              "paper.abstract"
+            ]
+          };
+          if(filterKey) {
+            var fuse = new Fuse(data, fuseOptions);
+            data = fuse.search(this.filterKey);
+          }
+          if (sortKey) {
+            data = data.slice().sort(function (a, b) {
+              if(sortKey == 'age'){
+                a = a.paper['published_at']
+                b = b.paper['published_at']
+              } else {
+                a = a[sortKey]
+                b = b[sortKey]
+              }
+              return (a === b ? 0 : a > b ? 1 : -1) * order
+            })
+          }
+          return data
+        }
+      },
+      methods: {
+        selectReference: function(index) {
+          this.referenceIndexInModal = index;
+          this.selectedRef = this.filteredData[index];
+        },
+        addToFilter: function(add) {
+          if(!this.filterKey.match(add)) {
+            if(this.filterKey) {
+                this.filterKey += ' ' + add
+            } else {
+                this.filterKey = add
+            }
+          }
+        },
+        sortBy: function (key) {
+          this.sortKey = key;
+          this.sortOrders[key] = this.sortOrders[key] * -1;
+        }
+      }
+    });
+    summaryFormApp.signedIn = <%= user_signed_in? %>;
+    summaryFormApp.list = <%= raw render('users/lists/list.json', list: @list) %>
+    summaryFormApp.allReferences = <%= raw render('users/lists/references.json', references: @list.references) %>;
+    summaryFormApp.$mount('#summary-form');
+  </script>
+<% end %>

@@ -181,6 +181,10 @@
     margin-bottom: 10px;
   }
 
+  .ref-table-filter {
+    @extend .pull-right, .form-control, .input-sm
+  }
+
   .list-section {
     margin-bottom: 30px;
 

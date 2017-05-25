@@ -1,4 +1,4 @@
-<div class="list-show" id="list-show">
+<div class="list-show">
   <div class="list-section">
     <div class="list-section-h1">
       <div class= "list-title"><%= @list.name %></div>
@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="list-section">
+  <div class="list-section" id="summary-form">
     <%
       summary = @summary
       list = @list
@@ -16,7 +16,6 @@
       <% if summary.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(summary.errors.count, "error") %> prohibited this summary from being saved:</h2>
-
           <ul>
             <% summary.errors.full_messages.each do |message| %>
               <li><%= message %></li>
@@ -24,7 +23,46 @@
           </ul>
         </div>
       <% end %>
+      <div class="form-horizontal">
+        <div class="form-group">
+          <%= f.label :evidence_rating, class: "col-md-2 control-label" %>
+          <div class="col-md-4">
+          <%= f.select :evidence_rating, @summary.evidence_ratings, {},{class: 'form-control'}  %>
+          </div>
+          <div class='col-md-6'>
 
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :content, 'Summary', class: "col-md-2 control-label" %>
+          <div class="col-md-8">
+            <textarea class='form-control' placeholder='brrah' rows='12'></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="divider2 col-md-10"></div>
+          </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label">Click paper to add a citation to your summary</label>
+          <div class="col-md-8">
+            <reference-list
+              :signed-in="signedIn"
+              :filtered-data="filteredData"
+              v-model="filterKey"
+              :sort-key="sortKey"
+              :sort-orders="sortOrders"
+              v-on:sort="sortBy($event)"
+              v-on:filter="addToFilter($event)"
+              v-on:select-ref="selectReference($event)"
+            ></reference-list>
+          </div>
+
+          </div>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>
+
+<%= render 'users/lists/summaries/summary_edit_app' %>
