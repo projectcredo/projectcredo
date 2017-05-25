@@ -15,7 +15,7 @@
       data: {
         signedIn: false,
         list: {},
-        selectedRef: {},
+        summary: '',
         filterKey: '',
         sortKey:'',
         sortOrders: {'age': 1, 'votes': -1},
@@ -61,8 +61,7 @@
       },
       methods: {
         selectReference: function(index) {
-          this.referenceIndexInModal = index;
-          this.selectedRef = this.filteredData[index];
+          this.summary += "<r-cite :r-id='"+this.filteredData[index].id+"'></r-cite>";
         },
         addToFilter: function(add) {
           if(!this.filterKey.match(add)) {

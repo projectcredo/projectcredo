@@ -93,7 +93,7 @@
       <reference-list
         :signed-in="signedIn"
         :filtered-data="filteredData"
-        :filter-key="filterKey"
+        v-model="filterKey"
         :sort-key="sortKey"
         :sort-orders="sortOrders"
         v-on:sort="sortBy($event)"

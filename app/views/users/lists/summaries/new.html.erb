@@ -37,7 +37,12 @@
         <div class="form-group">
           <%= f.label :content, 'Summary', class: "col-md-2 control-label" %>
           <div class="col-md-8">
-            <textarea class='form-control' placeholder='brrah' rows='12'></textarea>
+            <textarea
+              class='form-control'
+              placeholder='Help summarize the evidence for this topic.  A good summary begins with a major headline - "Smoking causes lung cancer".  It then provides the major supporting information.  You can cite papers from this list by clicking the paper titles below.  Be brief and concise to help communicate this information.'
+              rows='12'
+              v-model="summary"
+            ></textarea>
           </div>
         </div>
         <div class="row">
