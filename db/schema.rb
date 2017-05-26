@@ -165,12 +165,15 @@ ActiveRecord::Schema.define(version: 20170523180234) do
   end
 
   create_table "summaries", force: :cascade do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "list_id",         null: false
-    t.text     "content",         null: false
-    t.integer  "evidence_rating", null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "user_id",                     null: false
+    t.integer  "list_id",                     null: false
+    t.text     "content",                     null: false
+    t.integer  "evidence_rating",             null: false
+    t.integer  "comments",        default: 0
+    t.integer  "cached_votes_up", default: 0
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["cached_votes_up"], name: "index_summaries_on_cached_votes_up", using: :btree
     t.index ["list_id", "user_id", "evidence_rating"], name: "index_summaries_on_list_id_and_user_id_and_evidence_rating", using: :btree
   end
 

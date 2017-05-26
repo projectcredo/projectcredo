@@ -79,8 +79,8 @@
       }
     });
     summaryFormApp.signedIn = <%= user_signed_in? %>;
-    summaryFormApp.list = <%= raw render('users/lists/list.json', list: @list) %>;
-    summaryFormApp.allReferences = <%= raw render('users/lists/references.json', references: @list.references) %>;
+    summaryFormApp.list = <%= raw render('users/lists/jbuilders/list.json', list: @list) %>;
+    summaryFormApp.allReferences = <%= raw render('users/lists/jbuilders/references.json', references: @list.references) %>;
     summaryFormApp.$mount('#summary-form');
   </script>
 <% end %>

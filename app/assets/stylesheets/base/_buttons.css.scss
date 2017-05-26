@@ -83,6 +83,14 @@ button.comment-vote.active {
   @extend .btn, .btn-link
 }
 
+.vote.summary {
+
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e125";
+  }
+}
+
 .vote.reference {
 
   &:after  {

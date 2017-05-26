@@ -23,6 +23,10 @@ Rails.application.routes.draw do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
   end
 
+  resources :summaries do
+    resource :vote, controller: 'summaries/votes', only: [:create, :destroy]
+  end
+
   resources :comments, only: [:create, :edit, :update, :destroy] do
     resource :vote, controller: 'comments/votes', only: [:create, :destroy]
   end
