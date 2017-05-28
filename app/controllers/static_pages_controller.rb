@@ -10,8 +10,10 @@ class StaticPagesController < ApplicationController
   end
 
   def lets_encrypt
-
-      render text: ENV['JpdrWI4yOh6Zb1CqEnUr-ZPDaKGpXHEm2T_c-Uvr75g.z3DKE5GPOwED-2OCcZfwwCsOEKy7duPdBUarIV-Hvss']
-
+    if secure_compare params[:id], ENV['LETS_ENCRYPT_CHALLENGE']
+      render text: ENV['LETS_ENCRYPT_RESPONSE']
+    else
+      raise ActionController::RoutingError.new('Not Found')
+    end
   end
 end
