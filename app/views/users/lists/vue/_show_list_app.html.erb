@@ -6,6 +6,7 @@
   <%= render 'users/lists/template_reference_row' %>
   <%= render 'users/lists/template_reference_list' %>
   <%= render 'users/lists/modal/template_reference_modal' %>
+  <%= render 'users/lists/template_r_cite' %>
   <%= render 'crossref/template_crossref_search', list: @list %>
   <%= render 'crossref/template_add_by_locator', list: @list %>
   <script>
@@ -15,6 +16,7 @@
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
     <%= render 'users/lists/vue/components/reference_modal.js' %>
+    <%= render 'users/lists/vue/components/r_cite.js' %>
     <%= render 'crossref/crossref_search.js' %>
     <%= render 'crossref/add_by_locator.js' %>
     var listShowApp = new Vue({
@@ -46,6 +48,16 @@
         })
       },
       computed: {
+        citifiedSums: function() {
+          var citifiedSums = this.summaries
+
+          citifiedSums.forEach(function(s) {
+            s.content = s.content.replace(/i/,
+              '<a href="www.google.com" data-toggle="modal" data-target="#referenceModal" @click="selectReference(1)">hello</a>')
+          })
+          Vue.partial(this.summaries)
+          return citifiedSums
+        },
         displayedListDesc: function() {
           return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
         },
