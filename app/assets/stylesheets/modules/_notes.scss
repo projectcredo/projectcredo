@@ -1,0 +1,40 @@
+.notes{
+  @extend .list-unstyled;
+}
+
+.note {
+  font-size: 14px;
+  padding: 0px 0px 20px 0px;
+  .note-details{
+    font-size: 12px;
+    color: $gray-light;
+  }
+}
+
+.note-btns {
+  > button {
+    margin-right: 8px;
+    @extend .btn-link;
+  }
+}
+
+table.notes-table {
+  .note-row {
+    height: 70px;
+    td.note-content{
+      padding: 20px;
+    }
+  }
+  td.note-vote {
+    padding-top: 20px;
+    vertical-align: top;
+  }
+  .vote.comment {
+    width: 80px;
+    font-size: 18px;
+  }
+  .vote.summary {
+    width: 80px;
+    font-size: 18px;
+  }
+}

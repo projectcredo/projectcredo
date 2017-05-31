@@ -127,6 +127,8 @@
               refIds.push(match[1])
               match = myRegexp.exec(content);
           }
+          refIds = unique(refIds)
+
           var citedRefs = refIds.map(function(id){
             return data.filter(function(r,index){
               r.index = index

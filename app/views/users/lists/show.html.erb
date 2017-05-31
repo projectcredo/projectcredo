@@ -3,25 +3,7 @@
 <div class="row list-show" id="list-show">
   <div class="col-md-8">
     <div class="list-section">
-      <div class="list-section-h1">
-        <div class= "list-title"><%= @list.name %></div>
-        <%= render 'list_details' %>
-        <% if @list.tag_list.any? %>
-          <div class="list-tags">
-            <% @list.tag_list.each do |tag| %>
-              <a class="tag"><%= tag %></a>
-            <% end %>
-          </div>
-        <% end %>
-          <div v-html="displayedListDesc"></div>
-          <button
-            class="btn-link"
-            v-if="list.description.length > 350"
-            @click.stop="listDescTruncated = !listDescTruncated"
-          >
-            {{listDescTruncated ? 'see more' : 'see less'}}
-          </button>
-      </div>
+      <%= render 'list_header' %>
     </div>
 
     <reference-modal
@@ -36,72 +18,12 @@
 
     <div class="list-section">
       <div class="list-section-h2">Summaries</div>
-      <div class="nothing-yet"><%= link_to 'Add a summary', new_user_list_summary_path(user_list_id: @list.slug) %> to help guide readers through the evidence</div>
-      <table class="notes-table">
-        <tbody>
-          <tr v-for="s in summaries.slice(0,summariesShown)" class="note-row">
-            <td class="note-vote">
-              <vote :voteable="s" :signed-in="signedIn"></vote>
-            </td>
-            <td class="note-content">
-              <component
-                :is="'summary-'+s.id"
-                :cited-refs='citedRefs(s.content)'
-                data-toggle="modal"
-                    data-target="#referenceModal"
-                v-on:select-ref="selectReference($event)"
-              ></component>
-            </td>
-          </tr>
-          <tr class="note-row" v-if="summaries.length > 3">
-            <td class="text-center">
-              <button
-                class="btn-link"
-                @click.stop="summariesShown = (summariesShown == 3 ? 10 : 3)"
-              >
-                {{summariesShown == 3 ? 'see more' : 'see less'}}
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <%= render 'list_summaries' %>
     </div>
 
     <div class="list-section">
       <div class="list-section-h2">Notes and Highlights</div>
-      <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
-      <table class="notes-table">
-        <tbody>
-          <tr v-for="n in notes.slice(0,notesShown)" class="note-row">
-            <td class="note-vote">
-              <vote :voteable="n.note" :signed-in="signedIn"></vote>
-            </td>
-            <td class="note-content">
-              <note :note="n.note" class="note">
-                <span class="text-capitalize" slot="citation">
-                   ·
-                  <a
-                    data-toggle="modal"
-                    data-target="#referenceModal"
-                    @click="selectReference(n.rIndex)"
-                  >{{n.citation}}
-                  </a>
-                </span>
-              </note>
-            </td>
-          </tr>
-          <tr class="note-row" v-if="notes.length > 3">
-            <td class="text-center">
-              <button
-                class="btn-link"
-                @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
-              >
-                {{notesShown == 3 ? 'see more' : 'see less'}}
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <%= render 'list_notes' %>
     </div>
     <div class="list-section">
       <div class="list-section-h2">
@@ -109,15 +31,7 @@
             <%= @list.references.count %> Papers
           <% end %>
       </div>
-      <div class="quick-add">
-        <button class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
-          Quick Add Paper
-        </button>
-        <div v-show="showQuickAdd">
-          <crossref-search :edits-allowed="editsAllowed"></crossref-search>
-          <add-by-locator></add-by-locator>
-        </div>
-      </div>
+      <%= render 'list_quick_add' %>
       <reference-list
         :signed-in="signedIn"
         :filtered-data="filteredData"

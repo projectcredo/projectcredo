@@ -48,6 +48,16 @@ debounce = function(func, wait, immediate) {
   };
 };
 
+//unique function to remove duplicates in an array
+
+unique = function(array) {
+    var uniques = [];
+    $.each(array, function(i, el){
+      if($.inArray(el, uniques) === -1) uniques.push(el);
+    });
+    return uniques
+};
+
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
