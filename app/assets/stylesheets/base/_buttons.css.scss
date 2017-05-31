@@ -162,3 +162,17 @@ button.comment-vote.active {
   }
   @extend .btn, .btn-link;
 }
+
+//link buttons
+.author-link {
+  color: $gray-light;
+  font-size: 12px;
+  display: inline-block;
+  @extend .btn, .btn-link;
+}
+
+.citation-link {
+  font-size: 12px;
+  display: inline-block;
+  @extend .btn, .btn-link;
+}
