@@ -128,7 +128,8 @@
               match = myRegexp.exec(content);
           }
           var citedRefs = refIds.map(function(id){
-            return data.filter(function(r){
+            return data.filter(function(r,index){
+              r.index = index
               return r.id == id;
             })
           })

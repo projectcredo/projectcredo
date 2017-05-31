@@ -4,7 +4,9 @@
       template: "#s-<%=s.id%>",
       methods: {
         r: function(id) {
-          return id
+          return this.citedRefs.filter(function(r){
+            return r.id == id;
+          })[0]
         }
       }
     })

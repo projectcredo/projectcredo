@@ -1,8 +1,8 @@
 Vue.component("r-cite", {
   props: ["r"],
   methods:{
-    filter: function(add) {
-      this.$parent.$parent.$emit('filter', add)
+    selectReference: function(index) {
+      this.$parent.$emit('select-ref', index)
     }
   },
   template: '#r-cite'

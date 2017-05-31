@@ -44,7 +44,13 @@
               <vote :voteable="s" :signed-in="signedIn"></vote>
             </td>
             <td class="note-content">
-              <component :is="'summary-'+s.id" :cited-refs='citedRefs(s.content)'></component>
+              <component
+                :is="'summary-'+s.id"
+                :cited-refs='citedRefs(s.content)'
+                data-toggle="modal"
+                    data-target="#referenceModal"
+                v-on:select-ref="selectReference($event)"
+              ></component>
             </td>
           </tr>
           <tr class="note-row" v-if="summaries.length > 3">
