@@ -6,6 +6,7 @@
   <%= render 'users/lists/template_reference_row' %>
   <%= render 'users/lists/template_reference_list' %>
   <%= render 'users/lists/modal/template_reference_modal' %>
+  <%= render 'users/lists/templates_summaries' %>
   <%= render 'users/lists/template_r_cite' %>
   <%= render 'crossref/template_crossref_search', list: @list %>
   <%= render 'crossref/template_add_by_locator', list: @list %>
@@ -16,6 +17,7 @@
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
     <%= render 'users/lists/vue/components/reference_modal.js' %>
+    <%= render 'users/lists/vue/components/summaries' %>
     <%= render 'users/lists/vue/components/r_cite.js' %>
     <%= render 'crossref/crossref_search.js' %>
     <%= render 'crossref/add_by_locator.js' %>
@@ -37,6 +39,7 @@
         summaries:[],
         allReferences: []
       },
+
       mounted: function() {
         this.allReferences.forEach(function(reference) {
           Vue.set(reference, 'abstract_form', reference.paper.abstract)
@@ -48,16 +51,6 @@
         })
       },
       computed: {
-        citifiedSums: function() {
-          var citifiedSums = this.summaries
-
-          citifiedSums.forEach(function(s) {
-            s.content = s.content.replace(/i/,
-              '<a href="www.google.com" data-toggle="modal" data-target="#referenceModal" @click="selectReference(1)">hello</a>')
-          })
-          Vue.partial(this.summaries)
-          return citifiedSums
-        },
         displayedListDesc: function() {
           return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
         },
@@ -124,6 +117,23 @@
         selectReference: function(index) {
           this.referenceIndexInModal = index;
           this.selectedRef = this.filteredData[index];
+        },
+        citedRefs: function(content) {
+          var data = this.filteredData
+          var myRegexp = /(?:<r-cite\s:r='r\((\d+)\)'\/>)/mg;
+          var match = myRegexp.exec(content);
+          var refIds = [];
+          while(match !== null) {
+              refIds.push(match[1])
+              match = myRegexp.exec(content);
+          }
+          var citedRefs = refIds.map(function(id){
+            return data.filter(function(r){
+              return r.id == id;
+            })
+          })
+
+          return [].concat.apply([],citedRefs)
         },
         addToFilter: function(add) {
           if(!this.filterKey.match(add)) {

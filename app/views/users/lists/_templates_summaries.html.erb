@@ -1,0 +1,11 @@
+<% @list.summaries.each do |s| %>
+  <script type="text/x-template" id="s-<%=s.id%>">
+    <span>
+      <%
+        subbed_content = s.content.gsub(/{{/,'(').gsub(/}}/,')')
+        cleaned_content = sanitize subbed_content, tags: ['r-cite'], attributes: [':r']
+      %>
+      <%= cleaned_content %>
+    </span>
+  </script>
+<% end %>

@@ -1,0 +1,11 @@
+<% @list.summaries.each do |s| %>
+    Vue.component("summary-<%=s.id%>", {
+      props: ["citedRefs"],
+      template: "#s-<%=s.id%>",
+      methods: {
+        r: function(id) {
+          return id
+        }
+      }
+    })
+<% end %>

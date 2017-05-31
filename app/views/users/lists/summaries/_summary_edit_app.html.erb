@@ -61,7 +61,7 @@
       },
       methods: {
         selectReference: function(index) {
-          this.summary += "<r-cite :r-id='"+this.filteredData[index].id+"'></r-cite>";
+          this.summary += "<r-cite :r='r("+this.filteredData[index].id+")'/>";
         },
         addToFilter: function(add) {
           if(!this.filterKey.match(add)) {

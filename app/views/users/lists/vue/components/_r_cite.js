@@ -1,5 +1,5 @@
 Vue.component("r-cite", {
-  props: ["rId"],
+  props: ["r"],
   methods:{
     filter: function(add) {
       this.$parent.$parent.$emit('filter', add)

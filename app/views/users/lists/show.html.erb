@@ -39,12 +39,12 @@
       <div class="nothing-yet"><%= link_to 'Add a summary', new_user_list_summary_path(user_list_id: @list.slug) %> to help guide readers through the evidence</div>
       <table class="notes-table">
         <tbody>
-          <tr v-for="s in citifiedSums.slice(0,summariesShown)" class="note-row">
+          <tr v-for="s in summaries.slice(0,summariesShown)" class="note-row">
             <td class="note-vote">
               <vote :voteable="s" :signed-in="signedIn"></vote>
             </td>
-            <td class="note-content" v-html='s.content'>
-
+            <td class="note-content">
+              <component :is="'summary-'+s.id" :cited-refs='citedRefs(s.content)'></component>
             </td>
           </tr>
           <tr class="note-row" v-if="summaries.length > 3">
@@ -72,7 +72,7 @@
             </td>
             <td class="note-content">
               <note :note="n.note" class="note">
-                <span class="text-capitalize"slot="citation">
+                <span class="text-capitalize" slot="citation">
                    ·
                   <a
                     data-toggle="modal"
