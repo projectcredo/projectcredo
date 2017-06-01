@@ -1,7 +1,7 @@
 class Users::Lists::SummariesController < ApplicationController
   before_action :ensure_current_user
   before_action :get_list
-  before_action :get_summary, only:[:edit, :update]
+  before_action :get_summary, only:[:edit, :update, :destroy]
 
   def new
     @summary = Summary.new
@@ -30,6 +30,13 @@ class Users::Lists::SummariesController < ApplicationController
       else
         format.html { redirect_back(fallback_location: root_path, alert: 'Summary failed to update.') }
       end
+    end
+  end
+
+  def destroy
+    @summary.destroy
+    respond_to do |format|
+      format.html {redirect_to user_list_path(@list.owner, @list), notice: 'Summary was deleted.'}
     end
   end
 
