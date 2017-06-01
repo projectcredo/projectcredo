@@ -38,6 +38,19 @@
     }
 }
 
+.btn-link-soft,
+.btn-link-soft:visited,
+.btn-link-soft:focus,
+.btn-link-soft:hover {
+    color: $gray-light;
+    text-decoration: none;
+    padding: 0;
+    outline:none;
+    &:hover {
+      color: $primary-color;
+    }
+}
+
 .btn-primary.active,
 .btn-primary.active:hover,
 .btn-primary.active:visited,
@@ -187,5 +200,5 @@ a.edit-link {
   color: $gray-light;
   font-size: 12px;
   display: inline-block;
-
+  @extend .btn, .btn-link-soft;
 }
