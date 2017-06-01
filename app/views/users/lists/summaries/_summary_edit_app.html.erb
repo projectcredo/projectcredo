@@ -15,7 +15,7 @@
       data: {
         signedIn: false,
         list: {},
-        summary: '',
+        summary: {},
         filterKey: '',
         sortKey:'',
         sortOrders: {'age': 1, 'votes': -1},
@@ -61,7 +61,7 @@
       },
       methods: {
         selectReference: function(index) {
-          this.summary += "<r-cite :r='r("+this.filteredData[index].id+")'/>";
+          this.summary.content += "<r-cite :r='r("+this.filteredData[index].id+")'/>";
         },
         addToFilter: function(add) {
           if(!this.filterKey.match(add)) {
@@ -80,6 +80,7 @@
     });
     summaryFormApp.signedIn = <%= user_signed_in? %>;
     summaryFormApp.list = <%= raw render('users/lists/jbuilders/list.json', list: @list) %>;
+    summaryFormApp.summary = <%= raw render('users/lists/jbuilders/summary.json', summary: @summary) %>;
     summaryFormApp.allReferences = <%= raw render('users/lists/jbuilders/references.json', references: @list.references) %>;
     summaryFormApp.$mount('#summary-form');
   </script>

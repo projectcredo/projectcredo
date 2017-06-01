@@ -18,7 +18,7 @@
         <div class="summary-details">
           {{s.user}} · {{s.time_ago}}
           <span v-if="currentUser == s.user">
-           · <a class="edit-link" href="<%=new_user_list_summary_path(user_list_id: @list.slug)%>">edit</a>
+           · <a class="edit-link" :href="s.edit_path">edit</a>
           </span>
         </div>
       </td>
