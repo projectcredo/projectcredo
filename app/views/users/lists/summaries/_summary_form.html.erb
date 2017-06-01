@@ -1,0 +1,84 @@
+<div class="list-show">
+  <div class="list-section">
+    <div class="list-section-h1">
+      <div class= "list-title"><%= @list.name %></div>
+      <%= render 'users/lists/list_details' %>
+    </div>
+  </div>
+
+  <div class="list-section" id="summary-form">
+    <%
+      summary = @summary
+      list = @list
+    %>
+    <% url = if summary.persisted? then user_list_summary_path(@list.owner, @list) else user_list_summaries_path(@list.owner, @list) end  %>
+    <%= form_for(summary, url: url) do |f| %>
+      <% if summary.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(summary.errors.count, "error") %> prohibited this summary from being saved:</h2>
+          <ul>
+            <% summary.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-horizontal">
+        <div class="form-group">
+          <%= f.label :evidence_rating, class: "col-md-2 control-label" %>
+          <div class="col-md-4">
+          <%= f.select :evidence_rating, @summary.evidence_ratings, {},{class: 'form-control'}  %>
+          </div>
+          <div class='col-md-6'>
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :content, 'Summary', class: "col-md-2 control-label" %>
+          <div class="col-md-8">
+            <textarea
+              class='form-control'
+              placeholder='Help summarize the evidence for this topic.  A good summary begins with a major headline - "Smoking causes lung cancer".  It then provides the major supporting information.  You can cite papers from this list by clicking the paper titles below.  Be brief and concise to help communicate this information.'
+              rows='12'
+              name="summary[content]"
+              id="summary_content"
+              v-model="summary.content"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-offset-2 col-sm-10">
+            <%= f.submit 'Submit', class: "btn btn-primary" %>
+            <%= link_to 'cancel', user_list_path(list.owner, list), class: "btn-link" %>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="divider2 col-md-10"></div>
+          </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label">Click paper to add a citation to your summary</label>
+          <div class="col-md-8">
+            <reference-list
+              :signed-in="signedIn"
+              :filtered-data="filteredData"
+              v-model="filterKey"
+              :sort-key="sortKey"
+              :sort-orders="sortOrders"
+              v-on:sort="sortBy($event)"
+              v-on:filter="addToFilter($event)"
+              v-on:select-ref="selectReference($event)"
+            ></reference-list>
+          </div>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%= render 'users/lists/summaries/summary_edit_app' %>
