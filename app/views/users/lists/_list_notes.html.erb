@@ -9,12 +9,13 @@
         <note :note="n.note" class="note">
           <span class="text-capitalize" slot="citation">
              ·
-            <a
+            <span
               data-toggle="modal"
               data-target="#referenceModal"
               @click="selectReference(n.rIndex)"
+              class='citation-link'
             >{{n.citation}}
-            </a>
+            </span>
           </span>
         </note>
       </td>

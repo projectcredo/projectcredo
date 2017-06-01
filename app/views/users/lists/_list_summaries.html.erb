@@ -1,23 +1,29 @@
 <div class="nothing-yet">
   <%= link_to 'Add a summary', new_user_list_summary_path(user_list_id: @list.slug) %> to help guide readers through the evidence
 </div>
-<table class="notes-table">
+<table class="summaries-table">
   <tbody>
-    <tr v-for="s in summaries.slice(0,summariesShown)" class="note-row">
-      <td class="note-vote">
+    <tr v-for="s in summaries.slice(0,summariesShown)" class="summary-row">
+      <td class="summary-vote">
         <vote :voteable="s" :signed-in="signedIn"></vote>
       </td>
-      <td class="note-content">
+      <td class="summary-content">
         <component
           :is="'summary-'+s.id"
           :cited-refs='citedRefs(s.content)'
           data-toggle="modal"
-              data-target="#referenceModal"
+          data-target="#referenceModal"
           v-on:select-ref="selectReference($event)"
         ></component>
+        <div class="summary-details">
+          {{s.user}} · {{s.time_ago}}
+          <span v-if="currentUser == s.user">
+           · <a class="edit-link" href="<%=new_user_list_summary_path(user_list_id: @list.slug)%>">edit</a>
+          </span>
+        </div>
       </td>
     </tr>
-    <tr class="note-row" v-if="summaries.length > 3">
+    <tr class="summary-row" v-if="summaries.length > 3">
       <td class="text-center">
         <button
           class="btn-link"

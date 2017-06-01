@@ -172,7 +172,20 @@ button.comment-vote.active {
 }
 
 .citation-link {
+  color: $gray-light;
   font-size: 12px;
   display: inline-block;
   @extend .btn, .btn-link;
+}
+
+.r-cite {
+  color: $dark-color;
+  @extend .citation-link;
+}
+
+a.edit-link {
+  color: $gray-light;
+  font-size: 12px;
+  display: inline-block;
+
 }
