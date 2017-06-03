@@ -5,7 +5,7 @@
   <tbody>
     <tr v-for="s in summaries.slice(0,summariesShown)" class="summary-row">
       <td class="evidence-rating">
-          <div class="icon"><%=icon('gavel')%></div>
+          <div class="icon" :class="s.evidence_rating"></div>
           <div>{{s.evidence_rating}}</div>
       </td>
       <td class="summary-content">

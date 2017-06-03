@@ -18,8 +18,26 @@ table.summaries-table {
     text-align: center;
     color: $dark-color;
     font-weight: bold;
-    .icon {
-      font-size: 2em;
+    .icon.early{
+      &:before  {
+        font-size: 2em;
+        font-family: "FontAwesome";
+        content: "\f059";
+      }
+    }
+    .icon.mixed{
+      &:before  {
+        font-size: 2em;
+        font-family: "FontAwesome";
+        content: "\f24e";
+      }
+    }
+    .icon.conclusive{
+      &:before  {
+        font-size: 2em;
+        font-family: "FontAwesome";
+        content: "\f0e3";
+      }
     }
   }
   .vote.summary {

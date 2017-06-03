@@ -1,5 +1,5 @@
 class Summary < ApplicationRecord
-  enum evidence_rating: {incomplete: 10, mixed: 20, conclusive: 30 }
+  enum evidence_rating: {'too early': 10, mixed: 20, conclusive: 30 }
 
   belongs_to :user
   belongs_to :list
@@ -9,7 +9,7 @@ class Summary < ApplicationRecord
 
   def evidence_ratings
     [
-      'incomplete',
+      'too early',
       'mixed',
       'conclusive'
     ]

@@ -53,7 +53,7 @@
           <div class="col-md-offset-2 col-sm-8">
             <%= f.submit 'Submit', class: "btn btn-primary", method: :patch %>
             <%= link_to 'cancel', user_list_path(list.owner, list), class: "btn-link" %>
-            <%= link_to 'Delete this summary', user_list_summaries_path(list.owner, list, @summary), class: "btn btn-danger pull-right", method: :delete, data: {confirm: 'Are you sure you want to delete your summary?'} %>
+            <%= if summary.persisted? then link_to 'Delete this summary', user_list_summaries_path(list.owner, list, @summary), class: "btn btn-danger pull-right", method: :delete, data: {confirm: 'Are you sure you want to delete your summary?'} end %>
           </div>
         </div>
 
