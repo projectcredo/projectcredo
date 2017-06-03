@@ -5,16 +5,24 @@ table.summaries-table {
       padding: 20px;
     }
     .summary-details{
-      font-size: 12px;
+      font-size: 14px;
       color: $gray-light;
+      margin-top: 10px;
     }
   }
-  td.summary-vote {
+  td.evidence-rating {
     padding-top: 20px;
+    width: 80px;
     vertical-align: top;
+    font-size: 12px;
+    text-align: center;
+    color: $dark-color;
+    font-weight: bold;
+    .icon {
+      font-size: 2em;
+    }
   }
   .vote.summary {
-    width: 80px;
-    font-size: 18px;
+    font-size: 14px;
   }
 }

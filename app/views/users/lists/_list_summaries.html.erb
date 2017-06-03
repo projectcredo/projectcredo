@@ -4,8 +4,9 @@
 <table class="summaries-table">
   <tbody>
     <tr v-for="s in summaries.slice(0,summariesShown)" class="summary-row">
-      <td class="summary-vote">
-        <vote :voteable="s" :signed-in="signedIn"></vote>
+      <td class="evidence-rating">
+          <div class="icon"><%=icon('gavel')%></div>
+          <div>{{s.evidence_rating}}</div>
       </td>
       <td class="summary-content">
         <component
@@ -16,7 +17,7 @@
           v-on:select-ref="selectReference($event)"
         ></component>
         <div class="summary-details">
-          {{s.user}} · {{s.time_ago}}
+          <vote :voteable="s" :signed-in="signedIn"></vote> · {{s.user}} · {{s.time_ago}}
           <span v-if="currentUser == s.user">
            · <a class="edit-link" :href="s.edit_path">edit</a>
           </span>

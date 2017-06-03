@@ -198,7 +198,6 @@ button.comment-vote.active {
 
 a.edit-link {
   color: $gray-light;
-  font-size: 12px;
   display: inline-block;
-  @extend .btn, .btn-link-soft;
+  @extend .btn-link-soft;
 }
