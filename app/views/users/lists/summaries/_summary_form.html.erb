@@ -31,7 +31,6 @@
           <%= f.select :evidence_rating, @summary.evidence_ratings, {},{class: 'form-control'}  %>
           </div>
           <div class='col-md-6'>
-
           </div>
         </div>
 
@@ -46,6 +45,9 @@
               id="summary_content"
               v-model="summary.content"
             ></textarea>
+            <div class="pull-right">
+              <countdown :max="2500" :current-length="summary.content.length"/></countdown>
+            </div>
           </div>
         </div>
 

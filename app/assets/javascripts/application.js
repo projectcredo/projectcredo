@@ -107,6 +107,19 @@ Vue.filter('age', function(date) {
   }
 });
 
+Vue.component("countdown", {
+  props: ["max", "currentLength"],
+  computed: {
+    remainingCount: function() {
+      return this.max - this.currentLength;
+    },
+    hasError: function() {
+     return this.remainingCount < 0;
+    }
+  },
+  template: '#countdown'
+});
+
 Vue.component("vote", {
   props: ["voteable", "signedIn"],
   data: function() {
