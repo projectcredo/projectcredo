@@ -1,6 +1,9 @@
 class Summary < ApplicationRecord
   enum evidence_rating: {'too early': 10, mixed: 20, conclusive: 30 }
 
+  # Modules
+  acts_as_votable
+
   belongs_to :user
   belongs_to :list
 
