@@ -23,6 +23,15 @@
         allReferences: []
       },
       computed: {
+        ratingDesc: function() {
+          if(this.summary.evidence_rating == 'too early') {
+            return 'The evidence is too sparse to determine a conclusion.';
+          } else if(this.summary.evidence_rating == 'mixed') {
+            return 'The evidence is contradictory.';
+          } else if(this.summary.evidence_rating == 'conclusive') {
+            return 'There is an extensive body of evidence pointing to a conclusion.';
+          }
+        },
         filteredData: function () {
           var sortKey = this.sortKey
           var filterKey = this.filterKey
