@@ -5,6 +5,8 @@ class Users::Lists::SummariesController < ApplicationController
 
   def new
     @summary = Summary.new
+    @summary.content = ''
+    @summary.evidence_rating = 10
   end
 
   def create
