@@ -177,23 +177,15 @@ button.comment-vote.active {
 }
 
 //link buttons
-.author-link {
+.btn-link2 {
   color: $gray-light;
   font-size: 12px;
-  display: inline-block;
-  @extend .btn, .btn-link;
-}
-
-.citation-link {
-  color: $gray-light;
-  font-size: 12px;
-  display: inline-block;
   @extend .btn, .btn-link;
 }
 
 .r-cite {
   color: $dark-color;
-  @extend .citation-link;
+  @extend .btn-link2;
 }
 
 a.edit-link {
