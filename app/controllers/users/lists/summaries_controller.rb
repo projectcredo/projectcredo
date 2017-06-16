@@ -4,6 +4,11 @@ class Users::Lists::SummariesController < ApplicationController
   before_action :get_summary, only:[:edit, :update, :destroy]
 
   def new
+    unless (current_user.can_edit?(@list) || @list.access == "public")
+      flash[:alert] = "You do not have permission to add a summary"
+      return redirect_back(fallback_location: user_list_path(@list.owner, @list))
+    end
+
     @summary = Summary.new
     @summary.content = ''
     @summary.evidence_rating = 10
