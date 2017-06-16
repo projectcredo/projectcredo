@@ -1,5 +1,8 @@
-<div class="nothing-yet">
+<div class="nothing-yet" v-if="editsAllowed">
   <%= link_to 'Add a summary', new_user_list_summary_path(user_list_id: @list.slug) %> to help guide readers through the evidence
+</div>
+<div class="nothing-yet" v-if="summaries.length == 0 && !editsAllowed">
+  No summaries written yet.
 </div>
 <table class="summaries-table">
   <tbody>
