@@ -18,24 +18,25 @@ table.summaries-table {
     text-align: center;
     color: $dark-color;
     font-weight: bold;
-    .icon.early{
+
+    .icon{
       &:before  {
         font-size: 2em;
         font-family: "FontAwesome";
+      }
+    }
+    .icon.early{
+      &:before  {
         content: "\f059";
       }
     }
     .icon.mixed{
       &:before  {
-        font-size: 2em;
-        font-family: "FontAwesome";
         content: "\f24e";
       }
     }
     .icon.conclusive{
       &:before  {
-        font-size: 2em;
-        font-family: "FontAwesome";
         content: "\f0e3";
       }
     }
