@@ -50,30 +50,26 @@ table.summaries-table {
 span.evidence-rating {
   color: $dark-color;
   font-weight: bold;
-  .icon.early{
+  .icon{
     &:before  {
       vertical-align: middle;
       font-size: 2em;
       margin-right: 10px;
       font-family: "FontAwesome";
+    }
+  }
+  .icon.early{
+    &:before  {
       content: "\f059";
     }
   }
   .icon.mixed{
     &:before  {
-      vertical-align: middle;
-      font-size: 2em;
-      margin-right: 10px;
-      font-family: "FontAwesome";
       content: "\f24e";
     }
   }
   .icon.conclusive{
     &:before  {
-      vertical-align: middle;
-      font-size: 2em;
-      margin-right: 10px;
-      font-family: "FontAwesome";
       content: "\f0e3";
     }
   }
