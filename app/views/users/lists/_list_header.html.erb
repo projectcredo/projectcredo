@@ -8,12 +8,12 @@
       <% end %>
     </div>
   <% end %>
-    <div v-html="displayedListDesc"></div>
-    <button
-      class="btn-link"
-      v-if="list.description.length > 350"
-      @click.stop="listDescTruncated = !listDescTruncated"
-    >
-      {{listDescTruncated ? 'see more' : 'see less'}}
-    </button>
+  <div v-html="displayedListDesc"></div>
+  <button
+    class="btn-link"
+    v-if="list.description.length > 350"
+    @click.stop="listDescTruncated = !listDescTruncated"
+  >
+    {{listDescTruncated ? 'see more' : 'see less'}}
+  </button>
 </div>
