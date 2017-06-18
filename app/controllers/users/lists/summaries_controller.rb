@@ -2,6 +2,7 @@ class Users::Lists::SummariesController < ApplicationController
   before_action :ensure_current_user
   before_action :get_list
   before_action :get_summary, only:[:edit, :update, :destroy]
+  before_action :reject_user_without_edit_permissions, only:[:edit, :update, :destroy]
 
   def new
     unless (current_user.can_edit?(@list) || @list.accepts_public_contributions? )
@@ -55,6 +56,14 @@ class Users::Lists::SummariesController < ApplicationController
 
     def get_summary
       @summary = Summary.find(params[:id])
+    end
+
+    # Reject users without permission to edit
+    def reject_user_without_edit_permissions
+      unless (current_user.can_edit?(@list) || @summary.user == current_user )
+        flash[:alert] = "You do not have permission to edit this summary"
+        return redirect_back(fallback_location: user_list_path(@list.owner, @list))
+      end
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def summary_params

@@ -21,7 +21,7 @@
         ></component>
         <div class="summary-details">
           <vote :voteable="s" :signed-in="signedIn"></vote> · {{s.user}} · {{s.time_ago}}
-          <span v-if="currentUser == s.user">
+          <span v-if="currentUser == s.user || userCanEdit">
            · <a class="edit-link" :href="s.edit_path">edit</a>
           </span>
         </div>
