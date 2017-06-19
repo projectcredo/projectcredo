@@ -48,6 +48,16 @@ debounce = function(func, wait, immediate) {
   };
 };
 
+//unique function to remove duplicates in an array
+
+unique = function(array) {
+    var uniques = [];
+    $.each(array, function(i, el){
+      if($.inArray(el, uniques) === -1) uniques.push(el);
+    });
+    return uniques
+};
+
 // Temporary location for shared Vue scripts
 // Also needs to be pre-ES6 for asset pipeline compatibility
 
@@ -95,6 +105,19 @@ Vue.filter('age', function(date) {
     age = now.getFullYear() - date.getFullYear() - ((now.getMonth() > date.getMonth() || (now.getMonth() == date.getDate())) ? 0 : 1)
     return age < 1 ? '< 1' : age
   }
+});
+
+Vue.component("countdown", {
+  props: ["max", "currentLength"],
+  computed: {
+    remainingCount: function() {
+      return this.max - this.currentLength;
+    },
+    hasError: function() {
+     return this.remainingCount < 0;
+    }
+  },
+  template: '#countdown'
 });
 
 Vue.component("vote", {

@@ -1,0 +1,34 @@
+<div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
+<table class="notes-table">
+  <tbody>
+    <tr v-for="n in notes.slice(0,notesShown)" class="note-row">
+      <td class="note-vote">
+        <vote :voteable="n.note" :signed-in="signedIn"></vote>
+      </td>
+      <td class="note-content">
+        <note :note="n.note" class="note">
+          <span class="text-capitalize" slot="citation">
+             ·
+            <span
+              data-toggle="modal"
+              data-target="#referenceModal"
+              @click="selectReference(n.rIndex)"
+              class='btn-link2'
+            >{{n.citation}}
+            </span>
+          </span>
+        </note>
+      </td>
+    </tr>
+    <tr class="note-row" v-if="notes.length > 3">
+      <td class="text-center">
+        <button
+          class="btn-link"
+          @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
+        >
+          {{notesShown == 3 ? 'see more' : 'see less'}}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

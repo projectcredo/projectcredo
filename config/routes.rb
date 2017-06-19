@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   resources :pins, only: [:create, :destroy]
 
-  resources :lists, only: [:new, :create, :show, :index] do
+  resources :lists, only: [:new, :create, :index] do
     resources :references, only: [:show, :create, :destroy]
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
     resources :members, only: :destroy, controller: 'lists/members'
@@ -21,6 +21,10 @@ Rails.application.routes.draw do
 
   resources :references do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
+  end
+
+  resources :summaries do
+    resource :vote, controller: 'summaries/votes', only: [:create, :destroy]
   end
 
   resources :comments, only: [:create, :edit, :update, :destroy] do
@@ -33,7 +37,9 @@ Rails.application.routes.draw do
   resources :activities, only: [:index]
 
   scope ':username' do
-    resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists'
+    resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists' do
+      resources :summaries, except: [:index, :show], controller: 'users/lists/summaries'
+    end
     get ':user_list_id/:id' => 'references#show', as: :user_list_reference
   end
 

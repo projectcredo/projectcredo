@@ -4,7 +4,7 @@
     <button
       class="btn-link"
       v-if="abstract.length > 250"
-      @click.stop="truncateAbstract = !truncateAbstract"
+      @click.stop.prevent="truncateAbstract = !truncateAbstract"
     >
       {{truncateAbstract ? 'see more' : 'see less'}}
     </button>

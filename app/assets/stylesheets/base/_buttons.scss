@@ -38,6 +38,19 @@
     }
 }
 
+.btn-link-soft,
+.btn-link-soft:visited,
+.btn-link-soft:focus,
+.btn-link-soft:hover {
+    color: $gray-light;
+    text-decoration: none;
+    padding: 0;
+    outline:none;
+    &:hover {
+      color: $primary-color;
+    }
+}
+
 .btn-primary.active,
 .btn-primary.active:hover,
 .btn-primary.active:visited,
@@ -81,6 +94,14 @@ button.comment-vote.active {
   color: $gray-light;
 
   @extend .btn, .btn-link
+}
+
+.vote.summary {
+
+  &:after  {
+    font-family: "Glyphicons Halflings";
+    content: "\e125";
+  }
 }
 
 .vote.reference {
@@ -153,4 +174,22 @@ button.comment-vote.active {
     vertical-align: middle;
   }
   @extend .btn, .btn-link;
+}
+
+//link buttons
+.btn-link2 {
+  color: $gray-light;
+  font-size: 12px;
+  @extend .btn, .btn-link;
+}
+
+.r-cite {
+  color: $dark-color;
+  @extend .btn-link2;
+}
+
+a.edit-link {
+  color: $gray-light;
+  display: inline-block;
+  @extend .btn-link-soft;
 }
