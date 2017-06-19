@@ -17,13 +17,4 @@ class Summary < ApplicationRecord
   # Validations
   validates :user_id, :list_id, :content, :evidence_rating, presence: true
   validates :content, length: { maximum: 2000 }
-
-  # Methods
-  def evidence_ratings
-    [
-      'too early',
-      'mixed',
-      'conclusive'
-    ]
-  end
 end

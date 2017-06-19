@@ -36,9 +36,9 @@
                   class="form-control"
                   v-model="summary.evidence_rating"
                 >
-                  <option value="too early" >too early</option>
-                  <option value="mixed">mixed</option>
-                  <option value="conclusive">conclusive</option>
+                  <% Summary.evidence_ratings.keys.each do |r| %>
+                    <option value="<%=r%>" ><%=r%></option>
+                  <% end %>
                 </select>
               </div>
               <div class="col-md-6">
