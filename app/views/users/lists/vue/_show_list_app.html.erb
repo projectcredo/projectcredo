@@ -6,6 +6,8 @@
   <%= render 'users/lists/template_reference_row' %>
   <%= render 'users/lists/template_reference_list' %>
   <%= render 'users/lists/modal/template_reference_modal' %>
+  <%= render 'users/lists/templates_summaries' %>
+  <%= render 'users/lists/template_r_cite' %>
   <%= render 'crossref/template_crossref_search', list: @list %>
   <%= render 'crossref/template_add_by_locator', list: @list %>
   <script>
@@ -15,6 +17,8 @@
     <%= render 'users/lists/vue/components/reference_row.js' %>
     <%= render 'users/lists/vue/components/reference_list.js' %>
     <%= render 'users/lists/vue/components/reference_modal.js' %>
+    <%= render 'users/lists/vue/components/summaries' %>
+    <%= render 'users/lists/vue/components/r_cite.js' %>
     <%= render 'crossref/crossref_search.js' %>
     <%= render 'crossref/add_by_locator.js' %>
     var listShowApp = new Vue({
@@ -29,10 +33,13 @@
         sortKey:'',
         sortOrders: {'age': 1, 'votes': -1},
         notesShown: 3,
+        summariesShown: 3,
         listDescTruncated: true,
         showQuickAdd: false,
+        summaries:[],
         allReferences: []
       },
+
       mounted: function() {
         this.allReferences.forEach(function(reference) {
           Vue.set(reference, 'abstract_form', reference.paper.abstract)
@@ -111,6 +118,26 @@
           this.referenceIndexInModal = index;
           this.selectedRef = this.filteredData[index];
         },
+        citedRefs: function(content) {
+          var data = this.filteredData
+          var myRegexp = /(?:<r-cite\s:r='r\((\d+)\)'\/>)/mg;
+          var match = myRegexp.exec(content);
+          var refIds = [];
+          while(match !== null) {
+              refIds.push(match[1])
+              match = myRegexp.exec(content);
+          }
+          refIds = unique(refIds)
+
+          var citedRefs = refIds.map(function(id){
+            return data.filter(function(r,index){
+              r.index = index
+              return r.id == id;
+            })
+          })
+
+          return [].concat.apply([],citedRefs)
+        },
         addToFilter: function(add) {
           if(!this.filterKey.match(add)) {
             if(this.filterKey) {
@@ -126,11 +153,12 @@
         }
       }
     });
-    listShowApp.list = <%= raw render('users/lists/list.json', list: @list) %>
+    listShowApp.list = <%= raw render('users/lists/jbuilders/list.json', list: @list) %>
     listShowApp.signedIn = <%= user_signed_in? %>;
     listShowApp.currentUser = '<%= current_user ? current_user.username : '' %>';
+    listShowApp.summaries = <%= raw render('users/lists/jbuilders/list_summaries.json', summaries: @summaries) %>;
     listShowApp.userCanEdit = <%= current_user_can_edit?(list) || list.accepts_public_contributions? %>;
-    listShowApp.allReferences = <%= raw render('users/lists/references.json', references: @references) %>;
+    listShowApp.allReferences = <%= raw render('users/lists/jbuilders/references.json', references: @references) %>;
     listShowApp.$mount('#list-show');
   </script>
 <% end %>

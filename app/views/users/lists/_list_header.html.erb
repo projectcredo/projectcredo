@@ -1,0 +1,19 @@
+<div class="list-section-h1">
+  <div class= "list-title"><%= @list.name %></div>
+  <%= render 'list_details' %>
+  <% if @list.tag_list.any? %>
+    <div class="list-tags">
+      <% @list.tag_list.each do |tag| %>
+        <a class="tag"><%= tag %></a>
+      <% end %>
+    </div>
+  <% end %>
+  <div v-html="displayedListDesc"></div>
+  <button
+    class="btn-link"
+    v-if="list.description.length > 350"
+    @click.stop="listDescTruncated = !listDescTruncated"
+  >
+    {{listDescTruncated ? 'see more' : 'see less'}}
+  </button>
+</div>

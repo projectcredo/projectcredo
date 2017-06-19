@@ -1,0 +1,97 @@
+<% content_for(:page_app) do %>
+  <%= render 'votes/template_vote' %>
+  <%= render 'references/template_mini_bib' %>
+  <%= render 'users/lists/template_note' %>
+  <%= render 'users/lists/template_truncate_abstract' %>
+  <%= render 'users/lists/template_reference_row' %>
+  <%= render 'users/lists/template_reference_list' %>
+  <%= render 'users/lists/template_countdown' %>
+  <script>
+    <%= render 'users/lists/vue/components/mini_bib.js' %>
+    <%= render 'users/lists/vue/components/note.js' %>
+    <%= render 'users/lists/vue/components/abstract.js' %>
+    <%= render 'users/lists/vue/components/reference_row.js' %>
+    <%= render 'users/lists/vue/components/reference_list.js' %>
+    var summaryFormApp = new Vue({
+      data: {
+        signedIn: false,
+        list: {},
+        summary: {},
+        filterKey: '',
+        sortKey:'',
+        sortOrders: {'age': 1, 'votes': -1},
+        allReferences: []
+      },
+      computed: {
+        ratingDesc: function() {
+          if(this.summary.evidence_rating == 'too early') {
+            return 'The evidence is too sparse to determine a conclusion.';
+          } else if(this.summary.evidence_rating == 'mixed') {
+            return 'The evidence is contradictory.';
+          } else if(this.summary.evidence_rating == 'conclusive') {
+            return 'There is an extensive body of evidence pointing to a conclusion.';
+          }
+        },
+        filteredData: function () {
+          var sortKey = this.sortKey
+          var filterKey = this.filterKey
+          var order = this.sortOrders[sortKey]
+          var data = this.allReferences
+          var fuseOptions = {
+            tokenize: true,
+            shouldSort: true,
+            threshold: 0.4,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+              "paper.title",
+              "paper.authors.full_name",
+              "paper.tag_list",
+              "paper.abstract"
+            ]
+          };
+          if(filterKey) {
+            var fuse = new Fuse(data, fuseOptions);
+            data = fuse.search(this.filterKey);
+          }
+          if (sortKey) {
+            data = data.slice().sort(function (a, b) {
+              if(sortKey == 'age'){
+                a = a.paper['published_at']
+                b = b.paper['published_at']
+              } else {
+                a = a[sortKey]
+                b = b[sortKey]
+              }
+              return (a === b ? 0 : a > b ? 1 : -1) * order
+            })
+          }
+          return data
+        }
+      },
+      methods: {
+        selectReference: function(index) {
+          this.summary.content += "<r-cite :r='r("+this.filteredData[index].id+")'/>";
+        },
+        addToFilter: function(add) {
+          if(!this.filterKey.match(add)) {
+            if(this.filterKey) {
+                this.filterKey += ' ' + add
+            } else {
+                this.filterKey = add
+            }
+          }
+        },
+        sortBy: function (key) {
+          this.sortKey = key;
+          this.sortOrders[key] = this.sortOrders[key] * -1;
+        }
+      }
+    });
+    summaryFormApp.signedIn = <%= user_signed_in? %>;
+    summaryFormApp.list = <%= raw render('users/lists/jbuilders/list.json', list: @list) %>;
+    summaryFormApp.summary = <%= raw render('users/lists/jbuilders/summary.json', summary: @summary) %>;
+    summaryFormApp.allReferences = <%= raw render('users/lists/jbuilders/references.json', references: @list.references) %>;
+    summaryFormApp.$mount('#summary-form');
+  </script>
+<% end %>

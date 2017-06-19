@@ -18,6 +18,7 @@ class Users::ListsController < ApplicationController
 
   def show
     @references = @list.references.joins(:paper).order(params_sort_order)
+    @summaries = @list.summaries.ranked
   end
 
   def edit
