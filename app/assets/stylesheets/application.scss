@@ -16,11 +16,8 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-@import "variables";
-@import 'base/*';
 @import 'modules/*';
-@import 'utilities/*';
-@import 'list_show/*';
+@import 'partials/*';
 
 body {
   padding: 5em 1em;
