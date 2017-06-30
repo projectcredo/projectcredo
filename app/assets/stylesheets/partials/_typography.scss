@@ -2,20 +2,3 @@
 body, textarea, input {
   font-family: 'Open Sans', sans-serif;
 }
-
-//Dividers
-div.divider1 {
-  margin-top: 60px;
-  margin-bottom: 60px;
-  border-style: solid;
-  border-width: 0 0 1px 0;
-  color: $gray-light;
-}
-
-div.divider2 {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border-style: solid;
-  border-width: 0 0 1px 0;
-  color: $gray-lighter;
-}
