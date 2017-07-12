@@ -18,7 +18,10 @@
         <mini-bib :r="r"></mini-bib>
       </td>
       <td>
-        <a class="hidden-remove" v-if="editsAllowed"></a>
+        <a
+          class="hidden-remove"
+          v-if="editsAllowed || r.added_by == '<%= current_user.username %>'"
+        ></a>
       </td>
       <td>
         <a
