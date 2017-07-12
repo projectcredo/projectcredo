@@ -1,5 +1,5 @@
 Vue.component("reference-list", {
-  props: ["filteredData", "value","sortKey","sortOrders","signedIn"],
+  props: ["filteredData", "value","sortKey","sortOrders","signedIn","editsAllowed"],
   template: '#reference-list',
   methods: {
     sort: function (key) {

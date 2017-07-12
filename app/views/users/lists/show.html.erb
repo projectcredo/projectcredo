@@ -38,6 +38,7 @@
         v-model="filterKey"
         :sort-key="sortKey"
         :sort-orders="sortOrders"
+        :edits-allowed="editsAllowed"
         v-on:sort="sortBy($event)"
         v-on:filter="addToFilter($event)"
         v-on:select-ref="selectReference($event)"

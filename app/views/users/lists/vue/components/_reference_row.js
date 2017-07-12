@@ -1,5 +1,5 @@
 Vue.component("reference-row", {
-  props: ["r","index","signedIn"],
+  props: ["r","index","signedIn", "editsAllowed"],
   data: function() {
     return {
       recommendIsLoading: false,
