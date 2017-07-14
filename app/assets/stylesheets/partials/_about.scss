@@ -1,47 +1,40 @@
-div.curate {
+.large-icons {
   color: $gray-light;
   text-align: center;
 
-  &:before    {
+  &:before {
     font-family: "Glyphicons Halflings";
-    content: "\e012";
     font-size: 4em;
     width: 50%;
   }
 
   h2 {
     margin: 10px 0 0 0;
+  } 
+
+  padding: 20px 0 20px 0;
+}
+
+div.curate {
+  @extend .large-icons;
+
+  &:before {
+  content: "\e012";
   }
 }
 
 div.document {
-  color: $gray-light;
-  text-align: center;
+  @extend .large-icons;
 
-  &:before    {
-    font-family: "Glyphicons Halflings";
+  &:before {
     content: "\270f";
-    font-size: 4em;
-    width: 50%;
-  }
-
-  h2 {
-    margin: 10px 0 0 0;
   }
 }
 
 div.share {
-  color: $gray-light;
-  text-align: center;
+  @extend .large-icons;
 
   &:before    {
-    font-family: "Glyphicons Halflings";
     content: "\e171";
-    font-size: 4em;
-    width: 50%;
-  }
-
-  h2 {
-    margin: 10px 0 0 0;
   }
 }
