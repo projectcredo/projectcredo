@@ -75,25 +75,7 @@ button.comment-vote.active {
   @extend .btn, .action-link
 }
 
-.vote.summary {
-
-  &:after  {
-    font-family: "Glyphicons Halflings";
-    content: "\e125";
-  }
-}
-
-.vote.reference {
-
-  &:after  {
-    font-family: "Glyphicons Halflings";
-    content: "\e125";
-  }
-}
-
-.vote.comment {
-  margin-right: 10px;
-  border: none;
+.vote.summary, .vote.reference, .vote.comment {
   &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
