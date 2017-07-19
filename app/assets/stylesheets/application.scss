@@ -18,24 +18,3 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import 'modules/*';
 @import 'partials/*';
-
-body {
-  padding: 5em 1em;
-}
-
-.nav-button-group {
-  margin-top: 4px;
-}
-
-input[placeholder] {
-  text-overflow: ellipsis;
-}
-
-.flash-messages {
-  width: 40%;
-  margin: auto;
-  .alert {
-    margin: 5px 0 0 0;
-  }
-}
-

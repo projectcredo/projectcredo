@@ -7,6 +7,10 @@ body, textarea, input {
   font-style: italic;
 }
 
+input[placeholder] {
+  text-overflow: ellipsis;
+}
+
 .publication {
   text-transform: capitalize;
 }
