@@ -1,7 +1,7 @@
 <script type="text/x-template" id="vote">
   <span>
     <a
-      :class="[{'toggled': this.voteable.voted}, 'vote', voteable.type]"
+      :class="[{'toggled': this.voteable.voted}, 'vote', 'thumbs-up']"
       @click="toggleVote(voteable)"
       v-show="!isLoading"
     >

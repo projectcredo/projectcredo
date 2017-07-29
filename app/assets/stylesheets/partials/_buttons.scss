@@ -54,9 +54,11 @@ a {
   @extend .btn, .action-link
 }
 
-button.comment-vote {
+.comment-vote {
   @extend .btn, .action-link, .btn-xs;
   color: $gray-light;
+  background:none;
+  border: none;
 
   &:before  {
     font-family: "Glyphicons Halflings";
@@ -64,7 +66,7 @@ button.comment-vote {
   }
 }
 
-button.comment-vote.active {
+.comment-vote.clicked {
   color: $link-color;
 }
 
@@ -75,7 +77,7 @@ button.comment-vote.active {
   @extend .btn, .action-link
 }
 
-.vote.summary, .vote.reference, .vote.comment {
+.vote.thumbs-up {
   &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
