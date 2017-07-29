@@ -6,9 +6,7 @@
   }
 
   h1, h2 {
-    border-bottom: 1px solid;
-    border-color: $gray-lighter;
-    margin-bottom: 20px;
+    @extend .header-line;
   }
 
   img {
@@ -16,10 +14,6 @@
       height: auto;
       width: auto\9; /* ie8 */
       margin: 10px;
-  }
-
-  .get-started  {
-  margin-bottom: 600px
   }
 
   @media(max-width:992px){

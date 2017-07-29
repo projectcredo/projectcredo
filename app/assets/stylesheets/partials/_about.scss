@@ -1,0 +1,40 @@
+.large-icons {
+  color: $gray-light;
+  text-align: center;
+
+  &:before {
+    font-family: "Glyphicons Halflings";
+    font-size: 4em;
+    width: 50%;
+  }
+
+  h2 {
+    margin: 10px 0 0 0;
+  } 
+
+  padding: 20px 0 20px 0;
+}
+
+div.curate {
+  @extend .large-icons;
+
+  &:before {
+  content: "\e012";
+  }
+}
+
+div.document {
+  @extend .large-icons;
+
+  &:before {
+    content: "\270f";
+  }
+}
+
+div.share {
+  @extend .large-icons;
+
+  &:before    {
+    content: "\e171";
+  }
+}
