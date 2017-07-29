@@ -14,6 +14,5 @@
 }
 
 .nothing-yet {
-  font-style: italic;
-  color: $gray-light
+  @extend .deemphasized;
 }

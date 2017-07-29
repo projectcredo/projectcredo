@@ -142,30 +142,32 @@
 .list-activity-row {
   margin: 20px 0 20px 0;
 
+  .activity-icons {
+    &:before {
+    font-family: "Glyphicons Halflings";
+    font-size: 2em;
+    width: 50%;    
+    }
+  }
+
   .commented {
-    &:before    {
-      font-family: "Glyphicons Halflings";
+    &:before {
       content: "\e111";
-      font-size: 2em;
-      width: 50%;
+      @extend .activity-icons;
     }
   }
 
   .added {
-    &:before    {
-      font-family: "Glyphicons Halflings";
+    &:before {
       content: "\e142";
-      font-size: 2em;
-      width: 50%;
+      @extend .activity-icons;
     }
   }
 
   .created {
-    &:before    {
-      font-family: "Glyphicons Halflings";
+    &:before {
       content: "\e081";
-      font-size: 2em;
-      width: 50%;
+      @extend .activity-icons;
     }
   }
 

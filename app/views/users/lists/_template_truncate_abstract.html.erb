@@ -2,7 +2,7 @@
   <div>
     <span class="newlines">{{abstract, 250, truncateAbstract | truncate}}</span>
     <button
-      class="btn-link"
+      class="action-link"
       v-if="abstract.length > 250"
       @click.stop.prevent="truncateAbstract = !truncateAbstract"
     >

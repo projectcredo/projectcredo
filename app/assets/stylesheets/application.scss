@@ -16,29 +16,5 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-@import "variables";
-@import 'base/*';
 @import 'modules/*';
-@import 'utilities/*';
-@import 'list_show/*';
-
-body {
-  padding: 5em 1em;
-}
-
-.nav-button-group {
-  margin-top: 4px;
-}
-
-input[placeholder] {
-  text-overflow: ellipsis;
-}
-
-.flash-messages {
-  width: 40%;
-  margin: auto;
-  .alert {
-    margin: 5px 0 0 0;
-  }
-}
-
+@import 'partials/*';

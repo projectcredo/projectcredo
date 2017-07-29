@@ -1,4 +1,4 @@
-<div class="list-show">
+f<div class="list-show">
   <div class="list-section">
     <div class="list-section-h1">
       <div class= "list-title"><%= @list.name %></div>
@@ -69,13 +69,13 @@
         <div class="form-group">
           <div class="col-md-offset-2 col-sm-8">
             <%= f.submit 'Submit', class: "btn btn-primary", method: :patch %>
-            <%= link_to 'cancel', user_list_path(list.owner, list), class: "btn-link" %>
+            <%= link_to 'cancel', user_list_path(list.owner, list), class: "action-link" %>
             <%= if summary.persisted? then link_to 'Delete this summary', user_list_summary_path(list.owner, list, @summary.id), class: "btn btn-danger pull-right", method: :delete, data: {confirm: 'Are you sure you want to delete your summary?'} end %>
           </div>
         </div>
 
         <div class="row">
-          <div class="divider2 col-md-10"></div>
+          <div class="divider-small col-md-10"></div>
           </div>
         <div class="form-group">
           <label class="col-md-2 control-label">Click paper to add a citation to your summary</label>
