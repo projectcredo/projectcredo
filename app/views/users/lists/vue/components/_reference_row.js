@@ -11,6 +11,9 @@ Vue.component("reference-row", {
   computed: {
     hasPaperDetails: function() {
       return this.r.notes.length > 0 || this.r.paper.tag_list.length > 0 || this.r.paper.abstract != null
+    },
+    showReference: function() {
+      return this.editsAllowed || this.r.added_by == '<%= current_user.username %>'
     }
   },
   methods:{
@@ -19,6 +22,9 @@ Vue.component("reference-row", {
     },
     selectReference: function(index) {
       this.$parent.$emit('select-ref', index)
+    },
+    removeReference: function() {
+      this.$emit('remove-ref', index)
     }
   },
   template: '#reference-row'

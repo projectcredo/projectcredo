@@ -20,7 +20,8 @@
       <td>
         <a
           class="hidden-remove"
-          v-if="editsAllowed || r.added_by == '<%= current_user.username %>'"
+          v-if="showReference"
+          @click="removeReference"
         ></a>
       </td>
       <td>
