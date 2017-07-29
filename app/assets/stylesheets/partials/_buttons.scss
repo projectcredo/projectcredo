@@ -75,7 +75,7 @@ button.comment-vote.active {
   @extend .btn, .action-link
 }
 
-.vote.summary, .vote.reference, .vote.comment {
+.vote.thumbs-up {
   &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
