@@ -9,11 +9,11 @@
     </div>
   <% end %>
   <div v-html="displayedListDesc"></div>
-  <button
+  <a
     class="action-link"
     v-if="list.description.length > 350"
     @click.stop="listDescTruncated = !listDescTruncated"
   >
     {{listDescTruncated ? 'see more' : 'see less'}}
-  </button>
+  </a>
 </div>
