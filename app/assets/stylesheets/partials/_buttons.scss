@@ -1,14 +1,20 @@
-.remove-button {
-  @extend .btn-default;
-  @extend .glyphicon;
-  @extend .glyphicon-remove-circle;
-  color: $gray-light;
-  background: none;
+.action-link,
+.action-link:visited,
+.action-link:focus,
+.action-link:hover {
+    color: $dark-color;
+    text-decoration: none;
+    padding: 0;
+    outline:none;
+    &:hover {
+      @extend .toggled;
+    }
 }
 
-.remove-button:hover {
-  background: none;
-  text-decoration: none;
+.action-link-soft {
+  color: $gray-light;
+  font-size: 12px;
+  @extend .btn, .action-link;
 }
 
 .hidden-remove {
@@ -40,32 +46,6 @@
     }
 }
 
-.btn-link,
-.btn-link:visited,
-.btn-link:focus,
-.btn-link:hover {
-    color: $dark-color;
-    text-decoration: none;
-    padding: 0;
-    outline:none;
-    &:hover {
-      color: $primary-color;
-    }
-}
-
-.btn-link-soft,
-.btn-link-soft:visited,
-.btn-link-soft:focus,
-.btn-link-soft:hover {
-    color: $gray-light;
-    text-decoration: none;
-    padding: 0;
-    outline:none;
-    &:hover {
-      color: $primary-color;
-    }
-}
-
 .btn-primary.active,
 .btn-primary.active:hover,
 .btn-primary.active:visited,
@@ -86,13 +66,14 @@ a {
     content: "\e114";
   }
 
-  @extend .btn, .btn-link
+  @extend .btn, .action-link
 }
-/* Buttons for voting */
 
-button.comment-vote {
-  @extend .btn, .btn-link, .btn-xs;
+.comment-vote {
+  @extend .btn, .action-link, .btn-xs;
   color: $gray-light;
+  background:none;
+  border: none;
 
   &:before  {
     font-family: "Glyphicons Halflings";
@@ -100,7 +81,7 @@ button.comment-vote {
   }
 }
 
-button.comment-vote.active {
+.comment-vote.clicked {
   color: $link-color;
 }
 
@@ -108,28 +89,10 @@ button.comment-vote.active {
   text-decoration: none;
   color: $gray-light;
 
-  @extend .btn, .btn-link
+  @extend .btn, .action-link
 }
 
-.vote.summary {
-
-  &:after  {
-    font-family: "Glyphicons Halflings";
-    content: "\e125";
-  }
-}
-
-.vote.reference {
-
-  &:after  {
-    font-family: "Glyphicons Halflings";
-    content: "\e125";
-  }
-}
-
-.vote.comment {
-  margin-right: 10px;
-  border: none;
+.vote.thumbs-up {
   &:after  {
     font-family: "Glyphicons Halflings";
     content: "\e125";
@@ -146,7 +109,7 @@ button.comment-vote.active {
     content: "\e065";
   }
 
-  @extend .btn, .btn-link
+  @extend .btn, .action-link
 }
 
 .form-btns {
@@ -154,7 +117,7 @@ button.comment-vote.active {
   @extend .form-group;
 
   .cancel-link {
-    @extend .btn, .btn-link
+    @extend .btn, .action-link
   }
 
   .submit-btn {
@@ -180,7 +143,7 @@ button.comment-vote.active {
   @extend .btn, .btn-primary, .btn-lg, .pull-right;
 }
 
-.quick-add-toggle{
+.quick-add-toggle {
   margin: 5px 0 5px 0;
 
   &:after  {
@@ -188,23 +151,35 @@ button.comment-vote.active {
     content: "\e142";
     vertical-align: middle;
   }
-  @extend .btn, .btn-link;
-}
-
-//link buttons
-.btn-link2 {
-  color: $gray-light;
-  font-size: 12px;
-  @extend .btn, .btn-link;
+  @extend .btn, .action-link;
 }
 
 .r-cite {
   color: $dark-color;
-  @extend .btn-link2;
+  @extend .action-link-soft;
+}
+
+.remove-button {
+  @extend .btn-default;
+  @extend .glyphicon;
+  @extend .glyphicon-remove-circle;
+  color: $gray-light;
+  background: none;
+}
+
+.remove-button:hover {
+  background: none;
+  text-decoration: none;
 }
 
 a.edit-link {
   color: $gray-light;
   display: inline-block;
-  @extend .btn-link-soft;
+  outline:none;
+  padding: 0;
+  text-decoration: none;
+}
+
+a.edit-link:hover {
+  @extend .toggled;
 }

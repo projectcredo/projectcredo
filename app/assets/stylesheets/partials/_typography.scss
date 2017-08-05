@@ -1,0 +1,16 @@
+body, textarea, input {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.deemphasized {
+  color: $gray-light;
+  font-style: italic;
+}
+
+input[placeholder] {
+  text-overflow: ellipsis;
+}
+
+.publication {
+  text-transform: capitalize;
+}

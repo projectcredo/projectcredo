@@ -1,7 +1,7 @@
 <div class="quick-add">
-  <button class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
+  <a class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
     Quick Add Paper
-  </button>
+  </a>
   <div v-show="showQuickAdd">
     <crossref-search :edits-allowed="editsAllowed"></crossref-search>
     <add-by-locator></add-by-locator>

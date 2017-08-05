@@ -19,7 +19,7 @@ Project Credo is open-source by design, under a GPLv3 license.
 ### Installation
 
 1. Install docker: https://docs.docker.com/engine/installation/
-1. `git clone https://github.com/briankung/projectcredo.git` (or your favorite protocol)
+1. `git clone https://github.com/projectcredo/projectcredo.git` (or your favorite protocol)
 1. `cd` into the directory
 1. Create a `.env` file in the root directory
 1. `docker-compose build` whenever you add a gem - in this case, you'll be installing all of them
