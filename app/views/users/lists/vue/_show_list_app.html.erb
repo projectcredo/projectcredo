@@ -152,20 +152,22 @@
           this.sortOrders[key] = this.sortOrders[key] * -1;
         },
         deleteReference: function(index) {
-          var self = this.filteredData;
-          var params = {
-            reference: {
-              id: self[index].id
-            }
-          };
-          $.ajax({
-            url: "/references/" + self[index].id  + ".json",
-            type: 'DELETE',
-            data: params
-          })
-          .done(function(){
-            self.splice(index,1)
-          })
+          if (confirm('Are you sure you want to remove this paper?')){
+            var self = this.filteredData;
+            var params = {
+              reference: {
+                id: self[index].id
+              }
+            };
+            $.ajax({
+              url: "/references/" + self[index].id  + ".json",
+              type: 'DELETE',
+              data: params
+            })
+            .done(function(){
+              self.splice(index,1)
+            })
+          }
         }
       }
     });
