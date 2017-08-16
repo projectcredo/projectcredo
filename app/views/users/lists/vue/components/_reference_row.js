@@ -23,8 +23,8 @@ Vue.component("reference-row", {
     selectReference: function(index) {
       this.$parent.$emit('select-ref', index)
     },
-    removeReference: function() {
-      this.$emit('remove-ref', index)
+    removeReference: function(index) {
+      this.$parent.$emit('remove-ref', index)
     }
   },
   template: '#reference-row'
