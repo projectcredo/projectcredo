@@ -12,7 +12,7 @@ Vue.component("reference-row", {
     hasPaperDetails: function() {
       return this.r.notes.length > 0 || this.r.paper.tag_list.length > 0 || this.r.paper.abstract != null
     },
-    showReference: function() {
+    showRemove: function() {
       return this.editsAllowed || this.r.added_by == '<%= current_user.username %>'
     }
   },
