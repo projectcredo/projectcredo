@@ -1,6 +1,7 @@
 json.array!(references) do |r|
   json.extract! r, :id, :created_at
   json.type r.class.to_s.downcase
+  json.added_by r.user.username
   json.votes r.cached_votes_up
   json.voted user_signed_in? && current_user.voted_for?(r)
   json.vote_path polymorphic_path([r, :vote])

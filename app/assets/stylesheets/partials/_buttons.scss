@@ -17,6 +17,21 @@
   @extend .btn, .action-link;
 }
 
+.hidden-remove {
+  @extend .glyphicon;
+  @extend .glyphicon-remove-circle;
+  color: $white;
+  text-decoration: none;
+  font-size: 2em;
+  background: none;
+}
+
+.hidden-remove:hover {
+  background: none;
+  color: $primary-color;
+  text-decoration: none;
+}
+
 .btn-primary,
 .btn-primary:visited,
 .btn-primary:active,

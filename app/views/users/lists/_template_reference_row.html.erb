@@ -19,6 +19,13 @@
       </td>
       <td>
         <a
+          class="hidden-remove"
+          v-if="showRemove"
+          @click="removeReference(index)"
+        ></a>
+      </td>
+      <td>
+        <a
           class="show-details"
           :class="{'toggled': showPaperDetails}"
           v-if="hasPaperDetails"
