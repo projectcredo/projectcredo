@@ -3,7 +3,7 @@ class Activity < ApplicationRecord
 
   belongs_to :user
   belongs_to :actable, polymorphic: true
-  belongs_to :addable, polymorphic: true
+  belongs_to :addable, polymorphic: true, dependent: :destroy
 
   has_many :notifications, dependent: :destroy
 
