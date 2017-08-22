@@ -42,21 +42,21 @@
         </a>
       </div>
     </div>
-    <div class="note-btns">
       <vote :voteable="note" :signed-in="signedIn"></vote>
-      <button
+      <span
         v-if="currentUser == note.user"
+        class="action-link"
         @click="note.editNote = !note.editNote"
       >
         edit
-      </button>
-      <button
+      </span>
+      <span
         v-if="editsAllowed"
+        class="action-link"
         @click="deleteNote(note,index)"
       >
         delete
-      </button>
-    </div>
+      </span>
   </div>
   <a
     class="action-link"

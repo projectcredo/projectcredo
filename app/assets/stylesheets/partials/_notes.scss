@@ -7,13 +7,6 @@
   }
 }
 
-.note-btns {
-  > button {
-    margin-right: 8px;
-    @extend .btn-link;
-  }
-}
-
 table.notes-table {
   .note-row {
     height: 70px;
