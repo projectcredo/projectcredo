@@ -50,9 +50,9 @@ class Users::ListsController < ApplicationController
       if @list.update(list_params)
         format.html {
           if remove_current_user
-            redirect_to user_list_path(@list.user, @list), notice: 'List was successfully updated and you have removed yourself as a contributor'
+            redirect_to user_list_path(@list.user, @list), notice: 'Board was successfully updated and you have removed yourself as a contributor'
           else
-            redirect_back(fallback_location: user_list_path(@list.user, @list), notice: 'List was successfully updated.')
+            redirect_back(fallback_location: user_list_path(@list.user, @list), notice: 'Board was successfully updated.')
           end
         }
         format.json { render :show, status: :ok, location: @list }
@@ -65,13 +65,13 @@ class Users::ListsController < ApplicationController
 
   def destroy
     unless current_user == @list.owner
-      return redirect_back(fallback_location: root_path, alert: 'Only the list owner can delete a list.')
+      return redirect_back(fallback_location: root_path, alert: 'Only the board owner can delete a board.')
     end
 
     @list.destroy
 
     respond_to do |format|
-      format.html { redirect_to root_path, notice: 'List was successfully destroyed.' }
+      format.html { redirect_to root_path, notice: 'Board was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -83,7 +83,7 @@ class Users::ListsController < ApplicationController
 
     def set_list
       @list = @user.owned_lists.find_by slug: params[:id]
-      return redirect_back(fallback_location: root_path, alert: "List not found.") unless @list
+      return redirect_back(fallback_location: root_path, alert: "Board not found.") unless @list
     end
 
     def params_sort_order
@@ -105,7 +105,7 @@ class Users::ListsController < ApplicationController
       unless current_user.can_edit? @list
         return redirect_back(
           fallback_location: root_path,
-          alert: 'You must be a contributor to make changes to this list.'
+          alert: 'You must be a contributor to make changes to this board.'
         )
       end
     end
