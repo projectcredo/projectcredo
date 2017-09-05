@@ -29,6 +29,8 @@
       <div class="list-section-h2">
           <% if @list.references.count > 0 %>
             <%= @list.references.count %> Papers
+          <% else %>
+            No Papers Added
           <% end %>
       </div>
       <%= render 'list_quick_add' %>
