@@ -29,6 +29,8 @@
       <div class="list-section-h2">
           <% if @list.references.count > 0 %>
             <%= @list.references.count %> Papers
+          <% else %>
+            No Papers Added
           <% end %>
       </div>
       <%= render 'list_quick_add' %>
@@ -62,13 +64,6 @@
           v-model="filterKey"
           placeholder="Search this board for..."
         ></input>
-      </div>
-    </div>
-
-    <div class="list-section">
-      <div class="list-section-h3">Media Mentions</div>
-      <div class="sidebar-body">
-        Coming Soon
       </div>
     </div>
 
