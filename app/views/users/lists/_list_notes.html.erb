@@ -24,6 +24,7 @@
 </table>
 
 <a
+  v-if="notes.length > 0"
   class="action-link"
   @click.stop="notesShown = (notesShown == 3 ? 10 : 3)"
 >
