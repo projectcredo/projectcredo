@@ -1,8 +1,8 @@
 <div class="list-details">
   <% if @list.access == 'contributors' %>
-   <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this list"> 🔒 </span>
+   <span data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this board"> 🔒 </span>
   <% else %>
-    <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this list"> 🌎 </span>
+    <span data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this board"> 🌎 </span>
   <% end %>
 
   curated by <%= link_to @list.owner.username, user_lists_path(@list.owner) %>

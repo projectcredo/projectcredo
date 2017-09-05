@@ -1,4 +1,4 @@
 <h2><%= link_to @list.name, user_list_path(@list.owner, @list) %></h2>
 created by <%= link_to @list.user.username, user_lists_path(@list.user) %>
 
-<%= render 'lists/form', list: @list, button_name: "Update List" %>
+<%= render 'lists/form', list: @list, button_name: "Update Board" %>

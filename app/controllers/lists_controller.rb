@@ -43,7 +43,7 @@ class ListsController < ApplicationController
           users: @list.members
         )
 
-        format.html { redirect_to user_list_path(@list.owner, @list), notice: 'List was successfully created.' }
+        format.html { redirect_to user_list_path(@list.owner, @list), notice: 'Board was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
         format.html { render :new }

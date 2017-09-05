@@ -55,7 +55,7 @@
       </div>
       <div class="form-group">
         <div class="col-md-2 control-label">
-          <%= f.label :access, 'List Access'%>
+          <%= f.label :access, 'Board Access'%>
         </div>
         <div class="col-md-3"
             data-toggle="popover"
@@ -116,10 +116,10 @@
             name="commit"
             value= <%= button_name %>
             :data-confirm="currentUserRemovedConfirm"
-            data-disable-with="Update List"
+            data-disable-with="Update Board"
           >
           <% if list.persisted? && current_user == list.owner %>
-            <%= link_to 'Delete this list', user_list_path(list.user, list), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you certain you want to delete this?' }
+            <%= link_to 'Delete this board', user_list_path(list.user, list), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you certain you want to delete this?' }
             %>
           <% end %>
           <%= link_to 'cancel',
@@ -182,9 +182,9 @@
         },
         accessDefinition() {
           if (this.isPublic) {
-            return 'Anyone can add and remove their own references.  Public lists allow the greatest amount of participation and collaboration.'
+            return 'Anyone can add and remove their own references.  Public boards allow the greatest amount of participation and collaboration.'
           } else if (this.listAccess == 'contributors') {
-            return 'Only assigned contributors can edit or add references to this list.  This gives contributors full control over referenced papers.'
+            return 'Only assigned contributors can edit or add references to this board.  This gives contributors full control over referenced papers.'
           }
         },
         contributors() {

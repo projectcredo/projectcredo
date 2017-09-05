@@ -50,7 +50,7 @@
     <div class="edit-section">
       <% if current_user %>
         <% if current_user.can_edit? @list %>
-          <%= link_to 'Edit this list', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
+          <%= link_to 'Edit this board', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
        <% end %>
       <% end %>
     </div>
@@ -60,7 +60,7 @@
         <input
           class="pull-right form-control"
           v-model="filterKey"
-          placeholder="Search this list for..."
+          placeholder="Search this board for..."
         ></input>
       </div>
     </div>
