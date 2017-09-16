@@ -28,9 +28,9 @@ Project Credo is open-source by design, under a GPLv3 license.
 
 #### .env file
 
-Your `.env` file will be used for supplying your docker instances with environment variables, and docker won't start without it. One of the important ones is `DOCKER_HOST_IP`, which will tell Rails which IP addresses are allowed to see console and debug output.
+Your `.env` file will be used for supplying your docker instances with environment variables, and docker won't start without it. You can `cp .env.example .env` to start. One of the important ones is `DOCKER_HOST_IP`, which will tell Rails which IP addresses are allowed to see console and debug output.
 
-On Unix-like environments, you can use `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $@` to figure out your IP Address.
+On Unix-like environments, you can use `docker inspect projectcredo_postgres_1 -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $@` to figure out your IP Address. Note: you may need to change the app name from `projectcredo_postgres_1` to match your postgres docker name.
 
 This often results in `DOCKER_HOST_IP=172.18.0.1/16`.
 
