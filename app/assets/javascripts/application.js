@@ -90,6 +90,7 @@ Vue.filter('cite', function(reference) {
   }
   if(reference.paper.publication != null) {
     pub = reference.paper.publication
+    if(pub.length>50) {pub = pub.substring(0,50) + '...'}
   }
   var joinedCitation = $.grep([year, mainAuthor, pub], Boolean).join(", ");
 
