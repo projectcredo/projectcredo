@@ -19,3 +19,70 @@ th {
 th.active {
   color: $brand-primary;
 }
+
+table.notes-table {
+
+  .note-row {
+    height: 70px;
+    td.note-content{
+      padding: 20px;
+      white-space: break-word;
+    }
+  }
+  td.note-vote {
+    padding-top: 20px;
+    vertical-align: top;
+  }
+  .vote.comment {
+    width: 80px;
+    font-size: 18px;
+  }
+}
+
+table.summaries-table {
+  .summary-row {
+    height: 70px;
+    td.summary-content{
+      padding: 20px;
+    }
+    .summary-details{
+      font-size: 14px;
+      color: $gray-light;
+      margin-top: 10px;
+    }
+  }
+  td.evidence-rating {
+    padding-top: 20px;
+    width: 80px;
+    vertical-align: top;
+    font-size: 12px;
+    text-align: center;
+    color: $dark-color;
+    font-weight: bold;
+
+    .icon{
+      &:before  {
+        font-size: 2em;
+        font-family: "FontAwesome";
+      }
+    }
+    .icon.early{
+      &:before  {
+        content: "\f059";
+      }
+    }
+    .icon.mixed{
+      &:before  {
+        content: "\f24e";
+      }
+    }
+    .icon.conclusive{
+      &:before  {
+        content: "\f0e3";
+      }
+    }
+  }
+  .vote.summary {
+    font-size: 14px;
+  }
+}

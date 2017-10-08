@@ -6,20 +6,3 @@
     color: $gray-light;
   }
 }
-
-table.notes-table {
-  .note-row {
-    height: 70px;
-    td.note-content{
-      padding: 20px;
-    }
-  }
-  td.note-vote {
-    padding-top: 20px;
-    vertical-align: top;
-  }
-  .vote.comment {
-    width: 80px;
-    font-size: 18px;
-  }
-}

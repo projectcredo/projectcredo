@@ -84,12 +84,14 @@ Vue.filter('cite', function(reference) {
 
   if(reference.paper.authors.length> 0) {
     mainAuthor = reference.paper.authors[0].family_name
+    if(mainAuthor.length>50) {mainAuthor = mainAuthor.substring(0,50) + '...'}
   }
   if(reference.paper.published_at != null) {
     year = new Date(reference.paper.published_at).getFullYear()
   }
   if(reference.paper.publication != null) {
     pub = reference.paper.publication
+    if(pub.length>50) {pub = pub.substring(0,50) + '...'}
   }
   var joinedCitation = $.grep([year, mainAuthor, pub], Boolean).join(", ");
 
