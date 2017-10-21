@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+include ActivitiesHelper
+
 [Paper, List, Reference, User].each(&:destroy_all)
 
 list_names =[
@@ -39,7 +41,11 @@ papers = [
 
 
 ActiveRecord::Base.transaction do
-  u = User.create(email: 'user@example.com', password: 'password', username: 'testuser')
+  @u = u = User.create(email: 'user@example.com', password: 'password', username: 'testuser')
+
+  def current_user
+    @u
+  end
 
   comments = [
     {content: 'First', user_id: u.id},
