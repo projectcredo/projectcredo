@@ -6,6 +6,7 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <%= stylesheet_pack_tag    'app' %>
     <%= render 'layouts/google_analytics' %>
     <link rel="shortcut icon" href="/favicon.ico?v=3">
     <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
@@ -68,4 +69,5 @@
     <%= console if Rails.env.development? && ENV['CONSOLE_ENABLED'] %>
   </body>
   <%= yield(:page_app) %>
+  <%= javascript_pack_tag 'app' %>
 </html>
