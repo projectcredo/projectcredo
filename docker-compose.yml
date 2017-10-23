@@ -1,6 +1,7 @@
 version: '2'
 services:
   app:
+    container_name: pc_web
     build: .
     #command: rails server -p 3000 -b '0.0.0.0'
     command: foreman start -f Procfile.dev
@@ -15,10 +16,11 @@ services:
       - NODE_ENV=development
       - DOCKERIZED=true
     env_file:
-      - '.env'
+      - ".env"
     tty: true
     stdin_open: true
   postgres:
+    container_name: pc_postgres
     image: postgres:9.5
     ports:
-      - "5432"
+      - "5432:5432"
