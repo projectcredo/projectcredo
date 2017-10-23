@@ -38,10 +38,10 @@ This often results in `DOCKER_HOST_IP=172.18.0.1/16`.
 
 The site's address unfortunately depends on what system you're on. Linux and Mac OS seem to be fine mounting it at `localhost:3000`, but on Windows, we've needed to find the docker container's IP address in order to actually see the site. You may need to figure out what your docker container's IP address is.
 
-### Working with rails inside Docker coinater
+### Working with rails inside Docker container
 
-The development configuration is setup to run in a Docker container, so instead of running commands locally like `bundle` or `rails <command>` you need to prepend them with `docker-compose run app`.
-For example, to add new gems instead of running `bundle` command you need to run: `docker-compose run app bundle`
+The development the project is setup to run in a Docker container, so instead of running commands locally like `bundle` or `rails <command>` you need to prepend them with `docker-compose run app`.
+For example, to add new gems instead of running `bundle` command you need to run: `docker-compose run app bundle`.
 
 
 ### Contributing
