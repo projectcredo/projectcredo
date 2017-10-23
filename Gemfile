@@ -47,7 +47,12 @@ gem 'webpacker', '~> 3.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'rspec-rails', '~> 3.6'
   gem 'minitest-rails', '~> 3.0.0'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'meta_request'
+  gem 'factory_girl_rails'
   gem 'fabrication', '~> 2.16.0'
   gem 'foreman'
 end

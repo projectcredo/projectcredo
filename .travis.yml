@@ -14,4 +14,4 @@ install:
   - npm i -g yarn
   - yarn
   - bundle exec rails webpacker:compile
-script: bundle exec rails db:create db:schema:load db:migrate test
+script: bundle exec rails db:create db:schema:load db:migrate test spec
