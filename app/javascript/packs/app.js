@@ -10,7 +10,9 @@ import Hello from '../components/hello.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(document.createElement('hello'))
-  const app = new Vue(Hello).$mount('hello')
+  // const app = new Vue({
+  //   render: h => h(Hello)
+  // }).$mount('hello')
 
   // console.log(app);
 })
