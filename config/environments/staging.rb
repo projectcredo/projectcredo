@@ -98,7 +98,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.paperclip_defaults = {
-    preserve_files: true,
+    #preserve_files: true,
     storage: :s3,
     s3_region: ENV['AWS_S3_REGION'],
     s3_credentials: {
