@@ -4,8 +4,14 @@ rvm:
 sudo: required
 dist: precise
 addons:
-    postgresql: "9.5"
+  postgresql: "9.5"
 services:
-    - postgresql
-bundler_args: --without development
-script: bundle exec rails db:create db:schema:load db:migrate test
+  - postgresql
+install:
+  - bundle install
+  - nvm install node
+  - node -v
+  - npm i -g yarn
+  - yarn
+  - bundle exec rails webpacker:compile
+script: bundle exec rails db:create db:schema:load db:migrate test spec
