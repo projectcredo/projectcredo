@@ -4,6 +4,8 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+/.idea
+
 .env
 
 # Ignore bundler config.
@@ -20,3 +22,6 @@
 
 .env
 **/.DS_Store
+/public/packs
+/public/packs-test
+/node_modules
