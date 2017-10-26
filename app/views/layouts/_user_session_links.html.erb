@@ -1,8 +1,13 @@
-<ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right" xmlns="http://www.w3.org/1999/html">
   <% if user_signed_in? %>
     <%= render 'layouts/notifications_menu' %>
     <li><%= link_to 'Edit account', edit_user_registration_path %></li>
     <li><%= link_to 'Sign out', destroy_user_session_path, method: 'delete' %></li>
+    <% if current_user.present? && current_user.avatar %>
+      <li>
+        <a href="<%= user_lists_path current_user %>" class="navbar-avatar" title="<%= current_user.username %>"><span><img src="<%= current_user.avatar :thumb %>" alt=""></span></a>
+      </li>
+    <% end %>
   <% else %>
     <li><%= link_to 'Sign in', new_user_session_path %></li>
     <li><%= link_to 'Sign up', new_user_registration_path %></li>
