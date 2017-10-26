@@ -3,7 +3,7 @@
     <%= render 'layouts/notifications_menu' %>
     <li><%= link_to 'Edit account', edit_user_registration_path %></li>
     <li><%= link_to 'Sign out', destroy_user_session_path, method: 'delete' %></li>
-    <% if current_user.present? && current_user.avatar %>
+    <% if current_user.present? && current_user.avatar.present? %>
       <li>
         <a href="<%= user_lists_path current_user %>" class="navbar-avatar" title="<%= current_user.username %>"><span><img src="<%= current_user.avatar :thumb %>" alt=""></span></a>
       </li>

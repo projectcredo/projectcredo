@@ -42,7 +42,7 @@
       <div class="form-group">
         <%= f.label :avatar, 'Avatar Image' %>
         <%= f.file_field :avatar, accept: 'image/png,image/gif,image/jpeg', class: "form-control" %>
-        <% if resource.avatar %>
+        <% if resource.avatar.present? %>
           <div class="form-selected-image">
             <a class="fancy-box" href="<%= resource.avatar :large %>">
               <img src="<%= resource.avatar :thumb %>" alt="">
