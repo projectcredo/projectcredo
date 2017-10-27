@@ -2,7 +2,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
@@ -100,14 +101,49 @@ class User < ApplicationRecord
     username
   end
 
-  private
-
-  def subscribe_user_to_all_users_list
-    if Rails.env.production? && !ENV['IS_REVIEW_APP']
-      gb = Gibbon::Request.new
-      gb.lists(ENV['ALLUSERS_LIST_ID']).members.create(body: {email_address: self.email, status: "subscribed", merge_fields: {USERNAME: self.username}})
+  def self.from_omniauth_facebook(auth)
+    where(facebook_uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
+      # user.avatar = auth.info.image_url # assuming the user model has an image
+      # If you are using confirmable and the provider(s) you use validate emails,
+      # uncomment the line below to skip the confirmation emails.
+      # user.skip_confirmation!
     end
   end
+
+  def self.from_omniauth_google_oauth2(auth)
+    where(google_uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
+      # user.avatar = auth.info.image_url # assuming the user model has an image
+      # If you are using confirmable and the provider(s) you use validate emails,
+      # uncomment the line below to skip the confirmation emails.
+      # user.skip_confirmation!
+    end
+  end
+
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session['devise.facebook_data'] && session['devise.facebook_data']['extra']['raw_info']
+        user.email = data['email'] if user.email.blank?
+        user.username = data['name'].parameterize.underscore if user.username.blank?
+      end
+      if data = session['devise.google_data'] && session['devise.google_data']['extra']['raw_info']
+        user.email = data['email'] if user.email.blank?
+      end
+    end
+  end
+
+  private
+    def subscribe_user_to_all_users_list
+      if Rails.env.production? && !ENV['IS_REVIEW_APP']
+        gb = Gibbon::Request.new
+        gb.lists(ENV['ALLUSERS_LIST_ID']).members.create(body: {email_address: self.email, status: "subscribed", merge_fields: {USERNAME: self.username}})
+      end
+    end
 
   protected
     def confirmation_required?
