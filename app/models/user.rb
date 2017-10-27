@@ -101,24 +101,11 @@ class User < ApplicationRecord
     username
   end
 
-  def self.from_omniauth_facebook(auth)
-    where(facebook_uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
+  def self.from_omniauth(auth)
+    where(email: auth.info.email).first_or_create do |user|
+      # user.password = Devise.friendly_token[0,20]
       user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
-      # user.avatar = auth.info.image_url # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
-    end
-  end
-
-  def self.from_omniauth_google_oauth2(auth)
-    where(google_uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
-      user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
-      # user.avatar = auth.info.image_url # assuming the user model has an image
+      # user.avatar = auth.info.image # assuming the user model has an image
       # If you are using confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
@@ -131,8 +118,10 @@ class User < ApplicationRecord
         user.email = data['email'] if user.email.blank?
         user.username = data['name'].parameterize.underscore if user.username.blank?
       end
-      if data = session['devise.google_data'] && session['devise.google_data']['extra']['raw_info']
-        user.email = data['email'] if user.email.blank?
+
+      if data = session['devise.google_data'] && session['devise.google_data']['info']
+       user.email = data['email'] if user.email.blank?
+       user.username = data['name'].parameterize.underscore if user.username.blank?
       end
     end
   end

@@ -10,7 +10,7 @@
       <%= render 'lists/search_index' %>
       <% if @user.avatar.present? %>
         <div class="userpage-avatar">
-          <a class="fancy-box" href="<%= @user.avatar :large %>">
+          <a class="fancy-box" href="<%= @user.avatar :original %>">
             <img src="<%= @user.avatar :medium %>" alt="">
           </a>
         </div>
