@@ -82,9 +82,9 @@ class User < ApplicationRecord
 
   acts_as_voter
 
-  has_attached_file :avatar, styles: { thumb: '100x100#', medium: '640x640>', large: '2048x2048>', original: '4096x4096>' },
+  has_attached_file :avatar, styles: { thumb: '100x100#', medium: '640x640>', original: '2048x2048>' },
                     :convert_options => { :all => '-quality 75' },
-                    default_url: '/images/:style/missing.png'
+                    default_url: '/images/user/avatar/:style/missing.png'
 
   validates_attachment :avatar,
                        content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
