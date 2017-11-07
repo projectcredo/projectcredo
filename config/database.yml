@@ -87,3 +87,10 @@ production:
   database: projectcredo_production
   username: projectcredo
   password: <%= ENV['PROJECTCREDO_DATABASE_PASSWORD'] %>
+
+
+staging:
+  <<: *default
+  database: projectcredo_staging
+  username: projectcredo
+  password: <%= ENV['PROJECTCREDO_DATABASE_PASSWORD'] %>
