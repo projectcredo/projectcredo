@@ -104,7 +104,7 @@ class User < ApplicationRecord
   def self.from_omniauth(auth)
     password = Devise.friendly_token[0,20]
     user = where(email: auth.info.email).first_or_create do |user|
-      user.password =
+      user.password = password
       user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
       user.avatar = auth.info.image # assuming the user model has an image
       # If you are using confirmable and the provider(s) you use validate emails,
