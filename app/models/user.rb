@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
@@ -102,14 +102,17 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
-    where(email: auth.info.email).first_or_create do |user|
-      # user.password = Devise.friendly_token[0,20]
+    password = Devise.friendly_token[0,20]
+    user = where(email: auth.info.email).first_or_create do |user|
+      user.password =
       user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
-      # user.avatar = auth.info.image # assuming the user model has an image
+      user.avatar = auth.info.image # assuming the user model has an image
       # If you are using confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
+      user.skip_confirmation!
     end
+
+    return user, password
   end
 
   def self.new_with_session(params, session)
@@ -132,10 +135,5 @@ class User < ApplicationRecord
         gb = Gibbon::Request.new
         gb.lists(ENV['ALLUSERS_LIST_ID']).members.create(body: {email_address: self.email, status: "subscribed", merge_fields: {USERNAME: self.username}})
       end
-    end
-
-  protected
-    def confirmation_required?
-      false
     end
 end
