@@ -158,18 +158,3 @@ body.sign-up .sign-up-link{
     background: $secondary-color;
   }
 }
-
-li > a.navbar-avatar  {
-  padding: 5px !important;
-  span {
-    display: block;
-    height: 40px;
-    width: 40px;
-    background-color: white;
-    border: 1px solid #d9d9d9;
-    border-radius: 25px;
-    overflow: hidden;
-    text-align: center;
-  }
-  img { width: 100% }
-}
