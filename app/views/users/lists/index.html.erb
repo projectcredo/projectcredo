@@ -8,6 +8,13 @@
   <div class="row">
     <div class="col-md-3">
       <%= render 'lists/search_index' %>
+      <% if @user.avatar.present? %>
+        <div class="userpage-avatar">
+          <a class="fancy-box" href="<%= @user.avatar :large %>">
+            <img src="<%= @user.avatar :medium %>" alt="">
+          </a>
+        </div>
+      <% end %>
       <%= render 'lists/new_list_btn' %>
       <%= render 'lists/index_filters' %>
     </div>
