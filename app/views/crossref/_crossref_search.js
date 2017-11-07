@@ -41,7 +41,7 @@ var crossrefSearch = Vue.component('crossref-search', {
     }
   },
   filters: {
-    stripUrl(doiUrl) {
+    stripUrl: function (doiUrl) {
       return doiUrl.replace('http://dx.doi.org/', '')
     }
   }
