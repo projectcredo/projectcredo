@@ -3,6 +3,7 @@
   <% url = if list.persisted? then user_list_path(list.owner, list) else lists_path end  %>
 
   <%= form_for(list, url: url) do |f| %>
+
     <% if list.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
@@ -10,215 +11,36 @@
         <ul>
           <% list.errors.full_messages.each do |message| %>
             <li><%= message %></li>
-        <% end %>
+          <% end %>
         </ul>
       </div>
     <% end %>
 
-    <div class="form-horizontal">
-      <div class="form-group">
-        <%= f.label :name, class: "col-md-2 control-label" %>
-        <div class="col-md-10">
-          <%= f.text_field :name, class: "form-control" %>
-        </div>
-      </div>
-      <membership
-        v-for="contributor in contributors"
-        :username="contributor.username"
-      ></membership>
+    <div id="lists_form"></div>
 
-      <div class="form-group">
-        <%= f.label :description, class: "col-md-2 control-label" %>
-        <div class="col-md-10">
-          <%= f.text_area :description, class: "form-control", rows: 5 %>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-md-2 control-label">
-          <%= f.label :tag_list, 'Tags'%>
-          <p><small>(separated by commas)</small></p>
-        </div>
-        <div class="col-md-10">
-          <%= f.text_field :tag_list, value: list.tag_list.join(", "), class: "form-control", placeholder: 'Ex: biology, chemistry, physics' %>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-2 control-label">
-          Owner
-        </label>
-        <div class="col-md-3">
-          <div class="form-control contributor-list">
-            <a :href="'/'+owner" >{{ owner }}</a>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-md-2 control-label">
-          <%= f.label :access, 'Board Access'%>
-        </div>
-        <div class="col-md-3"
-            data-toggle="popover"
-            data-placement="right"
-            data-trigger="hover"
-            v-bind:data-content="accessDefinition">
-          <select
-            name="list[access]"
-            id="list_access"
-            class="form-control"
-            :disabled="!canModerate"
-            v-model= "listAccess"
-          >
-            <option value="public">🌎 Public</option>
-            <option value="contributors">🔒 Contributors</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group" v-if="!isPublic">
-        <label class="col-md-2">
-          <div class="control-label">Contributors</div>
-        </label>
-
-        <div class="col-md-3">
-          <select
-            class="form-control contributor-list"
-            :disabled="!canModerate || isPublic"
-            v-model="selected"
-            @change="addMember"
-            v-if="canModerate"
-          >
-            <option value="">Add Contributor</option>
-            <option
-              v-for="nonMember in nonMembers"
-              :value="nonMember"
-              v-text="nonMember.username"
-            >
-            </option>
-          </select>
-          <member
-            class="form-control contributor-list"
-            v-for="contributor in contributors"
-            :disabled="isPublic"
-            :user="contributor"
-            :can-moderate="canModerate"
-            :current-user="currentUser"
-            @remove="removeMember(contributor)"
-          >
-          </member>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <input
-            type="submit"
-            class="btn btn-primary"
-            name="commit"
-            value= <%= button_name %>
-            :data-confirm="currentUserRemovedConfirm"
-            data-disable-with="Update Board"
-          >
-          <% if list.persisted? && current_user == list.owner %>
-            <%= link_to 'Delete this board', user_list_path(list.user, list), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you certain you want to delete this?' }
-            %>
-          <% end %>
-          <%= link_to 'cancel',
-            if list.id then user_list_path(list.user, list) else root_path end
-          %>
-        </div>
-      </div>
     </div>
   <% end %>
+
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-10">
+      <% if list.persisted? && current_user == list.owner %>
+        <%= link_to 'Delete this board', user_list_path(list.user, list), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you certain you want to delete this?' }
+        %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <% content_for(:page_app) do %>
   <script>
-    Vue.component("member", {
-      props: ["user", "canModerate", "currentUser"],
-      computed: {
-        canRemove: function() {
-          return this.currentUser == this.username || this.canModerate
-        }
-      },
-      template: `
-        <div>
-          <a :href="'/'+user.username">{{ user.username }}</a>
-          <span
-            class="btn-icon remove-button pull-right"
-            type="button"
-            v-if="canRemove"
-            @click="$emit('remove')"
-          ></span>
-        </div>
-      `
-    })
-
-    Vue.component('membership', {
-      props: ["username"],
-      template: `
-        <div>
-          <input
-            type="hidden"
-            :value="username"
-            :name="'list[list_members][]'"
-          >
-        </div>
-      `
-    })
-
-    var editList = new Vue({
-      el: '#list-edit',
-      data: {
-        selected: '',
-        listAccess: '',
-        currentUser: '',
-        canModerate: false,
-        owner: '',
-        allUsers: []
-      },
-      computed: {
-        isPublic() {
-          return this.listAccess == "public"
-        },
-        accessDefinition() {
-          if (this.isPublic) {
-            return 'Anyone can add and remove their own references.  Public boards allow the greatest amount of participation and collaboration.'
-          } else if (this.listAccess == 'contributors') {
-            return 'Only assigned contributors can edit or add references to this board.  This gives contributors full control over referenced papers.'
-          }
-        },
-        contributors() {
-          return this.allUsers.filter(member => member.role == 'contributor')
-        },
-        nonMembers() {
-          return this.allUsers.filter(member => member.role == 'nonmember')
-        },
-        currentUserRemovedConfirm() {
-          if (!this.nonMembers.some(member => member.username == this.currentUser) || this.currentUser == this.owner) {
-            return null
-          } else {
-            return "Are you sure you want to remove yourself as a contributor?"
-          }
-        }
-      },
-      methods: {
-        addMember() {
-          if(this.selected != '') {
-            this.selected.role = 'contributor'
-            this.selected = ''
-          }
-        },
-        removeMember(member) {
-          member.role = 'nonmember';
-        }
-      }
-    })
-
-    editList.allUsers = <%= raw render('lists/all_users.json', list: @list) %>
-    editList.currentUser = '<%= current_user.username %>'
-    editList.canModerate = <%= (if @list.persisted? then current_user.can_edit?(@list) else true end) %>
-    editList.listAccess = '<%= @list.access %>'
-    editList.owner = '<%= (if @list.persisted? then @list.owner.username else current_user.username end) %>'
-    editList.$mount('#list-edit')
+    window.listsFormProps = {
+      list: <%= list.to_json.html_safe %>,
+      buttonName: '<%= button_name %>',
+      currentUser: "<%= current_user.username %>",
+      canModerate: <%= (if @list.persisted? then current_user.can_edit?(@list) else true end) %>,
+      owner: '<%= (if @list.persisted? then @list.owner.username else current_user.username end) %>',
+      allUsers: <%= raw render('lists/all_users.json', list: @list) %>,
+      cancelLink: '<%= if list.id then user_list_path(list.user, list) else root_path end %>',
+    }
   </script>
 <% end %>

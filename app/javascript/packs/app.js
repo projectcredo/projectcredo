@@ -7,17 +7,7 @@
 
 import '../legacy/general'
 
-import Vue from 'vue'
-import Hello from '../components/hello.vue'
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.appendChild(document.createElement('hello'))
-  // const app = new Vue({
-  //   render: h => h(Hello)
-  // }).$mount('hello')
-
-  // console.log(app);
-})
+import '../instances/lists-form'
 
 
 // The above code uses Vue without the compiler, which means you cannot
