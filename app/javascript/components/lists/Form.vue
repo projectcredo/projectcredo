@@ -67,20 +67,25 @@
         <div class="control-label">Contributors</div>
       </label>
 
-      <div class="col-md-3">
-        <select class="form-control contributor-list"
-                :disabled="! canModerate || isPublic"
-                @change="addMember"
-                v-if="canModerate"
+      <div class="col-md-6">
+        <multiselect v-model="form.contributors"
+                     :internal-search="false"
+                     :limit="8"
+                     :limit-text="limitText"
+                     track-by="id"
+                     label="username"
+                     placeholder="Select Contributors"
+                     :options="loadedContributors"
+                     :multiple="true"
+                     :searchable="true"
+                     :loading="loadingContributors"
+                     @search-change="searchContributors"
         >
-          <option value="">Add Contributor</option>
-          <option v-for="nonMember in nonMembers"
-                  :value="nonMember.username"
-                  v-text="nonMember.username"
-          >
-          </option>
-        </select>
-
+          <template slot="option" slot-scope="props">
+            <img class="multiselect-avatar" width="30" height="30" :src="props.option.avatar"> {{ props.option.username }}
+          </template>
+        </multiselect>
+        <input type="hidden" name="list[list_members][]" :value="contributor.username" v-for="contributor in form.contributors">
       </div>
     </div>
 
@@ -101,20 +106,27 @@
 </template>
 
 <script>
+  import axios from '../../services/axios'
+  import debounce from 'debounce-promise'
+
   export default {
 
-    props: ['list', 'buttonName', 'currentUser', 'canModerate', 'owner', 'allUsers', 'cancelLink'],
+    props: ['list', 'buttonName', 'currentUser', 'canModerate', 'owner', 'contributors', 'allUsers', 'cancelLink', 'contributorsSearchLink'],
 
     data() {
       return {
+        loadedContributors: [],
+        loadingContributors: false,
         form: {
           access: null,
+          contributors: [],
         },
       }
     },
 
     created() {
       this.form = this.list;
+      this.form.contributors = this.contributors
     },
 
     computed: {
@@ -129,10 +141,6 @@
         } else if (this.form.access === 'contributors') {
           return 'Only assigned contributors can edit or add references to this board.  This gives contributors full control over referenced papers.'
         }
-      },
-
-      contributors() {
-        return this.allUsers.filter(member => member.role == 'contributor')
       },
 
       nonMembers() {
@@ -151,12 +159,26 @@
 
     methods: {
 
-      addMember() {
-        // Todo
+      searchContributors (query) {
+        if (query === '') {
+          return
+        }
+        this.loadingContributors = true;
+
+        debounce((query) => axios.get(this.contributorsSearchLink, {params: {query}}), 400)(query)
+          .catch((e) => {
+            console.error(e)
+            return []
+          })
+          .then(response => {
+            this.loadedContributors = response.data
+            this.loadingContributors = false
+          })
+
       },
 
-      removeMember(member) {
-        // Todo
+      limitText (count) {
+        return `and ${count} other users`
       },
 
     }

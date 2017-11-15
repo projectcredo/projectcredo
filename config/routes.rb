@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     resources :members, only: :destroy, controller: 'lists/members'
   end
 
+  get 'lists/form_contributors(/:list_id)' => 'lists#form_contributors', as: :list_form_contributors
+
   resources :references do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
   end
