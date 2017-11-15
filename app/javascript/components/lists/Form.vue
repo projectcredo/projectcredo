@@ -129,6 +129,10 @@
       this.form.contributors = this.contributors
     },
 
+    mounted () {
+      jQuery('[data-toggle="popover"]').popover();
+    },
+
     computed: {
 
       isPublic() {
