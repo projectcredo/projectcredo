@@ -14,6 +14,19 @@ class User < ApplicationRecord
             uniqueness: {case_sensitive: false},
             format: {with: /\A[\p{N}\p{L}_]{3,}\z/}
 
+  before_save { self.email.downcase! if self.email }
+  after_create :create_homepage
+  after_create :subscribe_user_to_all_users_list
+
+  acts_as_voter
+
+  has_attached_file :avatar, styles: { thumb: '100x100#', medium: '640x640>', original: '2048x2048>' },
+                    :convert_options => { :all => '-quality 75' },
+                    default_url: '/images/user/avatar/:style/missing.png'
+
+  validates_attachment :avatar,
+                       content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+
   has_one :homepage, dependent: :destroy
 
   has_many :authored_lists, class_name: 'List'
@@ -45,49 +58,74 @@ class User < ApplicationRecord
     list.list_memberships.find_by(user: self)
   end
 
+
   def can_moderate? list
     membership = membership_for list
     membership && membership.can_moderate?
   end
+
 
   def can_edit? list
     membership = membership_for list
     membership && membership.can_edit?
   end
 
+
   def can_view? list
     membership = membership_for list
     membership && membership.can_view?
   end
 
+
   def visible_lists
     List.visible_to(self)
   end
+
 
   def owned_lists
     lists.where('list_memberships.role' => :owner).distinct
   end
 
+
   def role(list)
     ListMembership.find_by(list: list, user: self).role
   end
+
 
   def unread_notifications
     notifications.where(has_read: false)
   end
 
-  before_save { self.email.downcase! if self.email }
-  after_create :create_homepage
-  after_create :subscribe_user_to_all_users_list
 
-  acts_as_voter
+  # Update record attributes, requires :current_password when password provided
+  #
+  # This method also rejects the password field if it is blank (allowing
+  # users to change relevant information like the e-mail without changing
+  # their password). In case the password field is rejected, the confirmation
+  # is also rejected as long as it is also blank.
+  def update_with_password(params, *options)
+    current_password = params.delete(:current_password)
 
-  has_attached_file :avatar, styles: { thumb: '100x100#', medium: '640x640>', original: '2048x2048>' },
-                    :convert_options => { :all => '-quality 75' },
-                    default_url: '/images/user/avatar/:style/missing.png'
+    if params[:password].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation) if params[:password_confirmation].blank?
+      update_attributes(params, *options)
+      return true
+    end
 
-  validates_attachment :avatar,
-                       content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+    result = if valid_password?(current_password)
+      update_attributes(params, *options)
+    else
+      self.assign_attributes(params, *options)
+      self.valid?
+      self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+      false
+    end
+
+    clean_up_passwords
+    result
+  end
+
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -97,9 +135,11 @@ class User < ApplicationRecord
     super(conditions)
   end
 
+
   def to_param
     username
   end
+
 
   def self.from_omniauth(auth)
     password = Devise.friendly_token[0,20]
@@ -117,6 +157,7 @@ class User < ApplicationRecord
     return user, password, user_created
   end
 
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session['devise.facebook_data'] && session['devise.facebook_data']['extra']['raw_info']
@@ -131,7 +172,9 @@ class User < ApplicationRecord
     end
   end
 
+
   private
+
     def subscribe_user_to_all_users_list
       if Rails.env.production? && !ENV['IS_REVIEW_APP']
         gb = Gibbon::Request.new

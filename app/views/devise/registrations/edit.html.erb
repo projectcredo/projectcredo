@@ -22,7 +22,7 @@
       <% end %>
 
       <div class="form-group">
-        <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+        <%= f.label :current_password %> <i>(required only when updating your current password)</i><br />
         <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
       </div>
 
@@ -42,13 +42,16 @@
       <div class="form-group">
         <%= f.label :avatar, 'Avatar Image' %>
         <%= f.file_field :avatar, accept: 'image/png,image/gif,image/jpeg', class: "form-control" %>
-        <% if resource.avatar.present? %>
           <div class="form-selected-image">
-            <a class="fancy-box" href="<%= resource.avatar :original %>">
-              <img src="<%= resource.avatar :thumb %>" alt="">
-            </a>
+            <% if resource.avatar.present? %>
+              <a class="fancy-box" href="<%= resource.avatar :original %>">
+                <img src="<%= resource.avatar :thumb %>" alt="">
+              </a>
+              <div><a href="<%= users_remove_avatar_path %>">Remove</a></div>
+            <% else %>
+              <img id="user_avatar_preview" src="<%= resource.avatar :thumb %>" alt="" style="display: none;">
+            <% end %>
           </div>
-        <% end %>
       </div>
 
       <div class="form-group text-right">
