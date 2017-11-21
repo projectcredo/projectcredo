@@ -4,11 +4,8 @@
     <title><%= "Project Credo#{' | ' if @title}#{@title}" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-    <% if Rails.env.production? %>
-      <%= stylesheet_pack_tag 'app' %>
-    <% end %>
+    <%= stylesheet_pack_tag 'app' unless Rails.env.development? %>
     <%= render 'layouts/google_analytics' %>
     <link rel="shortcut icon" href="/favicon.ico?v=3">
     <%= tag :meta, property: "og:site_name", content: "Project Credo" %>

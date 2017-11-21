@@ -11,10 +11,30 @@
  * It is generally better to create a new file per style scope.
  */
 
-@import "bootstrap-sprockets";
-@import "bootstrap";
-@import "font-awesome-sprockets";
-@import "font-awesome";
+@import 'variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import '~font-awesome/scss/font-awesome';
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-@import 'modules/*';
-@import 'partials/*';
+
+@import 'partials/about';
+@import 'partials/buttons';
+@import 'partials/comment';
+@import 'partials/flash_messages';
+@import 'partials/form';
+@import 'partials/how_to';
+@import 'partials/images';
+@import 'partials/list';
+@import 'partials/modal';
+@import 'partials/navbar';
+@import 'partials/notes';
+@import 'partials/notifications';
+@import 'partials/paper';
+@import 'partials/reference';
+@import 'partials/sidebar';
+@import 'partials/spacing';
+@import 'partials/spinner';
+@import 'partials/splash';
+@import 'partials/summaries';
+@import 'partials/table';
+@import 'partials/tag';
+@import 'partials/typography';

@@ -5,6 +5,8 @@
 // like app/views/layouts/application.html.erb.
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
+import '../stylesheets/application.scss'
+
 import '../legacy/general'
 
 import '../instances/lists-form'

@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-sprockets
 //= require_tree .
 
 // debounce stolen from Underscore.js 1.8.3

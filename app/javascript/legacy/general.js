@@ -1,5 +1,7 @@
 import '@fancyapps/fancybox'
 import '@fancyapps/fancybox/dist/jquery.fancybox.css'
+import 'bootstrap-sass'
+
 
 /*
  * Lightbox
