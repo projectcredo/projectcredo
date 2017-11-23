@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20171107113110) do
     t.string   "slug"
     t.integer  "visibility",      default: 30, null: false
     t.integer  "access",          default: 30, null: false
-    t.index ["cached_votes_up", "created_at"], name: "index_lists_on_cached_votes_up_and_created_at", order: {"cached_votes_up"=>:desc, "created_at"=>:desc}, using: :btree
+    t.index ["cached_votes_up", "created_at"], name: "index_lists_on_cached_votes_up_and_created_at", order: { cached_votes_up: :desc, created_at: :desc }, using: :btree
     t.index ["slug"], name: "index_lists_on_slug", using: :btree
     t.index ["user_id", "name"], name: "index_lists_on_user_id_and_name", using: :btree
     t.index ["user_id"], name: "index_lists_on_user_id", using: :btree
@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 20171107113110) do
     t.integer  "list_id",                     null: false
     t.integer  "paper_id",                    null: false
     t.integer  "user_id"
-    t.index ["cached_votes_up", "created_at"], name: "index_references_on_cached_votes_up_and_created_at", order: {"cached_votes_up"=>:desc, "created_at"=>:desc}, using: :btree
+    t.index ["cached_votes_up", "created_at"], name: "index_references_on_cached_votes_up_and_created_at", order: { cached_votes_up: :desc, created_at: :desc }, using: :btree
     t.index ["list_id", "paper_id"], name: "index_references_on_list_id_and_paper_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_references_on_user_id", using: :btree
   end

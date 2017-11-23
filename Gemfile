@@ -54,7 +54,7 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'meta_request'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'fabrication', '~> 2.16.0'
   gem 'foreman'
 end

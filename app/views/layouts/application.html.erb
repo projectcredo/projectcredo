@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= javascript_include_tag 'application' %>
-    <%= stylesheet_pack_tag 'app' unless Rails.env.development? %>
+    <%= stylesheet_pack_tag 'app' if Rails.env.production? %>
     <%= render 'layouts/google_analytics' %>
     <link rel="shortcut icon" href="/favicon.ico?v=3">
     <%= tag :meta, property: "og:site_name", content: "Project Credo" %>
