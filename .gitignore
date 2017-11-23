@@ -24,4 +24,6 @@
 **/.DS_Store
 /public/packs
 /public/packs-test
+/public/system
+/public/assets
 /node_modules
