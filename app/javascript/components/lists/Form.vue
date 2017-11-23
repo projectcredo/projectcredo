@@ -4,16 +4,14 @@
     <div class="form-group">
       <label for="input_name" class="col-md-2 control-label">Name</label>
       <div class="col-md-10">
-        <input id="input_name" type="text" name="name" :value="list.name" class="form-control">
+        <input id="input_name" type="text" name="list[name]" v-model="form.name" class="form-control">
       </div>
     </div>
-
-    <input type="hidden" :value="contributor.username" :name="'list[list_members][]'" v-for="contributor in contributors">
 
     <div class="form-group">
       <label for="input_description" class="col-md-2 control-label">Description</label>
       <div class="col-md-10">
-        <textarea name="description" id="input_description" rows="5" class="form-control">{{ list.description }}</textarea>
+        <textarea name="list[description]" id="input_description" rows="5" class="form-control" v-model="form.description"></textarea>
       </div>
     </div>
 
@@ -25,7 +23,7 @@
         </p>
       </div>
       <div class="col-md-10">
-        <input id="tags_input" type="text" name="tags" :value="list.tags" class="form-control"
+        <input id="tags_input" type="text" name="list[tags]" v-model="form.tags" class="form-control"
                placeholder="Ex: biology, chemistry, physics">
       </div>
     </div>
@@ -68,7 +66,8 @@
       </label>
 
       <div class="col-md-6">
-        <multiselect v-model="form.contributors"
+        <multiselect :value="form.contributors"
+                     @input="onChangeContributors"
                      :internal-search="false"
                      :limit="8"
                      :limit-text="limitText"
@@ -118,6 +117,9 @@
         loadedContributors: [],
         loadingContributors: false,
         form: {
+          name: '',
+          tags: '',
+          description: '',
           access: null,
           contributors: [],
         },
@@ -125,7 +127,7 @@
     },
 
     created() {
-      this.form = this.list;
+      this.form = Object.assign({}, this.list);
       this.form.contributors = this.contributors
     },
 
@@ -179,6 +181,11 @@
             this.loadingContributors = false
           })
 
+      },
+
+      onChangeContributors (values) {
+        this.form.contributors = values
+        this.$forceUpdate()
       },
 
       limitText (count) {
