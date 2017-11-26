@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get '/users/remove-avatar' => 'auth/registrations#remove_avatar'
+    get '/users/remove-attachment/:type' => 'auth/registrations#remove_attachment', :as => :users_remove_attachment
   end
 
   resources :papers, only: [:show, :edit, :update] do

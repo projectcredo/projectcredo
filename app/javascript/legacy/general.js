@@ -14,11 +14,19 @@ jQuery(function ($) {
  * Image preview on profile edit page
  */
 jQuery(function ($) {
-  $('#user_avatar').change(function () {
-    if (! this.files || ! this.files[0]) return;
+  $('.form-image-group input').change(function () {
+    if (!this.files || !this.files[0]) return
+    var $group = $(this).closest('.form-image-group')
+    var $image = $group.find('.form-image-preview')
+    var $link = $image.parent('a')
+
+    console.log($group, $image)
 
     var reader = new FileReader()
-    reader.onload = (e) => $('#user_avatar_preview').attr('src', e.target.result).show();
-    reader.readAsDataURL(this.files[0]);
+    reader.onload = (e) => {
+      $image.attr('src', e.target.result).show()
+      if ($link.length) $link.attr('href', e.target.result)
+    }
+    reader.readAsDataURL(this.files[0])
   });
 })

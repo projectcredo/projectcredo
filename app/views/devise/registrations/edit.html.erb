@@ -1,63 +1,120 @@
 <h2>Edit Your Account</h2>
 <hr>
 
-<div class="row">
-  <div class="col-md-8 col-md-push-2">
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <%= devise_error_messages! %>
 
-      <div class="form-group">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, class: "form-control" %>
-      </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <fieldset>
+        <legend>Basic Data</legend>
 
-      <div class="form-group">
-        <%= f.label :username %><br />
-        <%= f.text_field :username, class: "form-control" %>
-      </div>
+        <div class="form-group">
+          <%= f.label :email %>
+          <%= f.email_field :email, autofocus: true, class: 'form-control' %>
+        </div>
 
-      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-      <% end %>
+        <div class="form-group">
+          <%= f.label :username %>
+          <%= f.text_field :username, class: 'form-control' %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :current_password %> <i>(required only when updating your current password)</i><br />
-        <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-        <% if @minimum_password_length %>
-          <em><%= @minimum_password_length %> characters minimum</em>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
         <% end %>
-      </div>
 
-      <div class="form-group">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
-      </div>
+      </fieldset>
 
-      <div class="form-group">
-        <%= f.label :avatar, 'Avatar Image' %>
-        <%= f.file_field :avatar, accept: 'image/png,image/gif,image/jpeg', class: "form-control" %>
+      <fieldset class="m-t-40">
+        <legend>Password</legend>
+
+        <div class="form-group">
+          <%= f.label :current_password %> <i>(required only when updating your current password)</i>
+          <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
+          <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+          <% if @minimum_password_length %>
+            <em><%= @minimum_password_length %> characters minimum</em>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+        </div>
+
+      </fieldset>
+    </div>
+    <div class="col-sm-6">
+      <fieldset>
+        <legend>Profile Data</legend>
+
+        <div class="form-group">
+          <%= f.label :about, 'About Me' %>
+          <%= f.text_field :about, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :country %>
+          <%= f.text_field :country, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :city %>
+          <%= f.text_field :city, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :website %>
+          <%= f.text_field :website, class: 'form-control' %>
+        </div>
+
+      </fieldset>
+
+      <fieldset class="m-t-40">
+        <legend>Attachments</legend>
+
+        <div class="form-group form-image-group">
+          <%= f.label :avatar, 'Avatar Image' %>
+          <%= f.file_field :avatar, accept: 'image/png,image/gif,image/jpeg', class: 'form-control' %>
           <div class="form-selected-image">
             <% if resource.avatar.present? %>
               <a class="fancy-box" href="<%= resource.avatar :original %>">
-                <img src="<%= resource.avatar :thumb %>" alt="">
+                <img class="form-image-preview" src="<%= resource.avatar :thumb %>" alt="">
               </a>
-              <div><a href="<%= users_remove_avatar_path %>">Remove</a></div>
+              <div><a href="<%= users_remove_attachment_path :avatar %>">Remove</a></div>
             <% else %>
-              <img id="user_avatar_preview" src="<%= resource.avatar :thumb %>" alt="" style="display: none;">
+              <img class="form-image-preview" src="<%= resource.avatar :thumb %>" alt="" style="display: none;">
             <% end %>
           </div>
-      </div>
+        </div>
 
-      <div class="form-group text-right">
-        <%= f.submit "Update", class: "btn btn-primary" %>
-      </div>
-    <% end %>
+        <div class="form-group form-image-group">
+          <%= f.label :cover, 'Profile Page Cover Image' %>
+          <%= f.file_field :cover, accept: 'image/png,image/gif,image/jpeg', class: 'form-control' %>
+          <div class="form-selected-image">
+            <% if resource.cover.present? %>
+              <a class="fancy-box" href="<%= resource.cover :original %>">
+                <img class="form-image-preview" src="<%= resource.cover :thumb %>" alt="">
+              </a>
+              <div><a href="<%= users_remove_attachment_path :cover %>">Remove</a></div>
+            <% else %>
+              <img class="form-image-preview" src="<%= resource.cover :thumb %>" alt="" style="display: none;">
+            <% end %>
+          </div>
+        </div>
+
+      </fieldset>
+
+    </div>
 
   </div>
-</div>
+
+  <div class="form-group text-right">
+    <%= f.submit "Update", class: "btn btn-primary" %>
+  </div>
+<% end %>

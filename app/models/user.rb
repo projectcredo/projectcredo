@@ -24,7 +24,14 @@ class User < ApplicationRecord
                     :convert_options => { :all => '-quality 75' },
                     default_url: '/images/user/avatar/:style/missing.png'
 
+  has_attached_file :cover, styles: { thumb: '100x100#', original: '1920x350#' },
+                    :convert_options => { :all => '-quality 75' },
+                    default_url: '/images/user/cover/:style/missing.jpg'
+
   validates_attachment :avatar,
+                       content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+
+  validates_attachment :cover,
                        content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
 
   has_one :homepage, dependent: :destroy
