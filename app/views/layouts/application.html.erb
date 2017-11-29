@@ -65,9 +65,13 @@
           <%= content_tag(:div, render('layouts/alert_message', message: alert), class: "alert alert-danger") if alert %>
         </div>
       <% end %>
-      <div class="container<%= '-fluid' if @full_width %>">
+      <% if @no_container %>
         <%= yield %>
-      </div>
+      <% else %>
+        <div class="container<%= '-fluid' if @full_width %>">
+          <%= yield %>
+        </div>
+      <% end %>
     </div>
     <%= console if Rails.env.development? && ENV['CONSOLE_ENABLED'] %>
   </body>

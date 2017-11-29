@@ -1,35 +1,60 @@
 <%
   @title = "#{@user.username}'s boards"
-  @full_width = false
-  @body_class = "list-index"
+  @no_container = true
+  @body_class = 'list-index'
 %>
 
-<div id="search-lists">
-  <div class="row">
-    <div class="col-md-3">
-      <%= render 'lists/search_index' %>
-      <% if @user.avatar.present? %>
-        <div class="userpage-avatar">
-          <a class="fancy-box" href="<%= @user.avatar :original %>">
-            <img src="<%= @user.avatar :medium %>" alt="">
-          </a>
+<div class="user-profile-heading">
+  <div class="uph-cover" style="background-image: url(<%= @user.cover :cover %>)"></div>
+  <div class="container">
+    <div class="uph-info">
+      <div class="uph-avatar">
+        <img src="<%= @user.avatar :medium %>" alt="">
+      </div>
+      <h2 class="uph-username">
+        <%= @user.full_name.blank? ? @user.username : @user.full_name %>
+      </h2>
+      <div class="uph-infoline">
+        <%= @user.about %>
+      </div>
+      <% if not @user.location.blank? %>
+        <div class="uph-infoline">
+          <i class="fa fa-map-marker"></i> <%= @user.location %>
         </div>
       <% end %>
-      <%= render 'lists/new_list_btn' %>
-      <%= render 'lists/index_filters' %>
+      <% if not @user.website.blank? %>
+        <div class="uph-infoline">
+          <i class="fa fa-globe"></i> <a href="<%= @user.website %>"><%= @user.website %></a>
+        </div>
+      <% end %>
+      <div class="uph-infoline">
+        <i class="fa fa-clock-o"></i> contributor since <%= @user.created_at.to_s(:month_and_year) %>
+      </div>
     </div>
-    <div class="col-md-9">
-      <h1>
-        <span><%= "#{@user.username}'s" %> Boards</span>
-        <small>sorted by popularity</small>
-      </h1>
+  </div>
+</div>
 
-      <div v-for="result in showResults">
-        <list-card
+<div class="container">
+  <div id="search-lists">
+    <div class="row">
+      <div class="col-md-3">
+        <%= render 'lists/search_index' %>
+        <%= render 'lists/new_list_btn' %>
+        <%= render 'lists/index_filters' %>
+      </div>
+      <div class="col-md-9">
+        <h1>
+          <span><%= "#{@user.username}'s" %> Boards</span>
+          <small>sorted by popularity</small>
+        </h1>
+
+        <div v-for="result in showResults">
+          <list-card
           :list="result"
           :signed-in="signedIn"
-        >
-        </list-card>
+          >
+          </list-card>
+        </div>
       </div>
     </div>
   </div>

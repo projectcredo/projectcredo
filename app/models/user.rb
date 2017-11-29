@@ -22,7 +22,7 @@ class User < ApplicationRecord
 
   has_attached_file :avatar, styles: { thumb: '100x100#', medium: '640x640>', original: '2048x2048>' },
                     :convert_options => { :all => '-quality 75' },
-                    default_url: '/images/user/avatar/:style/missing.png'
+                    default_url: '/images/user/avatar/:style/missing.jpg'
 
   has_attached_file :cover, styles: { thumb: '100x100#', cover: '1920x350#', original: '3840x2160>' },
                     :convert_options => { :all => '-quality 75' },
@@ -145,6 +145,19 @@ class User < ApplicationRecord
 
   def to_param
     username
+  end
+
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+
+  def location
+    location = []
+    if not city.blank? then location.push(city) end
+    if not country.blank? then location.push(country) end
+    location.join(', ')
   end
 
 
