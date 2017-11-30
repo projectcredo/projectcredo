@@ -152,6 +152,9 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def first_name_or_username
+    first_name.blank? ? username : first_name
+  end
 
   def location
     location = []

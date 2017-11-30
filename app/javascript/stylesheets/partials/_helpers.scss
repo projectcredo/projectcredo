@@ -13,3 +13,11 @@ $sides: (top, bottom, left, right); // Leave this variable alone
     }
   }
 }
+
+.no-border-radius {
+  border-radius: 0;
+}
+
+.no-border {
+  border: 0;
+}

@@ -35,6 +35,51 @@
 </div>
 
 <div class="container">
+  <div class="row">
+    <div class="col-sm-7">
+
+      <div class="panel panel-primary no-border no-border-radius">
+        <div class="panel-heading">
+          <h4>Top Tags</h4>
+        </div>
+        <div class="panel-body">
+          <p class="text-gray">Top tags are based on <%= @user.first_name_or_username %>`s lists, comments, and pins.</p>
+          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">neuroscience</span> <span class="tag-count">32</span></span></a>
+          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">caffeine</span> <span class="tag-count">27</span></span></a>
+          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">cardiovascular disease</span> <span class="tag-count">27</span></span></a>
+          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">excersice</span> <span class="tag-count">27</span></span></a>
+          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">neuroendocrinology</span> <span class="tag-count">27</span></span></a>
+          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">running</span> <span class="tag-count">27</span></span></a>
+        </div>
+      </div>
+
+      <div class="panel panel-primary no-border no-border-radius">
+        <div class="panel-heading">
+          <h4><%= @visible_lists.to_a.count %> Lists</h4>
+        </div>
+        <div class="panel-body">
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-1">
+      &nbsp;
+    </div>
+    <div class="col-sm-4">
+
+      <div class="panel panel-primary no-border no-border-radius">
+        <div class="panel-heading">
+          <h4>Total Reach</h4>
+        </div>
+        <div class="panel-body">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <div id="search-lists">
     <div class="row">
       <div class="col-md-3">
