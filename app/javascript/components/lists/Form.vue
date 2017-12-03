@@ -23,7 +23,7 @@
         </p>
       </div>
       <div class="col-md-10">
-        <input id="tags_input" type="text" name="list[tags]" v-model="form.tags" class="form-control"
+        <input id="tags_input" type="text" name="list[tag_list]" v-model="form.tag_list" class="form-control"
                placeholder="Ex: biology, chemistry, physics">
       </div>
     </div>
@@ -118,7 +118,7 @@
         loadingContributors: false,
         form: {
           name: '',
-          tags: '',
+          tag_list: '',
           description: '',
           access: null,
           contributors: [],
@@ -129,6 +129,7 @@
     created() {
       this.form = Object.assign({}, this.list);
       this.form.contributors = this.contributors
+      this.form.tag_list = this.list.tags.map(t => t.name).join(', ');
     },
 
     mounted () {

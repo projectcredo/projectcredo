@@ -34,7 +34,7 @@
 <% content_for(:page_app) do %>
   <script>
     window.listsFormProps = {
-      list: <%= list.to_json.html_safe %>,
+      list: <%= list.to_json(include: :tags).html_safe %>,
       buttonName: '<%= button_name %>',
       currentUser: "<%= current_user.username %>",
       canModerate: <%= (if @list.persisted? then current_user.can_edit?(@list) else true end) %>,

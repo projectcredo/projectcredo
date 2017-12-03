@@ -55,16 +55,37 @@
 
       <div class="panel panel-primary no-border no-border-radius">
         <div class="panel-heading">
-          <h4><%= @visible_lists.to_a.count %> Lists</h4>
+          <h4><%= @visible_lists.to_a.count %> <%=  'List'.pluralize(@visible_lists.to_a.count) %></h4>
         </div>
         <div class="panel-body">
+          <% if current_user %>
+            <div class="m-b-20">
+              <%= link_to 'Create a new board', new_list_path, class: 'btn btn-primary' %>
+            </div>
+          <% end %>
 
+          <% @visible_lists.each do |list| %>
+            <div class="list-item-short">
+              <div class="lis-title">
+                <a href="<%= user_list_path(list.owner, list) %>"><%= list.name %></a>
+              </div>
+              <div class="lis-meta">
+                <%= list.papers.to_a.count %> <%=  'paper'.pluralize(list.papers.to_a.count) %>
+                &middot; last activity <%= list.updated_at.to_s(:full) %>
+              </div>
+              <div class="lis-tags">
+                <% list.tags.each do |tag| %>
+                  <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name"><%= tag.name %></span> <span class="tag-count"><%= tag.taggings_count %></span></span></a>
+              <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
 
     </div>
     <div class="col-sm-1">
-      &nbsp;
+      &nbsp;&nbsp;
     </div>
     <div class="col-sm-4">
 
