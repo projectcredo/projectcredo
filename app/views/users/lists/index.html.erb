@@ -44,12 +44,9 @@
         </div>
         <div class="panel-body">
           <p class="text-gray">Top tags are based on <%= @user.first_name_or_username %>`s lists, comments, and pins.</p>
-          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">neuroscience</span> <span class="tag-count">32</span></span></a>
-          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">caffeine</span> <span class="tag-count">27</span></span></a>
-          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">cardiovascular disease</span> <span class="tag-count">27</span></span></a>
-          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">excersice</span> <span class="tag-count">27</span></span></a>
-          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">neuroendocrinology</span> <span class="tag-count">27</span></span></a>
-          <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name">running</span> <span class="tag-count">27</span></span></a>
+          <% @user.top_tags.each do |tag| %>
+            <a href="#" class="label label-tag"><span class="tag-wrap"><span class="tag-name"><%= tag.name %></span> <span class="tag-count"><%= tag.taggings_count %></span></span></a>
+          <% end %>
         </div>
       </div>
 

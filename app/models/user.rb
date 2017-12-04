@@ -163,6 +163,31 @@ class User < ApplicationRecord
     location.join(', ')
   end
 
+  def top_tags
+    roles = ListMembership.roles.select {|k,v| ['contributor', 'moderator', 'owner'].include?(k) }
+
+    ActsAsTaggableOn::Tag.joins(:taggings)
+      .joins(ActiveRecord::Base.__send__(:sanitize_sql, ['
+        LEFT JOIN (
+          SELECT tag_id, MAX(created_at) AS last_created_at FROM taggings
+          WHERE tagger_id = :user_id
+          GROUP BY tag_id
+        ) as last_taggings ON last_taggings.tag_id = tags.id
+      ', {:user_id => id}]))
+      .where("
+        taggings.taggable_type = 'List' AND taggings.taggable_id IN (
+          SELECT lists.id FROM lists
+          LEFT JOIN list_memberships lm ON lm.list_id = lists.id
+          WHERE lm.user_id = :user_id AND lm.role in (:roles)
+        )
+        OR taggings.tagger_id = :user_id
+      ", {:user_id => id, :roles => roles.values})
+      .group(:id)
+      .group(:last_created_at)
+      .order('taggings_count DESC')
+      .order('last_created_at DESC')
+      .limit(10)
+  end
 
   def self.from_omniauth(auth)
     password = Devise.friendly_token[0,20]
