@@ -91,6 +91,19 @@
           <h4>Total Reach</h4>
         </div>
         <div class="panel-body">
+          <div class="simple-chart" data-props='<%= {:data => [
+            {:month => 'Oct', :value => 10},
+            {:month => 'Nov', :value => 20},
+            {:month => 'Dec', :value => 10},
+            {:month => 'Jav', :value => 5},
+            {:month => 'Feb', :value => 7},
+            {:month => 'Mar', :value => 15},
+            {:month => 'Apr', :value => 20},
+            {:month => 'May', :value => 15},
+            {:month => 'Jun', :value => 25},
+            {:month => 'Jul', :value => 35},
+            {:month => 'Aug', :value => 30},
+          ]}.to_json %>'></div>
         </div>
       </div>
 

@@ -10,6 +10,7 @@ import '../stylesheets/application.scss'
 import '../legacy/general'
 
 import '../instances/lists-form'
+import '../instances/simple-chart'
 
 
 // The above code uses Vue without the compiler, which means you cannot
