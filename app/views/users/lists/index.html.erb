@@ -91,19 +91,37 @@
           <h4>Total Reach</h4>
         </div>
         <div class="panel-body">
+          <p><strong>Contribution Activity Over Time</strong></p>
+          <p class="color-gray">Contribution activity includes creating and editing lists, uploading papers, commenting, and liking content.</p>
           <div class="simple-chart" data-props='<%= {:data => [
-            {:month => 'Oct', :value => 10},
-            {:month => 'Nov', :value => 20},
-            {:month => 'Dec', :value => 10},
-            {:month => 'Jav', :value => 5},
-            {:month => 'Feb', :value => 7},
-            {:month => 'Mar', :value => 15},
-            {:month => 'Apr', :value => 20},
-            {:month => 'May', :value => 15},
-            {:month => 'Jun', :value => 25},
-            {:month => 'Jul', :value => 35},
-            {:month => 'Aug', :value => 30},
-          ]}.to_json %>'></div>
+            {:key => 'Oct', :value => 3},
+            {:key => 'Nov', :value => 6},
+            {:key => 'Dec', :value => 4},
+            {:key => 'Jav', :value => 2},
+            {:key => 'Feb', :value => 4},
+            {:key => 'Mar', :value => 7},
+            {:key => 'Apr', :value => 10},
+            {:key => 'May', :value => 8},
+            {:key => 'Jun', :value => 10},
+            {:key => 'Jul', :value => 18},
+            {:key => 'Aug', :value => 16},
+          ], 'x-label' => 'month', 'y-label' => 'contribution'}.to_json %>'></div>
+
+          <p class="m-t-40"><strong>Content Views Over Time</strong></p>
+          <p class="color-gray"><%= @user.first_name_or_username %>`s content views include views of their profile, lists, uploaded papers, and comments.</p>
+          <div class="simple-chart" data-props='<%= {:data => [
+            {:key => 'Oct', :value => 80},
+            {:key => 'Nov', :value => 130},
+            {:key => 'Dec', :value => 200},
+            {:key => 'Jav', :value => 150},
+            {:key => 'Feb', :value => 110},
+            {:key => 'Mar', :value => 200},
+            {:key => 'Apr', :value => 250},
+            {:key => 'May', :value => 240},
+            {:key => 'Jun', :value => 300},
+            {:key => 'Jul', :value => 370},
+            {:key => 'Aug', :value => 310},
+          ], 'x-label' => 'month', 'y-label' => 'views'}.to_json %>'></div>
         </div>
       </div>
 

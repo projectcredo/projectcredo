@@ -21,3 +21,7 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 .no-border {
   border: 0;
 }
+
+.color-gray {
+  color: $font-gray;
+}

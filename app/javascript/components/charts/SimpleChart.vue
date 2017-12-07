@@ -9,7 +9,7 @@
 
   export default {
 
-    props: ['data'],
+    props: ['data', 'xLabel', 'yLabel'],
 
     data() {
       return {}
@@ -17,87 +17,106 @@
 
     mounted() {
       const svg = d3.select(this.$refs.chart)
+      const containerWidth = this.$refs.chart.clientWidth
+      const containerHeight = this.$refs.chart.clientHeight
 
-      const margin = {top: 20, right: 20, bottom: 20, left: 50}
-      const width = parseInt(svg.style('width')) - margin.left - margin.right
-      const height = parseInt(svg.style('height')) - margin.top - margin.bottom
-      const g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      const margin = {top: 5, right: 10, bottom: 35, left: 50}
+      const width = containerWidth - margin.left - margin.right
+      const height = containerHeight - margin.top - margin.bottom
+      const g = svg.append('g')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
-      // Define axes
-      const x = d3.scaleOrdinal()
-        .domain(d3.extent(this.data, d => d.value))
-        .range([0, width])
+      // Define X axe
+      const x = d3.scalePoint()
+        .domain(this.data.map(d => d.key))
+        .rangeRound([0, width])
 
+      // Define Y axe
       const y = d3.scaleLinear()
         .domain([0, d3.max(this.data, d => d.value)])
-        .rangeRound([height, 0]);
+        .rangeRound([height, 0])
 
-      console.log(this.data)
+      // Define the the area
+      const area = d3.area()
+        .x(d => x(d.key))
+        .y0(height)
+        .y1(d => y(d.value))
+        .curve(d3.curveBasis)
 
-      // Define lines
-      var line = d3.line()
-        .x(d => x(d.month))
-        .y(d => y(d.value))
 
-//      g.append('g')
-//        .attr('transform', 'translate(0,' + height + ')')
-//        .call(d3.axisBottom(x))
-//        .select('.domain')
-//        .remove()
+      // Add the Y gridlines
+      g.append('g')
+        .attr('class', 'grid')
+        .call(d3.axisLeft(y)
+          .ticks(5)
+          .tickSize(-width)
+          .tickFormat('')
+        )
 
-      // Add the valueline path.
-      svg.append("path")
+      // add the area
+      g.append('path')
         .data([this.data])
-        .attr("class", "line")
-        .attr("d", line);
+        .attr('class', 'area')
+        .attr('d', area);
 
-      // Add the x Axis
-      svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+      g.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(x))
+        .style('font-size', '12')
 
       // text label for the x axis
-      svg.append("text")
-        .attr("transform",
-          "translate(" + (width/2) + " ," +
-          (height + margin.top + 20) + ")")
-        .style("text-anchor", "middle")
-        .text("months");
-
-      // Add the y Axis
-      svg.append("g")
-        .call(d3.axisLeft(y));
+      g.append('text')
+        .attr('transform', 'translate(' + (width/2) + ' ,' + (height + margin.top + 25) + ')')
+        .style('text-anchor', 'middle')
+        .style('font-size', '14')
+        .attr('dy', '0.3em')
+        .text(this.xLabel);
+      
+      g.append('g')
+        .attr('class', 'axis axis--y')
+        .call(d3.axisLeft(y).ticks(5))
+        .style('font-size', '12')
 
       // text label for the y axis
-      svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 20 - margin.left)
-        .attr("x", 0 - (height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("contributions");
+      g.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - margin.left)
+        .attr('x', 0 - (height / 2))
+        .attr('dy', '0.7em')
+        .style('text-anchor', 'middle')
+        .style('font-size', '14')
+        .text(this.yLabel);
     },
+
+    methods: {
+      draw() {
+
+      }
+    }
 
   }
 </script>
 
 <style>
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-  }
-
-  .line {
-    fill: none;
-    stroke: steelblue;
-    stroke-width: 2px;
-  }
-
   .simple-chart {
     width: 100%;
     height: 100%;
-    /*position: absolute;*/
+  }
+  .area {
+    fill: #64d6bd;
+  }
+  .grid line {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+  }
+  .grid .domain {
+    display: none;
+  }
+  .tick text{
+    fill: grey;
   }
 </style>
