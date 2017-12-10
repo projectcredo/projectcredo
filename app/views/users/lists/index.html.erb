@@ -9,7 +9,7 @@
   <div class="container">
     <div class="uph-info">
       <div class="uph-avatar">
-        <img src="<%= @user.avatar :thumb %>" alt="">
+        <img src="<%= @user.avatar :medium %>" alt="">
       </div>
       <h2 class="uph-username">
         <%= @user.full_name.blank? ? @user.username : @user.full_name %>
