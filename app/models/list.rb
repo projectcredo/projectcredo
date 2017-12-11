@@ -2,6 +2,7 @@ class List < ApplicationRecord
   # Modules
   acts_as_taggable
   acts_as_votable
+  is_impressionable :counter_cache => true
 
   # Attributes
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
