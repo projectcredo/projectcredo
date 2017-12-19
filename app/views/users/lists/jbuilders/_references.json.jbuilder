@@ -13,7 +13,8 @@ json.array!(references) do |r|
       :published_at,
       :pubmed_id,
       :doi,
-      :title
+      :title,
+      :referenced_by_count,
     )
     json.publication r.paper.publication
     json.links r.paper.links

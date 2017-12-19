@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171211093121) do
+ActiveRecord::Schema.define(version: 20171219120720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,15 +166,17 @@ ActiveRecord::Schema.define(version: 20171211093121) do
   create_table "papers", force: :cascade do |t|
     t.string   "title"
     t.date     "published_at"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.text     "abstract"
     t.string   "doi"
     t.string   "pubmed_id"
     t.string   "publication"
-    t.boolean  "abstract_editable", default: true
-    t.boolean  "paper_editable",    default: true
+    t.boolean  "abstract_editable",              default: true
+    t.boolean  "paper_editable",                 default: true
     t.text     "import_source"
+    t.integer  "referenced_by_count"
+    t.datetime "referenced_by_count_updated_at"
     t.index ["doi"], name: "index_papers_on_doi", using: :btree
     t.index ["pubmed_id"], name: "index_papers_on_pubmed_id", using: :btree
   end

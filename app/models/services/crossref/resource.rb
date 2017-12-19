@@ -68,7 +68,9 @@ class Crossref
           else
             []
           end
-        end
+        end,
+        referenced_by_count: lambda {|data| data.dig 'message', 'is-referenced-by-count' },
+        referenced_by_count_updated_at: lambda {|data| DateTime.now },
       }
     end
   end

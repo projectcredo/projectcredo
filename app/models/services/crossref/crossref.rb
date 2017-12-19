@@ -1,7 +1,5 @@
 class Crossref
-  attr_accessor :metadata_uri, :resource
-
-  def initialize locator_id: nil
-    self.resource = Crossref::Resource.new locator_id
+  def self.get_by_doi(doi)
+    Crossref::Resource.new doi
   end
 end

@@ -10,11 +10,11 @@ class DoiPaperLocator
     existing_paper = Paper.find_by doi: locator_id
     return existing_paper if existing_paper
 
-    crossref = Crossref.new locator_id: locator_id
-    paper_attributes = crossref.resource.paper_attributes
+    resource = Crossref.get_by_doi locator_id
+    paper_attributes = resource.paper_attributes
 
     if paper_attributes
-      response = crossref.resource.response
+      response = resource.response
       paper = Paper.create paper_attributes
 
       return nil if paper.errors.any?

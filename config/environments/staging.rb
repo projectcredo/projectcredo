@@ -105,4 +105,5 @@ Rails.application.configure do
     }
   }
 
+  config.x.reload_papers_info_timeout = 120
 end
