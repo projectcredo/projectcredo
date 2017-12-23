@@ -11,6 +11,10 @@ class Activity < ApplicationRecord
 
   def sentence_parts
     parts = Hash.new
+    parts[:username] = self.user.username
+
+    return parts unless self.addable
+
     case self.activity_type
     when "commented"
       parts[:added] = self.addable.content
@@ -21,8 +25,6 @@ class Activity < ApplicationRecord
       parts[:paper_direct_link] = self.addable.paper.direct_link
     when "created"
     end
-
-    parts[:username] = self.user.username
 
     return parts
   end

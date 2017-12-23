@@ -120,9 +120,10 @@ class List < ApplicationRecord
 
     self.papers.each do |paper|
       next unless paper.doi.present? # Skip papers without DOI
-      next unless paper.referenced_by_count_updated_at.present?
       # Skip papers, refreshed lately
-      next unless ((now - paper.referenced_by_count_updated_at) / 60).to_i > Rails.configuration.x.reload_papers_info_timeout
+      if paper.referenced_by_count_updated_at.present? then
+        next unless ((now - paper.referenced_by_count_updated_at) / 60).to_i > Rails.configuration.x.reload_papers_info_timeout
+      end
 
       response = Crossref.get_by_doi paper.doi
       paper.update(response.paper_attributes.slice(:referenced_by_count, :referenced_by_count_updated_at))
