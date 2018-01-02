@@ -96,6 +96,11 @@ describe 'lists' do
         expect(page.status_code).to eq(200)
       end
 
+      it 'should show board name and details' do
+        expect(page.body).to include(@list.name)
+        expect(page.body).to include(@list.description)
+      end
+
       it 'should not show other user private list' do
         pending('private boards should not be visible')
         visit user_list_path @user2, @user2_private_list
@@ -103,6 +108,68 @@ describe 'lists' do
         expect(page.status_code).to eq(302)
       end
     end
+  end
+
+  #
+  # Create a list
+  #
+  describe 'create' do
+    before do
+      visit new_list_path
+    end
+
+    context 'when logged out' do
+      it 'should redirect to sign_in page' do
+        expect(current_path).to eql(new_user_session_path)
+      end
+    end
+
+    context 'when logged in' do
+      before do
+        login_as(@user, :scope => :user)
+        visit new_list_path
+      end
+
+      it 'can be reached successfully' do
+        expect(page.status_code).to eq(200)
+        expect(current_path).to eql(new_list_path)
+      end
+
+      it 'can be created with valid data' do
+
+        pending('find right solution to send data with Vue generated form')
+
+        fill_in 'list[name]', with: 'Some name'
+        fill_in 'list[description]', with: 'Some description'
+        sleep(2)
+
+        expect { click_on 'Create Board' }.to change(Post, :count).by(1)
+
+        data = {
+          name: 'Some name',
+          description: 'Some description',
+          tag_list: 'tag1, tag2',
+          access: 'public',
+          list_members: '',
+        }
+
+        puts List.count
+        page.driver.post lists_path, :list => data
+        puts List.count
+
+
+        expect { page.driver.post lists_path, :list => data }.to change(List, :count).by(1)
+        data[:user_id] = @user.id
+        puts data.inspect
+        expect(List.last).to have_attributes(data)
+      end
+
+      it 'should validate name' do
+        #
+      end
+
+    end
+
   end
 
 
