@@ -113,55 +113,41 @@ describe 'lists' do
   #
   # Create a list
   #
-  describe 'create' do
-    before do
-      visit new_list_path
-    end
+  describe 'create', type: :request do
 
     context 'when logged out' do
       it 'should redirect to sign_in page' do
-        expect(current_path).to eql(new_user_session_path)
+        get new_list_path
+        expect(response.status).to eq 302
       end
     end
 
     context 'when logged in' do
       before do
-        login_as(@user, :scope => :user)
-        visit new_list_path
+        post new_user_session_path, params: {user: {login: @user.email, password: '123456'}}
       end
 
       it 'can be reached successfully' do
-        expect(page.status_code).to eq(200)
-        expect(current_path).to eql(new_list_path)
+        get new_list_path
+        expect(response.status).to eq 200
       end
 
-      it 'can be created with valid data' do
-
-        pending('find right solution to send data with Vue generated form')
-
-        fill_in 'list[name]', with: 'Some name'
-        fill_in 'list[description]', with: 'Some description'
-        sleep(2)
-
-        expect { click_on 'Create Board' }.to change(Post, :count).by(1)
-
+      it 'can be created with valid data', type: :request do
         data = {
           name: 'Some name',
           description: 'Some description',
           tag_list: 'tag1, tag2',
           access: 'public',
-          list_members: '',
+          list_members: [],
         }
 
-        puts List.count
-        page.driver.post lists_path, :list => data
-        puts List.count
+        expect do
+          post lists_path, params: {list: data}
+        end.to change {
+          List.count
+        }.by(1)
 
-
-        expect { page.driver.post lists_path, :list => data }.to change(List, :count).by(1)
-        data[:user_id] = @user.id
-        puts data.inspect
-        expect(List.last).to have_attributes(data)
+        expect(List.last).to have_attributes(data.slice(:name, :description, :access))
       end
 
       it 'should validate name' do

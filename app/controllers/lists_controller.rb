@@ -23,7 +23,6 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    puts params.inspect
     members = params[:list].delete(:list_members)
     @list = current_user.lists.build(list_params)
 
