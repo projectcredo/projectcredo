@@ -150,8 +150,90 @@ describe 'lists' do
         expect(List.last).to have_attributes(data.slice(:name, :description, :access))
       end
 
-      it 'should validate name' do
-        #
+    end
+
+  end
+
+  #
+  # Update list
+  #
+  describe 'update', type: :request do
+
+    context 'when logged out' do
+      it 'should redirect to sign_in page' do
+        put user_list_path(@user, @list)
+        expect(response.status).to eq 302
+      end
+    end
+
+    context 'when logged in' do
+      before do
+        post new_user_session_path, params: {user: {login: @user.email, password: '123456'}}
+      end
+
+      it 'edit page can be reached successfully' do
+        get edit_user_list_path(@user, @list)
+        expect(response.status).to eq 200
+      end
+
+      it 'update route can be reached successfully' do
+        get user_list_path(@user, @list)
+        expect(response.status).to eq 200
+      end
+
+      it 'can be updated with valid data', type: :request do
+        data = {
+          name: 'Some name updated',
+          description: 'Some description updated',
+          tag_list: 'tag1, tag2, tag3',
+          access: 'public',
+          list_members: [],
+        }
+
+        put user_list_path(@user, @list), params: {list: data}
+
+        expect(@list.reload).to have_attributes(data.slice(:name, :description, :access))
+      end
+
+    end
+
+  end
+
+  #
+  # Delete list
+  #
+  describe 'delete', type: :request do
+
+    context 'when logged out' do
+      it 'should not delete' do
+        expect{
+          delete user_list_path(@user, @list)
+        }.to_not change(List, :count)
+      end
+    end
+
+    context 'when logged in' do
+      before do
+        post new_user_session_path, params: {user: {login: @user.email, password: '123456'}}
+      end
+
+      it 'owner can delete list' do
+        expect{
+          delete user_list_path(@user, @list)
+        }.to change(List, :count).by(-1)
+      end
+
+    end
+
+    context 'when logged in as non owner' do
+      before do
+        post new_user_session_path, params: {user: {login: @user2.email, password: '123456'}}
+      end
+
+      it 'can not delete list' do
+        expect{
+          delete user_list_path(@user, @list)
+        }.to_not change(List, :count)
       end
 
     end
