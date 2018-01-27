@@ -8,6 +8,11 @@ describe 'lists' do
     @list2 = create(:list, user: @user)
     @list_private = create(:list, user: @user, visibility: :private)
 
+    @contributor = create(:user)
+    @list.list_memberships.create(user: @contributor, role: :contributor)
+
+    @other_user = create(:user)
+
     @user2 = create(:user)
     @user2_list = create(:list, user: @user2, visibility: :private)
     @user2_private_list = create(:list, user: @user2, visibility: :private)
@@ -160,13 +165,34 @@ describe 'lists' do
   describe 'update', type: :request do
 
     context 'when logged out' do
-      it 'should redirect to sign_in page' do
+      it 'should redirect to sign_in page on edit page' do
+        get edit_user_list_path(@user, @list)
+        expect(response.status).to eq 302
+      end
+
+      it 'should redirect to sign_in page on update request' do
         put user_list_path(@user, @list)
         expect(response.status).to eq 302
       end
     end
 
-    context 'when logged in' do
+    context 'when logged in as non member' do
+      before do
+        post new_user_session_path, params: {user: {login: @other_user.email, password: '123456'}}
+      end
+
+      it 'should redirect to sign_in page on edit page' do
+        get edit_user_list_path(@user, @list)
+        expect(response.status).to eq 302
+      end
+
+      it 'should redirect to sign_in page on update request' do
+        put user_list_path(@user, @list)
+        expect(response.status).to eq 302
+      end
+    end
+
+    context 'when logged in as owner' do
       before do
         post new_user_session_path, params: {user: {login: @user.email, password: '123456'}}
       end
@@ -176,12 +202,7 @@ describe 'lists' do
         expect(response.status).to eq 200
       end
 
-      it 'update route can be reached successfully' do
-        get user_list_path(@user, @list)
-        expect(response.status).to eq 200
-      end
-
-      it 'can be updated with valid data', type: :request do
+      it 'can be updated with valid data' do
         data = {
           name: 'Some name updated',
           description: 'Some description updated',
@@ -197,6 +218,25 @@ describe 'lists' do
 
     end
 
+    context 'when logged in as contributor' do
+      before do
+        post new_user_session_path, params: {user: {login: @contributor.email, password: '123456'}}
+      end
+
+      it 'can be updated with valid data', type: :request do
+        data = {
+          name: 'Some name updated',
+          description: 'Some description updated',
+          tag_list: 'tag1, tag2, tag3',
+          access: 'public',
+          list_members: [],
+        }
+
+        put user_list_path(@user, @list), params: {list: data}
+
+        expect(@list.reload).to have_attributes(data.slice(:name, :description, :access))
+      end
+    end
   end
 
   #
@@ -238,7 +278,18 @@ describe 'lists' do
 
     end
 
-  end
+    context 'when logged in as contributor' do
+      before do
+        post new_user_session_path, params: {user: {login: @contributor.email, password: '123456'}}
+      end
 
+      it 'can not delete list' do
+        expect{
+          delete user_list_path(@user, @list)
+        }.to_not change(List, :count)
+      end
+
+    end
+  end
 
 end

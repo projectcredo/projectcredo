@@ -34,7 +34,7 @@ class Users::ListsController < ApplicationController
 
     if current_user.can_edit?(@list)
 
-      remove_current_user =  @list.members.include?(current_user) && !members.include?(current_user.username) && current_user != @list.owner
+      remove_current_user = @list.members.include?(current_user) && !members.include?(current_user.username) && current_user != @list.owner
 
       memberships = members.map do |member|
         @list.list_memberships.find_or_create_by(
