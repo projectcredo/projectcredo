@@ -44,6 +44,7 @@
       background-color: $dark-color;
       border-color: $dark-color;
     }
+
 }
 
 .btn-primary.active,
@@ -52,6 +53,38 @@
 .btn-primary.active:focus {
     background-color: $dark-color;
     border-color: $dark-color;
+}
+
+.btn-fb,
+.btn-fb:visited,
+.btn-fb:active,
+.btn-fb:focus {
+    background-color: #4267b2;
+    color: $white;
+    border-color: #4267b2;
+    outline: none !important;
+
+    &:hover {
+      background-color: #3b5998;
+      border-color: #3b5998;
+    }
+
+}
+
+.btn-google,
+.btn-google:visited,
+.btn-google:active,
+.btn-google:focus {
+    background-color: #d34836;
+    color: $white;
+    border-color: #d34836;
+    outline: none !important;
+
+    &:hover {
+      background-color: #ab3526;
+      border-color: #ab3526;
+    }
+
 }
 
 a {
