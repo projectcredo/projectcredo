@@ -236,6 +236,20 @@ describe 'lists' do
 
         expect(@list.reload).to have_attributes(data.slice(:name, :description, :access))
       end
+
+      it 'should protect access field from change' do
+        data = {
+          name: 'Some name updated',
+          description: 'Some description updated',
+          tag_list: 'tag1, tag2, tag3',
+          access: 'contributors',
+          list_members: [],
+        }
+
+        put user_list_path(@user, @list), params: {list: data}
+
+        expect(@list.access).to_not eq('contributors')
+      end
     end
   end
 
