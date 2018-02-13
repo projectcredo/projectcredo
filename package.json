@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@fancyapps/fancybox": "^3.1.25",
+    "@fancyapps/fancybox": "^3.2.5",
     "@rails/webpacker": "^3.0.2",
     "axios": "^0.17.1",
     "bootstrap-sass": "^3.3.7",
@@ -19,5 +19,8 @@
     "sass-loader": "^6.0.6",
     "webpack-dev-server": "^2.9.3",
     "webpack-merge": "^4.1.0"
+  },
+  "engines": {
+    "node": "8.9.4"
   }
 }
