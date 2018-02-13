@@ -17,6 +17,8 @@ class Users::ListsController < ApplicationController
   end
 
   def show
+    impressionist(@list, '', :unique => [:session_hash])
+    @list.refresh_papers_info
     @references = @list.references.joins(:paper).order(params_sort_order)
     @summaries = @list.summaries.ranked
   end

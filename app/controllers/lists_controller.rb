@@ -3,6 +3,7 @@ class ListsController < ApplicationController
   include NotificationsHelper
 
   before_action :ensure_current_user, except: [:index]
+  before_action :set_list, except: :index
 
   # GET /lists
   # GET /lists.json
@@ -52,7 +53,23 @@ class ListsController < ApplicationController
     end
   end
 
+  def form_contributors
+    exclude = if @list then @list.owner.id else current_user.id end
+
+    users = User.where.not(id: exclude)
+      .where('username LIKE ?', "#{params[:query]}%").limit(12).map do |m|
+      { id: m.id, username: m.username, avatar: m.avatar(:thumb) }
+    end
+
+    render :json => users
+  end
+
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_list
+      @list = current_user.owned_lists.find_by slug: params[:list_id]
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
       params.require(:list).permit(:name, :description, :tag_list, :access,

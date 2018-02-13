@@ -6,6 +6,8 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  config.reload_classes_only_on_change = true
+
   # Do not eager load code on boot.
   config.eager_load = false
 
@@ -37,7 +39,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
@@ -54,8 +56,16 @@ Rails.application.configure do
 
   config.web_console.automount = true
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.perform_deliveries = false
-  config.action_mailer.default charset: "utf-8"
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :user_name => ENV['MAIL_USERNAME'],
+    :password => ENV['MAIL_PASSWORD'],
+    :address => 'smtp.mailtrap.io',
+    :domain => 'smtp.mailtrap.io',
+    :port => '2525',
+    :authentication => :cram_md5,
+  }
+  config.action_mailer.default_url_options = { host: 'localhost:3000', protocol: :http }
+
+  config.x.reload_papers_info_timeout = 120
 end

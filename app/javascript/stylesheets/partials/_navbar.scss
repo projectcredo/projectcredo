@@ -2,11 +2,12 @@
   background: $darkest-color;
   color: #fff;
   min-height: $navbar-height;
+  margin-bottom: 0;
 
   .navbar-nav > li > a {
     color: #fff !important;
     border-left: solid 1px $navbar-border-color;
-    font-size: 12px;
+    font-size: 14px;
     transition: all .2s ease-in-out;
     line-height: $navbar-height - 30;
 
@@ -129,7 +130,7 @@
       $icon-size: 16px;
       width: $icon-size;
       height: $icon-size;
-      background: transparent asset-url("search-icon.png") no-repeat;
+      background: transparent url('../../assets/images/search-icon.png') no-repeat;
       background-size: $icon-size $icon-size;
       border: none;
       position: absolute;

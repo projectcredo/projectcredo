@@ -5,7 +5,11 @@ class Crossref
     def initialize id
       self.id = id.to_s
       endpoint = URI.parse("https://api.crossref.org/works/#{CGI.escape self.id}")
-      self.response = Net::HTTP.get_response endpoint
+      http = Net::HTTP.new(endpoint.host, endpoint.port)
+      http.use_ssl = true
+      request = Net::HTTP::Get.new(endpoint.request_uri)
+      request['User-Agent'] = 'ProjectCredo (https://www.projectcredo.com/; mailto:accounts@projectcredo.com)'
+      self.response = http.request(request)
 
       if response.code_type.ancestors.include?(Net::HTTPSuccess)
         begin
@@ -68,7 +72,9 @@ class Crossref
           else
             []
           end
-        end
+        end,
+        referenced_by_count: lambda {|data| data.dig 'message', 'is-referenced-by-count' },
+        referenced_by_count_updated_at: lambda {|data| DateTime.now },
       }
     end
   end

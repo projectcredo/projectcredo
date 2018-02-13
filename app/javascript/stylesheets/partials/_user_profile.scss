@@ -1,0 +1,38 @@
+.user-profile-heading {
+  margin-bottom: 30px;
+}
+
+.uph-cover {
+  height: 350px;
+  background: $brand-primary no-repeat center;
+  background-size: cover;
+}
+
+.uph-info {
+  margin-top: -50px;
+  @include clearfix;
+}
+
+.uph-avatar {
+  float: left;
+  width: 168px;
+  height: 168px;
+  margin-right: 15px;
+  border: 5px solid #bebebe;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.uph-username {
+  margin: 5px 0 20px 0;
+  color: white;
+}
+
+.uph-infoline {
+  font-size: 17px;
+  i {
+    color: #9b9b9b;
+  }
+}

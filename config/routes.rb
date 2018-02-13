@@ -5,7 +5,14 @@ Rails.application.routes.draw do
   get '/how-to' => 'static_pages#how_to'
   get '/.well-known/acme-challenge/:id' => 'static_pages#lets_encrypt'
 
-  devise_for :users
+  devise_for :users, :controllers => {
+    :registrations => 'auth/registrations',
+    :omniauth_callbacks => 'auth/omniauth_callbacks'
+  }
+
+  devise_scope :user do
+    get '/users/remove-attachment/:type' => 'auth/registrations#remove_attachment', :as => :users_remove_attachment
+  end
 
   resources :papers, only: [:show, :edit, :update] do
     resources :links, only: :destroy, shallow: true
@@ -18,6 +25,8 @@ Rails.application.routes.draw do
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
     resources :members, only: :destroy, controller: 'lists/members'
   end
+
+  get 'lists/form_contributors(/:list_id)' => 'lists#form_contributors', as: :list_form_contributors
 
   resources :references do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]

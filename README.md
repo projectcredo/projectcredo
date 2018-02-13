@@ -41,7 +41,7 @@ The site's address unfortunately depends on what system you're on. Linux and Mac
 ### Working with rails inside Docker container
 
 The development the project is setup to run in a Docker container, so instead of running commands locally like `bundle` or `rails <command>` you need to prepend them with `docker-compose run app`.
-For example, to add new gems without rebuilding the container you can run `docker-compose run app bundle` and then commit changes with `docker commit <container ID, like projectcredo_app_run_1> pc_web`.
+For example, to add new gems without rebuilding the container you can run `docker-compose run app bundle` and then commit changes with `docker commit <container ID, like projectcredo_app_run_1> projectcredo_app`, to list all containers run `docker ps --all`.
 
 In case you need to log in into container shell you can run `docker-compose run app bash`.
 
@@ -52,7 +52,7 @@ Submit a pull request against the develop branch and fill out the Pull Request t
 #### Testing
 
 1. `docker-compose run app rails db:environment:set RAILS_ENV=test`
-1. `docker-compose run app rails webpacker:compile` - if assets were not compiled previously
+1. `docker-compose run app rails webpacker:compile` - if assets were not compiled previously (remove public/packs if command is not compiling assets)
 1. `docker-compose run app rails test`
 1. `docker-compose run app rspec`
 

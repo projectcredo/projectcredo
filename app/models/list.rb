@@ -2,6 +2,7 @@ class List < ApplicationRecord
   # Modules
   acts_as_taggable
   acts_as_votable
+  is_impressionable :counter_cache => true
 
   # Attributes
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
@@ -111,6 +112,21 @@ class List < ApplicationRecord
   def validate_tag
     tag_list.each do |tag|
       errors.add(:tag_list, "cannot contain special characters") unless tag =~ /\A[\p{N}\p{L} ]+\z/
+    end
+  end
+
+  def refresh_papers_info
+    now = Time.current
+
+    self.papers.each do |paper|
+      next unless paper.doi.present? # Skip papers without DOI
+      # Skip papers, refreshed lately
+      if paper.referenced_by_count_updated_at.present? then
+        next unless ((now - paper.referenced_by_count_updated_at) / 60).to_i > Rails.configuration.x.reload_papers_info_timeout
+      end
+
+      response = Crossref.get_by_doi paper.doi
+      paper.update(response.paper_attributes.slice(:referenced_by_count, :referenced_by_count_updated_at))
     end
   end
 

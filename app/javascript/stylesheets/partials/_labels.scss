@@ -1,0 +1,32 @@
+.label-tag {
+  display: inline-block;
+  overflow: hidden;
+  margin: 0 10px 10px 0;
+  padding: 0;
+  color: $font-gray;
+  border: 1px solid $primary-color;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 100;
+  @include clearfix;
+
+  :hover {
+    color: $primary-color;
+  }
+
+  .tag-wrap {
+    display: table;
+  }
+
+  .tag-name {
+    display: table-cell;
+    padding: 7px 15px;
+  }
+
+  .tag-count {
+    display: table-cell;;
+    color: white;
+    padding: 0 7px;
+    background-color: $primary-color;
+  }
+}
