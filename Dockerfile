@@ -4,7 +4,7 @@ MAINTAINER brian@callmekung.com
 # Install apt based dependencies required to run Rails as
 # well as RubyGems. As the Ruby image itself is based on a
 # Debian image, we use apt-get to install those.
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev imagemagick
 
 # Install Node
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
