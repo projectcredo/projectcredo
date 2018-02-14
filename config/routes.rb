@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   resources :references do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
+    resource :bookmark, controller: 'references/bookmarks', only: [:create, :destroy]
   end
 
   resources :summaries do

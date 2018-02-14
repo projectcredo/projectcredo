@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171219120720) do
+ActiveRecord::Schema.define(version: 20180214094612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(version: 20171219120720) do
     t.integer "author_id", null: false
     t.integer "paper_id",  null: false
     t.index ["author_id", "paper_id"], name: "index_authors_papers_on_author_id_and_paper_id", unique: true, using: :btree
+  end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.integer  "user_id",           null: false
+    t.integer  "bookmarkable_id"
+    t.string   "bookmarkable_type"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["bookmarkable_id", "bookmarkable_type"], name: "index_bookmarks_on_bookmarkable_id_and_bookmarkable_type", using: :btree
+    t.index ["user_id"], name: "index_bookmarks_on_user_id", using: :btree
   end
 
   create_table "comment_hierarchies", id: false, force: :cascade do |t|

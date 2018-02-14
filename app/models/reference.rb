@@ -1,6 +1,7 @@
 class Reference < ApplicationRecord
   has_many :comments, as: :commentable
   has_many :activities, as: :addable, dependent: :destroy
+  has_many :bookmarks, as: :bookmarkable, :dependent => :destroy
 
   belongs_to :paper
   belongs_to :list, touch: true
