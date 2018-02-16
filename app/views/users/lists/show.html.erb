@@ -1,70 +1,28 @@
 <%= render 'list_head', list: @list %>
 
-<div class="row list-show" id="list-show">
+<div class="row list-show">
   <div class="col-md-8">
-    <div class="list-section">
-      <%= render 'list_header' %>
-    </div>
 
-    <reference-modal
-      :signed-in="signedIn"
-      :current-user="currentUser"
-      :edits-allowed="editsAllowed"
-      :selected-ref="selectedRef"
-      :reference-index-in-modal="referenceIndexInModal"
-      :ref-count="filteredData.length"
-      v-on:select-ref="selectReference($event)"
-    ></reference-modal>
+    <div class="vue-list" data-props='<%=
+      {
+        list: @list.as_json(include: [:tags, :others]),
+        owner: @list.owner.username,
+        signedIn: user_signed_in?,
+        currentUser: current_user ? current_user.username : '',
+        summaries: ActiveSupport::JSON.decode(render('users/lists/jbuilders/list_summaries.json', summaries: @summaries)),
+        userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
+        allReferences: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
+      }.to_json.html_safe
+    %>'></div>
 
-    <div class="list-section">
-      <div class="list-section-h2">Summaries</div>
-      <%= render 'list_summaries' %>
-    </div>
-
-    <div class="list-section">
-      <div class="list-section-h2">Notes and Highlights</div>
-      <%= render 'list_notes' %>
-    </div>
-    <div class="list-section">
-      <div class="list-section-h2">
-          <% if @list.references.count > 0 %>
-            <%= @list.references.count %> Papers
-          <% else %>
-            No Papers Added
-          <% end %>
-      </div>
-      <%= render 'list_quick_add' %>
-      <reference-list
-        :signed-in="signedIn"
-        :filtered-data="filteredData"
-        v-model="filterKey"
-        :sort-key="sortKey"
-        :sort-orders="sortOrders"
-        :edits-allowed="editsAllowed"
-        v-on:sort="sortBy($event)"
-        v-on:filter="addToFilter($event)"
-        v-on:select-ref="selectReference($event)"
-        v-on:remove-ref="deleteReference($event)"
-      ></reference-list>
-    </div>
   </div>
   <div class="col-md-4">
     <div class="edit-section">
       <% if current_user %>
         <% if current_user.can_edit? @list %>
           <%= link_to 'Edit this board', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
-       <% end %>
+        <% end %>
       <% end %>
-    </div>
-
-    <div class="row list-filter list-section">
-      <div class="col-xs-12">
-        <input
-          class="pull-right form-control"
-          v-model="filterKey"
-          placeholder="Search this board for..."
-        >
-      </div>
     </div>
 
     <div class="list-section">
@@ -74,5 +32,4 @@
       </div>
     </div>
   </div>
-  <%= render 'users/lists/vue/show_list_app', list: @list %>
 </div>

@@ -5,7 +5,7 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = Fabricate(:user)
-    @list = Fabricate(:list, user: @user)
+    @list = Fabricate(:references, user: @user)
   end
 
   test "guest should get index" do
@@ -16,7 +16,7 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
 
   test "user should see other user's public list" do
     user_2 = Fabricate(:user)
-    list_2 = Fabricate.build(:list, user: user_2)
+    list_2 = Fabricate.build(:references, user: user_2)
 
     sign_in @user
     get user_lists_path(user_2)
@@ -30,7 +30,7 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
 
   test "user should not see other user's private list" do
     user_2 = Fabricate(:user)
-    list_2 = Fabricate(:list, user: user_2, visibility: :private)
+    list_2 = Fabricate(:references, user: user_2, visibility: :private)
 
     sign_in @user
     get user_lists_path(user_2)
@@ -39,7 +39,7 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user should see own private lists" do
-    list_2 = Fabricate(:list, user: @user, visibility: :private)
+    list_2 = Fabricate(:references, user: @user, visibility: :private)
 
     sign_in @user
     get user_lists_path(@user)
@@ -49,7 +49,7 @@ class Users::ListsControllerTest < ActionDispatch::IntegrationTest
 
   test 'updates user list' do
     sign_in @user
-    patch(user_list_path(@user, @list), params: {list: {name: 'Updated list name'}})
+    patch(user_list_path(@user, @list), params: {references: {name: 'Updated list name'}})
     @list.reload
     assert_equal @list.name, 'Updated list name'
   end

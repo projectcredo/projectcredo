@@ -95,7 +95,7 @@ class User < ApplicationRecord
 
 
   def role(list)
-    ListMembership.find_by(list: list, user: self).role
+    ListMembership.find_by(references: list, user: self).role
   end
 
 

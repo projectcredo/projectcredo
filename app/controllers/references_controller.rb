@@ -62,7 +62,7 @@ class ReferencesController < ApplicationController
 
   private
     def reference_params
-      params.require(:reference).permit(
+      params.require(:references).permit(
         :list_id, :paper_id, :id, locator: [:id, :type, :title])
     end
 

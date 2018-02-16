@@ -7,7 +7,7 @@ FactoryBot.define do
     "A description for list \##{n}"
   end
 
-  factory :list do
+  factory :references do
     name { generate :name }
     description { generate :description }
     visibility :public

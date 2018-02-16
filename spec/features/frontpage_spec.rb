@@ -4,7 +4,7 @@ describe 'front page' do
 
   before do
     @user = create(:user)
-    @list = create(:list, user: @user)
+    @list = create(:references, user: @user)
     @activity = create(:activity, user: @user, actable: @list, activity_type: "created")
   end
 

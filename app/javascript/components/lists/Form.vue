@@ -105,94 +105,97 @@
 </template>
 
 <script>
-  import axios from '../../services/axios'
-  import debounce from 'debounce-promise'
+import axios from '../../services/axios'
+import debounce from 'debounce-promise'
+import Multiselect from 'vue-multiselect/src/Multiselect.vue'
 
-  export default {
+export default {
 
-    props: ['list', 'buttonName', 'currentUser', 'canModerate', 'owner', 'contributors', 'allUsers', 'cancelLink', 'contributorsSearchLink'],
+  components: {Multiselect},
 
-    data() {
-      return {
-        loadedContributors: [],
-        loadingContributors: false,
-        form: {
-          name: '',
-          tag_list: '',
-          description: '',
-          access: null,
-          contributors: [],
-        },
+  props: ['list', 'buttonName', 'currentUser', 'canModerate', 'owner', 'contributors', 'allUsers', 'cancelLink', 'contributorsSearchLink'],
+
+  data() {
+    return {
+      loadedContributors: [],
+      loadingContributors: false,
+      form: {
+        name: '',
+        tag_list: '',
+        description: '',
+        access: null,
+        contributors: [],
+      },
+    }
+  },
+
+  created() {
+    this.form = Object.assign({}, this.list);
+    this.form.contributors = this.contributors
+    this.form.tag_list = this.list.tags.map(t => t.name).join(', ');
+  },
+
+  mounted () {
+    jQuery('[data-toggle="popover"]').popover();
+  },
+
+  computed: {
+
+    isPublic() {
+      return this.form.access === 'public'
+    },
+
+    accessDefinition() {
+      if (this.isPublic) {
+        return 'Anyone can add and remove their own references.  Public boards allow the greatest amount of participation and collaboration.'
+      } else if (this.form.access === 'contributors') {
+        return 'Only assigned contributors can edit or add references to this board.  This gives contributors full control over referenced papers.'
       }
     },
 
-    created() {
-      this.form = Object.assign({}, this.list);
-      this.form.contributors = this.contributors
-      this.form.tag_list = this.list.tags.map(t => t.name).join(', ');
+    nonMembers() {
+      return this.allUsers.filter(member => member.role == 'nonmember')
     },
 
-    mounted () {
-      jQuery('[data-toggle="popover"]').popover();
+    currentUserRemovedConfirm() {
+      if (!this.nonMembers.some(member => member.username == this.currentUser) || this.currentUser == this.owner) {
+        return null
+      } else {
+        return 'Are you sure you want to remove yourself as a contributor?'
+      }
     },
 
-    computed: {
+  },
 
-      isPublic() {
-        return this.form.access === 'public'
-      },
+  methods: {
 
-      accessDefinition() {
-        if (this.isPublic) {
-          return 'Anyone can add and remove their own references.  Public boards allow the greatest amount of participation and collaboration.'
-        } else if (this.form.access === 'contributors') {
-          return 'Only assigned contributors can edit or add references to this board.  This gives contributors full control over referenced papers.'
-        }
-      },
+    searchContributors (query) {
+      if (query === '') {
+        return
+      }
+      this.loadingContributors = true;
 
-      nonMembers() {
-        return this.allUsers.filter(member => member.role == 'nonmember')
-      },
-
-      currentUserRemovedConfirm() {
-        if (!this.nonMembers.some(member => member.username == this.currentUser) || this.currentUser == this.owner) {
-          return null
-        } else {
-          return 'Are you sure you want to remove yourself as a contributor?'
-        }
-      },
+      debounce((query) => axios.get(this.contributorsSearchLink, {params: {query}}), 400)(query)
+        .catch((e) => {
+          console.error(e)
+          return []
+        })
+        .then(response => {
+          this.loadedContributors = response.data
+          this.loadingContributors = false
+        })
 
     },
 
-    methods: {
+    onChangeContributors (values) {
+      this.form.contributors = values
+      this.$forceUpdate()
+    },
 
-      searchContributors (query) {
-        if (query === '') {
-          return
-        }
-        this.loadingContributors = true;
+    limitText (count) {
+      return `and ${count} other users`
+    },
 
-        debounce((query) => axios.get(this.contributorsSearchLink, {params: {query}}), 400)(query)
-          .catch((e) => {
-            console.error(e)
-            return []
-          })
-          .then(response => {
-            this.loadedContributors = response.data
-            this.loadingContributors = false
-          })
-
-      },
-
-      onChangeContributors (values) {
-        this.form.contributors = values
-        this.$forceUpdate()
-      },
-
-      limitText (count) {
-        return `and ${count} other users`
-      },
-
-    }
   }
+}
 </script>

@@ -9,8 +9,7 @@ import '../stylesheets/application.scss'
 
 import '../legacy/general'
 
-import '../instances/lists-form'
-import '../instances/simple-chart'
+import '../app/instances'
 
 
 // The above code uses Vue without the compiler, which means you cannot

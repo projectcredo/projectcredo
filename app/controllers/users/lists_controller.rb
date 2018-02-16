@@ -97,8 +97,7 @@ class Users::ListsController < ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :access,
-                                      list_members: [ :username, :role ])
+      params.require(:list).permit(:name, :description, :tag_list, :access, list_members: [ :username, :role ])
     end
 
     def ensure_editable

@@ -93,7 +93,7 @@
         <div class="panel-body">
           <p><strong>Contribution Activity Over Time</strong></p>
           <p class="color-gray">Contribution activity includes creating and editing lists, uploading papers, commenting, and liking content.</p>
-          <div class="simple-chart" data-props='<%= {:data => [
+          <div class="vue-simple-chart" data-props='<%= {:data => [
             {:key => 'Oct', :value => 3},
             {:key => 'Nov', :value => 6},
             {:key => 'Dec', :value => 4},
@@ -109,7 +109,7 @@
 
           <p class="m-t-40"><strong>Content Views Over Time</strong></p>
           <p class="color-gray"><%= @user.first_name_or_username %>`s content views include views of their profile, lists, uploaded papers, and comments.</p>
-          <div class="simple-chart" data-props='<%= {:data => [
+          <div class="vue-simple-chart" data-props='<%= {:data => [
             {:key => 'Oct', :value => 80},
             {:key => 'Nov', :value => 130},
             {:key => 'Dec', :value => 200},

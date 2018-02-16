@@ -14,7 +14,7 @@
       <%= link_to l.url, l.url, target: '_blank' %>
       <% if l.link_editable && current_user_can_moderate?(reference.list) %>
         <%= link_to '',
-          link_path(l, reference: reference),
+          link_path(l, references: reference),
           method: 'delete',
           class: 'btn-icon remove-button',
           data: { confirm: 'Are you want to delete this link?' },

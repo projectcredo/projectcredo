@@ -4,9 +4,9 @@ describe 'lists' do
 
   before do
     @user = create(:user)
-    @list = create(:list, user: @user)
-    @list2 = create(:list, user: @user)
-    @list_private = create(:list, user: @user, visibility: :private)
+    @list = create(:references, user: @user)
+    @list2 = create(:references, user: @user)
+    @list_private = create(:references, user: @user, visibility: :private)
 
     @contributor = create(:user)
     @list.list_memberships.create(user: @contributor, role: :contributor)
@@ -14,8 +14,8 @@ describe 'lists' do
     @other_user = create(:user)
 
     @user2 = create(:user)
-    @user2_list = create(:list, user: @user2, visibility: :private)
-    @user2_private_list = create(:list, user: @user2, visibility: :private)
+    @user2_list = create(:references, user: @user2, visibility: :private)
+    @user2_private_list = create(:references, user: @user2, visibility: :private)
   end
 
 
@@ -147,7 +147,7 @@ describe 'lists' do
         }
 
         expect do
-          post lists_path, params: {list: data}
+          post lists_path, params: {references: data}
         end.to change {
           List.count
         }.by(1)
@@ -211,7 +211,7 @@ describe 'lists' do
           list_members: [],
         }
 
-        put user_list_path(@user, @list), params: {list: data}
+        put user_list_path(@user, @list), params: {references: data}
 
         expect(@list.reload).to have_attributes(data.slice(:name, :description, :access))
       end
@@ -232,7 +232,7 @@ describe 'lists' do
           list_members: [],
         }
 
-        put user_list_path(@user, @list), params: {list: data}
+        put user_list_path(@user, @list), params: {references: data}
 
         expect(@list.reload).to have_attributes(data.slice(:name, :description, :access))
       end
@@ -246,7 +246,7 @@ describe 'lists' do
           list_members: [],
         }
 
-        put user_list_path(@user, @list), params: {list: data}
+        put user_list_path(@user, @list), params: {references: data}
 
         expect(@list.access).to_not eq('contributors')
       end

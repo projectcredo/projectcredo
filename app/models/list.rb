@@ -38,7 +38,7 @@ class List < ApplicationRecord
   end
 
   # Callbacks
-  after_create ->{ list_memberships.find_or_create_by(list: self, user: user) }
+  after_create ->{ list_memberships.find_or_create_by(references: self, user: user) }
   before_create :set_slug
 
   # Associations
@@ -55,7 +55,7 @@ class List < ApplicationRecord
     end
 
     def add user, role: nil
-      attrs = {list: @association.owner, user: user}
+      attrs = {references: @association.owner, user: user}
       attrs.merge!(role: role) if role
       ListMembership.create(attrs)
     end
