@@ -23,7 +23,7 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    members = params[:references].delete(:list_members)
+    members = params[:list].delete(:list_members)
     @list = current_user.lists.build(list_params)
 
     respond_to do |format|
@@ -72,7 +72,7 @@ class ListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
-      params.require(:references).permit(:name, :description, :tag_list, :access,
-                                         list_members: [ :username, :role ])
+      params.require(:list).permit(:name, :description, :tag_list, :access,
+                                    list_members: [ :username, :role ])
     end
 end

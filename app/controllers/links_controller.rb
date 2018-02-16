@@ -3,7 +3,7 @@ class LinksController < ApplicationController
 
   def destroy
     @link = Link.find(link_params[:id])
-    reference = Reference.find(params[:references])
+    reference = Reference.find(params[:reference])
     list = reference.list
 
     respond_to do |format|

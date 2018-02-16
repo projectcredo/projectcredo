@@ -1,4 +1,5 @@
 <div id="list-edit">
+
   <% url = if list.persisted? then user_list_path(list.owner, list) else lists_path end  %>
 
   <%= form_for(list, url: url) do |f| %>
@@ -15,19 +16,7 @@
       </div>
     <% end %>
 
-    <div class="vue-lists-form" data-props='<%=
-      {
-        list: list.as_json(include: :tags),
-        buttonName: button_name,
-        currentUser: current_user.username,
-        canModerate: (if @list.persisted? then current_user.can_edit?(@list) else true end),
-        owner: (if @list.persisted? then @list.owner.username else current_user.username end),
-        allUsers: ActiveSupport::JSON.decode(render('lists/all_users.json', list: @list)),
-        cancelLink: if list.id then user_list_path(list.user, list) else root_path end,
-        contributors: ActiveSupport::JSON.decode(render('lists/contributors.json', list: @list)),
-        contributorsSearchLink: list_form_contributors_path(list),
-      }.to_json.html_safe
-    %>'></div>
+    <div id="lists_form"></div>
 
     </div>
   <% end %>
@@ -35,8 +24,25 @@
   <div class="row">
     <div class="col-sm-offset-2 col-sm-10">
       <% if list.persisted? && current_user == list.owner %>
-        <%= link_to 'Delete this board', user_list_path(list.user, list), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you certain you want to delete this?' } %>
+        <%= link_to 'Delete this board', user_list_path(list.user, list), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you certain you want to delete this?' }
+        %>
       <% end %>
     </div>
   </div>
 </div>
+
+<% content_for(:page_app) do %>
+  <script>
+    window.listsFormProps = {
+      list: <%= list.to_json(include: :tags).html_safe %>,
+      buttonName: '<%= button_name %>',
+      currentUser: "<%= current_user.username %>",
+      canModerate: <%= (if @list.persisted? then current_user.can_edit?(@list) else true end) %>,
+      owner: '<%= (if @list.persisted? then @list.owner.username else current_user.username end) %>',
+      allUsers: <%= raw render('lists/all_users.json', list: @list) %>,
+      cancelLink: '<%= if list.id then user_list_path(list.user, list) else root_path end %>',
+      contributors: <%= raw render('lists/contributors.json', list: @list) %>,
+      contributorsSearchLink: '<%= list_form_contributors_path(list) %>',
+    }
+  </script>
+<% end %>

@@ -5,7 +5,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = Fabricate(:user)
-    @list = Fabricate(:references, user: @user)
+    @list = Fabricate(:list, user: @user)
   end
 
   test "guest should get index" do
@@ -16,7 +16,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
 
   test 'guest should see public lists' do
     user_2 = Fabricate(:user)
-    list_2 = Fabricate(:references, user: user_2)
+    list_2 = Fabricate(:list, user: user_2)
 
     get lists_path
 
@@ -28,13 +28,13 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_difference('List.count', 1) do
-      post lists_url(references: Fabricate.attributes_for(:references, user: @user))
+      post lists_url(list: Fabricate.attributes_for(:list, user: @user))
     end
   end
 
   test "user should see other user's public list" do
     user_2 = Fabricate(:user)
-    list_2 = Fabricate.build(:references, user: user_2)
+    list_2 = Fabricate.build(:list, user: user_2)
 
     sign_in @user
     get lists_path
@@ -48,7 +48,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
 
   test "user should not see other user's private list" do
     user_2 = Fabricate(:user)
-    list_2 = Fabricate(:references, user: user_2, visibility: :private)
+    list_2 = Fabricate(:list, user: user_2, visibility: :private)
 
     sign_in @user
     get lists_path
@@ -57,7 +57,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user should see own private lists" do
-    list_2 = Fabricate(:references, user: @user, visibility: :private)
+    list_2 = Fabricate(:list, user: @user, visibility: :private)
 
     sign_in @user
     get lists_path
