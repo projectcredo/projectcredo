@@ -169,9 +169,19 @@
 <script>
 import axios from '../../services/axios'
 import debounce from 'debounce-promise'
-import ReferenceRow from './ReferenceRow.vue'
+import Abstract from './Abstract.vue'
+import Vote from './Vote.vue'
+import MiniBib from './MiniBib.vue'
+import Note from './Note.vue'
 
 export default {
+
+  components: {
+    Abstract,
+    Vote,
+    MiniBib,
+    Note,
+  },
 
   props: [
     'signedIn',
@@ -207,7 +217,7 @@ export default {
       return this.selectedRef.note_form != ''
     },
     abstractImported: function() {
-      return !this.selectedRef.paper.abstract_editable && this.hasAbstract
+      return ! this.selectedRef.paper.abstract_editable && this.hasAbstract
     }
   },
 
@@ -233,7 +243,7 @@ export default {
         data: params
       })
         .done(function(){
-          self.hasAbstract = true
+          // self.hasAbstract = true
           self.editAbstract = false
           reference.paper.abstract = reference.abstract_form
         })

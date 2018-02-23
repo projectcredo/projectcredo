@@ -14,8 +14,7 @@
     "vue": "^2.5.2",
     "vue-loader": "^13.3.0",
     "vue-multiselect": "^2.0.6",
-    "vue-template-compiler": "^2.5.2",
-    "vue2-filters": "^0.3.0"
+    "vue-template-compiler": "^2.5.2"
   },
   "devDependencies": {
     "sass-loader": "^6.0.6",

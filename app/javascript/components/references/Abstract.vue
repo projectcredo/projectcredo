@@ -1,23 +1,20 @@
 <template>
-  <span>
-    <a :class="[{'toggled': this.voteable.voted}, 'vote', 'thumbs-up']"
-       @click="toggleVote(voteable)"
-       v-show="!isLoading"
+  <div>
+    <span class="newlines">{{ abstract | truncate(250, truncateAbstract) }}</span>
+    <a class="action-link"
+       v-if="abstract.length > 250"
+       @click.stop.prevent="truncateAbstract = ! truncateAbstract"
     >
-      {{voteable.votes}}
+      {{ truncateAbstract ? 'see more' : 'see less' }}
     </a>
-    <span class="spinner" v-show="isLoading">
-      <span class="double-bounce1"></span>
-      <span class="double-bounce2"></span>
-    </span>
-  </span>
+  </div>
 </template>
 
 <script>
   export default {
     props: ['abstract'],
 
-    data: function() {
+    data: function () {
       return {
         truncateAbstract: true
       }

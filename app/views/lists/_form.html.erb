@@ -16,7 +16,19 @@
       </div>
     <% end %>
 
-    <div id="lists_form"></div>
+    <div class="vue-lists-form" data-props="<%=
+      {
+        list: list.as_json(include: :tags),
+        buttonName: button_name,
+        currentUser: current_user.username,
+        canModerate: (if @list.persisted? then current_user.can_edit?(@list) else true end),
+        owner: (if @list.persisted? then @list.owner.username else current_user.username end),
+        allUsers: ActiveSupport::JSON.decode(render('lists/all_users.json', list: @list)),
+        cancelLink: if list.id then user_list_path(list.user, list) else root_path end,
+        contributors: ActiveSupport::JSON.decode(render('lists/contributors.json', list: @list)),
+        contributorsSearchLink: list_form_contributors_path(list),
+      }.to_json
+    %>"></div>
 
     </div>
   <% end %>
@@ -30,19 +42,3 @@
     </div>
   </div>
 </div>
-
-<% content_for(:page_app) do %>
-  <script>
-    window.listsFormProps = {
-      list: <%= list.to_json(include: :tags).html_safe %>,
-      buttonName: '<%= button_name %>',
-      currentUser: "<%= current_user.username %>",
-      canModerate: <%= (if @list.persisted? then current_user.can_edit?(@list) else true end) %>,
-      owner: '<%= (if @list.persisted? then @list.owner.username else current_user.username end) %>',
-      allUsers: <%= raw render('lists/all_users.json', list: @list) %>,
-      cancelLink: '<%= if list.id then user_list_path(list.user, list) else root_path end %>',
-      contributors: <%= raw render('lists/contributors.json', list: @list) %>,
-      contributorsSearchLink: '<%= list_form_contributors_path(list) %>',
-    }
-  </script>
-<% end %>

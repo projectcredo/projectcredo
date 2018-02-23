@@ -12,15 +12,12 @@
          data-target="#referenceModal"
          @click="selectReference(index)"
       >
-        {{r.paper.title}}
+        {{ r.paper.title }}
       </a>
       <mini-bib :r="r"></mini-bib>
     </td>
     <td>
-      <a class="hidden-remove"
-         v-if="showRemove"
-         @click="removeReference(index)"
-      ></a>
+      <a class="hidden-remove" v-if="showRemove" @click="removeReference(index)"></a>
     </td>
     <td>
       <a class="show-details"
@@ -55,8 +52,19 @@
 <script>
 import axios from '../../services/axios'
 import debounce from 'debounce-promise'
+import Vote from './Vote.vue'
+import MiniBib from './MiniBib.vue'
+import Note from './Note.vue'
+import Abstract from './Abstract.vue'
 
 export default {
+
+  components: {
+    Vote,
+    MiniBib,
+    Note,
+    Abstract,
+  },
 
   props: ['r', 'index', 'signedIn', 'editsAllowed', 'currentUsername'],
 
@@ -89,6 +97,5 @@ export default {
       this.$parent.$emit('remove-ref', index)
     }
   },
-
 }
 </script>

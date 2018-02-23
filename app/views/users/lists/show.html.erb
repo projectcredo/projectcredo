@@ -3,7 +3,7 @@
 <div class="row list-show">
   <div class="col-md-8">
 
-    <div class="vue-list" data-props='<%=
+    <div class="vue-list" data-props="<%=
       {
         list: @list.as_json(include: [:tags, :others]),
         owner: @list.owner.username,
@@ -12,8 +12,9 @@
         summaries: ActiveSupport::JSON.decode(render('users/lists/jbuilders/list_summaries.json', summaries: @summaries)),
         userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
         allReferences: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
-      }.to_json.html_safe
-    %>'></div>
+        summaryAddPath: new_user_list_summary_path(user_list_id: @list.slug),
+      }.to_json
+    %>"></div>
 
   </div>
   <div class="col-md-4">

@@ -1,11 +1,8 @@
 import Vue from 'vue'
-import Vue2Filters from 'vue2-filters'
 import './filters'
 import ListsForm from '../components/lists/Form.vue'
 import SimpleChart from '../components/charts/SimpleChart.vue'
 import List from '../components/list/List.vue'
-
-Vue.use(Vue2Filters)
 
 createInstance('lists-form', ListsForm)
 createInstance('simple-chart', SimpleChart)

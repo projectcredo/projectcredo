@@ -1,7 +1,7 @@
 <template>
   <span>
-    <span class="text-capitalize r-cite" v-if='r' @click='selectReference(r.index)'>
-      {{ r|cite }}
+    <span class="text-capitalize r-cite" v-if="r" @click="selectReference(r.index)">
+      {{ r | cite }}
     </span>
     <span class="text-capitalize r-cite" v-else>
       [filtered]

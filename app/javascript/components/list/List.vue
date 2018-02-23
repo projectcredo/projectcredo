@@ -53,7 +53,7 @@
     <div class="list-section">
       <div class="list-section-h2">Summaries</div>
       <div class="nothing-yet" v-if="editsAllowed">
-        <%= link_to 'Add a summary', new_user_list_summary_path(user_list_id: @list.slug) %> to help guide readers through the evidence
+        <a :href="summaryAddPath">Add a summary</a> to help guide readers through the evidence
       </div>
       <div class="nothing-yet" v-if="summaries.length == 0 && ! editsAllowed">
         No summaries written yet.
@@ -66,12 +66,12 @@
             <div>{{ s.evidence_rating }}</div>
           </td>
           <td class="summary-content">
-            <summary :summary="s"
+            <summary-content :summary="s"
                      :cited-refs='citedRefs(s.content)'
                      data-toggle="modal"
                      data-target="#referenceModal"
                      v-on:select-ref="selectReference($event)"
-            ></summary>
+            ></summary-content>
             <div class="summary-details">
               <vote :voteable="s" :signed-in="signedIn"></vote>
               · {{s.user}} · {{s.time_ago}}
@@ -84,7 +84,7 @@
         <tr class="summary-row" v-if="summaries.length > 3">
           <td class="text-center">
             <a class="action-link" @click.stop="summariesShown = (summariesShown == 3 ? 10 : 3)">
-              {{summariesShown == 3 ? 'see more' : 'see less'}}
+              {{ summariesShown == 3 ? 'see more' : 'see less' }}
             </a>
           </td>
         </tr>
@@ -94,22 +94,46 @@
 
     <div class="list-section">
       <div class="list-section-h2">Notes and Highlights</div>
-      <%= render 'list_notes' %>
+      <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
+      <table class="notes-table">
+        <tbody>
+        <tr v-for="n in notes.slice(0,notesShown)" class="note-row">
+          <td class="note-vote">
+            <vote :voteable="n.note" :signed-in="signedIn"></vote>
+          </td>
+          <td class="note-content">
+            <note :note="n.note" class="note">
+              <span class="text-capitalize" slot="citation">
+                ·
+                <span data-toggle="modal"
+                      data-target="#referenceModal"
+                      @click="selectReference(n.rIndex)"
+                      class='action-link-soft'
+                >{{ n.citation }}</span>
+              </span>
+            </note>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <a v-if="notes.length > 0" class="action-link" @click.stop="notesShown = (notesShown == 3 ? 10 : 3)">
+        {{ notesShown == 3 ? 'see more' : 'see less' }}
+      </a>
     </div>
     <div class="list-section">
       <div class="list-section-h2">
-        <% if @list.references.count > 0 %>
-        <%= @list.references.count %> Papers
-        <% else %>
-        No Papers Added
-        <% end %>
+        <span v-if="allReferences.length">{{ allReferences.length }} Papers</span>
+        <span v-else>No Papers Added</span>
       </div>
-      <%= render 'list_quick_add' %>
-      <div class="vue-reference-list" data-props="<%=
-      {
-        currentUser: current_user.username,
-      }.to_json.html_safe
-    %>"></div>
+      <div class="quick-add">
+        <a class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
+          Quick Add Paper
+        </a>
+        <div v-show="showQuickAdd">
+          <crossref-search :edits-allowed="editsAllowed"></crossref-search>
+          <add-by-locator></add-by-locator>
+        </div>
+      </div>
       <reference-list
               :signed-in="signedIn"
               :filtered-data="filteredData"
@@ -130,19 +154,27 @@
 import Vue from 'vue'
 import ReferenceModal from '../references/ReferenceModal.vue'
 import ReferenceList from '../references/ReferenceList.vue'
-import Summary from '../references/Summary.vue'
+import SummaryContent from '../references/SummaryContent.vue'
 import Vote from '../references/Vote.vue'
+import Note from '../references/Note.vue'
+import CrossrefSearch from '../references/CrossrefSearch.vue'
+import AddByLocator from '../references/AddByLocator.vue'
+import MiniBib from '../references/MiniBib.vue'
 
 export default {
 
   components: {
     ReferenceModal,
     ReferenceList,
-    Summary,
+    SummaryContent,
     Vote,
+    Note,
+    CrossrefSearch,
+    AddByLocator,
+    MiniBib,
   },
 
-  props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'allReferences'],
+  props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'allReferences', 'summaryAddPath'],
 
   data () {
     return {
