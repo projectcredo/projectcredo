@@ -9,6 +9,7 @@
     "debounce": "component/debounce",
     "debounce-promise": "^3.0.2",
     "font-awesome": "^4.7.0",
+    "lodash-es": "^4.17.7",
     "moment-mini": "^2.19.4",
     "node-sass": "^4.7.2",
     "vue": "^2.5.2",

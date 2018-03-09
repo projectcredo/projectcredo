@@ -3,24 +3,23 @@
     <div class="input-group input-group-sm crossref">
       <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
       <input class="form-control"
-             v-bind:placeholder="placeholder"
-             v-bind:disabled="!editsAllowed"
+             :placeholder="placeholder"
+             :disabled="!editsAllowed"
              v-model="query"
-             v-on:keydown.esc="clearSearch"
-             v-on:keyup="getResults"
+             @keydown.esc="clearSearch"
+             @keyup="getResults"
       >
-      <%= form_for list.references.build, html: {class: 'hidden', 'ref' => "form"} do |f| %>
-      <%= f.hidden_field :list_id, value: list.id %>
-      <%= f.fields_for :locator do |l| %>
-      <%= l.text_field :type, value: 'doi' %>
-      <%= l.text_field :id, 'v-bind:value' => 'doi | stripUrl' %>
-      <% end %>
-      <% end %>
+      <form ref="form" action="/references" accept-charset="UTF-8" method="post" class="hidden">
+        <input type="hidden" name="authenticity_token" :value="token">
+        <input :value="list.id" type="hidden" name="reference[list_id]">
+        <input value="doi" type="hidden" name="reference[locator][type]">
+        <input :value="doi | stripUrl" type="hidden" name="reference[locator][id]">
+      </form>
     </div>
     <ul class="list-group autocomplete" v-if="this.results.length">
       <li class="list-group-item"
           v-for="result in results"
-          v-on:click="selectResult(result)"
+          @click="selectResult(result)"
           v-html="result.fullCitation"
       >
       </li>
@@ -29,8 +28,11 @@
 </template>
 
 <script>
+import debounce from 'lodash-es/debounce'
+import axios from '../../services/axios'
+
 export default {
-  props: ['editsAllowed'],
+  props: ['editsAllowed', 'list'],
 
   data: function() {
     return {
@@ -38,41 +40,41 @@ export default {
       results: [],
       doi: '',
       submitted: false,
-      placeholder: 'Search for a paper'
+      placeholder: 'Search for a paper',
+      token: document.getElementsByName('csrf-token')[0].getAttribute('content'),
     }
   },
 
   methods: {
 
     clearSearch: function() {
-      this.results = [];
-      this.query = '';
+      this.results = []
+      this.query = ''
     },
 
-    getResults: debounce(
-      function() {
-        if (this.query === '') { return this.results = [] }
-        self = this
-        $.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query).done(function(data) {
-          if (data.length > 0) {
-            self.results = data;
+    getResults: debounce(function (e) {
+      if (this.query === '') {
+        return this.results = []
+      }
+      axios.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query)
+        .then((response) => {
+          if (response.data.length > 0) {
+            this.results = response.data
           } else {
-            self.results = [{fullCitation: 'No results found.', doi: ''}];
-          };
-        });
-      },
-      200
-    ),
+            this.results = [{fullCitation: 'No results found.', doi: ''}]
+          }
+        })
+    }, 500),
 
     selectResult: function(result) {
-      self = this
       this.doi = result.doi;
       this.submitted = true;
-      this.searchDisabled = true;
       this.placeholder = result.fullCitation;
       this.clearSearch();
       // This is to give Vue time to update the doi above. It doesn't need much.
-      window.setTimeout(function() { self.$refs.form.submit() }, 50);
+      window.setTimeout(() => {
+        this.$refs.form.submit()
+      }, 50)
     }
   },
 

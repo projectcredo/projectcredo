@@ -130,7 +130,7 @@
           Quick Add Paper
         </a>
         <div v-show="showQuickAdd">
-          <crossref-search :edits-allowed="editsAllowed"></crossref-search>
+          <crossref-search :edits-allowed="editsAllowed" :list="list"></crossref-search>
           <add-by-locator></add-by-locator>
         </div>
       </div>

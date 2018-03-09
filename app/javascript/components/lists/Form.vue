@@ -184,7 +184,6 @@ export default {
           this.loadedContributors = response.data
           this.loadingContributors = false
         })
-
     },
 
     onChangeContributors (values) {
