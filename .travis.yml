@@ -9,7 +9,7 @@ services:
   - postgresql
 install:
   - bundle install
-  - nvm install 8
+  - nvm install 8.9
   - node -v
   - npm i -g yarn
   - yarn

@@ -39,6 +39,10 @@ This often results in `DOCKER_HOST_IP=172.18.0.1/16`.
 
 The site's address unfortunately depends on what system you're on. Linux and Mac OS seem to be fine mounting it at `localhost:3000`, but on Windows, we've needed to find the docker container's IP address in order to actually see the site. You may need to figure out what your docker container's IP address is.
 
+### Troubleshooting
+
+If you have some issues with Webpacker, try to reinstall all node dependencies with `docker-compose run app yarn install --force`
+
 ### Working with rails inside Docker container
 
 The development the project is setup to run in a Docker container, so instead of running commands locally like `bundle` or `rails <command>` you need to prepend them with `docker-compose run app`.
