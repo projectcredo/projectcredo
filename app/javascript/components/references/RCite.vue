@@ -13,10 +13,10 @@
 export default {
   props: ['r'],
 
-  methods:{
-    selectReference: function(index) {
+  methods: {
+    selectReference (index) {
       this.$parent.$emit('select-ref', index)
-    }
+    },
   },
 }
 </script>

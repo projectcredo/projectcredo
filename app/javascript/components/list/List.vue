@@ -131,7 +131,7 @@
         </a>
         <div v-show="showQuickAdd">
           <crossref-search :edits-allowed="editsAllowed" :list="list"></crossref-search>
-          <add-by-locator></add-by-locator>
+          <add-by-locator :user-can-edit="userCanEdit" :list="list"></add-by-locator>
         </div>
       </div>
       <reference-list
@@ -141,10 +141,10 @@
               :sort-key="sortKey"
               :sort-orders="sortOrders"
               :edits-allowed="editsAllowed"
-              v-on:sort="sortBy($event)"
-              v-on:filter="addToFilter($event)"
-              v-on:select-ref="selectReference($event)"
-              v-on:remove-ref="deleteReference($event)"
+              @sort="sortBy($event)"
+              @filter="addToFilter($event)"
+              @select-ref="selectReference($event)"
+              @remove-ref="deleteReference($event)"
       ></reference-list>
     </div>
   </div>
@@ -174,10 +174,11 @@ export default {
     MiniBib,
   },
 
-  props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'allReferences', 'summaryAddPath'],
+  props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'references', 'summaryAddPath'],
 
   data () {
     return {
+      allReferences: [],
       referenceIndexInModal: 0,
       selectedRef: {},
       filterKey: '',
@@ -190,7 +191,11 @@ export default {
     }
   },
 
-  mounted: function () {
+  beforeMount () {
+    this.allReferences = this.references
+  },
+
+  mounted () {
     this.allReferences.forEach(function (reference) {
       Vue.set(reference, 'abstract_form', reference.paper.abstract)
       Vue.set(reference, 'note_form', '')
@@ -209,15 +214,15 @@ export default {
 
   computed: {
 
-    displayedListDesc: function () {
+    displayedListDesc () {
       return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
     },
 
-    editsAllowed: function () {
+    editsAllowed () {
       return this.signedIn && this.userCanEdit
     },
 
-    filteredData: function () {
+    filteredData () {
       var sortKey = this.sortKey
       var filterKey = this.filterKey
       var order = this.sortOrders[sortKey]
@@ -229,11 +234,11 @@ export default {
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
-          "paper.title",
-          "paper.authors.full_name",
-          "paper.tag_list",
-          "paper.abstract"
-        ]
+          'paper.title',
+          'paper.authors.full_name',
+          'paper.tag_list',
+          'paper.abstract',
+        ],
       };
       if (filterKey) {
         var fuse = new Fuse(data, fuseOptions);
@@ -254,7 +259,7 @@ export default {
       return data
     },
 
-    notes: function () {
+    notes () {
       var self = this
       var notes = this.filteredData.map(function (r, index) {
         var citation = self.$options.filters.cite(r);
@@ -277,12 +282,12 @@ export default {
 
   methods: {
 
-    selectReference: function (index) {
+    selectReference (index) {
       this.referenceIndexInModal = index;
       this.selectedRef = this.filteredData[index];
     },
 
-    citedRefs: function (content) {
+    citedRefs (content) {
       var data = this.filteredData
       var myRegexp = /(?:<r-cite\s:r='r\((\d+)\)'\/>)/mg;
       var match = myRegexp.exec(content);
@@ -303,7 +308,7 @@ export default {
       return [].concat.apply([], citedRefs)
     },
 
-    addToFilter: function (add) {
+    addToFilter (add) {
       if (!this.filterKey.match(add)) {
         if (this.filterKey) {
           this.filterKey += ' ' + add
@@ -313,29 +318,26 @@ export default {
       }
     },
 
-    sortBy: function (key) {
+    sortBy (key) {
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
     },
 
-    deleteReference: function (index) {
+    deleteReference (index) {
       if (confirm('Are you sure you want to remove this paper?')) {
-        var self = this.filteredData;
-        var params = {
-          reference: {
-            id: self[index].id
-          }
-        };
+        const id = this.filteredData[index].id
         $.ajax({
-          url: "/references/" + self[index].id + ".json",
+          url: `/references/${id}.json`,
           type: 'DELETE',
-          data: params
+          data: {
+            reference: {id},
+          },
         })
-          .done(function () {
-            self.splice(index, 1)
+          .done(() => {
+            this.allReferences = this.allReferences.filter(r => r.id !== id)
           })
       }
-    }
-  }
+    },
+  },
 }
 </script>

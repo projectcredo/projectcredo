@@ -18,9 +18,9 @@
 export default {
   props: ['note'],
 
-  data: function() {
+  data () {
     return {
-      truncateNote: true
+      truncateNote: true,
     }
   },
 }

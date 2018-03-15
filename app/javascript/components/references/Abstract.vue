@@ -14,7 +14,7 @@
   export default {
     props: ['abstract'],
 
-    data: function () {
+    data () {
       return {
         truncateAbstract: true
       }

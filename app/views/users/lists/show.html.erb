@@ -11,7 +11,7 @@
         currentUser: current_user ? current_user.username : '',
         summaries: ActiveSupport::JSON.decode(render('users/lists/jbuilders/list_summaries.json', summaries: @summaries)),
         userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
-        allReferences: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
+        references: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
         summaryAddPath: new_user_list_summary_path(user_list_id: @list.slug),
       }.to_json
     %>"></div>

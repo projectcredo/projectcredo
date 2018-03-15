@@ -1,74 +1,71 @@
 <template>
   <div class="add-reference">
-    <%= form_for list.references.build, html: {class: 'form-inline', id: 'add-reference'} do |f| %>
-    <%= f.hidden_field :list_id, value: list.id %>
 
-    <%= f.fields_for :locator do |l| %>
-    <div class="form-group col-md-12 locator-fields">
-      <%= l.hidden_field :type, 'v-bind:value' => 'locatorType' %>
-      <i>
-        Or add a paper by
-        <a @click.prevent="setLocatorType('doi')">DOI</a>,
-        <a @click.prevent="setLocatorType('pubmed')">Pubmed ID</a>,
-        <a @click.prevent="setLocatorType('link')">URL</a>
-      </i>
-      <div class="form-group" v-if='showLocatorFields'>
-        <%= l.text_field  :id,
-        class: "form-control paper-locator input-sm",
-        'v-bind:placeholder' => 'locatorIdPlaceholder' %>
+    <form ref="form" action="/references" accept-charset="UTF-8" method="post" class="form-inline">
+      <input type="hidden" name="authenticity_token" :value="token">
+      <input :value="list.id" type="hidden" name="reference[list_id]">
 
-        <%= l.text_field  :title,
-        placeholder: 'Required - Ex: Regulation of the Neural Circuitry of Emotion',
-        class: "form-control paper-title input-sm",
-        'v-if' => 'showTitleField' %>
-        <%= f.submit "Submit",
-        class: "btn btn-primary btn-xs",
-        disabled: !(list.accepts_public_contributions? || current_user_can_edit?(list)) %>
-        <%= link_to "cancel", '', '@click.prevent' => 'cancelAdd' %>
+      <input :value="locatorType" type="hidden" name="reference[locator][type]">
+
+      <div class="form-group col-md-12 locator-fields">
+        <i>
+          Or add a paper by
+          <a @click.prevent="setLocatorType('doi')">DOI</a>,
+          <a @click.prevent="setLocatorType('pubmed')">Pubmed ID</a>,
+          <a @click.prevent="setLocatorType('link')">URL</a>
+        </i>
+        <div class="form-group" v-if="showLocatorFields">
+          <input class="form-control paper-locator input-sm" type="text" name="reference[locator][id]" :placeholder="locatorIdPlaceholder">
+          <input v-if="showTitleField" class="form-control paper-title input-sm" type="text" name="reference[locator][title]" placeholder="Required - Ex: Regulation of the Neural Circuitry of Emotion">
+
+          <input type="submit" name="commit" value="Submit" :disabled="list.accepts_public_contributions && userCanEdit" data-disable-with="Submit" class="btn btn-primary btn-xs">
+          <a href="#" @click.prevent="cancelAdd">cancel</a>
+        </div>
       </div>
-    </div>
-    <% end %>
-    <% end %>
+    </form>
   </div>
 </template>
 
 <script>
 export default {
-  data: function() {
+  props: ['userCanEdit', 'list'],
+
+  data () {
     return {
       locatorType: null,
       placeholderFor: {
-        doi: "Ex: 10.1038/srep23344",
-        pubmed: "Ex: 18365029",
-        link: "Ex: http://example.org/article?id=1"
-      }
+        doi: 'Ex: 10.1038/srep23344',
+        pubmed: 'Ex: 18365029',
+        link: 'Ex: http://example.org/article?id=1',
+      },
+      token: document.getElementsByName('csrf-token')[0].getAttribute('content'),
     }
   },
 
   methods: {
 
-    setLocatorType: function(refType) {
+    setLocatorType (refType) {
       this.locatorType = refType;
     },
 
-    cancelAdd: function() {
+    cancelAdd () {
       this.locatorType = null;
-    }
+    },
   },
 
   computed: {
 
-    showLocatorFields: function() {
+    showLocatorFields () {
       return !!this.locatorType;
     },
 
-    showTitleField: function() {
+    showTitleField () {
       return this.locatorType === 'link'
     },
 
-    locatorIdPlaceholder: function() {
+    locatorIdPlaceholder () {
       return this.placeholderFor[this.locatorType]
-    }
-  }
+    },
+  },
 }
 </script>

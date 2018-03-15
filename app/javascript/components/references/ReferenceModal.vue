@@ -210,26 +210,26 @@ export default {
   },
 
   computed: {
-    hasAbstract: function() {
+    hasAbstract () {
       return this.selectedRef.paper.abstract != undefined;
     },
-    showNoteSubmit: function() {
+    showNoteSubmit () {
       return this.selectedRef.note_form != ''
     },
-    abstractImported: function() {
+    abstractImported () {
       return ! this.selectedRef.paper.abstract_editable && this.hasAbstract
     }
   },
 
   methods: {
-    selectReference: function(index) {
+    selectReference (index) {
       this.$emit('select-ref', index)
     },
-    cancelAbstractForm: function() {
+    cancelAbstractForm () {
       this.editAbstract = false
       this.selectedRef.abstract_form = this.selectedRef.abstract
     },
-    submitAbstract: function(reference) {
+    submitAbstract (reference) {
       var self = this;
       var paper = reference.paper
       var params = {
@@ -248,7 +248,7 @@ export default {
           reference.paper.abstract = reference.abstract_form
         })
     },
-    submitTags: function() {
+    submitTags () {
       var tag_list = this.selectedRef.paper.tag_list
       if(this.selectedRef.paper.tag_list.length == 0){ tag_list =[""]}
 
@@ -265,7 +265,7 @@ export default {
         .done(function(){
         })
     },
-    addTag: function() {
+    addTag () {
       var self = this
       if(this.newTag != '') {
         var tags = this.newTag.split(",")
@@ -276,11 +276,11 @@ export default {
         this.submitTags()
       }
     },
-    removeTag: function(index){
+    removeTag (index){
       this.selectedRef.paper.tag_list.splice(index,1)
       this.submitTags()
     },
-    submitNote: function() {
+    submitNote () {
       var self = this
       var params = {
         comment: {
@@ -307,7 +307,7 @@ export default {
           self.selectedRef.notes.unshift(newNote)
         })
     },
-    deleteNote: function(note,index) {
+    deleteNote (note,index) {
       var self = this
       $.ajax({
         url: "/comments/" + note.id + ".json",
@@ -317,12 +317,11 @@ export default {
           self.selectedRef.notes.splice(index,1)
         })
     },
-    cancelEditNote: function(note) {
+    cancelEditNote (note) {
       note.edit_form = note.content
       note.editNote = false
     },
-    updateNote: function(note) {
-      var self = this
+    updateNote (note) {
       var params = {
         comment: {
           content: note.edit_form,

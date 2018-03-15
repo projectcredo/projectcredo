@@ -34,7 +34,7 @@ import axios from '../../services/axios'
 export default {
   props: ['editsAllowed', 'list'],
 
-  data: function() {
+  data () {
     return {
       query: '',
       results: [],
@@ -47,7 +47,7 @@ export default {
 
   methods: {
 
-    clearSearch: function() {
+    clearSearch () {
       this.results = []
       this.query = ''
     },
@@ -66,7 +66,7 @@ export default {
         })
     }, 500),
 
-    selectResult: function(result) {
+    selectResult (result) {
       this.doi = result.doi;
       this.submitted = true;
       this.placeholder = result.fullCitation;
@@ -79,9 +79,9 @@ export default {
   },
 
   filters: {
-    stripUrl: function (doiUrl) {
+    stripUrl  (doiUrl) {
       return doiUrl.replace('http://dx.doi.org/', '')
     }
-  }
+  },
 }
 </script>

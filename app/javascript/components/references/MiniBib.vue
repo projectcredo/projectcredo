@@ -17,8 +17,8 @@
 export default {
   props: ['r'],
 
-  methods:{
-    filter: function(add) {
+  methods: {
+    filter (add) {
       this.$parent.$parent.$emit('filter', add)
     }
   },

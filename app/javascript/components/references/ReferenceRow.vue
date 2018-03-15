@@ -17,7 +17,7 @@
       <mini-bib :r="r"></mini-bib>
     </td>
     <td>
-      <a class="hidden-remove" v-if="showRemove" @click="removeReference(index)"></a>
+      <a href="#" class="hidden-remove" v-if="showRemove" @click.prevent="removeReference(index)"></a>
     </td>
     <td>
       <a class="show-details"
@@ -68,7 +68,7 @@ export default {
 
   props: ['r', 'index', 'signedIn', 'editsAllowed', 'currentUsername'],
 
-  data: function () {
+  data () {
     return {
       recommendIsLoading: false,
       hoverPaperDetails: false,
@@ -78,24 +78,24 @@ export default {
   },
 
   computed: {
-    hasPaperDetails: function () {
+    hasPaperDetails () {
       return this.r.notes.length > 0 || this.r.paper.tag_list.length > 0 || this.r.paper.abstract != null
     },
-    showRemove: function () {
+    showRemove () {
       return this.editsAllowed || this.r.added_by == this.currentUsername
-    }
+    },
   },
 
   methods: {
-    filter: function (add) {
+    filter (add) {
       this.$parent.$emit('filter', add)
     },
-    selectReference: function (index) {
+    selectReference (index) {
       this.$parent.$emit('select-ref', index)
     },
-    removeReference: function (index) {
+    removeReference (index) {
       this.$parent.$emit('remove-ref', index)
-    }
+    },
   },
 }
 </script>

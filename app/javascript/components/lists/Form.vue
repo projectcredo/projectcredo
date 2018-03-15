@@ -175,6 +175,7 @@ export default {
       }
       this.loadingContributors = true;
 
+      // TODO fix debounce, current usage is incorrect
       debounce((query) => axios.get(this.contributorsSearchLink, {params: {query}}), 400)(query)
         .catch((e) => {
           console.error(e)
