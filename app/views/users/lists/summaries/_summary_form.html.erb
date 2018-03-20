@@ -6,96 +6,26 @@
     </div>
   </div>
 
-  <div class="list-section" id="summary-form">
-    <%
-      summary = @summary
-      list = @list
-    %>
-    <% url = if summary.persisted? then user_list_summary_path(@list.owner, @list) else user_list_summaries_path(@list.owner, @list) end  %>
-    <%= form_for(summary, url: url) do |f| %>
-      <% if summary.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(summary.errors.count, "error") %> prohibited this summary from being saved:</h2>
-          <ul>
-            <% summary.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-      <div class="form-horizontal">
-        <div class="form-group">
-          <%= f.label :evidence_rating, class: "col-md-2 control-label" %>
-          <div class="col-md-10">
-            <div class="row">
-              <div class="col-md-2">
-                <select
-                  name="summary[evidence_rating]"
-                  id="summary_evidence_rating"
-                  class="form-control"
-                  v-model="summary.evidence_rating"
-                >
-                  <% Summary.evidence_ratings.keys.each do |r| %>
-                    <option value="<%=r%>" ><%=r%></option>
-                  <% end %>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <span class=' evidence-rating'>
-                  <span class='icon' :class="summary.evidence_rating"></span>
-                  {{ratingDesc}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <%= f.label :content, 'Summary', class: "col-md-2 control-label" %>
-          <div class="col-md-8">
-            <textarea
-              class='form-control'
-              placeholder='Help summarize the evidence for this topic.  A good summary begins with a major headline - "Smoking causes lung cancer".  It then provides the major supporting information.  You can cite papers from this board by clicking the paper titles below.  Be brief and concise to help communicate this information.'
-              rows='12'
-              name="summary[content]"
-              id="summary_content"
-              v-model="summary.content"
-            ></textarea>
-            <div class="pull-right">
-              <countdown :max="2500" :current-length="summary.content.length"/></countdown>
-            </div>
-          </div>
-        </div>
+  <% if @summary.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@summary.errors.count, 'error') %> prohibited this summary from being saved:</h2>
+      <ul>
+        <% @summary.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-        <div class="form-group">
-          <div class="col-md-offset-2 col-sm-8">
-            <%= f.submit 'Submit', class: "btn btn-primary", method: :patch %>
-            <%= link_to 'cancel', user_list_path(list.owner, list), class: "action-link" %>
-            <%= if summary.persisted? then link_to 'Delete this summary', user_list_summary_path(list.owner, list, @summary.id), class: "btn btn-danger pull-right", method: :delete, data: {confirm: 'Are you sure you want to delete your summary?'} end %>
-          </div>
-        </div>
+  <div class="vue-summaries-form" data-props="<%=
+    {
+      formUrl: if @summary.persisted? then user_list_summary_path(@list.owner, @list) else user_list_summaries_path(@list.owner, @list) end,
+      signedIn: user_signed_in?,
+      list: @list.as_json(include: [:tags, :others]),
+      summary: @summary.as_json,
+      allReferences: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @list.references)),
+      evidenceRatings: Summary.evidence_ratings.keys,
+    }.to_json
+  %>"></div>
 
-        <div class="row">
-          <div class="divider-small col-md-10"></div>
-          </div>
-        <div class="form-group">
-          <label class="col-md-2 control-label">Click paper to add a citation to your summary</label>
-          <div class="col-md-8">
-            <reference-list
-              :signed-in="signedIn"
-              :filtered-data="filteredData"
-              v-model="filterKey"
-              :sort-key="sortKey"
-              :sort-orders="sortOrders"
-              v-on:sort="sortBy($event)"
-              v-on:filter="addToFilter($event)"
-              v-on:select-ref="selectReference($event)"
-            ></reference-list>
-          </div>
-
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
 </div>
-<%= render 'users/lists/summaries/summary_edit_app' %>
