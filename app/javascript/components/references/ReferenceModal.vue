@@ -1,8 +1,7 @@
 <template>
-  <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal"
-       v-if="selectedRef.paper" :reference="selectedRef">
+  <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModal" :reference="selectedRef">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
+      <div class="modal-content" v-if="selectedRef.paper">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                   aria-hidden="true">&times;</span></button>
@@ -15,9 +14,7 @@
           <mini-bib :r="selectedRef"></mini-bib>
           <div>
             <span v-if="selectedRef.paper.tag_list == 0 && editsAllowed">Add tags</span>
-            <a class="tag"
-               v-for="(tag,index) in selectedRef.paper.tag_list"
-            >
+            <a class="tag" v-for="(tag,index) in selectedRef.paper.tag_list">
               {{tag}}
               <button class="tag-remove"
                       v-show="showTagForm"
@@ -25,17 +22,13 @@
               >
               </button>
             </a>
-            <a class="edit-btn"
-               v-if="editsAllowed"
-               @click="showTagForm = !showTagForm"
-            ></a>
+            <a class="edit-btn" v-if="editsAllowed" @click="showTagForm = !showTagForm"></a>
             <div v-show="showTagForm">
               <input class="form-control input-sm tag-form"
                      v-model="newTag"
                      placeholder="Hit enter to add a tag"
                      @keyup.enter="addTag"
-              >
-              </input>
+              />
             </div>
           </div>
         </div>
@@ -61,9 +54,7 @@
               </div>
             </div>
             <div class="nothing-yet" v-if="selectedRef.notes.length == 0">No notes yet...</div>
-            <div v-for="(note,index) in selectedRef.notes.slice(0,showAllNotes ? selectedRef.notes.length + 1 : 3)"
-                 class="note"
-            >
+            <div v-for="(note,index) in selectedRef.notes.slice(0,showAllNotes ? selectedRef.notes.length + 1 : 3)" class="note">
               <div v-if="!note.editNote">
                 <note :note="note"></note>
               </div>
@@ -238,7 +229,7 @@ export default {
         }
       };
       $.ajax({
-        url: "/papers/" + paper.id  + ".json",
+        url: `/papers/${paper.id}.json`,
         type: 'PATCH',
         data: params
       })
@@ -258,7 +249,7 @@ export default {
         }
       };
       $.ajax({
-        url: "/papers/" + this.selectedRef.paper.id  + ".json",
+        url: `/papers/${this.selectedRef.paper.id}.json`,
         type: 'PATCH',
         data: params
       })
@@ -268,7 +259,7 @@ export default {
     addTag () {
       var self = this
       if(this.newTag != '') {
-        var tags = this.newTag.split(",")
+        var tags = this.newTag.split(',')
         tags.forEach(function(t){
           self.selectedRef.paper.tag_list.push(t.trim())
         })
@@ -286,21 +277,21 @@ export default {
         comment: {
           content: this.selectedRef.note_form,
           commentable_type: 'Reference',
-          commentable_id: this.selectedRef.id
+          commentable_id: this.selectedRef.id,
         }
       };
       $.ajax({
         url: "/comments.json",
         type: 'POST',
-        data: params
+        data: params,
       })
         .done(function(newNote){
           self.selectedRef.note_form = ''
           newNote.voted = false
           newNote.votes = 0
-          newNote.type ="comment"
-          newNote.vote_path = "/comments/" + newNote.id + "/vote"
-          newNote.time_ago = "now"
+          newNote.type = 'comment'
+          newNote.vote_path = `/comments/${newNote.id}/vote`
+          newNote.time_ago = 'now'
           newNote.user = self.currentUser
           newNote.edit_form = newNote.content
           newNote.editNote = false
@@ -310,8 +301,8 @@ export default {
     deleteNote (note,index) {
       var self = this
       $.ajax({
-        url: "/comments/" + note.id + ".json",
-        type: 'DELETE'
+        url: `/comments/${note.id}.json`,
+        type: 'DELETE',
       })
         .done(function(res){
           self.selectedRef.notes.splice(index,1)
@@ -325,13 +316,13 @@ export default {
       var params = {
         comment: {
           content: note.edit_form,
-          commentable_type: 'Reference'
+          commentable_type: 'Reference',
         }
       };
       $.ajax({
-        url: "/comments/" + note.id + ".json",
+        url: `/comments/${note.id}.json`,
         type: 'PATCH',
-        data: params
+        data: params,
       })
         .done(function(res){
           note.content = note.edit_form

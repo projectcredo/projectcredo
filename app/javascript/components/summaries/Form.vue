@@ -64,9 +64,9 @@
                     v-model="filterKey"
                     :sort-key="sortKey"
                     :sort-orders="sortOrders"
-                    v-on:sort="sortBy($event)"
-                    v-on:filter="addToFilter($event)"
-                    v-on:select-ref="selectReference($event)"
+                    @sort="sortBy($event)"
+                    @filter="addToFilter($event)"
+                    @select-ref="selectReference($event)"
             ></reference-list>
           </div>
 

@@ -6,7 +6,7 @@
              :value="value"
              @input="updateFilterKey($event.target.value)"
              placeholder="Filter this board for..."
-      ></input>
+      />
     </div>
     <table class="table">
       <thead>

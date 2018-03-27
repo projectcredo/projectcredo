@@ -8,10 +8,7 @@
       <b v-if="r.paper.published_at">{{ r.paper.published_at | age }}</b>
     </td>
     <td>
-      <a data-toggle="modal"
-         data-target="#referenceModal"
-         @click="selectReference(index)"
-      >
+      <a href="#" @click.prevent="selectReference(index)">
         {{ r.paper.title }}
       </a>
       <mini-bib :r="r"></mini-bib>

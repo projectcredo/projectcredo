@@ -68,8 +68,6 @@
           <td class="summary-content">
             <summary-content :summary="s"
                      :cited-refs='citedRefs(s.content)'
-                     data-toggle="modal"
-                     data-target="#referenceModal"
                      v-on:select-ref="selectReference($event)"
             ></summary-content>
             <div class="summary-details">
@@ -97,7 +95,7 @@
       <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
       <table class="notes-table">
         <tbody>
-        <tr v-for="n in notes.slice(0,notesShown)" class="note-row">
+        <tr v-for="n in notes.slice(0, notesShown)" class="note-row">
           <td class="note-vote">
             <vote :voteable="n.note" :signed-in="signedIn"></vote>
           </td>
@@ -105,9 +103,7 @@
             <note :note="n.note" class="note">
               <span class="text-capitalize" slot="citation">
                 ·
-                <span data-toggle="modal"
-                      data-target="#referenceModal"
-                      @click="selectReference(n.rIndex)"
+                <span @click="selectReference(n.rIndex)"
                       class='action-link-soft'
                 >{{ n.citation }}</span>
               </span>
@@ -116,8 +112,8 @@
         </tr>
         </tbody>
       </table>
-      <a v-if="notes.length > 0" class="action-link" @click.stop="notesShown = (notesShown == 3 ? 10 : 3)">
-        {{ notesShown == 3 ? 'see more' : 'see less' }}
+      <a v-if="notes.length > 3" class="action-link" @click.stop="notesShown = (notesShown === 3 ? 10 : 3)">
+        {{ notesShown === 3 ? 'see more' : 'see less' }}
       </a>
     </div>
     <div class="list-section">
@@ -154,7 +150,7 @@
 import Vue from 'vue'
 import ReferenceModal from '../references/ReferenceModal.vue'
 import ReferenceList from '../references/ReferenceList.vue'
-import SummaryContent from '../references/SummaryContent.vue'
+import SummaryContent from '../summaries/SummaryContent.vue'
 import Vote from '../references/Vote.vue'
 import Note from '../references/Note.vue'
 import CrossrefSearch from '../references/CrossrefSearch.vue'
@@ -285,6 +281,7 @@ export default {
     selectReference (index) {
       this.referenceIndexInModal = index;
       this.selectedRef = this.filteredData[index];
+      $('#referenceModal').modal('show')
     },
 
     citedRefs (content) {
