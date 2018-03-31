@@ -18,6 +18,8 @@ class Paper < ApplicationRecord
 
   before_save :downcase_name
 
+  include HasBookmarks
+
   def downcase_name
     # This needs to be fixed - either we require a publication name or we stop downcasing
     self.publication.try :downcase!

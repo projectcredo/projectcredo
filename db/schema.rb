@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180214094612) do
+ActiveRecord::Schema.define(version: 20180331090714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,6 +187,7 @@ ActiveRecord::Schema.define(version: 20180214094612) do
     t.text     "import_source"
     t.integer  "referenced_by_count"
     t.datetime "referenced_by_count_updated_at"
+    t.integer  "bookmarks_count",                default: 0
     t.index ["doi"], name: "index_papers_on_doi", using: :btree
     t.index ["pubmed_id"], name: "index_papers_on_pubmed_id", using: :btree
   end
@@ -198,6 +199,7 @@ ActiveRecord::Schema.define(version: 20180214094612) do
     t.integer  "list_id",                     null: false
     t.integer  "paper_id",                    null: false
     t.integer  "user_id"
+    t.integer  "bookmarks_count", default: 0
     t.index ["cached_votes_up", "created_at"], name: "index_references_on_cached_votes_up_and_created_at", order: { cached_votes_up: :desc, created_at: :desc }, using: :btree
     t.index ["list_id", "paper_id"], name: "index_references_on_list_id_and_paper_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_references_on_user_id", using: :btree

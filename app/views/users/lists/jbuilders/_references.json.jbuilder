@@ -16,11 +16,14 @@ json.array!(references) do |r|
       :title,
       :referenced_by_count,
     )
+    json.type r.paper.class.to_s.downcase
     json.publication r.paper.publication
     json.links r.paper.links
     json.tag_list r.paper.tag_list
     json.authors r.paper.authors
     json.direct_link r.paper.direct_link
+    json.bookmarks_count r.paper.bookmarks_count
+    json.bookmarked user_signed_in? && r.paper.bookmarked?(user: current_user)
   end
   json.notes r.comments.order('cached_votes_up DESC, created_at DESC') do |n|
     json.id n.id

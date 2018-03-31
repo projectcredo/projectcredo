@@ -129,6 +129,22 @@ a {
   }
 }
 
+.bookmark {
+  text-decoration: none;
+  color: $gray-light;
+
+  @extend .btn, .action-link
+}
+
+.bookmark.bookmark-icon {
+  &:after  {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: "Glyphicons Halflings";
+    content: "\e044";
+  }
+}
+
 .toggled {
   color: $primary-color;
 }

@@ -11,8 +11,8 @@
     <table class="table">
       <thead>
       <tr>
-        <th width="60" @click="sort('votes')" :class="{ active: sortKey == 'votes' }">
-          Votes
+        <th width="60" @click="sort('bookmarks_count')" :class="{ active: sortKey == 'bookmarks_count' }">
+          Bookmarks
           <span class="table-sort" :class="sortOrders['votes'] > 0 ? 'asc' : 'dsc'"></span>
         </th>
         <th width="50" @click="sort('age')" :class="{ active: sortKey == 'age' }">

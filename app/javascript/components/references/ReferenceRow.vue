@@ -2,7 +2,7 @@
   <tbody>
   <tr>
     <td>
-      <vote :voteable="r" :signed-in="signedIn"></vote>
+      <bookmark :bookmarkable="r.paper" :signed-in="signedIn"></bookmark>
     </td>
     <td align="center">
       <b v-if="r.paper.published_at">{{ r.paper.published_at | age }}</b>
@@ -50,6 +50,7 @@
 import axios from '../../services/axios'
 import debounce from 'debounce-promise'
 import Vote from './Vote.vue'
+import Bookmark from './Bookmark.vue'
 import MiniBib from './MiniBib.vue'
 import Note from './Note.vue'
 import Abstract from './Abstract.vue'
@@ -58,6 +59,7 @@ export default {
 
   components: {
     Vote,
+    Bookmark,
     MiniBib,
     Note,
     Abstract,

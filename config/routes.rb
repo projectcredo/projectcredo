@@ -30,7 +30,6 @@ Rails.application.routes.draw do
 
   resources :references do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
-    resource :bookmark, controller: 'references/bookmarks', only: [:create, :destroy]
   end
 
   resources :summaries do
@@ -53,4 +52,5 @@ Rails.application.routes.draw do
     get ':user_list_id/:id' => 'references#show', as: :user_list_reference
   end
 
+  resource :bookmark, controller: 'bookmarks', only: [:create, :destroy]
 end
