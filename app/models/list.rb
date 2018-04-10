@@ -109,6 +109,10 @@ class List < ApplicationRecord
     members[:contributor] +  members[:moderator]
   end
 
+  def total_bookmarks
+    self.papers.sum(:bookmarks_count)
+  end
+
   def validate_tag
     tag_list.each do |tag|
       errors.add(:tag_list, "cannot contain special characters") unless tag =~ /\A[\p{N}\p{L} ]+\z/

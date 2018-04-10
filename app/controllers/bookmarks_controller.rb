@@ -1,9 +1,13 @@
 class BookmarksController < ApplicationController
   before_action :ensure_current_user
-  before_action :set_model
+  before_action :set_model, only: [:create, :destroy]
 
   def allowed_models
     ['Reference', 'Paper']
+  end
+
+  def show
+    @bookmarks = current_user.bookmarks.paginate(:page => params[:page], :per_page => 30)
   end
 
   def create

@@ -24,7 +24,7 @@
           </span>
           on {{ list.created_at | date('MMMM Do, YYYY') }}
         </div>
-
+        <div class="list-total-bookmarks">Total Bookmarks: {{ list.total_bookmarks }}</div>
         <div v-if="list.tags.length" class="list-tags">
           <a class="tag" v-for="tag in list.tags">{{ tag.name }}</a>
         </div>

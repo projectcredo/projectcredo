@@ -1,0 +1,44 @@
+<%
+  @title = 'My Bookmarks'
+  @body_class = 'page-bookmark-list'
+%>
+
+<h2>My Bookmarks</h2>
+<hr>
+
+<% unless @bookmarks.count %>
+  <p>No don't have any bookmarks.</p>
+<% else %>
+
+  <div class="bookmarks-list">
+    <% @bookmarks.each do |bookmark| %>
+      <% if bookmark.bookmarkable_type == 'Paper' %>
+        <% paper = bookmark.bookmarkable %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-10"><%= paper.title %></div>
+              <div class="col-md-2 text-right">Paper</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <% if paper.abstract %>
+              <p><b>Abstract:</b></p>
+              <p><%= paper.abstract %></p>
+            <% end %>
+            <% if paper.doi %>
+              <p><b>DOI:</b> <%= paper.doi %></p>
+            <% end %>
+            <% if paper.pubmed_id %>
+              <p><b>Pubmed ID:</b> <%= paper.pubmed_id %></p>
+            <% end %>
+            <p>Direct Link: <a href="<%= paper.direct_link %>" target="_blank"><%= paper.direct_link %></a></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= will_paginate @bookmarks %>
+
+<% end %>

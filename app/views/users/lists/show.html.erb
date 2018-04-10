@@ -5,7 +5,7 @@
 
     <div class="vue-list" data-props="<%=
       {
-        list: @list.as_json(include: [:tags, :others]),
+        list: @list.as_json(include: [:tags, :others], methods: :total_bookmarks),
         owner: @list.owner.username,
         signedIn: user_signed_in?,
         currentUser: current_user ? current_user.username : '',

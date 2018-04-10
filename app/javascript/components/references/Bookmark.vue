@@ -27,7 +27,7 @@ export default {
 
     bookmark () {
       $.ajax({
-        url: '/bookmark.json',
+        url: '/bookmarks.json',
         type: 'POST',
         data: {
           id: this.bookmarkable.id,
@@ -43,7 +43,7 @@ export default {
 
     unbookmark () {
       $.ajax({
-        url: '/bookmark.json',
+        url: '/bookmarks.json',
         type: 'DELETE',
         data: {
           id: this.bookmarkable.id,
