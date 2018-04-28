@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -195,7 +197,7 @@ class User < ApplicationRecord
     user = where(email: auth.info.email).first_or_create do |user|
       user.password = password
       user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
-      user.avatar = auth.info.image # assuming the user model has an image
+      if ! auth.info.image.empty? then user.avatar = open(auth.info.image) end # assuming the user model has an image
       # If you are using confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
       user.skip_confirmation!
