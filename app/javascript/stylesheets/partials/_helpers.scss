@@ -22,6 +22,14 @@ $sides: (top, bottom, left, right); // Leave this variable alone
   border: 0;
 }
 
+.color-primary {
+  color: $brand-primary;
+}
+
 .color-gray {
   color: $font-gray;
+}
+
+.text-smaller {
+  font-size: 90%;
 }

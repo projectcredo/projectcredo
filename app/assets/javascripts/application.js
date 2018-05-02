@@ -63,7 +63,7 @@ unique = function(array) {
 // List Card Component for List Indexes
 Vue.filter('truncate', function(string, length, truncate) {
   if (typeof truncate === 'undefined') { truncate = 'true'; }
-  if(truncate && string.length > length) {
+  if(truncate && string && string.length > length) {
     var s = string.substring(0, length);
     var openLinkCount = (s.match("<a target") || []).length;
     var closeLinkCount = (s.match("</a>") || []).length;

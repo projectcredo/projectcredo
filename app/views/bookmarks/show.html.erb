@@ -7,33 +7,21 @@
 <hr>
 
 <% unless @bookmarks.count %>
-  <p>No don't have any bookmarks.</p>
+  <p>No don't have any bookmarks yet.</p>
 <% else %>
 
   <div class="bookmarks-list">
     <% @bookmarks.each do |bookmark| %>
       <% if bookmark.bookmarkable_type == 'Paper' %>
         <% paper = bookmark.bookmarkable %>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-md-10"><%= paper.title %></div>
-              <div class="col-md-2 text-right">Paper</div>
-            </div>
-          </div>
-          <div class="panel-body">
-            <% if paper.abstract %>
-              <p><b>Abstract:</b></p>
-              <p><%= paper.abstract %></p>
-            <% end %>
-            <% if paper.doi %>
-              <p><b>DOI:</b> <%= paper.doi %></p>
-            <% end %>
-            <% if paper.pubmed_id %>
-              <p><b>Pubmed ID:</b> <%= paper.pubmed_id %></p>
-            <% end %>
-            <p>Direct Link: <a href="<%= paper.direct_link %>" target="_blank"><%= paper.direct_link %></a></p>
-          </div>
+        <div class="bookmark-item">
+          <h4 class="color-primary"><%= paper.title %></h4>
+          <% if paper.authors.any? %><p class="bookmark-authors">by <%= paper.authors.map{|a| a.full_name }.to_sentence %></p><% end %>
+          <p class="bookmark-meta">
+            <% if paper.doi %><b>DOI:</b> <%= paper.doi %><% end %>
+            <% if paper.pubmed_id %><b>Pubmed ID:</b> <%= paper.pubmed_id %><% end %>
+            Direct Link: <a href="<%= paper.direct_link %>" target="_blank"><%= paper.direct_link %></a>
+          </p>
         </div>
       <% end %>
     <% end %>
