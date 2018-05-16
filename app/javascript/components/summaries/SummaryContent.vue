@@ -16,8 +16,8 @@ export default {
 
   computed: {
     contentParts () {
-      return this.summary.content.split(/(<r-cite :r='r\(\d+\)'\/>)/gi).map(part => {
-        const match = /<r-cite :r='r\((\d+)\)'\/>/gi.exec(part)
+      return this.summary.content.split(/(\[r-cite id=\d+\])/gi).map(part => {
+        const match = /\[r-cite id=(\d+)\]/gi.exec(part)
         if (match) return {type: 'r-cite', id: match[1]}
         return {type: 'span', content: part}
       })

@@ -158,7 +158,7 @@ export default {
   methods: {
 
     selectReference (index) {
-      this.summary.content += "<r-cite :r='r("+this.filteredData[index].id+")'/>";
+      this.summary.content += `[r-cite id=${this.filteredData[index].id}]`;
     },
 
     addToFilter (add) {

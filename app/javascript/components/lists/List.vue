@@ -286,7 +286,7 @@ export default {
 
     citedRefs (content) {
       var data = this.filteredData
-      var myRegexp = /(?:<r-cite\s:r='r\((\d+)\)'\/>)/mg;
+      var myRegexp = /(?:\[r-cite\sid=(\d+)\])/mg;
       var match = myRegexp.exec(content);
       var refIds = [];
       while (match !== null) {
