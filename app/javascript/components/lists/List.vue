@@ -1,147 +1,163 @@
 <template>
-  <div>
-    <div class="list-section">
-      <div class="list-section-h1">
-        <div class="list-title">{{ list.name }}</div>
+  <div class="list-component row list-show">
+    <div class="col-md-8">
 
-        <div class="list-details">
-          <span v-if="list.access === 'contributors'" data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this board"> 🔒 </span>
-          <span v-else data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this board"> 🌎 </span>
-          curated by <a :href="'/' + owner">{{ owner }}</a>
+      <div class="list-section">
+        <div class="list-section-h1">
+          <div class="list-title">{{ list.name }}</div>
 
-          <span v-if="list.others.length">
-            and
-            <span tabindex="0"
-                  class="action-link"
-                  data-container="body"
-                  data-toggle="popover"
-                  data-placement="top"
-                  data-html="true"
-                  :data-content="list.others.map(u => `<a href='/${u.username}'>${u.username}</a>`).join(', ')"
-                  data-trigger="focus">
-              {{ list.others.length | pluralize('other') }}
+          <div class="list-details">
+            <span v-if="list.access === 'contributors'" data-toggle="tooltip" data-placement="right" title="Only contibutors may edit or add references to this board"> 🔒 </span>
+            <span v-else data-toggle="tooltip" data-placement="right" title="Anyone may edit or add references to this board"> 🌎 </span>
+            curated by <a :href="'/' + owner">{{ owner }}</a>
+
+            <span v-if="list.others.length">
+              and
+              <span tabindex="0"
+                    class="action-link"
+                    data-container="body"
+                    data-toggle="popover"
+                    data-placement="top"
+                    data-html="true"
+                    :data-content="list.others.map(u => `<a href='/${u.username}'>${u.username}</a>`).join(', ')"
+                    data-trigger="focus">
+                {{ list.others.length | pluralize('other') }}
+              </span>
             </span>
-          </span>
-          on {{ list.created_at | date('MMMM Do, YYYY') }}
+            on {{ list.created_at | date('MMMM Do, YYYY') }}
+          </div>
+          <div class="list-total-bookmarks">Total Bookmarks: {{ list.total_bookmarks }}</div>
+          <div v-if="list.tags.length" class="list-tags">
+            <a :key="tag.id" class="tag" v-for="tag in list.tags">{{ tag.name }}</a>
+          </div>
+          <div v-html="displayedListDesc"></div>
+          <a class="action-link" v-if="list.description.length > 350" @click.stop="listDescTruncated = !listDescTruncated">
+            {{ listDescTruncated ? 'see more' : 'see less' }}
+          </a>
         </div>
-        <div class="list-total-bookmarks">Total Bookmarks: {{ list.total_bookmarks }}</div>
-        <div v-if="list.tags.length" class="list-tags">
-          <a class="tag" v-for="tag in list.tags">{{ tag.name }}</a>
+      </div>
+
+      <div class="row list-filter list-section">
+        <div class="col-xs-12">
+          <input class="pull-right form-control" v-model="filterKey" placeholder="Search this board for...">
         </div>
-        <div v-html="displayedListDesc"></div>
-        <a class="action-link" v-if="list.description.length > 350" @click.stop="listDescTruncated = !listDescTruncated">
-          {{ listDescTruncated ? 'see more' : 'see less' }}
+      </div>
+
+      <reference-modal :signed-in="signedIn"
+                        :current-user="currentUser"
+                        :edits-allowed="editsAllowed"
+                        :selected-ref="selectedRef"
+                        :reference-index-in-modal="referenceIndexInModal"
+                        :ref-count="filteredData.length"
+                        v-on:select-ref="selectReference($event)"
+      ></reference-modal>
+
+      <div class="list-section">
+        <div class="list-section-h2">Summaries</div>
+        <div class="nothing-yet" v-if="editsAllowed">
+          <a :href="summaryAddPath">Add a summary</a> to help guide readers through the evidence
+        </div>
+        <div class="nothing-yet" v-if="summaries.length == 0 && ! editsAllowed">
+          No summaries written yet.
+        </div>
+        <table class="summaries-table">
+          <tbody>
+          <tr :key="s.id" v-for="s in summaries.slice(0, summariesShown)" class="summary-row">
+            <td class="evidence-rating">
+              <div class="icon" :class="s.evidence_rating"></div>
+              <div>{{ s.evidence_rating }}</div>
+            </td>
+            <td class="summary-content">
+              <summary-content :summary="s"
+                        :cited-refs='citedRefs(s.content)'
+                        v-on:select-ref="selectReference($event)"
+              ></summary-content>
+              <div class="summary-details">
+                <vote :voteable="s" :signed-in="signedIn"></vote>
+                · {{s.user}} · {{s.time_ago}}
+                <span v-if="currentUser == s.user || editsAllowed">
+                  · <a class="edit-link" :href="s.edit_path">edit</a>
+                </span>
+              </div>
+            </td>
+          </tr>
+          <tr class="summary-row" v-if="summaries.length > 3">
+            <td class="text-center">
+              <a class="action-link" @click.stop="summariesShown = (summariesShown == 3 ? 10 : 3)">
+                {{ summariesShown == 3 ? 'see more' : 'see less' }}
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="list-section">
+        <div class="list-section-h2">Notes and Highlights</div>
+        <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
+        <table class="notes-table">
+          <tbody>
+          <tr v-for="n in notes.slice(0, notesShown)" class="note-row">
+            <td class="note-vote">
+              <vote :voteable="n.note" :signed-in="signedIn"></vote>
+            </td>
+            <td class="note-content">
+              <note :note="n.note" class="note">
+                <span class="text-capitalize" slot="citation">
+                  ·
+                  <span @click="selectReference(n.rIndex)"
+                        class='action-link-soft'
+                  >{{ n.citation }}</span>
+                </span>
+              </note>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <a v-if="notes.length > 3" class="action-link" @click.stop="notesShown = (notesShown === 3 ? 10 : 3)">
+          {{ notesShown === 3 ? 'see more' : 'see less' }}
         </a>
       </div>
-    </div>
-
-    <div class="row list-filter list-section">
-      <div class="col-xs-12">
-        <input class="pull-right form-control" v-model="filterKey" placeholder="Search this board for...">
+      <div class="list-section">
+        <div class="list-section-h2">
+          <span v-if="allReferences.length">{{ allReferences.length }} Papers</span>
+          <span v-else>No Papers Added</span>
+        </div>
+        <div class="quick-add">
+          <a class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
+            Quick Add Paper
+          </a>
+          <div v-show="showQuickAdd">
+            <crossref-search :edits-allowed="editsAllowed" :list="list"></crossref-search>
+            <add-by-locator :user-can-edit="userCanEdit" :list="list"></add-by-locator>
+          </div>
+        </div>
+        <reference-list
+                :signed-in="signedIn"
+                :filtered-data="filteredData"
+                v-model="filterKey"
+                :sort-key="sortKey"
+                :sort-orders="sortOrders"
+                :edits-allowed="editsAllowed"
+                @sort="sortBy($event)"
+                @filter="addToFilter($event)"
+                @select-ref="selectReference($event)"
+                @remove-ref="deleteReference($event)"
+        ></reference-list>
       </div>
     </div>
 
-    <reference-modal :signed-in="signedIn"
-                     :current-user="currentUser"
-                     :edits-allowed="editsAllowed"
-                     :selected-ref="selectedRef"
-                     :reference-index-in-modal="referenceIndexInModal"
-                     :ref-count="filteredData.length"
-                     v-on:select-ref="selectReference($event)"
-    ></reference-modal>
-
-    <div class="list-section">
-      <div class="list-section-h2">Summaries</div>
-      <div class="nothing-yet" v-if="editsAllowed">
-        <a :href="summaryAddPath">Add a summary</a> to help guide readers through the evidence
-      </div>
-      <div class="nothing-yet" v-if="summaries.length == 0 && ! editsAllowed">
-        No summaries written yet.
-      </div>
-      <table class="summaries-table">
-        <tbody>
-        <tr v-for="s in summaries.slice(0, summariesShown)" class="summary-row">
-          <td class="evidence-rating">
-            <div class="icon" :class="s.evidence_rating"></div>
-            <div>{{ s.evidence_rating }}</div>
-          </td>
-          <td class="summary-content">
-            <summary-content :summary="s"
-                     :cited-refs='citedRefs(s.content)'
-                     v-on:select-ref="selectReference($event)"
-            ></summary-content>
-            <div class="summary-details">
-              <vote :voteable="s" :signed-in="signedIn"></vote>
-              · {{s.user}} · {{s.time_ago}}
-              <span v-if="currentUser == s.user || editsAllowed">
-               · <a class="edit-link" :href="s.edit_path">edit</a>
-              </span>
-            </div>
-          </td>
-        </tr>
-        <tr class="summary-row" v-if="summaries.length > 3">
-          <td class="text-center">
-            <a class="action-link" @click.stop="summariesShown = (summariesShown == 3 ? 10 : 3)">
-              {{ summariesShown == 3 ? 'see more' : 'see less' }}
-            </a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="list-section">
-      <div class="list-section-h2">Notes and Highlights</div>
-      <div class="nothing-yet" v-if="notes.length == 0">No notes yet...</div>
-      <table class="notes-table">
-        <tbody>
-        <tr v-for="n in notes.slice(0, notesShown)" class="note-row">
-          <td class="note-vote">
-            <vote :voteable="n.note" :signed-in="signedIn"></vote>
-          </td>
-          <td class="note-content">
-            <note :note="n.note" class="note">
-              <span class="text-capitalize" slot="citation">
-                ·
-                <span @click="selectReference(n.rIndex)"
-                      class='action-link-soft'
-                >{{ n.citation }}</span>
-              </span>
-            </note>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <a v-if="notes.length > 3" class="action-link" @click.stop="notesShown = (notesShown === 3 ? 10 : 3)">
-        {{ notesShown === 3 ? 'see more' : 'see less' }}
-      </a>
-    </div>
-    <div class="list-section">
-      <div class="list-section-h2">
-        <span v-if="allReferences.length">{{ allReferences.length }} Papers</span>
-        <span v-else>No Papers Added</span>
-      </div>
-      <div class="quick-add">
-        <a class="quick-add-toggle" @click="showQuickAdd = !showQuickAdd">
-          Quick Add Paper
-        </a>
-        <div v-show="showQuickAdd">
-          <crossref-search :edits-allowed="editsAllowed" :list="list"></crossref-search>
-          <add-by-locator :user-can-edit="userCanEdit" :list="list"></add-by-locator>
+    <div class="col-md-4">
+      <div class="edit-section">
+        <div class="currentUser && userCanEdit">
+          <a :href="editBoardPath" class="edit-list-btn">Edit this board</a>
         </div>
       </div>
-      <reference-list
-              :signed-in="signedIn"
-              :filtered-data="filteredData"
-              v-model="filterKey"
-              :sort-key="sortKey"
-              :sort-orders="sortOrders"
-              :edits-allowed="editsAllowed"
-              @sort="sortBy($event)"
-              @filter="addToFilter($event)"
-              @select-ref="selectReference($event)"
-              @remove-ref="deleteReference($event)"
-      ></reference-list>
+      <add-paper list-id="list.id"></add-paper>
+      <div class="list-section">
+        <div class="list-section-h3">Comments</div>
+        <div :id="'comments-' + list.id" class="sidebar-body" v-html="commentsBlock"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -156,6 +172,7 @@ import Note from '../references/Note.vue'
 import CrossrefSearch from '../references/CrossrefSearch.vue'
 import AddByLocator from '../references/AddByLocator.vue'
 import MiniBib from '../references/MiniBib.vue'
+import AddPaper from '../add-paper/AddPaper.vue'
 
 export default {
 
@@ -168,9 +185,21 @@ export default {
     CrossrefSearch,
     AddByLocator,
     MiniBib,
+    AddPaper,
   },
 
-  props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'references', 'summaryAddPath'],
+  props: [
+    'list',
+    'owner',
+    'signedIn',
+    'currentUser',
+    'summaries',
+    'userCanEdit',
+    'references',
+    'summaryAddPath',
+    'commentsBlock',
+    'editBoardPath',
+  ],
 
   data () {
     return {

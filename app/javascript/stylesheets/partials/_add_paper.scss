@@ -1,0 +1,67 @@
+.add-paper-component {
+  margin-bottom: 20px;
+}
+
+.btn-apc {
+  position: relative;
+  padding: 5px 20px;
+  background-color: $primary-color;
+  color: white;
+  font-size: 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: darken($primary-color, 20%);
+  }
+  &:before {
+    content: '+';
+    display: block;
+    position: absolute;
+    left: -30px;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    padding: 2px 9px;
+    background-color: rgba($primary-color, 0.5);
+    font-size: 24px;
+  }
+  @media (max-width: $screen-md-max) {
+    margin-left: 30px;
+  }
+}
+
+.apc-collapse {
+  max-height: 0;
+  height: 500px;
+  overflow: hidden;
+  background-color: $light-gray-color;
+  transition: max-height 0.15s ease-out;
+}
+
+.opened .apc-collapse {
+  max-height: 500px;
+  transition: max-height 0.25s ease-in;
+}
+
+.apc-body {
+  padding: 15px;
+}
+
+.apc-form-item {
+  font-size: 14px;
+}
+
+label.apc-form-item  {
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.apc-search {
+  margin-bottom: 15px;
+}
+
+.apc-from-to input {
+  display: inline-block;
+  width: 50px;
+}

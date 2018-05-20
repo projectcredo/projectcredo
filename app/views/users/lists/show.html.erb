@@ -1,36 +1,18 @@
 <%= render 'list_head', list: @list %>
 
-<div class="row list-show">
-  <div class="col-md-8">
+<div class="m-b-30"></div>
 
-    <div class="vue-list" data-props="<%=
-      {
-        list: @list.as_json(include: [:tags, :others], methods: :total_bookmarks),
-        owner: @list.owner.username,
-        signedIn: user_signed_in?,
-        currentUser: current_user ? current_user.username : '',
-        summaries: ActiveSupport::JSON.decode(render('users/lists/jbuilders/list_summaries.json', summaries: @summaries)),
-        userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
-        references: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
-        summaryAddPath: new_user_list_summary_path(user_list_id: @list.slug),
-      }.to_json
-    %>"></div>
-
-  </div>
-  <div class="col-md-4">
-    <div class="edit-section">
-      <% if current_user %>
-        <% if current_user.can_edit? @list %>
-          <%= link_to 'Edit this board', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
-        <% end %>
-      <% end %>
-    </div>
-
-    <div class="list-section">
-      <div class="list-section-h3">Comments</div>
-      <div id="comments-<%= @list.id %>" class="sidebar-body">
-        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="vue-list" data-props="<%=
+  {
+    list: @list.as_json(include: [:tags, :others], methods: :total_bookmarks),
+    owner: @list.owner.username,
+    signedIn: user_signed_in?,
+    currentUser: current_user ? current_user.username : '',
+    summaries: ActiveSupport::JSON.decode(render('users/lists/jbuilders/list_summaries.json', summaries: @summaries)),
+    userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
+    references: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
+    summaryAddPath: new_user_list_summary_path(user_list_id: @list.slug),
+    commentsBlock: render('commentables/comments', commentable: @list, list_for_authorization: @list),
+    editBoardPath: edit_user_list_path(@list.owner, @list),
+  }.to_json
+%>"></div>
