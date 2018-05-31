@@ -153,7 +153,7 @@
           <a :href="editBoardPath" class="edit-list-btn">Edit this board</a>
         </div>
       </div>
-      <add-paper list-id="list.id"></add-paper>
+      <add-paper :list-id="list.id" :edits-allowed="editsAllowed"></add-paper>
       <div class="list-section">
         <div class="list-section-h3">Comments</div>
         <div :id="'comments-' + list.id" class="sidebar-body" v-html="commentsBlock"></div>

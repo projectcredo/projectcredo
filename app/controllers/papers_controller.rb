@@ -1,5 +1,5 @@
 class PapersController < ApplicationController
-  before_action :set_paper
+  before_action :set_paper, except: :search
   before_action :ensure_current_user, except: :show
 
   # GET /papers/1
@@ -23,6 +23,12 @@ class PapersController < ApplicationController
         format.json { render json: @paper.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def search
+    unless params.has_key?(:query) and params[:query].present? then raise ActionController::BadRequest.new(), 'Param "query" is required' end
+
+    render :json => PaperSearchService.new.search(params[:query])
   end
 
   private

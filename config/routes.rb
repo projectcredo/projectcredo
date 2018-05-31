@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
 
   resources :papers, only: [:show, :edit, :update] do
+    get :search, on: :collection
     resources :links, only: :destroy, shallow: true
   end
 
