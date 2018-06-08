@@ -65,3 +65,55 @@ label.apc-form-item  {
   display: inline-block;
   width: 50px;
 }
+
+.apc-results {
+  margin-top: 20px;
+  position: relative;
+  &.loading {
+    &:after {
+      content: 'Loading...';
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      z-index: 30;
+      top: 0; bottom: 0; left: 0; right: 0;
+      background-color: rgba(241, 241, 241, 0.8);
+      pointer-events: none;
+    }
+  }
+}
+
+.apc-results-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 340px;
+  overflow-y: scroll;
+  
+  > li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #dbdada;
+  }
+}
+
+.apc-paper-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.apc-paper-authors {
+  margin-bottom: 10px;
+  font-weight: lighter;
+  font-size: 90%;
+}
+
+.apc-paper-score {
+  //
+}
+
+.apc-paper-abstract {
+  margin-top: 10px;
+  font-size: 70%;
+}

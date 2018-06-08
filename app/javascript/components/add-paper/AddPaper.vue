@@ -4,10 +4,16 @@
     <div class="apc-collapse">
       <div class="apc-body">
         <div class="apc-form">
-          <div class="apc-form-item apc-search"><input type="text" placeholder="Search by topic" class="form-control" v-model="query"></div>
-          <label class="apc-form-item"><input type="checkbox"> don't show papers I've already added to boards</label>
-          <label class="apc-form-item"><input type="checkbox"> only show papers I've bookmarked</label>
-          <div class="apc-form-item apc-from-to">only show papers from <input type="text" class="form-control input-sm"> to <input type="text" class="form-control input-sm"></div>
+          <div class="apc-form-item apc-search"><input type="text" placeholder="Search by topic" class="form-control" v-model="query" @keyup="getResults()"></div>
+          <label class="apc-form-item"><input type="checkbox" v-model="hideAdded"> don't show papers I've already added to boards</label>
+          <label class="apc-form-item"><input type="checkbox" v-model="onlyBookmarked"> only show papers I've bookmarked</label>
+          <!-- <div class="apc-form-item apc-from-to">only show papers from <input type="text" class="form-control input-sm"> to <input type="text" class="form-control input-sm"></div> -->
+        </div>
+        <div class="apc-results" :class="{loading: loading}">
+          <div v-if="query.length < 3">Please type at least 3 letters in the search field.</div>
+          <ul class="apc-results-list">
+            <paper :key="paper.doi" :paper="paper" v-for="paper in results"></paper>
+          </ul>
         </div>
       </div>
     </div>
@@ -17,14 +23,21 @@
 <script>
 import axios from 'axios'
 import debounce from 'lodash-es/debounce'
+import Paper from './Paper.vue'
 
 export default {
+  components: {
+    Paper,
+  },
 
   props: ['listId', 'editsAllowed'],
 
   data() {
     return {
       opened: false,
+      loading: false,
+      hideAdded: true,
+      onlyBookmarked: false,
       query: '',
       results: [],
     }
@@ -37,16 +50,17 @@ export default {
     },
 
     getResults: debounce(function (e) {
-      if (this.query === '') {
+      if (this.query.length < 3) {
         return this.results = []
       }
+      this.loading = true
       axios.get(`/papers/search?query=${this.query}`)
         .then((response) => {
-          if (response.data.length > 0) {
-            this.results = response.data
-          } else {
-            this.results = [{fullCitation: 'No results found.', doi: ''}]
-          }
+          this.results = response.data
+          this.loading = false
+        })
+        .catch(err => {
+          this.loading = false
         })
     }, 500),
   }

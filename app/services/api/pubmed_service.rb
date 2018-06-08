@@ -19,6 +19,7 @@ module Api
       xml.css('PubmedArticle').map do |x|
         {
           title: x.css('ArticleTitle').text,
+          abstract: x.css('Abstract AbstractText[Label="CONCLUSIONS"]'),
           year: x.css('PubDate Year').text,
           publication: x.css('Journal Title').text,
           doi: x.css('ArticleId[IdType=doi]').text,
@@ -26,7 +27,7 @@ module Api
           abstract: x.css('AbstractText').text,
           published_at: parseDate(x),
           authors: x.css('AuthorList Author').map do |author|
-            {first_name: author.css("ForeName").text, last_name: author.css("LastName").text}
+            author.css("ForeName").text + ' ' + author.css("LastName").text
           end,
           keywords: x.css('KeywordList Keyword').map {|k| k.text}
         }

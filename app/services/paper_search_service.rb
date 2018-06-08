@@ -6,11 +6,14 @@ class PaperSearchService
       {
         id: nil,
         title: i['title'],
+        abstract: nil,
         doi: i['doi'].sub('http://dx.doi.org/', ''),
         pubmed_id: nil,
         score: i['score'],
         year: i['year'],
         source: 'crossref',
+        authors: [],
+        tags: [],
       }
     end
   end
@@ -21,11 +24,14 @@ class PaperSearchService
       {
         id: nil,
         title: i[:title],
+        abstract: i[:abstract],
         doi: i[:doi],
         pubmed_id: i[:pubmed_id],
         score: nil,
         year: i[:year],
         source: 'pubmed',
+        authors: i[:authors],
+        tags: [],
       }
     end
   end
@@ -36,21 +42,38 @@ class PaperSearchService
       {
         id: i.id,
         title: i.title,
+        abstract: i.abstract,
         doi: i.doi,
         pubmed_id: i.pubmed_id,
         score: nil,
         year: nil,
         source: 'db',
+        authors: i.authors.map{|a| a.title},
+        tags: i.tags.map{|t| t.name},
       }
     end
   end
 
   def search(query)
-    crossref = searchCrossref(query)
     db = searchDb(query)
+    crossref = searchCrossref(query)
     pubmed = searchPubmed(query)
 
-    crossref + db + pubmed
+    # Filter out duplicate papers
+    pubmed = pubmed.select{ |p|
+      # No duplicates in database
+      db.find{|d| (p[:doi] == d.doi) or (p[:pubmed_id].present? and p[:pubmed_id] == d.pubmed_id)}.nil? and
+      # No duplicates in crossreff
+      crossref.find{|c| p[:doi] == c[:doi]}.nil?
+    }
+
+    # Filter out duplicate papers
+    crossref = crossref.select{ |c|
+      # No duplicates in database
+      db.find{|d| c[:doi] == d.doi}.nil?
+    }
+
+    db + crossref + pubmed
   end
 
 end
