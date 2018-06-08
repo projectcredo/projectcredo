@@ -11,9 +11,10 @@
         </div>
         <div class="apc-results" :class="{loading: loading}">
           <div v-if="query.length < 3">Please type at least 3 letters in the search field.</div>
-          <ul class="apc-results-list">
+          <ul class="apc-results-list" v-if=results.length>
             <paper :key="paper.doi" :paper="paper" v-for="paper in results"></paper>
           </ul>
+          <div v-if="query.length >= 3 && ! results.length">No results</div>
         </div>
       </div>
     </div>
