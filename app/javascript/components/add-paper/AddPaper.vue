@@ -9,10 +9,13 @@
           <label class="apc-form-item"><input type="checkbox" v-model="onlyBookmarked"> only show papers I've bookmarked</label>
           <!-- <div class="apc-form-item apc-from-to">only show papers from <input type="text" class="form-control input-sm"> to <input type="text" class="form-control input-sm"></div> -->
         </div>
-        <div class="apc-results" :class="{loading: loading}">
+        <div class="apc-results">
+          <div class="apcr-loading" v-if="loading">
+            <scale-loader :loading="loading" color="#1FDEBF"></scale-loader>
+          </div>
           <div v-if="query.length < 3">Please type at least 3 letters in the search field.</div>
           <ul class="apc-results-list" v-if=results.length>
-            <paper :key="paper.doi" :paper="paper" v-for="paper in results"></paper>
+            <paper :key="paper.doi" :paper="paper" v-for="paper in results" @add-paper="addPaper(paper)"></paper>
           </ul>
           <div v-if="query.length >= 3 && ! results.length">No results</div>
         </div>
@@ -25,10 +28,12 @@
 import axios from 'axios'
 import debounce from 'lodash-es/debounce'
 import Paper from './Paper.vue'
+import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue'
 
 export default {
   components: {
     Paper,
+    ScaleLoader
   },
 
   props: ['listId', 'editsAllowed'],
@@ -41,6 +46,7 @@ export default {
       onlyBookmarked: false,
       query: '',
       results: [],
+      token: document.getElementsByName('csrf-token')[0].getAttribute('content'),
     }
   },
 
@@ -64,6 +70,10 @@ export default {
           this.loading = false
         })
     }, 500),
+
+    addPaper (paper) {
+      // TODO
+    },
   }
 
 }

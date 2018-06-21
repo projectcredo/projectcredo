@@ -14,13 +14,28 @@
 </template>
 
 <script>
+import isNumber from 'lodash-es/isNumber'
+
 export default {
-  props: ['bookmarkable', 'signedIn'],
+  props: {
+    bookmarkable: {type: Object},
+    signedIn: {type: Boolean},
+    // class: {type: String},
+  },
 
   data () {
     return {
       isLoading: false
     }
+  },
+
+  computed: {
+    classes () {
+      const classes = ''
+      if (this.class) classes.push(this.class, true)
+
+      return classes
+    },
   },
 
   methods: {
@@ -35,7 +50,8 @@ export default {
         },
         success: () => {
           this.bookmarkable.bookmarked = true
-          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count + 1
+          if (isNumber(this.bookmarkable.bookmarks_count))
+            this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count + 1
           this.isLoading = false
         },
       })
@@ -51,7 +67,8 @@ export default {
         },
         success: () => {
           this.bookmarkable.bookmarked = false
-          this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count - 1
+          if (isNumber(this.bookmarkable.bookmarks_count))
+            this.bookmarkable.bookmarks_count = this.bookmarkable.bookmarks_count - 1
           this.isLoading = false
         },
       })

@@ -15,6 +15,7 @@
     "vue": "^2.5.2",
     "vue-loader": "^13.3.0",
     "vue-multiselect": "^2.0.6",
+    "vue-spinner": "^1.0.3",
     "vue-template-compiler": "^2.5.2"
   },
   "devDependencies": {

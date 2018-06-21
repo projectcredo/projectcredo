@@ -1,119 +1,70 @@
-.add-paper-component {
-  margin-bottom: 20px;
-}
+.add-paper-component { margin-bottom: 20px; }
 
 .btn-apc {
-  position: relative;
-  padding: 5px 20px;
-  background-color: $primary-color;
-  color: white;
-  font-size: 20px;
-  text-align: left;
+  position: relative; padding: 5px 20px;
+  background-color: $primary-color; color: white;
+  font-size: 20px; text-align: left;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  &:hover {
-    background-color: darken($primary-color, 20%);
-  }
+  &:hover { background-color: darken($primary-color, 20%); }
   &:before {
     content: '+';
-    display: block;
-    position: absolute;
-    left: -30px;
-    top: 0;
-    bottom: 0;
-    width: 30px;
-    padding: 2px 9px;
+    display: block; position: absolute; left: -30px; top: 0; bottom: 0; width: 30px; padding: 2px 9px;
     background-color: rgba($primary-color, 0.5);
     font-size: 24px;
   }
-  @media (max-width: $screen-md-max) {
-    margin-left: 30px;
-  }
+  @media (max-width: $screen-md-max) { margin-left: 30px; }
 }
 
-.apc-collapse {
-  max-height: 0;
-  height: 500px;
-  overflow: hidden;
-  background-color: $light-gray-color;
-  transition: max-height 0.15s ease-out;
+.apc-collapse { 
+  max-height: 0; height: 500px; overflow: hidden;
+  background-color: $light-gray-color; transition: max-height 0.15s ease-out;
 }
+.opened .apc-collapse { max-height: 500px; transition: max-height 0.25s ease-in; }
 
-.opened .apc-collapse {
-  max-height: 500px;
-  transition: max-height 0.25s ease-in;
-}
+.apc-body { padding: 15px; }
+.apc-form-item { font-size: 14px; }
+label.apc-form-item  { cursor: pointer; font-weight: normal;}
+.apc-search { margin-bottom: 15px; }
+.apc-from-to input { display: inline-block; width: 50px;}
 
-.apc-body {
-  padding: 15px;
-}
-
-.apc-form-item {
-  font-size: 14px;
-}
-
-label.apc-form-item  {
-  cursor: pointer;
-  font-weight: normal;
-}
-
-.apc-search {
-  margin-bottom: 15px;
-}
-
-.apc-from-to input {
-  display: inline-block;
-  width: 50px;
-}
-
-.apc-results {
-  margin-top: 20px;
-  position: relative;
-  &.loading {
-    &:after {
-      content: 'Loading...';
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      z-index: 30;
-      top: 0; bottom: 0; left: 0; right: 0;
-      background-color: rgba(241, 241, 241, 0.8);
-      pointer-events: none;
-    }
-  }
+.apc-results { margin-top: 20px; position: relative; height: 340px; }
+.apcr-loading {
+  position: absolute; z-index: 30; top: 0; right: 0; bottom: 0; left: 0;
+  display: flex; justify-content: center; align-items: center;
+  background-color: rgba(241, 241, 241, 0.9); pointer-events: none;
 }
 
 .apc-results-list {
   list-style-type: none;
-  padding: 0;
-  margin: 0;
-  height: 340px;
+  padding: 0; margin: 0; height: 100%;
   overflow-y: scroll;
   
   > li {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+    display: flex; margin-bottom: 10px; padding-bottom: 10px;
     border-bottom: 2px solid #dbdada;
   }
 }
 
-.apc-paper-title {
-  margin-bottom: 10px;
-  font-weight: bold;
+.apcp-main-col { width: 85%; }
+.apcp-action-col { width: 15%; text-align: center; }
+
+.apcp-title { margin-bottom: 10px; font-weight: bold; }
+.apcp-authors { margin-bottom: 10px; font-weight: lighter; font-size: 90%; }
+.apcp-abstract { margin-top: 10px; font-size: 70%;}
+
+.cpcp-save-btn {
+  display: inline-block; width: 30px; height: 30px; border-radius: 50%;
+  font-size: 24px; line-height: 30px;
+  background-color: $primary-color; color: white;
+  transition: all 0.3s ease;
+  &:hover { background-color: darken($primary-color, 20%); color: white; text-decoration: none; }
 }
 
-.apc-paper-authors {
-  margin-bottom: 10px;
-  font-weight: lighter;
-  font-size: 90%;
-}
-
-.apc-paper-score {
-  //
-}
-
-.apc-paper-abstract {
-  margin-top: 10px;
-  font-size: 70%;
+.add-paper {
+  .bookmark { 
+    display: inline-block; font-size: 28px; padding-right: 2px;
+    &:hover { padding-right: 2px; }
+  }
+  .spinner { width: 25px; height: 25px; margin-top: 5px; }
 }

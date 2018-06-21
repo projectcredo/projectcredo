@@ -23,7 +23,7 @@ services:
     container_name: pc_postgres
     image: postgres:9.5
     volumes:
-      - postgres-data:/var/lib/postgresql
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
