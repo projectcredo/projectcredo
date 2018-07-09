@@ -6,5 +6,8 @@ module.exports = merge(environment.toWebpackConfig(), {
     watchOptions: {
       poll: 1000,
     }
-  }
+  },
+  externals: {
+    jquery: 'jQuery',
+  },
 })

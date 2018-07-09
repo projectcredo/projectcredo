@@ -3,6 +3,7 @@ class ReferencesController < ApplicationController
   include NotificationsHelper
 
   LOCATOR_CLASSES = {
+    'db' => DbPaperLocator,
     'doi' => DoiPaperLocator,
     'link' => LinkPaperLocator,
     'pubmed' => PubmedPaperLocator
@@ -71,11 +72,11 @@ class ReferencesController < ApplicationController
     end
 
     def set_paper_locator
-      locator_klass = LOCATOR_CLASSES[locator_params[:type]]
+      locator_class = LOCATOR_CLASSES[locator_params[:type]]
 
       return redirect_to(:back, alert: "Identifier can't be blank.") if locator_params[:id].blank?
-      return redirect_to(:back, alert: 'Bad locator parameters') if locator_klass.nil?
+      return redirect_to(:back, alert: 'Bad locator parameters') if locator_class.nil?
 
-      @locator = locator_klass.new locator_params
+      @locator = locator_class.new locator_params
     end
 end

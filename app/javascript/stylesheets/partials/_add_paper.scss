@@ -59,6 +59,7 @@ label.apc-form-item  { cursor: pointer; font-weight: normal;}
   background-color: $primary-color; color: white;
   transition: all 0.3s ease;
   &:hover { background-color: darken($primary-color, 20%); color: white; text-decoration: none; }
+  &:focus, &:focus:hover { text-decoration: none; }
 }
 
 .add-paper {

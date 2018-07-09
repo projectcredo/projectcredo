@@ -38,8 +38,10 @@ class PaperSearchService
     end
   end
 
-  def searchDb(query)
-    data = Paper.where('LOWER(title) LIKE ?', "%#{query.downcase}%").limit(10)
+  def searchDb(query, excludeIds)
+    data = Paper.where('LOWER(title) LIKE ?', "%#{query.downcase}%")
+                .where('id NOT IN (?)', Array.wrap(excludeIds))
+                .limit(10)
     data.map do |i|
       {
         id: i.id,
@@ -57,8 +59,8 @@ class PaperSearchService
     end
   end
 
-  def search(query)
-    db = searchDb(query)
+  def search(query, excludeIds)
+    db = searchDb(query, excludeIds)
     crossref = searchCrossref(query)
     pubmed = searchPubmed(query)
 

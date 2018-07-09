@@ -15,7 +15,7 @@
           </div>
           <div v-if="query.length < 3">Please type at least 3 letters in the search field.</div>
           <ul class="apc-results-list" v-if=results.length>
-            <paper :key="paper.doi" :paper="paper" v-for="paper in results" @add-paper="addPaper(paper)"></paper>
+            <paper :key="paper.doi" :paper="paper" :list-id="listId" v-for="paper in results"></paper>
           </ul>
           <div v-if="query.length >= 3 && ! results.length">No results</div>
         </div>
@@ -26,7 +26,9 @@
 
 <script>
 import axios from 'axios'
+import qs from 'qs'
 import debounce from 'lodash-es/debounce'
+import BootBox from 'bootbox'
 import Paper from './Paper.vue'
 import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue'
 
@@ -50,6 +52,12 @@ export default {
     }
   },
 
+  watch: {
+    hideAdded () {
+      this.getResults()
+    }
+  },
+
   methods: {
     clearSearch () {
       this.results = []
@@ -61,13 +69,19 @@ export default {
         return this.results = []
       }
       this.loading = true
-      axios.get(`/papers/search?query=${this.query}`)
+      axios.get('/papers/search?' + qs.stringify({
+        query: this.query,
+        list_id: this.listId,
+        hide_added: this.hideAdded ? '1' : '0',
+        only_bookmarked: this.onlyBookmarked ? '1' : '0',
+      }))
         .then((response) => {
           this.results = response.data
           this.loading = false
         })
         .catch(err => {
           this.loading = false
+          BootBox.alert('Some error occurent during loading: ' + err.message)
         })
     }, 500),
 

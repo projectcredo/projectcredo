@@ -14,9 +14,15 @@
       </div>
     </div>
     <div class="apcp-action-col">
-      <div><a href="#" @click.prevent="$emit('add-paper')" class="cpcp-save-btn">+</a></div>
+      <div><a href="#" @click.prevent="addPaper" class="cpcp-save-btn" :disabled="addingPaper">+</a></div>
       <div><bookmark v-if="paper.source === 'db'" :bookmarkable="{id: paper.id, type: 'Paper', bookmarked: paper.bookmarked}" :signed-in="true" class="add-paper"></bookmark></div>
     </div>
+    <form ref="form" action="/references" method="post" style="display: none;">
+      <input name="authenticity_token" :value="token">
+      <input :value="listId" type="hidden" name="reference[list_id]">
+      <input :value="locatorType" type="hidden" name="reference[locator][type]">
+      <input :value="paper.id || paper.doi || paper.pubmed_id" type="hidden" name="reference[locator][id]">
+    </form>
   </li>
 </template>
 
@@ -28,12 +34,13 @@ export default {
     Bookmark,
   },
 
-  props: ['paper'],
+  props: ['paper', 'listId'],
 
   data () {
     return {
       abstractMore: false,
       token: document.getElementsByName('csrf-token')[0].getAttribute('content'),
+      addingPaper: false,
     }
   },
 
@@ -44,8 +51,9 @@ export default {
       return str.substr(0, str.lastIndexOf(separator, maxLen))
     },
 
-    addPaper () {
-      
+    addPaper () {      
+      this.addingPaper = true
+      this.$refs.form.submit()
     },
   },
 
@@ -59,6 +67,10 @@ export default {
       if (this.abstractMore || this.paper.abstract.length < 200) return this.paper.abstract
 
       return this.shorten(this.paper.abstract, 200) + '...'
+    },
+
+    locatorType () {
+      return this.paper.id ? 'db' : (this.paper.doi ? 'doi' : (this.paper.pubmed_id ? 'pubmed_id' : ''))
     },
   },
 }
