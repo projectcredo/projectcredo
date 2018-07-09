@@ -11,8 +11,8 @@ module Api
       http.request(request)
     end
 
-    def search(query)
-      response = request('search.crossref.org/dois', {sort: 'score', type: 'Journal Article', rows: 10, q: query})
+    def search(query, limit = 15)
+      response = request('search.crossref.org/dois', {sort: 'score', type: 'Journal Article', rows: limit, q: query})
       JSON.parse response.body
     end
 

@@ -24,7 +24,7 @@ module Api
           publication: x.css('Journal Title').text,
           doi: x.css('ArticleId[IdType=doi]').text,
           pubmed_id: x.css('ArticleId[IdType=pubmed]').text,
-          abstract: x.css('AbstractText').text,
+          abstract: strip_tags(x.css('AbstractText').text),
           published_at: parseDate(x),
           authors: x.css('AuthorList Author').map do |author|
             author.css("ForeName").text + ' ' + author.css("LastName").text
@@ -34,9 +34,9 @@ module Api
       end
     end
 
-    def search(query)
+    def search(query, limit = 15)
       response = request('eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi', {
-        db: 'pubmed', retmode: 'json', retmax: 10, term: query
+        db: 'pubmed', retmode: 'json', retmax: limit, term: query
       })
       data = JSON.parse response.body
 

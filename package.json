@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@fancyapps/fancybox": "^3.2.5",
-    "@rails/webpacker": "^3.0.2",
+    "@rails/webpacker": "3.5",
     "axios": "^0.17.1",
     "bootbox": "^4.4.0",
     "bootstrap-sass": "^3.3.7",
@@ -14,15 +14,19 @@
     "moment-mini": "^2.19.4",
     "node-sass": "^4.7.2",
     "qs": "^6.5.2",
-    "vue": "^2.5.2",
-    "vue-loader": "^13.3.0",
+    "vue": "^2.5.16",
+    "vue-loader": "14.2.2",
     "vue-multiselect": "^2.0.6",
     "vue-spinner": "^1.0.3",
-    "vue-template-compiler": "^2.5.2"
+    "vue-template-compiler": "^2.5.16"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
     "sass-loader": "^6.0.6",
-    "webpack-dev-server": "^2.9.3",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^2.11.1",
     "webpack-merge": "^4.1.0"
   },
   "engines": {

@@ -10,6 +10,7 @@ default: &default
   # ['app/assets', 'engine/foo/app/assets']
   resolved_paths:
     - 'node_modules/vue-spinner'
+    - 'node_modules/vue-multiselect'
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
@@ -24,6 +25,9 @@ default: &default
     - .sass
     - .scss
     - .css
+    - .module.sass
+    - .module.scss
+    - .module.css
     - .png
     - .svg
     - .gif
@@ -44,8 +48,15 @@ development:
     # Inline should be set to true if using HMR
     inline: true
     overlay: true
+    compress: true
     disable_host_check: true
     use_local_ip: true
+    quiet: false
+    headers:
+      'Access-Control-Allow-Origin': '*'
+    watch_options:
+      ignored: /node_modules/
+
 
 test:
   <<: *default

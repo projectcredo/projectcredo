@@ -28,12 +28,12 @@ class PapersController < ApplicationController
   def search
     unless params.has_key?(:query) and params[:query].present? then raise ActionController::BadRequest.new(), 'Param "query" is required' end
 
-    excludeIds = []
+    exclude = []
     if (params[:hide_added].present? and params[:hide_added].present?) 
-      excludeIds = params[:hide_added] == '1' ? List.find(params[:list_id]).papers.pluck(:id) : []
+      exclude = params[:hide_added] == '1' ? List.find(params[:list_id]).papers : []
     end
 
-    render :json => PaperSearchService.new.search(params[:query], excludeIds)
+    render :json => PaperSearchService.new.search(params[:query], exclude, params[:only_bookmarked] == '1' ? true : false, current_user)
   end
 
   private

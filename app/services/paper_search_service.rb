@@ -1,8 +1,8 @@
 class PaperSearchService
 
-  def searchCrossref(query)
+  def searchCrossref(query, exclude)
     data = Api::CrossrefService.new.search(query)
-    data.map do |i|
+    data = data.map do |i|
       {
         id: nil,
         title: i['title'],
@@ -17,11 +17,13 @@ class PaperSearchService
         bookmarked: false,
       }
     end
+
+    data.reject {|i| exclude.include?(i[:doi])}
   end
 
-  def searchPubmed(query)
+  def searchPubmed(query, exclude)
     data = Api::PubmedService.new.search(query)
-    data.map do |i|
+    data = data.map do |i|
       {
         id: nil,
         title: i[:title],
@@ -36,13 +38,19 @@ class PaperSearchService
         bookmarked: false,
       }
     end
+
+    data.reject {|i| exclude.include?(i[:pubmed_id])}
   end
 
-  def searchDb(query, excludeIds)
-    data = Paper.where('LOWER(title) LIKE ?', "%#{query.downcase}%")
-                .where('id NOT IN (?)', Array.wrap(excludeIds))
-                .limit(10)
-    data.map do |i|
+  def searchDb(query, exclude, bookmarked_only = false, user = nil)
+    query = Paper.where('LOWER(title) LIKE ?', "%#{query.downcase}%").limit(15)
+    query = query.where('papers.id NOT IN (?)', Array.wrap(exclude)) unless exclude.empty?
+
+    if bookmarked_only && user
+      query = query.joins(:bookmarks).where(:bookmarks => {:user_id => user.id})
+    end
+
+    query.map do |i|
       {
         id: i.id,
         title: i.title,
@@ -59,15 +67,17 @@ class PaperSearchService
     end
   end
 
-  def search(query, excludeIds)
-    db = searchDb(query, excludeIds)
-    crossref = searchCrossref(query)
-    pubmed = searchPubmed(query)
+  def search(query, exclude_papers, bookmarked_only = false, user = nil)
+    db = searchDb(query, exclude_papers.pluck(:id), bookmarked_only, user)
+    return db.take(10) if bookmarked_only
+
+    crossref = searchCrossref(query, exclude_papers.pluck(:doi).select {|c| c})
+    pubmed = searchPubmed(query, exclude_papers.pluck(:pubmed_id).select {|c| c})
 
     # Filter out duplicate papers
     pubmed = pubmed.select{ |p|
       # No duplicates in database
-      db.find{|d| (p[:doi] == d[:doi]) or (p[:pubmed_id].present? and p[:pubmed_id] == d[:pubmed_id])}.nil? and
+      db.find{|d| (p[:doi] == d[:doi]) || (p[:pubmed_id].present? && p[:pubmed_id] == d[:pubmed_id])}.nil? and
       # No duplicates in crossreff
       crossref.find{|c| p[:doi] == c[:doi]}.nil?
     }
@@ -78,9 +88,7 @@ class PaperSearchService
       db.find{|d| c[:doi] == d[:doi]}.nil?
     }
 
-    puts db.to_yaml
-
-    db + crossref + pubmed
+    db.take(10) + crossref.take(10) + pubmed.take(10)
   end
 
 end

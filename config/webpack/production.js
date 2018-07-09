@@ -1,8 +1,5 @@
-const environment = require('./environment')
-const merge = require('webpack-merge')
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
-module.exports = merge(environment.toWebpackConfig(), {
-  externals: {
-    jquery: 'jQuery',
-  },
-})
+const environment = require('./environment')
+
+module.exports = environment.toWebpackConfig()

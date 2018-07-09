@@ -26,4 +26,8 @@
 /public/packs-test
 /public/system
 /public/assets
+/node_modules/public/packs
+/public/packs-test
 /node_modules
+yarn-debug.log*
+.yarn-integrity

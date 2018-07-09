@@ -4,7 +4,7 @@
     <div class="apc-collapse">
       <div class="apc-body">
         <div class="apc-form">
-          <div class="apc-form-item apc-search"><input type="text" placeholder="Search by topic" class="form-control" v-model="query" @keyup="getResults()"></div>
+          <div class="apc-form-item apc-search"><input type="text" placeholder="Search by topic" class="form-control" v-model="query" @keyup="debounceResults()"></div>
           <label class="apc-form-item"><input type="checkbox" v-model="hideAdded"> don't show papers I've already added to boards</label>
           <label class="apc-form-item"><input type="checkbox" v-model="onlyBookmarked"> only show papers I've bookmarked</label>
           <!-- <div class="apc-form-item apc-from-to">only show papers from <input type="text" class="form-control input-sm"> to <input type="text" class="form-control input-sm"></div> -->
@@ -55,7 +55,10 @@ export default {
   watch: {
     hideAdded () {
       this.getResults()
-    }
+    },
+    onlyBookmarked () {
+      this.getResults()
+    },
   },
 
   methods: {
@@ -64,7 +67,7 @@ export default {
       this.query = ''
     },
 
-    getResults: debounce(function (e) {
+    getResults () {
       if (this.query.length < 3) {
         return this.results = []
       }
@@ -83,6 +86,10 @@ export default {
           this.loading = false
           BootBox.alert('Some error occurent during loading: ' + err.message)
         })
+    },
+
+    debounceResults: debounce(function () {
+      this.getResults()
     }, 500),
 
     addPaper (paper) {
