@@ -1,6 +1,6 @@
 <template>
   <span class="newlines">
-    <component :is="part.type" v-for="part in contentParts" :r="getReference(part.id)">{{ part.content }}</component>
+    <component :key="part.id" :is="part.type" v-for="part in contentParts" :r="getReference(part.id)">{{ part.content }}</component>
   </span>
 </template>
 

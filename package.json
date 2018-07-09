@@ -24,6 +24,7 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
+    "resolve-url-loader": "^2.3.0",
     "sass-loader": "^6.0.6",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^2.11.1",

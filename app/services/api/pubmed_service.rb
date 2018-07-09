@@ -1,5 +1,6 @@
 module Api
   class PubmedService
+    include ActionView::Helpers::SanitizeHelper
 
     def request(uri, params)
       endpoint = URI.parse("https://#{uri}?#{params.to_query}")
@@ -24,7 +25,7 @@ module Api
           publication: x.css('Journal Title').text,
           doi: x.css('ArticleId[IdType=doi]').text,
           pubmed_id: x.css('ArticleId[IdType=pubmed]').text,
-          abstract: strip_tags(x.css('AbstractText').text),
+          abstract: x.css('AbstractText').text,
           published_at: parseDate(x),
           authors: x.css('AuthorList Author').map do |author|
             author.css("ForeName").text + ' ' + author.css("LastName").text
