@@ -1,4 +1,4 @@
-FROM ruby:2.3.1
+FROM ruby:2.5.1
 MAINTAINER brian@callmekung.com
 
 # Install apt based dependencies required to run Rails as

@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 /.idea
+.vscode
 
 .env
 
@@ -27,3 +28,4 @@
 /public/system
 /public/assets
 /node_modules
+yarn-error.log

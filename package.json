@@ -18,11 +18,17 @@
     "vue-template-compiler": "^2.5.2"
   },
   "devDependencies": {
+    "postcss-smart-import": "^0.7.6",
     "sass-loader": "^6.0.6",
     "webpack-dev-server": "^2.9.3",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
-    "node": "8.9.x"
+    "node": "8.x.x"
+  },
+  "scripts": {
+    "yarn": "docker-compose exec app yarn",
+    "spec": "docker-compose exec app rspec",
+    "assets": "docker-compose exec app rails webpacker:compile"
   }
 }

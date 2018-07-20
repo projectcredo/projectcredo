@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.5.1'
 
 # ProjectCredo specific gems
-gem 'devise', '~> 4.2.0'
+gem 'devise', '~> 4.4.0'
 gem 'acts-as-taggable-on', '~> 4.0'
 gem 'acts_as_votable', '~> 0.10.0'
 gem 'paperclip', '~> 5.2.0'
@@ -12,6 +12,8 @@ gem 'impressionist'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+
+gem 'stripe'
 
 gem 'closure_tree', '~> 6.1.0'
 gem 'postmark-rails', '~> 0.14.0'
