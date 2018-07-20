@@ -8,6 +8,11 @@
         <p><%= flash[:error] %></p>
       </div>
     <% end %>
+    <% if flash[:notice].present? %>
+      <div id="notice_explanation">
+        <p><%= flash[:notice] %></p>
+      </div>
+    <% end %>
     <label class="amount">
       <span>Amount: $5.00</span>
     </label>
@@ -15,7 +20,7 @@
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-          data-description="A month's subscription"
+          data-description="A payment"
           data-amount="500"
           data-locale="auto"></script>
 <% end %>
