@@ -14,7 +14,11 @@ Rails.application.routes.draw do
     get '/users/remove-attachment/:type' => 'auth/registrations#remove_attachment', :as => :users_remove_attachment
   end
 
-  resources :charges
+  resource :charges, only: [:new, :create] do
+    get :subscriptions
+    post :subscribe
+    get :unsubscribe
+  end
 
   resources :papers, only: [:show, :edit, :update] do
     resources :links, only: :destroy, shallow: true

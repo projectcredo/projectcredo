@@ -28,7 +28,8 @@
   },
   "scripts": {
     "yarn": "docker-compose exec app yarn",
-    "spec": "docker-compose exec app rspec",
+    "rails": "docker-compose exec app rails",
+    "rspec": "docker-compose exec app rspec",
     "assets": "docker-compose exec app rails webpacker:compile"
   }
 }

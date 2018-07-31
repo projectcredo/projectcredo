@@ -1,0 +1,44 @@
+<h2>Select a Plan</h2>
+<hr>
+
+<% if current_user.subscriptions.size != 0 %>
+  <p>You are already subscribed to plan: <%= current_user.subscriptions.first.plan.name %></p>
+  <a href="<%= unsubscribe_charges_path %>" class="btn btn-danger" onclick="return confirm('Are you sure?')">Cancel my subscription</a>
+<% else %>
+
+  <%= form_tag subscribe_charges_path, id: 'subscribe_form' do %>
+    <input type="hidden" name="stripe_token">
+    <input type="hidden" name="plan_id">
+    <article>
+      <div class="row">
+
+        <% @plans.each do |plan| %>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <h3><%= plan.name.capitalize %></h3>
+              </div>
+              <div class="panel-body text-center">
+                <div class="text-large"><%= plan.price %> <%= plan.currency %></div>
+                <div>per <%= plan.interval %></div>
+              </div>
+              <div class="panel-footer text-center">
+                <button class="btn btn-primary subscription-button" data-plan='<%= plan.to_json.html_safe %>'>Subscribe</button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    </article>
+  <% end %>
+
+  <% content_for(:page_app) do %>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script>
+      window.stripe = window.stripe || {}
+      window.stripe.email = '<%= current_user.email %>'
+      window.stripe.publishable_key = '<%= Rails.configuration.stripe[:publishable_key] %>'
+    </script>
+  <% end %>
+<% end %>

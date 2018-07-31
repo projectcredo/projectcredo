@@ -7,10 +7,9 @@
 
 import '../stylesheets/application.scss'
 
-import '../legacy/general'
+import '../legacy'
 
 import '../app/instances'
-
 
 // The above code uses Vue without the compiler, which means you cannot
 // use Vue to target elements in your existing html templates. You would
@@ -24,7 +23,6 @@ import '../app/instances'
 //   {{message}}
 //   <app></app>
 // </div>
-
 
 // import Vue from 'vue/dist/vue.esm'
 // import App from './app.vue'

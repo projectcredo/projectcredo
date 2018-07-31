@@ -76,5 +76,6 @@
     <%= console if Rails.env.development? && ENV['CONSOLE_ENABLED'] %>
   </body>
   <%= yield(:page_app) %>
+  <%= yield(:js) %>
   <%= javascript_pack_tag 'app' %>
 </html>

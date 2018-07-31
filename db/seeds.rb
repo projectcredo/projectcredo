@@ -39,6 +39,13 @@ papers = [
   }
 ]
 
+ Plan.create({
+  stripe_id: 'simple',
+  name: 'Simple',
+  interval: 'month',
+  price: 5.00,
+  currency: 'USD',
+})
 
 ActiveRecord::Base.transaction do
   @u = u = User.create(email: 'user@example.com', password: 'password', username: 'testuser')

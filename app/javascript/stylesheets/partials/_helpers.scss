@@ -14,22 +14,11 @@ $sides: (top, bottom, left, right); // Leave this variable alone
   }
 }
 
-.no-border-radius {
-  border-radius: 0;
-}
+.no-border-radius { border-radius: 0; }
+.no-border { border: 0; }
 
-.no-border {
-  border: 0;
-}
+.color-primary { color: $brand-primary; }
+.color-gray { color: $font-gray; }
 
-.color-primary {
-  color: $brand-primary;
-}
-
-.color-gray {
-  color: $font-gray;
-}
-
-.text-smaller {
-  font-size: 90%;
-}
+.text-smaller { font-size: 90%; }
+.text-large { font-size: 120%; }
