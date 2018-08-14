@@ -39,7 +39,7 @@ papers = [
   }
 ]
 
- Plan.create({
+Plan.create({
   stripe_id: 'simple',
   name: 'Simple',
   interval: 'month',

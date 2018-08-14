@@ -1,30 +1,16 @@
 class ChargesController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :create]
+  before_action :authenticate_user!, except: [:new, :create, :webhook]
+  skip_before_action :verify_authenticity_token, only: :webhook
 
   def new
   end
 
   def create
-    # Amount in cents
-    @amount = 500
-
+    amount = 500
     begin
-      customer = Stripe::Customer.create(
-        :email => params[:stripeEmail],
-        :source  => params[:stripeToken]
-      )
-      
-      charge = Stripe::Charge.create(
-        :customer    => customer.id,
-        :amount      => @amount,
-        :description => 'Rails Stripe customer',
-        :currency    => 'usd'
-      )
-
-      flash['notice'] = "You successfully paid " + (@amount / 100).to_s
-    rescue Stripe::CardError => e
-      flash[:alert] = e.message
-    rescue Stripe::InvalidRequestError => e
+      StripeService.new.simpleCharge(token: params[:stripeToken], amount: amount, email: params[:stripeEmail])
+      flash['notice'] = 'You successfully paid $' + (amount / 100).to_s
+    rescue StripeService::Error => e
       flash[:alert] = e.message
     end
     redirect_back fallback_location: root_path
@@ -38,17 +24,9 @@ class ChargesController < ApplicationController
     plan = Plan.find(params[:plan_id])
     user = current_user
     begin
-      if not user.stripe_id
-        customer = Stripe::Customer.create(source: params[:stripe_token], email: user.email)
-        user.update(stripe_id: customer.id)
-      end
-
-      subscription = Stripe::Subscription.create(customer: user.stripe_id, items: [{plan: plan.stripe_id}])
-      user.subscriptions.create(stripe_id: subscription.id, plan_id: plan.id)
+      StripeService.new.subscribe(token: params[:stripe_token], user: user, plan: plan)
       flash[:notice] = 'Successfully created a subscription'
-    rescue Stripe::CardError => e
-      flash[:alert] = e.message
-    rescue Stripe::InvalidRequestError => e
+    rescue StripeService::Error => e
       flash[:alert] = e.message
     end
     redirect_back fallback_location: root_path
@@ -56,18 +34,24 @@ class ChargesController < ApplicationController
 
   def unsubscribe
     subscription = current_user.subscriptions.first
-    throw :abort unless subscription
+    raise ActiveRecord::RecordNotFound.new('Subscripton not found') unless subscription
     begin
-      sub = Stripe::Subscription.retrieve(subscription.stripe_id)
-      sub.delete
-      subscription.destroy
+      StripeService.new.unsubscribe(subscription)
       flash[:notice] = 'You successfully canceled your subscription'
-    rescue Stripe::CardError => e
-      flash[:alert] = e.message
-    rescue Stripe::InvalidRequestError => e
+    rescue StripeService::Error => e
       flash[:alert] = e.message
     end
     redirect_back fallback_location: root_path
+  end
+
+  def webhook
+    render text: 'id is required', status: 400 and return unless params.key?(:id)
+    begin
+      StripeService.new.webhook(params[:id])
+      render nothing: true, status: 200
+    rescue StripeService::Error => e
+      render text: e.message, status: 400
+    end
   end
 
 end
