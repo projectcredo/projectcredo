@@ -9,7 +9,7 @@ class ChargesController < ApplicationController
     amount = 500
     begin
       StripeService.new.simpleCharge(token: params[:stripeToken], amount: amount, email: params[:stripeEmail])
-      flash['notice'] = 'You successfully paid $' + (amount / 100).to_s
+      flash[:notice] = 'You successfully paid $' + (amount / 100).to_s
     rescue StripeService::Error => e
       flash[:alert] = e.message
     end
