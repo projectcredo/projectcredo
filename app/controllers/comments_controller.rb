@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   include ActivitiesHelper
   include NotificationsHelper
+  include CommentsHelper
 
   before_action :ensure_current_user
   before_action :set_comment, only: [:edit, :update, :destroy]
@@ -19,7 +20,7 @@ class CommentsController < ApplicationController
         if @comment.commentable_type == 'List'
           create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
         end
-        format.json {render :json => @comment }
+        format.json {render :json => get_json_tree([@comment])[0] }
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }
         format.js do
           commentable = @comment.root.commentable

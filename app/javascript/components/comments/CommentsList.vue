@@ -1,6 +1,14 @@
 <template>
   <div class="comments" :class="commentableType">
-    <comment class="comment" :key="comment.id" v-for="comment in comments" :comment="comment"></comment>
+    <comment class="comment"
+             :key="comment.id"
+             v-for="comment in comments"
+             :comment="comment"
+             :signed-in="signedIn"
+             :user-id="userId"
+             :commentable-type="commentableType"
+             :commentable-id="commentableId"
+    ></comment>
   </div>
 </template>
 
@@ -14,10 +22,10 @@ export default {
     Comment,
   },
 
-  props: ['commentableType', 'signedIn', 'userId', 'comments'],
+  props: ['commentableType', 'commentableId', 'signedIn', 'userId', 'comments'],
 
   methods: {
-    
+    //
   },
 }
 </script>

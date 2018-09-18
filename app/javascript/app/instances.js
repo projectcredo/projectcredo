@@ -6,6 +6,8 @@ import List from '../components/lists/List.vue'
 import SummariesForm from '../components/summaries/Form.vue'
 import Comments from '../components/comments/Comments.vue'
 
+Vue.prototype.$eventHub = new Vue()
+
 createInstance('lists-form', ListsForm)
 createInstance('simple-chart', SimpleChart)
 createInstance('list', List)

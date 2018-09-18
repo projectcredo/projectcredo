@@ -19,11 +19,18 @@
           <button name="button" type="submit" class="comment-vote clicked">1</button>
         </form>
       </li>
-      <li><a class="toggle-reply active-link btn-xs" data-parent-comment-id="55" href="#">reply</a></li>
+      <li><a class="toggle-reply active-link btn-xs" @click.prevent="showReply = ! showReply" href="#">reply</a></li>
       <li><a class="active-link btn-xs" data-remote="true" href="/comments/55/edit">edit</a></li>
       <li><a class="text-danger small" data-remote="true" rel="nofollow" data-method="delete" href="/comments/55">delete</a></li>
       <li></li>
     </ul>
+
+    <comment-form :signed-in="signedIn"
+                  :commentable-type="commentableType"
+                  :commentable-id="commentableId"
+                  :parent-id="comment.id"
+                  v-if="showReply"
+    ></comment-form>
 
     <comments-list :signed-in="signedIn" :user-id="userId" :comments="comment.nested_comments"></comments-list>
   </div>
@@ -31,22 +38,41 @@
 
 <script>
 import moment from 'moment-mini'
-import CommentsList from './CommentsList.vue'
+import CommentForm from './CommentForm.vue'
 
 export default {
   name: 'comment',
 
+  props: ['commentableType', 'commentableId', 'signedIn', 'userId', 'comment'],
+
   components: {
-    CommentsList,
+    CommentForm,
   },
 
-  props: ['signedIn', 'userId', 'comment'],
+  data () {
+    return {
+      showReply: false,
+    }
+  },
+
+  beforeCreate () {
+    // https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
+    this.$options.components.CommentsList = require('./CommentsList.vue').default
+  },
+
+  created () {
+    this.$eventHub.$on('new-comment', this.newComment)
+  },
 
   methods: {
     formatDate (date) {
       return moment(date).format('MMMM Do YYYY hh:mm:ss')
     },
-  }
+
+    newComment (comment) {
+      this.showReply = false
+    },
+  },
 
 }
 </script>

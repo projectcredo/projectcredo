@@ -35,7 +35,6 @@
             commentableId: @list.id,
             signedIn: user_signed_in?,
             userId: current_user&.id,
-            signUpLink: new_user_registration_path,
             comments: get_json_tree(@list.comments.includes(:user).order('cached_votes_up DESC, created_at ASC')),
           }.to_json
         %>"></div>
