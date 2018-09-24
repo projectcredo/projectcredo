@@ -35,11 +35,9 @@
             commentableId: @list.id,
             signedIn: user_signed_in?,
             userId: current_user&.id,
-            comments: get_json_tree(@list.comments.includes(:user).order('cached_votes_up DESC, created_at ASC')),
+            comments: get_json_tree(@list.comments.roots.includes(:user).order('cached_votes_up DESC, created_at ASC')),
           }.to_json
         %>"></div>
-
-        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
       </div>
     </div>
   </div>

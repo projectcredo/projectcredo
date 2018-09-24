@@ -4,6 +4,7 @@
                   :commentable-type="commentableType"
                   :commentable-id="commentableId"
                   :parent-id="null"
+                  type="new"
     ></comment-form>
     <comments-list :signed-in="signedIn"
                    :user-id="userId"
@@ -11,8 +12,6 @@
                    :commentable-type="commentableType"
                    :commentable-id="commentableId"
     ></comments-list>
-    <p><br></p>
-    <p>Commnets orig:</p>
   </div>
 </template>
 
@@ -39,6 +38,9 @@ export default {
 
   created () {
     this.$eventHub.$on('new-comment', this.newComment)
+    this.$eventHub.$on('reply-comment', this.newComment)
+    this.$eventHub.$on('edit-comment', this.editComment)
+    this.$eventHub.$on('vote-comment', this.editComment)
   },
 
   beforeMount () {
@@ -50,12 +52,21 @@ export default {
       if (! comment.parent_id) {
         return this.dataComments.unshift(comment)
       } else {
-        const parent = this.findParent(this.dataComments, comment.parent_id)
+        const parent = this.findComment(this.dataComments, comment.parent_id)
         if (parent) parent.nested_comments.unshift(comment)
       }
     },
 
-    findParent (comments, id) {
+    editComment (comment) {
+      const found = this.findComment(this.dataComments, comment.id)
+      if (found) {
+        Object.assign(found, comment)
+      } else {
+        console.error('Could not find a comment', comment)
+      }
+    },
+
+    findComment (comments, id) {
       let found = null
 
       comments.some(c => {
@@ -64,7 +75,7 @@ export default {
           return true
         }
         if (c.nested_comments.length) {
-          found = this.findParent(c.nested_comments, id)
+          found = this.findComment(c.nested_comments, id)
           if (found) return true
         }
       })

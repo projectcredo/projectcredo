@@ -53,7 +53,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.update(comment_params)
         format.html { redirect_to :back, notice: 'Comment was successfully updated.' }
-        format.json {render :json => @comment }
+        format.json {render :json => get_json_tree([@comment])[0] }
         format.js { render 'update.js.erb', locals: {commentable: @comment.root.commentable} }
       else
         format.html { redirect_to :back, notice: 'Comment was not updated.' }

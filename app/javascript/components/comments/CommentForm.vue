@@ -6,6 +6,7 @@
       </div>
       <div class="form-group">
         <input type="submit" value="Submit" class="btn btn-primary btn-xs" @click.prevent="submit" :disabled="loading">
+        <a class="cancel-link cancel-comment-form" href="#" v-if="['edit', 'reply'].includes(type)" @click.prevent="$emit('cancel')">cancel</a>
       </div>
     </div>
     <h4 v-else>
@@ -17,11 +18,12 @@
 <script>
 import moment from 'moment-mini'
 import axios from '../../services/axios'
+import pick from 'lodash-es/pick'
 
 export default {
   name: 'comment-form',
 
-  props: ['commentableType', 'commentableId', 'parentId', 'signedIn'],
+  props: ['commentableType', 'commentableId', 'parentId', 'signedIn', 'comment', 'type'],
 
   data () {
     return {
@@ -31,21 +33,37 @@ export default {
     }
   },
 
+  mounted () {
+    if (this.comment) {
+      this.content = this.comment.content
+    }
+  },
+
   methods: {
     submit () {
       this.loading = true
 
-      axios.post('/comments', {
+      const data = {
         comment: {
           commentable_type: this.commentableType,
           commentable_id: this.commentableId,
           parent_id: this.parentId,
           content: this.content,
         },
-      })
-        .then(response => {
-          this.$eventHub.$emit('new-comment', response.data)
+      }
+
+      let request
+
+      if (this.type === 'edit') {
+        request = axios.put(`/comments/${this.comment.id}`, pick(data, ['comment.content', 'comment.commentable_type']))
+      } else {
+        request = axios.post('/comments', data)
+      }
+
+      request.then(response => {
+          this.$eventHub.$emit(`${this.type}-comment`, Object.assign({}, response.data))
           this.content = ''
+          this.$emit('cancel')
         })
         .catch((e) => (console.error(e)))
         .then(response => (this.loading = false))
