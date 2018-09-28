@@ -22,17 +22,6 @@ class CommentsController < ApplicationController
         end
         format.json {render :json => get_json_tree([@comment])[0] }
         format.html { redirect_to :back, notice: 'Comment was successfully created.' }
-        format.js do
-          commentable = @comment.root.commentable
-          is_top_level = !!@comment.commentable
-          commentable.touch
-
-          if is_top_level
-            render('commentables/comments/create.js.erb', locals: {commentable: commentable})
-          else
-            render('comments/create.js.erb', locals: {commentable: commentable})
-          end
-        end
       else
         format.html { redirect_to :back }
         format.json {render :json => @comment }
@@ -54,7 +43,6 @@ class CommentsController < ApplicationController
       if @comment.update(comment_params)
         format.html { redirect_to :back, notice: 'Comment was successfully updated.' }
         format.json {render :json => get_json_tree([@comment])[0] }
-        format.js { render 'update.js.erb', locals: {commentable: @comment.root.commentable} }
       else
         format.html { redirect_to :back, notice: 'Comment was not updated.' }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
@@ -73,11 +61,9 @@ class CommentsController < ApplicationController
         @comment.destroy
         format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
         format.json {render :json => {}, :status => :no_content}
-        format.js { render 'destroy.js.erb', locals: {commentable: commentable} }
       else
         flash[:alert] = 'You do not have permission to moderate this list.'
         format.html { redirect_back fallback_location: user_list_path(list_for_authorization.owner, list_for_authorization) }
-        format.js { ajax_redirect_to(user_list_path(list_for_authorization.owner, list_for_authorization)) }
         format.json
       end
     end
