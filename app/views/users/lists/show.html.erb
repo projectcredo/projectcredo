@@ -29,7 +29,15 @@
     <div class="list-section">
       <div class="list-section-h3">Comments</div>
       <div id="comments-<%= @list.id %>" class="sidebar-body">
-        <%= render 'commentables/comments', commentable: @list, list_for_authorization: @list %>
+        <div class="vue-comments" data-props="<%=
+          {
+            commentableType: 'List',
+            commentableId: @list.id,
+            signedIn: user_signed_in?,
+            userId: current_user&.id,
+            comments: get_json_tree(@list.comments.roots.includes(:user).order('cached_votes_up DESC, created_at ASC')),
+          }.to_json
+        %>"></div>
       </div>
     </div>
   </div>

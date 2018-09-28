@@ -1,9 +1,0 @@
-newForm = "<%= escape_javascript(render 'form', comment: @comment, hidden: false) %>"
-commentContent = $("#comment-<%= @comment.id %> > .content");
-commentContent.data("undo-form", commentContent.html())
-editLink = $("#comment-<%= @comment.id %>").find("a.edit-comment").first()
-editLink.parent('li').toggleClass('hidden', true);
-
-commentContent.html(newForm);
-cancelLink = commentContent.find(".cancel-comment-form")
-cancelLink.toggleClass('hidden', false);

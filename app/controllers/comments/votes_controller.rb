@@ -1,4 +1,6 @@
 class Comments::VotesController < ApplicationController
+  include CommentsHelper
+
   before_action :ensure_current_user
   before_action :set_comment
 
@@ -8,7 +10,7 @@ class Comments::VotesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back }
       format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
-      format.json
+      format.json {render :json => get_json_tree([@comment])[0] }
     end
   end
 
@@ -18,7 +20,7 @@ class Comments::VotesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back }
       format.js { render 'votes/toggle_like.js.erb', locals: {votable: @comment} }
-      format.json
+      format.json {render :json => get_json_tree([@comment])[0] }
     end
   end
 

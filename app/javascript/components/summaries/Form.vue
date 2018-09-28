@@ -77,8 +77,6 @@
 </template>
 
 <script>
-import axios from '../../services/axios'
-import debounce from 'debounce-promise'
 import Countdown from './Countdown.vue'
 import ReferenceList from '../references/ReferenceList.vue'
 
