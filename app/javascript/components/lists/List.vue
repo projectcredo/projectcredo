@@ -148,6 +148,7 @@
 
 <script>
 import Vue from 'vue'
+import uniq from 'lodash-es/uniq'
 import ReferenceModal from '../references/ReferenceModal.vue'
 import ReferenceList from '../references/ReferenceList.vue'
 import SummaryContent from '../summaries/SummaryContent.vue'
@@ -293,7 +294,7 @@ export default {
         refIds.push(match[1])
         match = myRegexp.exec(content);
       }
-      refIds = unique(refIds)
+      refIds = uniq(refIds)
 
       var citedRefs = refIds.map(function (id) {
         return data.filter(function (r, index) {

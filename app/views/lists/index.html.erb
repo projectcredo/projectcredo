@@ -3,33 +3,9 @@
   @body_class = "list-index"
 %>
 
-<div id="search-lists">
-  <div class="row">
-    <div class="col-md-3">
-      <%= render 'lists/search_index' %>
-      <%= render 'lists/new_list_btn' %>
-      <%= render 'lists/index_filters' %>
-    </div>
-    <div class="col-md-9">
-      <h1> </h1>
-      <div v-for="result in showResults">
-        <list-card
-          :list="result"
-          :signed-in="signedIn"
-        >
-        </list-card>
-      </div>
-    </div>
-  </div>
-</div>
-
-<% content_for(:page_app) do %>
-  <%= render 'lists/list_card' %>
-  <script>
-    searchLists.signedIn = <%= user_signed_in? %>
-    searchLists.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
-    var query = window.location.search.split("&q=")[1]
-    searchLists.query = (query == undefined) ? "" : query
-    searchLists.$mount('#search-lists')
-  </script>
-<% end %>
+<div class="vue-search-lists" data-props="<%=
+  {
+    lists: ActiveSupport::JSON.decode(render('lists/lists.json', lists: @visible_lists)),
+    signedIn: user_signed_in?,
+  }.to_json
+%>"></div>

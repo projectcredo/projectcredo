@@ -5,6 +5,8 @@ import SimpleChart from '../components/charts/SimpleChart.vue'
 import List from '../components/lists/List.vue'
 import SummariesForm from '../components/summaries/Form.vue'
 import Comments from '../components/comments/Comments.vue'
+import ActivityFeed from '../components/lists/ActivityFeed.vue'
+import SearchLists from '../components/lists/SearchLists.vue'
 
 Vue.prototype.$eventHub = new Vue()
 
@@ -13,6 +15,8 @@ createInstance('simple-chart', SimpleChart)
 createInstance('list', List)
 createInstance('summaries-form', SummariesForm)
 createInstance('comments', Comments)
+createInstance('activity-feed', ActivityFeed)
+createInstance('search-lists', SearchLists)
 
 /**
  * Create an Vue instance and attach the component to an element with passed name

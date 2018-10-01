@@ -1,50 +1,23 @@
 <%
   @title = 'Home'
   @body_class = "list-index"
+  @no_container = true
 %>
-
-</div>
 
 <div class="main-splash splash">
   <%= image_tag("white_logo_color_background.png", class: "img-thumbnail thumbnail-no-border", size: "500")%>
   <p class="text-center">Welcome, let's make research understandable</p>
 </div>
 
-<div class="tag-splash splash">
+<div class="tag-splash splash m-b-40">
   <%= image_tag("TAG.PNG", class: "img-thumbnail thumbnail-no-border")%>
 </div>
 
 <div class="container">
-
-<div id="activity-feed">
-  <div class="row">
-    <div class="col-md-3">
-      <h4></h4>
-      <%= render 'lists/new_list_btn' %>
-      <% if current_user %>
-        <%= render 'activities/activities_index_filters' %>
-      <% end %>
-    </div>
-    <div class="col-md-9">
-      <h4>Recent Board Activity</h4>
-      <div v-for="list in allLists"
-        v-if="list.pinned || !filterPins"
-        >
-        <list-card
-          :list="list"
-          :signed-in="signedIn"
-        >
-        </list-card>
-      </div>
-    </div>
-  </div>
+   <div class="vue-activity-feed" data-props="<%=
+      {
+        lists: ActiveSupport::JSON.decode(render('lists/lists.json', lists: @visible_lists)),
+        signedIn: user_signed_in?,
+      }.to_json
+    %>"></div>
 </div>
-
-<% content_for(:page_app) do %>
-  <%= render 'activities/activity_card' %>
-  <script>
-    activityFeed.signedIn = <%= user_signed_in? %>
-    activityFeed.allLists = <%= raw render('lists/lists.json', lists: @visible_lists) %>
-    activityFeed.$mount('#activity-feed')
-  </script>
-<% end %>

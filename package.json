@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@fancyapps/fancybox": "^3.2.5",
-    "@rails/webpacker": "^3.0.2",
+    "@rails/webpacker": "3.5",
     "axios": "^0.17.1",
     "bootstrap-sass": "^3.3.7",
     "coffeescript": "1.12.7",
@@ -9,18 +9,25 @@
     "debounce": "component/debounce",
     "debounce-promise": "^3.0.2",
     "font-awesome": "^4.7.0",
+    "fuse.js": "^3.2.1",
+    "jquery": "^3.3.1",
     "lodash-es": "^4.17.7",
     "moment-mini": "^2.19.4",
     "node-sass": "^4.7.2",
-    "vue": "^2.5.2",
-    "vue-loader": "^13.3.0",
+    "rails-ujs": "^5.2.1",
+    "turbolinks": "^5.2.0",
+    "vue": "^2.5.17",
+    "vue-loader": "14.2.2",
     "vue-multiselect": "^2.0.6",
-    "vue-template-compiler": "^2.5.2"
+    "vue-template-compiler": "^2.5.17"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "7",
     "postcss-smart-import": "^0.7.6",
+    "resolve-url-loader": "^3.0.0",
     "sass-loader": "^6.0.6",
-    "webpack-dev-server": "^2.9.3",
+    "webpack-dev-server": "2.11.2",
     "webpack-merge": "^4.1.0"
   },
   "engines": {

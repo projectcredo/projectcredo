@@ -4,7 +4,6 @@
     <title><%= "Project Credo#{' | ' if @title}#{@title}" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
-    <%= javascript_include_tag 'application' %>
     <%= stylesheet_pack_tag 'app' if Rails.env.production? %>
     <%= render 'layouts/google_analytics' %>
     <link rel="shortcut icon" href="/favicon.ico?v=3">
@@ -77,5 +76,7 @@
   </body>
   <%= yield(:page_app) %>
   <%= yield(:js) %>
+  <%= javascript_pack_tag 'manifest' %>
+  <%= javascript_pack_tag 'vendor' %>
   <%= javascript_pack_tag 'app' %>
 </html>
