@@ -1,1 +1,1 @@
-require.context('../images', true, /\.(png|gif|jpe?g|svg)$/)
+require.context('../images', true, /\.(png|gif|ico|jpe?g|svg)$/)
