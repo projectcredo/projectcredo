@@ -37,6 +37,7 @@
     "yarn": "docker-compose exec app yarn",
     "rails": "docker-compose exec app rails",
     "rspec": "docker-compose exec app rspec",
+    "test": "docker-compose exec app rspec",
     "assets": "docker-compose exec app rails webpacker:compile"
   }
 }

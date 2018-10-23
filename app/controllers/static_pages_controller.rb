@@ -9,6 +9,12 @@ class StaticPagesController < ApplicationController
   def how_to
   end
 
+  def manifest
+  end
+
+  def browserconfig
+  end
+
   def lets_encrypt
     if secure_compare params[:id], ENV['LETS_ENCRYPT_CHALLENGE']
       render text: ENV['LETS_ENCRYPT_RESPONSE']
