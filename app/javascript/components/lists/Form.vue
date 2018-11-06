@@ -88,6 +88,19 @@
       </div>
     </div>
 
+    <div class="form-group form-image-group">
+      <label class="col-md-2 control-label">Cover Image</label>
+      <div class="col-md-10">
+        <input id="input_cover" type="file" name="list[cover]" class="form-control">
+        <div class="form-selected-image" v-if="list.cover_file_name">
+          <a class="fancy-box" :href="list.cover">
+            <img class="form-image-preview" :src="list.cover_thumb" alt="">
+          </a>
+          <div><a :href="listUrl + '/remove-attachment/cover'">Remove</a></div>
+        </div>
+      </div>
+    </div>
+
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <input type="submit"
@@ -97,7 +110,7 @@
                :data-confirm="currentUserRemovedConfirm"
                data-disable-with="Update Board"
         >
-        <a :href="cancelLink">cancel</a>
+        <a :href="listUrl">cancel</a>
       </div>
     </div>
 
@@ -113,7 +126,7 @@ export default {
 
   components: {Multiselect},
 
-  props: ['list', 'buttonName', 'currentUser', 'canModerate', 'owner', 'contributors', 'allUsers', 'cancelLink', 'contributorsSearchLink'],
+  props: ['list', 'buttonName', 'currentUser', 'canModerate', 'owner', 'contributors', 'allUsers', 'listUrl', 'contributorsSearchLink'],
 
   data() {
     return {

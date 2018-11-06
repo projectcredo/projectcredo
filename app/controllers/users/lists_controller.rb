@@ -4,7 +4,7 @@ class Users::ListsController < ApplicationController
 
   before_action :ensure_current_user, except: [:index, :show]
   before_action :set_user
-  before_action :set_list, except: :index
+  before_action :set_list, except: [:index, :remove_attachment]
   before_action :ensure_editable, only: [:edit, :update]
   before_action :ensure_visible, only: :show
 
@@ -78,6 +78,20 @@ class Users::ListsController < ApplicationController
     end
   end
 
+  def remove_attachment
+    @list = @user.owned_lists.find_by slug: params[:user_list_id]
+    return redirect_back(fallback_location: root_path, alert: "Board not found.") unless @list
+
+    unless @list.respond_to?(params[:type]) and @list.public_send(params[:type]).respond_to?(:destroy)
+      redirect_to request.referer || root_path, alert: 'Invalid attachment type'
+      return
+    end
+
+    @list.public_send(params[:type]).destroy
+    @list.save
+    redirect_back notice: 'Attachment was deleted', fallback_location: root_path
+  end
+
   private
     def set_user
       @user = User.find_by 'LOWER(username) = ?', params[:username].downcase
@@ -97,7 +111,7 @@ class Users::ListsController < ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :access, list_members: [ :username, :role ])
+      params.require(:list).permit(:name, :description, :tag_list, :access, :cover, list_members: [ :username, :role ])
     end
 
     def ensure_editable

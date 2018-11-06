@@ -8,6 +8,12 @@ class List < ApplicationRecord
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
   enum access: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
 
+  has_attached_file :cover, styles: { thumb: '100x100#', cover: '1280x720#', original: '3840x2160>' },
+                    :convert_options => { :all => '-quality 75' },
+                    default_url: '/images/user/cover/:style/missing.jpg'
+  validates_attachment :cover, content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+  validates :cover, dimensions: { width: 1280, height: 720 }
+
   # Scopes
   scope :ranked, -> {
     joins("LEFT JOIN homepages_lists ON lists.id = homepages_lists.list_id")
@@ -132,6 +138,10 @@ class List < ApplicationRecord
       response = Crossref.get_by_doi paper.doi
       paper.update(response.paper_attributes.slice(:referenced_by_count, :referenced_by_count_updated_at))
     end
+  end
+
+  def cover_thumb
+    cover.url(:thumb)
   end
 
 end

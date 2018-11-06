@@ -11,11 +11,11 @@
  * It is generally better to create a new file per style scope.
  */
 
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
 @import 'variables';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 @import '~font-awesome/scss/font-awesome';
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
 @import 'partials/about';
 @import 'partials/buttons';
 @import 'partials/bookmarks';

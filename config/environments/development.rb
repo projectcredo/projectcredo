@@ -53,11 +53,11 @@ Rails.application.configure do
 
   # ProjectCredo specific settings
 
-  if ENV['DOCKERIZED'] == 'true'
-    config.web_console.whitelisted_ips = ENV['DOCKER_HOST_IP']
-  end
+  # if ENV['DOCKERIZED'] == 'true'
+  #   config.web_console.whitelisted_ips = ENV['DOCKER_HOST_IP']
+  # end
 
-  config.web_console.automount = true
+  # config.web_console.automount = true
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {

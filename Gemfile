@@ -18,7 +18,7 @@ gem 'stripe'
 gem 'closure_tree', '~> 6.1.0'
 gem 'postmark-rails', '~> 0.14.0'
 gem 'gibbon'
-gem 'rails_autolink'
+# gem 'rails_autolink'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '>= 5.0.0', '< 5.1'
 # Use postgresql as the database for Active Record
@@ -53,30 +53,26 @@ gem 'will_paginate'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'rspec-rails', '~> 3.6'
-  gem 'minitest-rails', '~> 3.0.0'
+  gem 'rspec-rails', '~> 3.6', require: false
+  # gem 'minitest-rails', '~> 3.0.0'
   gem 'capybara'
   gem 'database_cleaner'
-  gem 'meta_request'
-  gem 'factory_bot_rails'
-  gem 'fabrication', '~> 2.16.0'
-  gem 'foreman'
+  # gem 'meta_request'
+  gem 'factory_bot_rails', require: false
+  gem 'fabrication', '~> 2.16.0', require: false
+  gem 'foreman', require: false
 end
 
 group :development do
-  gem 'pry-rails'
+  # gem 'pry-rails'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console'
-  gem 'listen', '~> 3.0.5'
+  # gem 'web-console'
+  gem 'listen', '~> 3.0.5', require: false
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'spring-commands-rspec'
-  gem 'rails_real_favicon'
-end
-
-group :development do
+  # gem 'spring', require: false
+  gem 'rails_real_favicon', require: false
   gem 'stripe-ruby-mock', '~> 2.5.4', :require => 'stripe_mock'
+  gem 'scout_apm', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
