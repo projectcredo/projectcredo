@@ -1,1 +1,0 @@
-Fabricator(:activity)

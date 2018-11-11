@@ -54,7 +54,6 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'fabrication', '~> 2.16.0', require: false
 end
 
 group :development, :test do
