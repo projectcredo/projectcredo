@@ -1,5 +1,27 @@
 <template>
-  <div>
+  <div class="list-component">
+    <div class="list-cover cropped-image">
+      <div class="list-cover-img">
+        <img :src="list.cover_url" v-if="list.cover_file_name" alt="Board cover">
+      </div>
+      <h1 class="list-cover-title">{{ list.name }}</h1>
+    </div>
+    <div class="list-description">
+      {{ list.description }}
+    </div>
+    <div class="list-tags">
+      <a href="#" class="label label-tag" v-for="tag in list.tags" :key="tag.id"><span class="tag-wrap"><span class="tag-name">{{ tag.name }}</span> <span class="tag-count">{{ tag.taggings_count }}</span></span></a>
+    </div>
+    <div class="list-owner">
+      <div class="list-owner-img">
+        <img :src="list.owner_short.avatar_thumb" alt="">
+      </div>
+      <div class="list-owner-descr">
+        <strong>{{ list.owner_short.full_name }}</strong>
+      </div>
+    </div>
+
+    Old:
     <div class="list-section">
       <div class="list-section-h1">
         <div class="list-title">{{ list.name }}</div>

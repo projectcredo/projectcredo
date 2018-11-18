@@ -1,0 +1,51 @@
+/**
+ * List Show
+ */
+
+.list-show {
+  margin-top: 20px;
+}
+
+.list-cover {
+  position: relative;
+  padding-bottom: 70%;
+  margin-bottom: 20px;
+  background: $brand-primary no-repeat center;
+  background-size: cover;
+  @media (min-width: $screen-sm-min) {
+    padding-bottom: 48%;
+  }
+}
+
+.list-cover-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: auto;
+  margin: 0;
+  padding: 15px 20px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.list-description {
+  margin-bottom: 20px;
+}
+
+.list-tags {
+  margin-bottom: 20px;
+}
+
+.list-owner {
+  margin-bottom: 20px;
+  display: flex;
+}
+.list-owner-img {
+  img { width: 75px; }
+}
+.list-owner-descr {
+  padding-left: 20px;
+}

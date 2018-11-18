@@ -12,3 +12,18 @@
     max-width: 100%;
   }
 }
+
+.cropped-image {
+   position: relative;
+   > * {
+      position: absolute; top: 0; left: 0; bottom: 0; right: 0; overflow: hidden; text-align: center;
+      > img { position: absolute; top: -999px; bottom: -999px; left: -999px; right: -999px; max-width: none; margin: auto; }
+   }
+}
+
+.cropped-image-square { padding-bottom: 100%; }
+.cropped-image-16by9 { padding-bottom: 56.25%; }
+.cropped-image-4by3 { padding-bottom: 75%; }
+.cropped-image-2by1 { padding-bottom: 50%; }
+.cropped-image-3by1 { padding-bottom: 33%; }
+.cropped-image-4by1 { padding-bottom: 25%; }

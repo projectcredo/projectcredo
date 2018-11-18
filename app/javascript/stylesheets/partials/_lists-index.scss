@@ -1,0 +1,125 @@
+/*
+ * Lists Index
+ */
+.list-index {
+  background-color: $gray-lighter;
+  button.filter-btn {
+    margin-bottom: 5px;
+    display: block;
+    @extend .btn,
+    .btn-primary
+  }
+  .list-card {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    clear: left;
+  }
+  .list-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .list-body {
+    font-size: 16px;
+  }
+  .timestamp {
+    font-size: 12px;
+    color: $gray-light;
+  }
+  .list-footer {
+    margin-top: 20px;
+    color: $gray-light;
+    font-size: 16px;
+    >a,
+    span {
+      margin-right: 20px;
+    }
+    a:hover {
+      text-decoration: none;
+      color: $primary-color;
+    }
+    .list-pin {
+      color: $gray-light;
+      &:after {
+        font-family: "Glyphicons Halflings";
+        content: "\e146";
+      }
+    }
+    .list-vote {
+      color: $gray-light;
+      &:after {
+        font-family: "Glyphicons Halflings";
+        content: "\e005";
+      }
+    }
+    .comment-count {
+      &:after {
+        font-family: "Glyphicons Halflings";
+        content: "\e111";
+      }
+    }
+    .toggled {
+      color: $primary-color;
+    }
+  }
+}
+
+.list-group.autocomplete {
+  padding: 0;
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  li {
+    list-style: none;
+    border-width: 1px;
+  }
+  li:hover {
+    background-color: $state-info-bg;
+  }
+}
+
+.autocomplete>.list-group-item {
+  z-index: 100;
+  width: 100%;
+}
+
+.query-input {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.list-activity-row {
+  margin: 20px 0 20px 0;
+  .activity-icons {
+    &:before {
+      font-family: "Glyphicons Halflings";
+      font-size: 2em;
+      width: 50%;
+    }
+  }
+  .commented {
+    &:before {
+      content: "\e111";
+      @extend .activity-icons;
+    }
+  }
+  .added {
+    &:before {
+      content: "\e142";
+      @extend .activity-icons;
+    }
+  }
+  .created {
+    &:before {
+      content: "\e081";
+      @extend .activity-icons;
+    }
+  }
+  @extend .row
+}

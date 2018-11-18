@@ -8,9 +8,9 @@ class List < ApplicationRecord
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
   enum access: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
 
-  has_attached_file :cover, styles: { thumb: '100x100#', cover: '1280x720#', original: '3840x2160>' },
+  has_attached_file :cover, styles: { thumb: '100x100#', cover: '1280x600#', original: '3840x2160>' },
                     :convert_options => { :all => '-quality 75' },
-                    default_url: '/images/user/cover/:style/missing.jpg'
+                    default_url: '/images/list/cover/:style/missing.jpg'
   validates_attachment :cover, content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
   validates :cover, dimensions: { width: 1280, height: 720 }
 
@@ -142,6 +142,14 @@ class List < ApplicationRecord
 
   def cover_thumb
     cover.url(:thumb)
+  end
+
+  def cover_url
+    cover.url(:cover)
+  end
+
+  def owner_short
+    owner.as_json(only: [:about, :first_name, :last_name, :username], methods: [:avatar_thumb, :full_name])
   end
 
 end

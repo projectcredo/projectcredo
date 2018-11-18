@@ -70,44 +70,36 @@ class User < ApplicationRecord
     list.list_memberships.find_by(user: self)
   end
 
-
   def can_moderate? list
     membership = membership_for list
     membership && membership.can_moderate?
   end
-
 
   def can_edit? list
     membership = membership_for list
     membership && membership.can_edit?
   end
 
-
   def can_view? list
     membership = membership_for list
     membership && membership.can_view?
   end
 
-
   def visible_lists
     List.visible_to(self)
   end
-
 
   def owned_lists
     lists.where('list_memberships.role' => :owner).distinct
   end
 
-
   def role(list)
     ListMembership.find_by(list: list, user: self).role
   end
 
-
   def unread_notifications
     notifications.where(has_read: false)
   end
-
 
   # Update record attributes, requires :current_password when password provided
   #
@@ -138,7 +130,6 @@ class User < ApplicationRecord
     result
   end
 
-
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -147,11 +138,9 @@ class User < ApplicationRecord
     super(conditions)
   end
 
-
   def to_param
     username
   end
-
 
   def full_name
     "#{first_name} #{last_name}"
@@ -224,6 +213,9 @@ class User < ApplicationRecord
     end
   end
 
+  def avatar_thumb
+    avatar.url(:thumb)
+  end
 
   private
 
