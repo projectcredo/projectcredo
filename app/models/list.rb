@@ -149,7 +149,7 @@ class List < ApplicationRecord
   end
 
   def owner_short
-    owner.as_json(only: [:about, :first_name, :last_name, :username], methods: [:avatar_thumb, :full_name])
+    owner.as_json(only: [:about, :first_name, :last_name, :username, :about], methods: [:avatar_thumb, :full_name])
   end
 
 end

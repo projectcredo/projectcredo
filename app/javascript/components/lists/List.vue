@@ -17,10 +17,24 @@
         <img :src="list.owner_short.avatar_thumb" alt="">
       </div>
       <div class="list-owner-descr">
-        <strong>{{ list.owner_short.full_name }}</strong>
+        <strong>{{ list.owner_short.full_name }}</strong><span v-if="list.owner_short.about">, {{ list.owner_short.about }}</span>
       </div>
     </div>
+    <div class="list-date">
+      asked {{ list.created_at | date('M/D/YYYY') }}, updated {{ list.updated_at | date('M/D/YYYY') }}
+    </div>
+    <div class="list-post-form">
+      <textarea class="lpf-textarea" placeholder="Test Placeholder"></textarea>
+      <button class="btn btn-default">Post</button>
+    </div>
+    <div class="list-summary">
+      <div class="list-summary-title">Summary</div>
+      <div class="list-summary-body" v-if="list.summaries.length">{{ list.summaries[0].content }}</div>
+    </div>
 
+    <br>
+    <br>
+    <hr>
     Old:
     <div class="list-section">
       <div class="list-section-h1">
