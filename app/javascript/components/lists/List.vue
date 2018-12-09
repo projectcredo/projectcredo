@@ -30,6 +30,29 @@
     <div class="list-summary">
       <div class="list-summary-title">Summary</div>
       <div class="list-summary-body" v-if="list.summaries.length">{{ list.summaries[0].content }}</div>
+      <div class="list-summary-body" v-else>No summaries written yet.</div>
+    </div>
+
+    <div class="list-sources">
+      <div class="list-sources-title">Sources</div>
+      <div class="list-sources-filters">
+        <div class="lsf-sort dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">sort <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="active"><a href="#">Latest</a></li>
+            <li><a href="#">Sort by</a></li>
+          </ul>
+        </div>
+        <div class="lsf-filters">
+          <a class="active" href="#">all items</a> |
+          <a href="#">research papers only</a>
+        </div>
+      </div>
+
+      <ul class="list-posts">
+        <list-post></list-post>
+        <list-post></list-post>
+      </ul>
     </div>
 
     <br>
@@ -193,6 +216,7 @@ import Note from '../references/Note.vue'
 import CrossrefSearch from '../references/CrossrefSearch.vue'
 import AddByLocator from '../references/AddByLocator.vue'
 import MiniBib from '../references/MiniBib.vue'
+import ListPost from './ListPost.vue'
 
 export default {
 
@@ -205,6 +229,7 @@ export default {
     CrossrefSearch,
     AddByLocator,
     MiniBib,
+    ListPost,
   },
 
   props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'references', 'summaryAddPath'],

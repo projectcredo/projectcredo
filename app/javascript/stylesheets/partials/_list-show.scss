@@ -2,32 +2,17 @@
  * List Show
  */
 
-.list-show {
-  margin-top: 20px;
-}
+.list-show { margin-top: 20px; }
 
 .list-cover {
-  position: relative;
-  padding-bottom: 70%;
-  margin-bottom: 20px;
-  background: $brand-primary no-repeat center;
-  background-size: cover;
-  @media (min-width: $screen-sm-min) {
-    padding-bottom: 48%;
-  }
+  position: relative; padding-bottom: 70%; margin-bottom: 20px;
+  background: $brand-primary no-repeat center; background-size: cover;
+  @media (min-width: $screen-sm-min) { padding-bottom: 48%; }
 }
 
 .list-cover-title {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: auto;
-  margin: 0;
-  padding: 15px 20px;
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-align: left;
+  position: absolute; bottom: 0; left: 0; right: 0; top: auto; margin: 0; padding: 15px 20px;
+  font-size: 2.5rem; font-weight: bold; text-align: left;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -41,7 +26,7 @@
 .list-date { margin-bottom: 20px; font-style: italic; }
 
 .list-post-form {
-  margin-bottom: 20px; border: 2px solid #CACACA;
+  margin-bottom: 30px; border: 2px solid #CACACA;
   @include clearfix;
   textarea {
     width: 100%; height: 100px; padding: 15px; border: 0; resize: none;
@@ -50,5 +35,56 @@
   button { float: right; margin: 0 15px 15px 0; }
 }
 
-.list-summary { margin-bottom: 20px; }
+.list-summary { margin-bottom: 30px; }
 .list-summary-title { padding-bottom: 5px; margin-bottom: 10px; border-bottom: 2px solid #CACACA; font-size: 18px; font-weight: bold; }
+
+.list-sources { margin-bottom: 30px; }
+.list-sources-title { padding-bottom: 5px; margin-bottom: 10px; border-bottom: 2px solid #CACACA; font-size: 18px; font-weight: bold; }
+.lsf-sort { float: right; }
+.lsf-filters { margin-bottom: 20px; }
+.lsf-filters a.active { color: black; font-weight: bold; pointer-events: none; &:hover { text-decoration: none; } }
+
+.list-posts { list-style-type: none; margin: 0; padding: 0; }
+.list-post { margin-bottom: 30px; }
+
+.list-post-author { margin-bottom: 10px; @include clearfix; }
+.lpa-avatar {
+  float: left; margin-right: 20px;
+  img { width: 50px; }
+}
+.lpa-name { margin-top: 2px; font-weight: bold; }
+.lpa-date { color: #999; font-size: 90%; }
+
+.list-post-content { margin-bottom: 10px; }
+
+.lits-post-article { border: 2px solid #CACACA; border-radius: 10px; overflow: hidden; }
+.lpar-header { display: flex; border-bottom: 2px solid #CACACA; }
+.lpar-thumb {
+  flex-shrink: 0; width: 30%; max-width: 100px; background-color: gray;
+  .cropped-image { padding-bottom: 100%; }
+}
+.lpar-heading { flex-grow: 1; padding: 10px; }
+.lpar-title { font-weight: bold; }
+.lpar-source { color: #999; font-size: 90%; }
+.lpar-bookmarks {
+  font-size: 90%;
+  i { color: $brand-primary; font-size: 110%; vertical-align: middle; }
+}
+.lpar-papers { padding: 10px; }
+.lpar-papers-title { margin-bottom: 10px; color: #999; font-size: 80%; font-style: italic; }
+
+.lpar-paper { display: flex; margin-bottom: 20px; }
+.lparp-cover {
+  width: 50px; flex-shrink: 0;
+  img { max-width: 100%; }
+}
+.lparp-details { flex-grow: 1; padding-left: 10px; }
+.lparp-score { background-color: #eee; }
+.lparp-score-value { padding: 0 5px; color: white; background-color: $primary-color; font-size: 80%; overflow: visible; white-space: nowrap; }
+.lparp-title { font-weight: bold; }
+.lparp-source { color: $brand-primary; font-size: 80%; font-weight: bold; }
+.lparp-date-authors { color: #999; font-size: 80%; }
+.lparp-bookmarks {
+  font-size: 80%;
+  i { color: $brand-primary; font-size: 110%; vertical-align: middle; }
+}
