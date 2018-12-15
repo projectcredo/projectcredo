@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181106095052) do
+ActiveRecord::Schema.define(version: 20181215093546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,8 +180,8 @@ ActiveRecord::Schema.define(version: 20181106095052) do
   create_table "papers", force: :cascade do |t|
     t.string   "title"
     t.date     "published_at"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.text     "abstract"
     t.string   "doi"
     t.string   "pubmed_id"
@@ -192,8 +192,16 @@ ActiveRecord::Schema.define(version: 20181106095052) do
     t.integer  "referenced_by_count"
     t.datetime "referenced_by_count_updated_at"
     t.integer  "bookmarks_count",                default: 0
+    t.string   "type",                           default: "paper", null: false
+    t.integer  "parent_id"
     t.index ["doi"], name: "index_papers_on_doi", using: :btree
     t.index ["pubmed_id"], name: "index_papers_on_pubmed_id", using: :btree
+  end
+
+  create_table "papers_posts", id: false, force: :cascade do |t|
+    t.integer "paper_id"
+    t.integer "post_id"
+    t.index ["paper_id", "post_id"], name: "index_papers_posts_on_paper_id_and_post_id", unique: true, using: :btree
   end
 
   create_table "plans", force: :cascade do |t|
@@ -202,6 +210,14 @@ ActiveRecord::Schema.define(version: 20181106095052) do
     t.string   "interval"
     t.decimal  "price"
     t.string   "currency"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "list_id"
+    t.text     "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -321,5 +337,10 @@ ActiveRecord::Schema.define(version: 20181106095052) do
   end
 
   add_foreign_key "api_import_responses", "papers"
+  add_foreign_key "papers", "papers", column: "parent_id"
+  add_foreign_key "papers_posts", "papers"
+  add_foreign_key "papers_posts", "posts"
+  add_foreign_key "posts", "lists"
+  add_foreign_key "posts", "users"
   add_foreign_key "references", "users"
 end
