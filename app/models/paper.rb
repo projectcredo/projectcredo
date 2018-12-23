@@ -1,4 +1,4 @@
-class Paper < ApplicationRecord
+class Paper < PaperBase
   attr_accessor :locator_id, :locator_type
 
   acts_as_taggable
@@ -13,12 +13,9 @@ class Paper < ApplicationRecord
   accepts_nested_attributes_for :authors, reject_if: proc { |attributes| attributes['family_name'].blank? }
   accepts_nested_attributes_for :links
   validates_associated :links
-  validates :title, presence: true
   validate :allowed_biases, :allowed_methodologies
 
   before_save :downcase_name
-
-  include HasBookmarks
 
   def downcase_name
     # This needs to be fixed - either we require a publication name or we stop downcasing
