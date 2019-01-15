@@ -12,6 +12,6 @@ class Pubmed
 
     return nil if doi_not_found
 
-    data.xpath('//IdList/Id').first.text
+    data.xpath('//IdList/Id').first.try(:text)
   end
 end
