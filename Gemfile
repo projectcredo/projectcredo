@@ -49,6 +49,7 @@ gem 'rake', group: :test
 # Use webpacker to build assets
 gem 'webpacker', '~> 3.0'
 gem 'will_paginate'
+gem 'sentry-raven'
 
 group :test do
   gem 'capybara'
