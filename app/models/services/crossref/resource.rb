@@ -39,7 +39,7 @@ class Crossref
 
           if abstract.nil? && (uid = Pubmed.get_uid_from_doi(id))
             pubmed = Pubmed.new locator_id: uid
-            abstract = pubmed.resource.paper_attributes[:abstract]
+            abstract = pubmed.resource.paper_attributes.try(:[], :abstract)
           end
 
           return abstract
