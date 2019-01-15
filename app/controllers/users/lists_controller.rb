@@ -95,6 +95,7 @@ class Users::ListsController < ApplicationController
   private
     def set_user
       @user = User.find_by 'LOWER(username) = ?', params[:username].downcase
+      not_found unless @user
     end
 
     def set_list
