@@ -55,6 +55,7 @@ class List < ApplicationRecord
   has_many :papers, through: :references
   has_many :references, dependent: :destroy
   has_many :summaries, dependent: :destroy
+  has_many :posts, dependent: :destroy
   has_many :members, through: :list_memberships, source: :user do
     def [] role
       where("list_memberships.role = ?", ListMembership.roles.fetch(role))

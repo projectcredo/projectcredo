@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181215093546) do
+ActiveRecord::Schema.define(version: 20190129113635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,8 +192,12 @@ ActiveRecord::Schema.define(version: 20181215093546) do
     t.integer  "referenced_by_count"
     t.datetime "referenced_by_count_updated_at"
     t.integer  "bookmarks_count",                default: 0
-    t.string   "type",                           default: "paper", null: false
+    t.string   "type",                           default: "Paper", null: false
     t.integer  "parent_id"
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
     t.index ["doi"], name: "index_papers_on_doi", using: :btree
     t.index ["pubmed_id"], name: "index_papers_on_pubmed_id", using: :btree
   end

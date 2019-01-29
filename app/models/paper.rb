@@ -15,6 +15,11 @@ class Paper < PaperBase
   validates_associated :links
   validate :allowed_biases, :allowed_methodologies
 
+  has_attached_file :cover, styles: { thumb: '100x100#', medium: '1280x1024#', original: '2000x2000>' },
+                    :convert_options => { :all => '-quality 75' },
+                    default_url: '/images/paper/cover/:style/missing.jpg'
+  validates_attachment :cover, content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+
   before_save :downcase_name
 
   def downcase_name
@@ -82,6 +87,14 @@ class Paper < PaperBase
       age = now.year - self.published_at.year - ((now.month > self.published_at.month || (now.month == self.published_at.month && now.day >= self.published_at.day)) ? 0 : 1)
       return age < 1 ? '< 1' : age
     end
+  end
+
+  def cover_thumb
+    cover.url(:thumb)
+  end
+
+  def cover_url
+    cover.url(:cover)
   end
 
 end
