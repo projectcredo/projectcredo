@@ -26,5 +26,9 @@ module Projectcredo
       g.test_framework :rspec
       g.integration_tool :rspec
     end
+
+    Raven.configure do |config|
+      config.dsn = 'https://f999457a4654438080b41c4bd9e1c5a0:c3d7aad45f674cf08bea3a8068a7734b@sentry.io/1371890'
+    end
   end
 end
