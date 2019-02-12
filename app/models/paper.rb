@@ -5,8 +5,7 @@ class Paper < PaperBase
   acts_as_taggable_on :biases, :methodologies
 
   has_and_belongs_to_many :authors
-  has_many :lists, through: :references
-  has_many :references, dependent: :destroy
+  has_and_belongs_to_many :lists
   has_many :links, dependent: :destroy
   has_many :api_import_responses, dependent: :destroy
 
