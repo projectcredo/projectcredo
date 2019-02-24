@@ -54,7 +54,7 @@ gem 'sentry-raven'
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 4.11'
 end
 
 group :development, :test do
@@ -64,6 +64,7 @@ group :development, :test do
   # gem 'minitest-rails', '~> 3.0.0'
   # gem 'meta_request'
   gem 'foreman', require: false
+  gem 'rubocop-rspec'
 end
 
 group :development do

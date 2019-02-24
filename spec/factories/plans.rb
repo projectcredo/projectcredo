@@ -10,8 +10,8 @@ FactoryBot.define do
   factory :plan do
     stripe_id { generate :stripe_id }
     name { generate :plan_name }
-    interval '1 month'
-    price 5.0
-    currency 'USD'
+    interval { '1 month' }
+    price { 5.0 }
+    currency { 'USD' }
   end
 end

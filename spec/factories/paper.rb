@@ -17,12 +17,12 @@ FactoryBot.define do
 
   factory :paper do
     title { generate :name }
-    published_at Time.now
+    published_at { Time.now }
     abstract { generate :description }
     doi { generate :doi }
     pubmed_id { generate :pubmed_id }
-    abstract_editable true
-    paper_editable true
+    abstract_editable { true }
+    paper_editable { true }
   end
 
 end
