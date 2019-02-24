@@ -9,6 +9,7 @@
              @keydown.esc="clearSearch"
              @keyup="getResults"
       >
+      <span class="input-group-addon" v-if="loading"><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i></span>
       <form ref="form" action="/references" accept-charset="UTF-8" method="post" class="hidden">
         <input type="hidden" name="authenticity_token" :value="token">
         <input :value="list.id" type="hidden" name="reference[list_id]">
@@ -42,6 +43,7 @@ export default {
       submitted: false,
       placeholder: 'Search for a paper',
       token: document.getElementsByName('csrf-token')[0].getAttribute('content'),
+      loading: false,
     }
   },
 
@@ -56,13 +58,22 @@ export default {
       if (this.query === '') {
         return this.results = []
       }
-      axios.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query)
+
+      this.loading = true
+
+      jQuery.getJSON('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query)
+      // axios.get('https://search.crossref.org/dois?sort=score&type=Journal+Article&rows=10&q=' + this.query)
         .then((response) => {
-          if (response.data.length > 0) {
-            this.results = response.data
+          if (response.length > 0) {
+            this.results = response
           } else {
             this.results = [{fullCitation: 'No results found.', doi: ''}]
           }
+          this.loading = false
+        })
+        .catch(err => {
+          console.error(err)
+          this.loading = false
         })
     }, 500),
 
