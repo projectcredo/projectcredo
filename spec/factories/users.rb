@@ -10,7 +10,7 @@ FactoryBot.define do
   factory :user do
     username { generate :username }
     email { generate :email }
-    password '123456'
+    password { '123456' }
     after(:create) { |user| user.confirm }
   end
 end
