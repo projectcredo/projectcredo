@@ -14,10 +14,10 @@
     </div>
     <div class="list-owner">
       <div class="list-owner-img">
-        <img :src="list.owner_short.avatar_thumb" alt="">
+        <a :href="list.owner_short.url"><img :src="list.owner_short.avatar_thumb" alt=""></a>
       </div>
       <div class="list-owner-descr">
-        <strong>{{ list.owner_short.full_name }}</strong><span v-if="list.owner_short.about">, {{ list.owner_short.about }}</span>
+        <a :href="list.owner_short.url"><strong>{{ list.owner_short.full_name }}</strong></a><span v-if="list.owner_short.about">, {{ list.owner_short.about }}</span>
       </div>
     </div>
     <div class="list-date">

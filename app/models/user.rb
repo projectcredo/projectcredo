@@ -1,6 +1,8 @@
 require 'open-uri'
 
 class User < ApplicationRecord
+  include Routeable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
@@ -143,6 +145,7 @@ class User < ApplicationRecord
   end
 
   def full_name
+    return self.username unless self.first_name? or self.last_name?
     "#{first_name} #{last_name}"
   end
 
@@ -215,6 +218,11 @@ class User < ApplicationRecord
 
   def avatar_thumb
     avatar.url(:thumb)
+  end
+
+  def short_data
+    self.as_json(only: [:about, :first_name, :last_name, :username, :about], methods: [:avatar_thumb, :full_name])
+      .merge({url: user_lists_path(self.username)})
   end
 
   private

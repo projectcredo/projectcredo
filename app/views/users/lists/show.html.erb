@@ -13,7 +13,7 @@
             posts: {include: {
               papers: {include: [:authors], methods: [:cover, :cover_thumb]},
               articles: {methods: [:cover, :cover_thumb]},
-            }},
+            }, methods: [:user_short]},
           ],
           methods: [:total_bookmarks, :cover, :cover_url, :owner_short]
         ),
