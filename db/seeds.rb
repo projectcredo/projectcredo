@@ -69,14 +69,16 @@ ActiveRecord::Base.transaction do
     l.save
     l.comments.create(comments)
 
-    post = l.posts.build(user_id: l.user_id, content: 'Test post')
-    post.save(validate: false)
+    (1..2).each do |n|
+      post = l.posts.build(user_id: l.user_id, content: 'Test post')
+      post.save(validate: false)
 
-    article = post.articles.build(title: 'Test article')
-    article.save(validate: false)
+      article = post.articles.build(title: 'Test article')
+      article.save(validate: false)
 
-    article.papers << p1
-    article.papers << p2
+      article.papers << p1
+      article.papers << p2
+    end
 
     # a1 = create_activity(actable: l, activity_type: 'added', addable: r1)
     # a2 = create_activity(actable: l, activity_type: 'added', addable: r2)
