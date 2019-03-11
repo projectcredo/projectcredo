@@ -67,16 +67,20 @@ ActiveRecord::Base.transaction do
     l = u.lists.create(name: d, description: d)
     l.tag_list.add(d.split)
     l.save
+    l.comments.create(comments)
 
-    r1 = l.references.create(paper: p1, user: u)
-    r2 = l.references.create(paper: p2, user: u)
+    post = l.posts.build(user_id: l.user_id, content: 'Test post')
+    post.save(validate: false)
 
-    c1 = r1.comments.find_or_create_by_path comments
-    c2 = r2.comments.find_or_create_by_path comments
+    article = post.articles.build(title: 'Test article')
+    article.save(validate: false)
 
-    a1 = create_activity(actable: l, activity_type: 'added', addable:r1)
-    a2 = create_activity(actable: l, activity_type: 'added', addable:r2)
-    a3 = create_activity(actable: l, activity_type: 'commented', addable:c1)
-    a4 = create_activity(actable: l, activity_type: 'commented', addable:c2)
+    article.papers << p1
+    article.papers << p2
+
+    # a1 = create_activity(actable: l, activity_type: 'added', addable: r1)
+    # a2 = create_activity(actable: l, activity_type: 'added', addable: r2)
+    a3 = create_activity(actable: l, activity_type: 'commented', addable: l.comments.first)
+    a4 = create_activity(actable: l, activity_type: 'commented', addable: l.comments.second)
   end
 end

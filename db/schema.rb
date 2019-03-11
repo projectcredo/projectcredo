@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190129113635) do
+ActiveRecord::Schema.define(version: 20190311115133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,29 @@ ActiveRecord::Schema.define(version: 20190129113635) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["paper_id"], name: "index_api_import_responses_on_paper_id", using: :btree
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer  "post_id",                        null: false
+    t.string   "title"
+    t.string   "source"
+    t.string   "url"
+    t.date     "published_at"
+    t.integer  "bookmarks_count",    default: 0
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "articles_papers", id: false, force: :cascade do |t|
+    t.integer "article_id", null: false
+    t.integer "paper_id",   null: false
+    t.index ["article_id", "paper_id"], name: "index_articles_papers_on_article_id_and_paper_id", unique: true, using: :btree
+    t.index ["article_id"], name: "index_articles_papers_on_article_id", using: :btree
+    t.index ["paper_id"], name: "index_articles_papers_on_paper_id", using: :btree
   end
 
   create_table "authors", force: :cascade do |t|
@@ -180,8 +203,8 @@ ActiveRecord::Schema.define(version: 20190129113635) do
   create_table "papers", force: :cascade do |t|
     t.string   "title"
     t.date     "published_at"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.text     "abstract"
     t.string   "doi"
     t.string   "pubmed_id"
@@ -192,8 +215,6 @@ ActiveRecord::Schema.define(version: 20190129113635) do
     t.integer  "referenced_by_count"
     t.datetime "referenced_by_count_updated_at"
     t.integer  "bookmarks_count",                default: 0
-    t.string   "type",                           default: "Paper", null: false
-    t.integer  "parent_id"
     t.string   "cover_file_name"
     t.string   "cover_content_type"
     t.integer  "cover_file_size"
@@ -341,7 +362,7 @@ ActiveRecord::Schema.define(version: 20190129113635) do
   end
 
   add_foreign_key "api_import_responses", "papers"
-  add_foreign_key "papers", "papers", column: "parent_id"
+  add_foreign_key "articles", "posts"
   add_foreign_key "papers_posts", "papers"
   add_foreign_key "papers_posts", "posts"
   add_foreign_key "posts", "lists"

@@ -6,18 +6,18 @@
       <div class="lpa-date">{{ post.created_at | date('M/D/YYYY [at] h:mm a') }}</div>
     </div>
     <div class="list-post-content">{{ post.content }}</div>
-    <div class="lits-post-article">
-      <div class="lpar-header" v-if="article">
-        <div class="lpar-thumb"><div class="cropped-image"><div><img src="https://s3-us-east-2.amazonaws.com/project-credo-production/users/avatars/000/000/052/thumb/photo.jpg?1518492843" alt=""></div></div></div>
+    <div class="lits-post-article" v-for="article in post.articles" :key="article.id">
+      <div class="lpar-header">
+        <div class="lpar-thumb"><div class="cropped-image"><div><img :src="article.cover_thumb" alt=""></div></div></div>
         <div class="lpar-heading">
-          <div class="lpar-title">Carrot and Stick: Intermittent Fasting and Bevioral Therapy</div>
-          <div class="lpar-source">The New York Times</div>
-          <div class="lpar-bookmarks"><i class="fa fa-bookmark-o"></i> bookmarked by 37 people</div>
+          <div class="lpar-title">{{ article.title || 'No article' }}</div>
+          <div class="lpar-source">{{ article.source }}</div>
+          <div class="lpar-bookmarks"><i class="fa fa-bookmark-o"></i> bookmarked by {{ article.bookmarks_count }} people</div>
         </div>
       </div>
       <div class="lpar-papers">
-        <div class="lpar-papers-title">Research Papers <span v-if="article">Cited in this Article</span></div>
-        <post-paper v-for="paper in post.papers" :paper="paper" :key="paper.id"></post-paper>
+        <div class="lpar-papers-title">Research Papers Cited in this Article</div>
+        <post-paper v-for="paper in article.papers" :paper="paper" :key="paper.id"></post-paper>
       </div>
     </div>
   </li>
@@ -34,9 +34,7 @@ export default {
   },
 
   computed: {
-    article () {
-      return this.post.articles[0]
-    },
+    //
   },
 }
 </script>

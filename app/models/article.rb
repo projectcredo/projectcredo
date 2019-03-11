@@ -1,8 +1,18 @@
-class Article < Paper
+class Article < ApplicationRecord
+  include HasBookmarks
+
   acts_as_taggable
-  acts_as_taggable_on :biases, :methodologies
 
-  has_and_belongs_to_many :lists
-  has_many :papers, foreign_key: :parent_id
+  belongs_to :post
+  has_and_belongs_to_many :papers
 
+  validates :title, presence: true
+
+  has_attached_file :cover, styles: { thumb: '100x100#', medium: '1280x1024#', original: '2000x2000>' },
+                    :convert_options => { :all => '-quality 75' },
+                    default_url: '/images/article/cover/:style/missing.jpg'
+  validates_attachment :cover, content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+
+  def cover_thumb() cover.url(:thumb) end
+  def cover_medium() cover.url(:medium) end
 end

@@ -1,16 +1,19 @@
-class Paper < PaperBase
+class Paper < ApplicationRecord
+  include HasBookmarks
+
   attr_accessor :locator_id, :locator_type
 
   acts_as_taggable
   acts_as_taggable_on :biases, :methodologies
 
   has_and_belongs_to_many :authors
-  has_and_belongs_to_many :lists
+  has_and_belongs_to_many :articles
   has_many :links, dependent: :destroy
   has_many :api_import_responses, dependent: :destroy
 
   accepts_nested_attributes_for :authors, reject_if: proc { |attributes| attributes['family_name'].blank? }
   accepts_nested_attributes_for :links
+  validates :title, presence: true
   validates_associated :links
   validate :allowed_biases, :allowed_methodologies
 
@@ -76,7 +79,7 @@ class Paper < PaperBase
     elsif self.pubmed_id.present?
       "https://www.ncbi.nlm.nih.gov/pubmed/#{self.pubmed_id}"
     else
-      self.links.first.url
+      self.links.first.try(:url)
     end
   end
 
@@ -88,12 +91,6 @@ class Paper < PaperBase
     end
   end
 
-  def cover_thumb
-    cover.url(:thumb)
-  end
-
-  def cover_url
-    cover.url(:cover)
-  end
-
+  def cover_thumb() cover.url(:thumb) end
+  def cover_medium() cover.url(:medium) end
 end

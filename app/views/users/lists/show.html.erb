@@ -10,10 +10,15 @@
             :tags,
             :others,
             :summaries,
-            posts: {include: {
-              papers: {include: [:authors], methods: [:cover, :cover_thumb]},
-              articles: {methods: [:cover, :cover_thumb]},
-            }, methods: [:user_short]},
+            posts: {
+              include: {
+                articles: {
+                  include: {papers: {include: [:authors], methods: [:cover, :cover_thumb]}},
+                  methods: [:cover_medium, :cover_thumb],
+                },
+              },
+              methods: [:user_short],
+            },
           ],
           methods: [:total_bookmarks, :cover, :cover_url, :owner_short]
         ),
