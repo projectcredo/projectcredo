@@ -13,22 +13,22 @@ Vue.filter('date', function (value, format) {
   return moment(value).format(format)
 })
 
-Vue.filter('cite', function (reference) {
+Vue.filter('cite', function (paper) {
   let mainAuthor = ''
   let year = ''
   let pub = ''
 
-  if (reference.paper.authors.length > 0) {
-    mainAuthor = reference.paper.authors[0].family_name
+  if (paper.authors.length > 0) {
+    mainAuthor = paper.authors[0].family_name
     if (mainAuthor.length > 50) {
       mainAuthor = mainAuthor.substring(0, 50) + '...'
     }
   }
-  if (reference.paper.published_at != null) {
-    year = new Date(reference.paper.published_at).getFullYear()
+  if (paper.published_at != null) {
+    year = new Date(paper.published_at).getFullYear()
   }
-  if (reference.paper.publication != null) {
-    pub = reference.paper.publication
+  if (paper.publication != null) {
+    pub = paper.publication
     if (pub.length > 50) {
       pub = pub.substring(0, 50) + '...'
     }

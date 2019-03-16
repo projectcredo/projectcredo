@@ -161,7 +161,7 @@
 import axios from '../../services/axios'
 import debounce from 'debounce-promise'
 import Abstract from './Abstract.vue'
-import Vote from './Vote.vue'
+import Vote from '../votes/Vote.vue'
 import MiniBib from './MiniBib.vue'
 import Note from './Note.vue'
 

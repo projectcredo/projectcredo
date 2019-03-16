@@ -4,6 +4,13 @@ namespace :migrations do
     List.all.each do |list|
       next if list.papers.count == 0
       puts 'Processing list ' + list.name
+      list.summaries.all.each do |summary|
+        summary.content = summary.content.gsub(/\[r-cite id=(\d+)\]/) do |m|
+          ref = Reference.find_by_id(Regexp.last_match[1])
+          ref ? '[cite_paper id=' + ref.paper_id.to_s + ']' : m
+        end
+        summary.save
+      end
       post = list.posts.where(content: '').first
       if (! post)
         puts 'Create post'

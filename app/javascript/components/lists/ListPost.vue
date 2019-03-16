@@ -17,7 +17,7 @@
       </div>
       <div class="lpar-papers">
         <div class="lpar-papers-title">Research Papers Cited in this Article</div>
-        <post-paper v-for="paper in article.papers" :paper="paper" :key="paper.id"></post-paper>
+        <post-paper v-for="paper in article.papers" :paper="paper" :key="paper.id" :global="global"></post-paper>
       </div>
     </div>
   </li>
@@ -27,7 +27,7 @@
 import PostPaper from './PostPaper.vue'
 
 export default {
-  props: ['post'],
+  props: ['post', 'global'],
 
   components: {
     PostPaper,

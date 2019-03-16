@@ -50,7 +50,7 @@
       </div>
 
       <ul class="list-posts">
-        <list-post v-for="post in list.posts" :post="post" :key="post.id"></list-post>
+        <list-post v-for="post in list.posts" :post="post" :key="post.id" :global="{signedIn, userCanEdit, editsAllowed}"></list-post>
       </ul>
     </div>
 
@@ -212,12 +212,13 @@ import uniq from 'lodash-es/uniq'
 import ReferenceModal from '../references/ReferenceModal.vue'
 import ReferenceList from '../references/ReferenceList.vue'
 import SummaryContent from '../summaries/SummaryContent.vue'
-import Vote from '../references/Vote.vue'
+import Vote from '../votes/Vote.vue'
 import Note from '../references/Note.vue'
 import CrossrefSearch from '../references/CrossrefSearch.vue'
 import AddByLocator from '../references/AddByLocator.vue'
 import MiniBib from '../references/MiniBib.vue'
 import ListPost from './ListPost.vue'
+import Fuse from 'fuse.js'
 
 export default {
 
@@ -321,7 +322,7 @@ export default {
     notes () {
       var self = this
       var notes = this.filteredData.map(function (r, index) {
-        var citation = self.$options.filters.cite(r);
+        var citation = self.$options.filters.cite(r.paper);
         var notes = r.notes.map(function (n) {
           return {'note': n, 'citation': citation, 'rIndex': index}
         })
