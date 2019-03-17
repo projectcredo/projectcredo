@@ -3,7 +3,7 @@ class BookmarksController < ApplicationController
   before_action :set_model, only: [:create, :destroy]
 
   def allowed_models
-    ['Reference', 'Paper']
+    ['Article', 'Paper']
   end
 
   def show

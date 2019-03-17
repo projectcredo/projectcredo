@@ -14,14 +14,14 @@ module HasBookmarks
   end
 
   def find_bookmark_by_user(options={})
-    return nil unless options[:user_id] || options[:user]
+    (options[:user_id] || options[:user]) || options[:user] = User.current
 
     options[:user_id] = options.delete(:user).id if options[:user]
     result = self.bookmarks.where(:user_id => options.delete(:user_id))
     result[0]
   end
 
-  def bookmark(options)
+  def bookmark(options={})
     options[:user_id] = options.delete(:user).id if options[:user]
     self.bookmarks.create(options)
   end
@@ -32,8 +32,12 @@ module HasBookmarks
     return false
   end
 
-  def bookmarked?(options)
-    !find_bookmark_by_user(options).nil?
+  def bookmarked?(options={})
+    ! find_bookmark_by_user(options).nil?
+  end
+
+  def bookmarked(options={})
+    ! find_bookmark_by_user(options).nil?
   end
 
   def find_users_that_bookmarked(options={})

@@ -13,8 +13,8 @@
             posts: {
               include: {
                 articles: {
-                  include: {papers: {include: [:authors], methods: [:cover, :cover_thumb]}},
-                  methods: [:cover_medium, :cover_thumb],
+                  include: {papers: {include: [:authors], methods: [:cover, :cover_thumb, :bookmarked]}},
+                  methods: [:cover_medium, :cover_thumb, :bookmarked],
                 },
               },
               methods: [:user_short],

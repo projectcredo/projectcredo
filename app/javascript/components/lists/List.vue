@@ -29,7 +29,9 @@
     </div>
     <div class="list-summary">
       <div class="list-summary-title">Summary</div>
-      <div class="list-summary-body" v-if="list.summaries.length">{{ list.summaries[0].content }}</div>
+      <div class="list-summary-body" v-if="list.summaries.length">
+        <summary-content :summary="list.summaries[0]" :list="list" @select-paper="selectPaper"></summary-content>
+      </div>
       <div class="list-summary-body" v-else>No summaries written yet.</div>
     </div>
 
@@ -50,7 +52,7 @@
       </div>
 
       <ul class="list-posts">
-        <list-post v-for="post in list.posts" :post="post" :key="post.id" :global="{signedIn, userCanEdit, editsAllowed}"></list-post>
+        <list-post v-for="post in list.posts" :post="post" :key="post.id" :global="global" @select-paper="selectPaper"></list-post>
       </ul>
     </div>
 
@@ -203,6 +205,7 @@
         ></reference-list>
       </div>
     </div>
+    <paper-modal :paper="selectedPaper" :global="global" :show="showPaperModal" @hide="showPaperModal = false"></paper-modal>
   </div>
 </template>
 
@@ -217,8 +220,10 @@ import Note from '../references/Note.vue'
 import CrossrefSearch from '../references/CrossrefSearch.vue'
 import AddByLocator from '../references/AddByLocator.vue'
 import MiniBib from '../references/MiniBib.vue'
-import ListPost from './ListPost.vue'
+import ListPost from '../posts/ListPost.vue'
+import PaperModal from '../papers/PaperModal'
 import Fuse from 'fuse.js'
+import pick from 'lodash-es/pick'
 
 export default {
 
@@ -232,6 +237,7 @@ export default {
     AddByLocator,
     MiniBib,
     ListPost,
+    PaperModal,
   },
 
   props: ['list', 'owner', 'signedIn', 'currentUser', 'summaries', 'userCanEdit', 'references', 'summaryAddPath'],
@@ -241,6 +247,10 @@ export default {
       allReferences: [],
       referenceIndexInModal: 0,
       selectedRef: {},
+
+      selectedPaper: {},
+      showPaperModal: false,
+
       filterKey: '',
       sortKey: '',
       sortOrders: {'age': 1, 'votes': -1},
@@ -273,6 +283,10 @@ export default {
   },
 
   computed: {
+
+    global () {
+      return pick(this, ['signedIn', 'userCanEdit', 'editsAllowed']);
+    },
 
     displayedListDesc () {
       return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
@@ -341,6 +355,11 @@ export default {
   },
 
   methods: {
+
+    selectPaper (paper) {
+      this.selectedPaper = paper
+      this.showPaperModal = true
+    },
 
     selectReference (index) {
       this.referenceIndexInModal = index;

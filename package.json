@@ -29,7 +29,7 @@
     "sass-loader": "^6.0.6",
     "turbolinks": "^5.2.0",
     "uiv": "^0.31.3",
-    "vue": "^2.6.7",
+    "vue": "^2.6.9",
     "vue-loader": "^15.6.4",
     "vue-multiselect": "^2.0.6",
     "vue-template-compiler": "^2.6.7",

@@ -12,29 +12,39 @@
         <div class="lpar-heading">
           <div class="lpar-title">{{ article.title || 'No article' }}</div>
           <div class="lpar-source">{{ article.source }}</div>
-          <div class="lpar-bookmarks"><i class="fa fa-bookmark-o"></i> bookmarked by {{ article.bookmarks_count }} people</div>
+          <div class="lpar-bookmarks">
+            <bookmark :bookmarkable="article" :type="'Article'" :signed-in="global.signedIn"></bookmark>
+          </div>
         </div>
       </div>
       <div class="lpar-papers">
         <div class="lpar-papers-title">Research Papers Cited in this Article</div>
-        <post-paper v-for="paper in article.papers" :paper="paper" :key="paper.id" :global="global"></post-paper>
+        <post-paper v-for="paper in article.papers" :paper="paper" :key="paper.id" :global="global" @select-paper="selectPaper"></post-paper>
       </div>
     </div>
   </li>
 </template>
 
 <script>
-import PostPaper from './PostPaper.vue'
+import PostPaper from '../papers/PostPaper.vue'
+import Bookmark from '../bookmarks/Bookmark.vue'
 
 export default {
   props: ['post', 'global'],
 
   components: {
     PostPaper,
+    Bookmark,
   },
 
   computed: {
     //
+  },
+
+  methods: {
+    selectPaper (paper) {
+      this.$emit('select-paper', paper)
+    },
   },
 }
 </script>

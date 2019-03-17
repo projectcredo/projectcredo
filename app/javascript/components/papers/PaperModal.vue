@@ -1,6 +1,6 @@
 <template>
-  <modal :value="show" @hide="$emit('hide')" ref="modal" v-if="showContent" size="lg">
-    <div slot="title">
+  <modal :value="show" @hide="$emit('hide')" ref="modal" size="lg">
+    <div slot="title" v-if="paper.id">
       <h4 class="modal-title">
         <vote :voteable="paper" :signed-in="global.signedIn"></vote>
         {{ paper.title }}
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div v-if="show"></div>
+    <div v-if="paper.id"></div>
       <div class="modal-section">
         <div class="modal-section-header">
           Abstract
@@ -108,12 +108,11 @@ export default {
 
   data () {
     return {
-      showContent: false,
+      abstractField: '',
       editAbstract: false,
       showTagForm: false,
       truncateAbstract: true,
       newTag: '',
-      abstractForm: '',
     }
   },
 
@@ -122,10 +121,7 @@ export default {
   },
 
   watch: {
-    show (show) {
-      if (show) this.showContent = true
-      else setTimeout(() => this.showContent = false, 500) // A delay to show hiding animation
-    }
+    //
   },
 
   computed: {
