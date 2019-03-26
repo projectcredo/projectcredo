@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190311115133) do
+ActiveRecord::Schema.define(version: 20190326024701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,8 +106,10 @@ ActiveRecord::Schema.define(version: 20190311115133) do
     t.integer  "parent_id"
     t.integer  "cached_votes_up",  default: 0
     t.integer  "sort_order"
+    t.integer  "list_id"
     t.index ["cached_votes_up"], name: "index_comments_on_cached_votes_up", using: :btree
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+    t.index ["list_id"], name: "index_comments_on_list_id", using: :btree
     t.index ["parent_id"], name: "index_comments_on_parent_id", using: :btree
     t.index ["sort_order"], name: "index_comments_on_sort_order", using: :btree
     t.index ["user_id"], name: "index_comments_on_user_id", using: :btree

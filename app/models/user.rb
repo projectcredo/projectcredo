@@ -228,7 +228,7 @@ class User < ApplicationRecord
   end
 
   def short_data
-    self.as_json(only: [:about, :first_name, :last_name, :username, :about], methods: [:avatar_thumb, :full_name])
+    self.as_json(only: [:id, :about, :first_name, :last_name, :username, :about], methods: [:avatar_thumb, :full_name])
       .merge({url: user_lists_path(self.username)})
   end
 

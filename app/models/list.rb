@@ -140,17 +140,4 @@ class List < ApplicationRecord
       paper.update(response.paper_attributes.slice(:referenced_by_count, :referenced_by_count_updated_at))
     end
   end
-
-  def cover_thumb
-    cover.url(:thumb)
-  end
-
-  def cover_url
-    cover.url(:cover)
-  end
-
-  def owner_short
-    owner.short_data
-  end
-
 end

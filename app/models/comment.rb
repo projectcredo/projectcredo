@@ -1,6 +1,7 @@
 class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :commentable, polymorphic: true
+  belongs_to :list
 
   has_many :activities, as: :addable, dependent: :destroy
 

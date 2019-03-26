@@ -17,7 +17,7 @@ class PapersController < ApplicationController
     respond_to do |format|
       if @paper.update(paper_params)
         format.html { redirect_back(fallback_location: root_path, notice: 'Paper was successfully updated.') }
-        format.json
+        format.json { render('jbuilders/_paper.json.jbuilder', locals: { paper: @paper }) }
       else
         format.html { redirect_back(fallback_location: root_path, alert: 'Paper failed to update') }
         format.json { render json: @paper.errors, status: :unprocessable_entity }

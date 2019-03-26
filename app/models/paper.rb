@@ -11,6 +11,8 @@ class Paper < ApplicationRecord
   has_many :links, dependent: :destroy
   has_many :api_import_responses, dependent: :destroy
 
+  has_many :comments, as: :commentable, dependent: :destroy
+
   accepts_nested_attributes_for :authors, reject_if: proc { |attributes| attributes['family_name'].blank? }
   accepts_nested_attributes_for :links
   validates :title, presence: true
@@ -90,7 +92,4 @@ class Paper < ApplicationRecord
       return age < 1 ? '< 1' : age
     end
   end
-
-  def cover_thumb() cover.url(:thumb) end
-  def cover_medium() cover.url(:medium) end
 end

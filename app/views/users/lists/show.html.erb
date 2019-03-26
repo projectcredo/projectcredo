@@ -5,27 +5,11 @@
 
     <div class="vue-list" data-props="<%=
       {
-        list: @list.as_json(
-          include: [
-            :tags,
-            :others,
-            :summaries,
-            posts: {
-              include: {
-                articles: {
-                  include: {papers: {include: [:authors], methods: [:cover, :cover_thumb, :bookmarked]}},
-                  methods: [:cover_medium, :cover_thumb, :bookmarked],
-                },
-              },
-              methods: [:user_short],
-            },
-          ],
-          methods: [:total_bookmarks, :cover, :cover_url, :owner_short]
-        ),
+        list: ActiveSupport::JSON.decode(render('jbuilders/list.json', list: @list)),
         owner: @list.owner.username,
         signedIn: user_signed_in?,
         currentUser: current_user ? current_user.username : '',
-        summaries: ActiveSupport::JSON.decode(render('users/lists/jbuilders/list_summaries.json', summaries: @summaries)),
+        currentUserId: current_user ? current_user.id : '',
         userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
         references: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
         summaryAddPath: new_user_list_summary_path(user_list_id: @list.slug),

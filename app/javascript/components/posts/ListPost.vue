@@ -1,8 +1,8 @@
 <template>
   <li class="list-post">
     <div class="list-post-author">
-      <div class="lpa-avatar"><a :href="post.user_short.url"><img :src="post.user_short.avatar_thumb" alt=""></a></div>
-      <div class="lpa-name"><a :href="post.user_short.url">{{ post.user_short.full_name }}</a></div>
+      <div class="lpa-avatar"><a :href="post.user.url"><img :src="post.user.avatar_thumb" alt=""></a></div>
+      <div class="lpa-name"><a :href="post.user.url">{{ post.user.full_name }}</a></div>
       <div class="lpa-date">{{ post.created_at | date('M/D/YYYY [at] h:mm a') }}</div>
     </div>
     <div class="list-post-content">{{ post.content }}</div>

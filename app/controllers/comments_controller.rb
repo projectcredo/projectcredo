@@ -54,7 +54,7 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.json
   def destroy
     commentable = @comment.root.commentable
-    list_for_authorization = get_commentable_root_list commentable
+    list_for_authorization = get_commentable_root_list commentable, @comment.root
 
     respond_to do |format|
       if current_user.can_moderate?(list_for_authorization) || @comment.user == current_user
@@ -77,8 +77,8 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      parameters = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id)
-      valid_type = %w{List Reference}.include? parameters[:commentable_type]
+      parameters = params.require(:comment).permit(:content, :parent_id, :commentable_type, :commentable_id, :list_id)
+      valid_type = %w{List Reference Paper}.include? parameters[:commentable_type]
       if !valid_type
         logger.debug "Comment with invalid parent type by #{current_user.username} with params: #{parameters.inspect}"
         parameters[:commentable_type] = nil
@@ -86,9 +86,10 @@ class CommentsController < ApplicationController
       parameters
     end
 
-    def get_commentable_root_list commentable
+    def get_commentable_root_list commentable, comment
       return commentable if commentable.is_a?(List)
       return commentable.list if commentable.is_a?(Reference)
+      return comment.list if commentable.is_a?(Paper)
     end
 
 end
