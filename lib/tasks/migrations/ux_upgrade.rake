@@ -1,6 +1,25 @@
 namespace :migrations do
-  desc "Creates empty post for each list and attaches all current not attached to posts papers to that post"
-  task attach_papers_articles_and_posts: :environment do
+  desc "Migrates data to new db structure for new UX"
+  task ux_upgrade: :environment do
+
+    print 'Processing reference comments ' + Comment.where(commentable_type: 'Reference').count.to_s + ' '
+
+    Comment.where(commentable_type: 'Reference').order('id asc').all.each do |comment|
+      reference = comment.commentable
+      if reference.blank? then
+        print 'm'
+        next
+      end
+      comment.commentable_id = reference.paper_id
+      comment.commentable_type = 'Paper'
+      comment.list_id = reference.list_id
+      comment.save
+      print '.'
+    end
+    puts ''
+
+    puts 'Processing all lists, attaching referenced paper to empty article and article to empty post'
+
     List.all.each do |list|
       next if list.papers.count == 0
       puts 'Processing list ' + list.name

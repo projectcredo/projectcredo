@@ -9,7 +9,7 @@
       <div class="lparp-source">{{ paper.publication }}</div>
       <div class="lparp-date-authors">
         {{ date }}
-        <span v-if="paper.authors.length">- {{ paper.authors.map(a => a.title).join(', ') }}</span>
+        <span v-if="paper.authors.length">- {{ paper.authors.map(a => a.full_name).join(', ') }}</span>
       </div>
       <div class="lparp-bookmarks">
         <bookmark :bookmarkable="paper" :type="'Paper'" :signed-in="global.signedIn"></bookmark>

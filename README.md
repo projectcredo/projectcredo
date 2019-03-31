@@ -60,6 +60,12 @@ Submit a pull request against the develop branch and fill out the Pull Request t
 1. `docker-compose run app rails webpacker:compile` - if assets were not compiled previously (remove public/packs if command is not compiling assets)
 1. `docker-compose run app rspec`
 
+### Helpful commands
+
+Backup database `pg_dump -h <host> -U <user> <database> > credo-prod.bak`
+
+Restore database from dump `psql -h localhost -d projectcredo_development -U postgres -f credo-prod.bak`
+
 ### Reporting issues
 
 Start a new issue and fill out the issues template as well as you can.

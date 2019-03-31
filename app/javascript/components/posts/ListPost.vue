@@ -10,7 +10,7 @@
       <div class="lpar-header">
         <div class="lpar-thumb"><div class="cropped-image"><div><img :src="article.cover_thumb" alt=""></div></div></div>
         <div class="lpar-heading">
-          <div class="lpar-title">{{ article.title || 'No article' }}</div>
+          <div class="lpar-title"><a :href="article.url" target="_blank">{{ article.title || 'No article' }}</a></div>
           <div class="lpar-source">{{ article.source }}</div>
           <div class="lpar-bookmarks">
             <bookmark :bookmarkable="article" :type="'Article'" :signed-in="global.signedIn"></bookmark>

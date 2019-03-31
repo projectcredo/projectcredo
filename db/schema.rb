@@ -225,12 +225,6 @@ ActiveRecord::Schema.define(version: 20190326024701) do
     t.index ["pubmed_id"], name: "index_papers_on_pubmed_id", using: :btree
   end
 
-  create_table "papers_posts", id: false, force: :cascade do |t|
-    t.integer "paper_id"
-    t.integer "post_id"
-    t.index ["paper_id", "post_id"], name: "index_papers_posts_on_paper_id_and_post_id", unique: true, using: :btree
-  end
-
   create_table "plans", force: :cascade do |t|
     t.string   "stripe_id"
     t.string   "name"
@@ -365,8 +359,6 @@ ActiveRecord::Schema.define(version: 20190326024701) do
 
   add_foreign_key "api_import_responses", "papers"
   add_foreign_key "articles", "posts"
-  add_foreign_key "papers_posts", "papers"
-  add_foreign_key "papers_posts", "posts"
   add_foreign_key "posts", "lists"
   add_foreign_key "posts", "users"
   add_foreign_key "references", "users"

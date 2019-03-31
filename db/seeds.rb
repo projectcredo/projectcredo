@@ -6,37 +6,29 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-include ActivitiesHelper
+# [Paper, Article, Post, List, Reference, User].each(&:destroy_all)
 
-[Paper, List, Reference, User].each(&:destroy_all)
+@p1 = Paper.create({
+  title: "The effect of storage on ammonia, cytokine, and chemokine concentrations in feline whole blood.",
+  abstract: "To determine if the concentrations of ammonia and inflammatory mediators in...",
+  doi: "10.1111/vec.12510",
+  pubmed_id: "27447369",
+  publication: "j vet emerg crit care (san antonio)"
+})
+@p1.authors.create({given_name: 'S', family_name: 'Author'})
+@p2 = Paper.create({
+  title: "Protons Potentiate GluN1/GluN3A Currents by Attenuating Their Desensitisation.",
+  abstract: "N-methyl-D-aspartate (NMDA) receptors are glutamate- and glycine-gated channels composed of...",
+  doi: "10.1038/srep23344",
+  pubmed_id: "27000430",
+  publication: "sci rep"
+})
+@p1.authors.create({given_name: 'S', family_name: 'Author'})
 
-list_names =[
-  "Allergies and immigrant families",
-  "Crop co-cultivation methods",
-  "Exercise and depression",
-  "Do cellphones cause cancer?",
-  "Protein consumption for muscular hypotrophy",
-  "Efficacy of vitamin supplements",
-  "The effect of probiotics on Irritable Bowel Syndrome",
-  "Factors in second language acquisition 学第二语言的因素",
-  "Maintaining mobility in old age"
-]
-
-papers = [
-  {
-    title: "The effect of storage on ammonia, cytokine, and chemokine concentrations in feline whole blood.",
-    abstract: "To determine if the concentrations of ammonia and inflammatory mediators in...",
-    doi: "10.1111/vec.12510",
-    pubmed_id: "27447369",
-    publication: "j vet emerg crit care (san antonio)"
-  },
-  {
-    title: "Protons Potentiate GluN1/GluN3A Currents by Attenuating Their Desensitisation.",
-    abstract: "N-methyl-D-aspartate (NMDA) receptors are glutamate- and glycine-gated channels composed of...",
-    doi: "10.1038/srep23344",
-    pubmed_id: "27000430",
-    publication: "sci rep"
-  }
+@comments = [
+  {content: 'First'},
+  {content: 'Second'},
+  {content: 'Third'}
 ]
 
 Plan.create({
@@ -47,42 +39,57 @@ Plan.create({
   currency: 'USD',
 })
 
-ActiveRecord::Base.transaction do
-  @u = u = User.create(email: 'user@example.com', password: 'password', username: 'testuser')
+def create_lists (user, list_names)
+  ActiveRecord::Base.transaction do
+    list_names.each do |d|
+      list = user.lists.create(name: d, description: d)
+      list.tag_list.add(d.split)
+      list.save
+      list.comments.create(@comments.each{|c| c[:user_id] = user.id })
 
-  def current_user
-    @u
-  end
+      (1..2).each do |n|
+        post = list.posts.build(user_id: list.user_id, content: 'Test post')
+        post.save(validate: false)
 
-  comments = [
-    {content: 'First', user_id: u.id},
-    {content: 'Second', user_id: u.id, commentable_id: nil, commentable_type: nil},
-    {content: 'Third', user_id: u.id, commentable_id: nil, commentable_type: nil}
-  ]
+        article = post.articles.build(title: 'Test article')
+        article.save(validate: false)
 
-  p1 = Paper.create papers[0]
-  p2 = Paper.create papers[1]
+        article.papers << @p1
+        article.papers << @p2
 
-  list_names.each do |d|
-    l = u.lists.create(name: d, description: d)
-    l.tag_list.add(d.split)
-    l.save
-    l.comments.create(comments)
+        @p1.comments.create({content: 'Test comment', user_id: user.id, list_id: list.id})
+        @p2.comments.create({content: 'Test comment', user_id: user.id, list_id: list.id})
+      end
 
-    (1..2).each do |n|
-      post = l.posts.build(user_id: l.user_id, content: 'Test post')
-      post.save(validate: false)
+      list.summaries.create!({
+        user_id: user.id,
+        content: 'Test summary content [cite_paper id=' + @p1.id.to_s + '] [cite_paper id=' + @p2.id.to_s + ']',
+        evidence_rating: 'mixed',
+      })
 
-      article = post.articles.build(title: 'Test article')
-      article.save(validate: false)
-
-      article.papers << p1
-      article.papers << p2
+      Activity.create(user_id: user.id, activity_type: 'commented', addable: list.comments.first, actable: list)
+      Activity.create(user_id: user.id, activity_type: 'commented', addable: list.comments.second, actable: list)
     end
-
-    # a1 = create_activity(actable: l, activity_type: 'added', addable: r1)
-    # a2 = create_activity(actable: l, activity_type: 'added', addable: r2)
-    a3 = create_activity(actable: l, activity_type: 'commented', addable: l.comments.first)
-    a4 = create_activity(actable: l, activity_type: 'commented', addable: l.comments.second)
   end
 end
+
+create_lists(
+  User.create!(email: 'user1@example.com', password: 'password', username: 'testuser1'),
+  [
+    "Allergies and immigrant families",
+    "Crop co-cultivation methods",
+    "Exercise and depression",
+    "Do cellphones cause cancer?",
+  ]
+)
+
+create_lists(
+  User.create!(email: 'user2@example.com', password: 'password', username: 'testuser2'),
+  [
+    "Protein consumption for muscular hypotrophy",
+    "Efficacy of vitamin supplements",
+    "The effect of probiotics on Irritable Bowel Syndrome",
+    "Factors in second language acquisition 学第二语言的因素",
+    "Maintaining mobility in old age"
+  ]
+)
