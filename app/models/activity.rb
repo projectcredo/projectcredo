@@ -16,14 +16,14 @@ class Activity < ApplicationRecord
     return parts unless self.addable
 
     case self.activity_type
-    when "commented"
+    when 'commented'
       parts[:added] = self.addable.content
-      parts[:preposition] = "on"
-    when "added"
-      parts[:added] = self.addable.paper.title
-      parts[:preposition] = "to"
-      parts[:paper_direct_link] = self.addable.paper.direct_link
-    when "created"
+      parts[:preposition] = 'on'
+    when 'added'
+      parts[:added] = self.addable.title
+      parts[:preposition] = 'to'
+      parts[:paper_direct_link] = self.addable.direct_link
+    when 'created'
     end
 
     return parts

@@ -16,7 +16,7 @@
 <div class="container">
    <div class="vue-activity-feed" data-props="<%=
       {
-        lists: ActiveSupport::JSON.decode(render('lists/lists.json', lists: @visible_lists)),
+        lists: ActiveSupport::JSON.decode(render('jbuilders/lists.json', lists: @visible_lists)),
         signedIn: user_signed_in?,
       }.to_json
     %>"></div>

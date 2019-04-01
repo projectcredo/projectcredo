@@ -3,7 +3,6 @@ namespace :migrations do
   task ux_upgrade: :environment do
 
     print 'Processing reference comments ' + Comment.where(commentable_type: 'Reference').count.to_s + ' '
-
     Comment.where(commentable_type: 'Reference').order('id asc').all.each do |comment|
       reference = comment.commentable
       if reference.blank? then
@@ -18,8 +17,21 @@ namespace :migrations do
     end
     puts ''
 
-    puts 'Processing all lists, attaching referenced paper to empty article and article to empty post'
+    print 'Processing reference activities ' + Activity.where(addable_type: 'Reference').count.to_s + ' '
+    Activity.where(addable_type: 'Reference').order('id asc').all.each do |activity|
+      reference = activity.addable
+      if reference.blank? then
+        print 'm'
+        next
+      end
+      activity.addable_id = reference.paper_id
+      activity.addable_type = 'Paper'
+      activity.save
+      print '.'
+    end
+    puts ''
 
+    puts 'Processing all lists, attaching referenced paper to empty article and article to empty post'
     List.all.each do |list|
       next if list.papers.count == 0
       puts 'Processing list ' + list.name

@@ -6,22 +6,12 @@
           <a href="/lists/new" class="btn panel panel-default new-list">
             <h3>Create a new<br> board</h3>
           </a>
-
           <div class="index-filters">
             <h4>Filters</h4>
-
-            <button
-              class="filter-btn"
-              v-bind:class="{active: ! filterPins}"
-              @click="filterPins = false"
-            >
+            <button class="filter-btn" :class="{active: ! filterPins}" @click="filterPins = false">
               All Research Activity
             </button>
-            <button
-              class="filter-btn"
-              v-bind:class="{active: filterPins}"
-              @click="filterPins = true"
-            >
+            <button class="filter-btn" :class="{active: filterPins}"  @click="filterPins = true">
               Your Pins
             </button>
           </div>

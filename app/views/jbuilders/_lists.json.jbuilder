@@ -12,14 +12,6 @@ json.array!(lists) do |list|
   json.owner list.owner.username
 
   if @include_activities
-    json.activities do |json|
-      json.last_activity list.activities.last(10).reverse do |a|
-        json.user a.sentence_parts[:username]
-        json.type a.activity_type
-        json.updated_at time_ago_in_words(a.updated_at)
-        json.addable a.sentence_parts[:added]
-        json.addable_href a.sentence_parts[:paper_direct_link]
-      end
-    end
+    json.last_activities list.activities.last(10).reverse, partial: 'jbuilders/activity.json.jbuilder', as: :activity
   end
 end

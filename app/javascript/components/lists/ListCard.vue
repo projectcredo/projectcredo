@@ -4,91 +4,50 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="list-title">
-            <a :href="list.link">{{list.name}}</a>
-            <a :href="list.owner" class="timestamp">
-              created by {{list.owner}}
-            </a>
+            <a :href="list.link">{{ list.name }}</a>
+            <a :href="list.owner" class="timestamp">created by {{ list.owner }}</a>
           </div>
           <div>
             {{ list.description, 300 | truncate }}
           </div>
-          <div v-if="list.activities">
-            <div
-              class="list-activity-row"
-              v-for="(activity, index) in list.activities.last_activity"
-              v-show="showMore ? true : index < 3"
-              :key="activity.id"
-            >
-              <div
-                class="col-md-1"
-                :class="activity.type">
-              </div>
-
+          <div v-if="list.last_activities.length">
+            <div class="list-activity-row" v-for="(activity, index) in list.last_activities"
+              v-show="showMore ? true : index < 3" :key="activity.id">
+              <div class="col-md-1" :class="activity.type"></div>
               <div class="col-md-11">
-                <a
-                  :href="activity.addable_href"
-                  v-if="activity.type == 'added'"
-                >
-                  {{activity.addable, 150 | truncate}}
-                </a>
-                <span
-                  v-if="activity.type == 'commented'"
-                >
-                "{{activity.addable, 150 | truncate }}"
-                </span>
-                <span
-                  v-if="activity.type == 'created'"
-                >
-                This board was created!
-                </span>
+                <a :href="activity.addable_href" v-if="activity.type === 'added'">{{ activity.addable, 150 | truncate }}</a>
+                <span v-if="activity.type == 'commented'">"{{ activity.addable, 150 | truncate }}"</span>
+                <span v-if="activity.type == 'created'">This board was created!</span>
                 <div class="timestamp">
-                  {{activity.user}}
-                  {{activity.type}}
-                  {{activity.updated_at}} ago
-                  </div>
+                  {{ activity.user }}
+                  {{ activity.type }}
+                  {{ activity.updated_at }} ago
+                </div>
               </div>
             </div>
             <a
-              v-if="list.activities && list.activities.last_activity.length > 3"
+              v-if="list.last_activities.length > 3"
               v-text="showMore ? 'see less...' : 'see more..'"
-              @click="showMore = !showMore"
+              @click="showMore = ! showMore"
             >
             </a>
           </div>
           <div class="list-footer">
-            <a
-              class="list-vote"
-              v-bind:class="{'toggled': list.liked}"
-              v-on:click="toggleLike(list)"
-              v-show="!likeIsLoading"
-            >
-              {{list.likes}}
+            <a class="list-vote" :class="{'toggled': list.liked}" @click="toggleLike(list)" v-show="! likeIsLoading">
+              {{ list.likes }}
             </a>
-            <span
-              class="spinner"
-              v-show="likeIsLoading"
-            >
+            <span class="spinner" v-show="likeIsLoading">
               <span class="double-bounce1"></span>
               <span class="double-bounce2"></span>
             </span>
-            <a
-              class="list-pin"
-              v-bind:class="{'toggled': list.pinned}"
-              v-on:click="togglePin(list)"
-              v-show="!pinIsLoading"
-            >
-              {{list.pins}}
+            <a class="list-pin" :class="{'toggled': list.pinned}" @click="togglePin(list)" v-show="! pinIsLoading">
+              {{ list.pins }}
             </a>
-            <span
-              class="spinner"
-              v-show="pinIsLoading"
-            >
+            <span class="spinner" v-show="pinIsLoading">
               <span class="double-bounce1"></span>
               <span class="double-bounce2"></span>
             </span>
-            <span class="comment-count">
-              {{list.comments_count}}
-            </span>
+            <span class="comment-count">{{ list.comments_count }}</span>
           </div>
         </div>
       </div>
