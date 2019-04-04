@@ -1,7 +1,12 @@
 <template>
-  <span class="newlines">
-    <component :is="part.type" v-for="part in contentParts" :paper="getPaper(part.id)">{{ part.content }}</component>
-  </span>
+  <div>
+    <div class="summary-content newlines" :class="{truncate: truncate}" @click="truncate = false">
+      <component :is="part.type" v-for="part in contentParts" :paper="getPaper(part.id)">{{ part.content }}</component>
+    </div>
+    <a href="#" class="action-link" v-if="summary.content.length > 250" @click.stop.prevent="truncate = ! truncate">
+      {{ truncate ? 'see more' : 'see less' }}
+    </a>
+  </div>
 </template>
 
 <script>
@@ -12,6 +17,12 @@ export default {
 
   components: {
     CitePaper,
+  },
+
+  data () {
+    return {
+      truncate: true,
+    }
   },
 
   computed: {

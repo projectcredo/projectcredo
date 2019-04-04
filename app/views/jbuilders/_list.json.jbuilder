@@ -6,3 +6,5 @@ json.tags list.tags
 json.others list.others
 json.summaries list.summaries.order('created_at DESC'), partial: 'jbuilders/summary.json.jbuilder', as: :summary
 json.posts list.posts.order('updated_at DESC'), partial: 'jbuilders/post.json.jbuilder', as: :post
+json.pins list.homepages.size
+json.pinned current_user ? current_user.homepage.lists.include?(list) : false

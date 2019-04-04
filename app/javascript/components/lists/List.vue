@@ -4,7 +4,17 @@
       <div class="list-cover-img">
         <img :src="list.cover_url" v-if="list.cover_file_name" alt="Board cover">
       </div>
-      <h1 class="list-cover-title">{{ list.name }}</h1>
+      <h1 class="list-cover-title">
+        <div class="list-title-text">{{ list.name }}</div>
+        <div class="list-title-star">
+          <i title="Pin / unpin the list" class="fa" :class="{'fa-star': list.pinned, 'fa-star-o': ! list.pinned}"
+            v-if="! pinIsLoading" @click="togglePin"></i>
+          <span class="spinner" v-if="pinIsLoading">
+              <span class="double-bounce1"></span>
+              <span class="double-bounce2"></span>
+            </span>
+        </div>
+      </h1>
     </div>
     <div class="list-description">
       {{ list.description }}
@@ -63,6 +73,7 @@
 <script>
 import Vue from 'vue'
 import uniq from 'lodash-es/uniq'
+import axios from 'axios'
 import ReferenceModal from '../references/ReferenceModal.vue'
 import ReferenceList from '../references/ReferenceList.vue'
 import SummaryContent from '../summaries/SummaryContent.vue'
@@ -104,6 +115,7 @@ export default {
       summariesShown: 3,
       listDescTruncated: true,
       showQuickAdd: false,
+      pinIsLoading: false,
     }
   },
 
@@ -136,6 +148,21 @@ export default {
       this.selectedPaper = paper
       this.showPaperModal = true
     },
+
+    togglePin () {
+      this.pinIsLoading = true
+      let request
+      if (this.list.pinned) {
+        request = axios.delete(`/pins/${this.list.slug}.json`, {id: this.list.slug})
+      } else {
+        request = axios.post('/pins.json', {id: this.list.slug})
+      }
+      request.then(() => {
+        this.list.pins = this.list.pins + (this.list.pinned ? -1 : 1)
+        this.list.pinned = ! this.list.pinned
+        this.pinIsLoading = false
+      })
+    }
 
   },
 }
