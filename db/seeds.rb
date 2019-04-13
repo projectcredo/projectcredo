@@ -74,7 +74,7 @@ def create_lists (user, list_names)
 end
 
 create_lists(
-  User.create!(email: 'user1@example.com', password: 'password', username: 'testuser1'),
+  User.create!(email: 'user1@example.com', password: 'password', username: 'testuser1', confirmed_at: Time.now),
   [
     "Allergies and immigrant families",
     "Crop co-cultivation methods",
@@ -84,7 +84,7 @@ create_lists(
 )
 
 create_lists(
-  User.create!(email: 'user2@example.com', password: 'password', username: 'testuser2'),
+  User.create!(email: 'user2@example.com', password: 'password', username: 'testuser2', confirmed_at: Time.now),
   [
     "Protein consumption for muscular hypotrophy",
     "Efficacy of vitamin supplements",

@@ -50,6 +50,7 @@ gem 'rake', group: :test
 gem 'webpacker', '~> 3.0'
 gem 'will_paginate'
 gem 'sentry-raven'
+gem 'link_thumbnailer'
 
 group :test do
   gem 'capybara'

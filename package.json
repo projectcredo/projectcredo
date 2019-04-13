@@ -2,6 +2,7 @@
   "scripts": {
     "assets": "docker-compose exec app rails webpacker:compile",
     "rails": "docker-compose exec app rails",
+    "bundle": "docker-compose exec app rails",
     "rspec": "docker-compose exec app rspec",
     "test": "docker-compose exec app rspec",
     "yarn": "docker-compose exec app yarn"
@@ -29,6 +30,7 @@
     "sass-loader": "^6.0.6",
     "turbolinks": "^5.2.0",
     "uiv": "^0.31.3",
+    "url-regex": "^4.1.1",
     "vue": "^2.6.10",
     "vue-loader": "^15.6.4",
     "vue-multiselect": "^2.0.6",

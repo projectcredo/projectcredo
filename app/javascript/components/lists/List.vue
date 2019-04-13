@@ -33,10 +33,7 @@
     <div class="list-date">
       asked {{ list.created_at | date('M/D/YYYY') }}, updated {{ list.updated_at | date('M/D/YYYY') }}
     </div>
-    <div class="list-post-form">
-      <textarea class="lpf-textarea" placeholder="What are you reading?"></textarea>
-      <button class="btn btn-default">Post</button>
-    </div>
+    <post-form :list="list"></post-form>
     <div class="list-summary">
       <div class="list-summary-title">Summary</div>
       <div class="list-summary-body" v-if="list.summaries.length">
@@ -84,6 +81,7 @@ import AddByLocator from '../references/AddByLocator.vue'
 import MiniBib from '../references/MiniBib.vue'
 import ListPost from '../posts/ListPost.vue'
 import PaperModal from '../papers/PaperModal'
+import PostForm from './PostForm'
 import Fuse from 'fuse.js'
 import pick from 'lodash-es/pick'
 
@@ -99,6 +97,7 @@ export default {
     MiniBib,
     ListPost,
     PaperModal,
+    PostForm,
   },
 
   props: ['list', 'owner', 'signedIn', 'currentUser', 'currentUserId', 'userCanEdit', 'summaryAddPath'],

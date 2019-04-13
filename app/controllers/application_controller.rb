@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
   after_action :store_pre_signin_path
-  before_filter :set_current_user
+  before_action :set_current_user
 
   force_ssl if: ->{ Rails.env.production? }, except: :lets_encrypt
 
