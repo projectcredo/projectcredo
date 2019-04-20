@@ -10,6 +10,7 @@
   "dependencies": {
     "@fancyapps/fancybox": "^3.2.5",
     "@rails/webpacker": "3.5",
+    "autosize": "^4.0.2",
     "axios": "^0.17.1",
     "babel-core": "^6.26.3",
     "babel-loader": "7",
