@@ -213,6 +213,7 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
+    rails_param (0.10.2)
     rails_real_favicon (0.0.12)
       json (>= 1.7, < 3)
       rails (>= 3.1)
@@ -335,6 +336,7 @@ DEPENDENCIES
   postmark-rails (~> 0.14.0)
   puma (~> 3.0)
   rails (>= 5.0.0, < 5.1)
+  rails_param
   rails_real_favicon
   rake
   rspec-rails (~> 3.6)

@@ -90,10 +90,11 @@
 .lpa-name { margin-top: 2px; font-weight: bold; }
 .lpa-date { color: #999; font-size: 90%; }
 
-.list-post-content { margin-bottom: 10px; }
+.list-post-content { margin-bottom: 10px; overflow: hidden; }
 
 .lits-post-article { border: 2px solid #CACACA; border-radius: 10px; overflow: hidden; }
 .lpar-header { display: flex; border-bottom: 2px solid #CACACA; }
+.empty .lpar-header { border: 0; }
 .lpar-thumb {
   flex-shrink: 0; width: 30%; max-width: 100px; background-color: gray;
   .cropped-image { padding-bottom: 100%; }

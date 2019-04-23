@@ -33,7 +33,7 @@
     <div class="list-date">
       asked {{ list.created_at | date('M/D/YYYY') }}, updated {{ list.updated_at | date('M/D/YYYY') }}
     </div>
-    <post-form :list="list"></post-form>
+    <post-form @new-post="newPost" :list="list" v-if="userCanEdit"></post-form>
     <div class="list-summary">
       <div class="list-summary-title">Summary</div>
       <div class="list-summary-body" v-if="list.summaries.length">
@@ -161,7 +161,12 @@ export default {
         this.list.pinned = ! this.list.pinned
         this.pinIsLoading = false
       })
-    }
+    },
+
+    newPost (post) {
+      this.list.posts.unshift(post)
+      this.$forceUpdate()
+    },
 
   },
 }

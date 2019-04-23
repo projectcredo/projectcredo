@@ -1,8 +1,11 @@
 <template>
   <div class="list-post-form">
-    <textarea v-model="content" ref="textarea" class="lpf-textarea" placeholder="What are you reading?"></textarea>
+    <textarea v-model="content" ref="textarea" class="lpf-textarea" placeholder="What are you reading?" :disabled="loading"></textarea>
     <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo"></url-preview>
-    <button class="btn btn-primary" :disabled="loadingUrlInfo">Post</button>
+    <button class="btn btn-primary" :disabled="loadingUrlInfo || loading || ! this.content" @click="submit">
+      <span v-if="loading">Posting...</span>
+      <span v-else>Post</span>
+    </button>
     <a v-if="url" class="lpf-clear" href="#" @click.prevent="url = ''">clear</a>
   </div>
 </template>
@@ -28,6 +31,7 @@ export default {
       url: '',
       urlInfo: {},
       loadingUrlInfo: false,
+      loading: false,
     }
   },
 
@@ -39,6 +43,17 @@ export default {
     url (val) {
       if (val) this.loadUrlInfo()
       else this.urlInfo = {}
+    },
+  },
+
+  computed: {
+    article () {
+      if (isEmpty(this.urlInfo)) return null
+      return {
+        url: this.urlInfo.url,
+        title: this.urlInfo.title,
+        cover: this.urlInfo.images.length ? this.urlInfo.images[0].src : null,
+      }
     },
   },
 
@@ -55,9 +70,26 @@ export default {
         .then(res => {
           this.urlInfo = res.data
         })
-        .then(() => {
-          this.loadingUrlInfo = false
+        .catch(err => console.error)
+        .then(() => this.loadingUrlInfo = false)
+    },
+
+    submit () {
+      if (! this.content) return
+
+      this.loading = true
+      axios.post('/posts', {
+        list_id: this.list.id,
+          post: {content: this.content},
+          article: this.article,
         })
+        .then(res => {
+          this.$emit('new-post', res.data)
+          this.content = ''
+          this.url = ''
+        })
+        .catch(err => console.error)
+        .then(() => this.loading = false)
     },
   },
 

@@ -2,7 +2,7 @@
   "scripts": {
     "assets": "docker-compose exec app rails webpacker:compile",
     "rails": "docker-compose exec app rails",
-    "bundle": "docker-compose exec app rails",
+    "bundle": "docker-compose exec app bundle",
     "rspec": "docker-compose exec app rspec",
     "test": "docker-compose exec app rspec",
     "yarn": "docker-compose exec app yarn"
