@@ -8,7 +8,7 @@
             <span id="list-vote-<%= list.id %>">
               <%= render 'votes/toggle_like', votable: list %>
             </span>
-            <% if current_user.can_edit? list %>
+            <% if ListPolicy.new(current_user, list).update? %>
               <small class="pull-right">
                 <%= link_to 'Edit ', edit_user_list_path(list.owner, list) %>
               </small>

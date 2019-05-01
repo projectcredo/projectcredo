@@ -182,11 +182,13 @@ describe 'lists' do
       end
 
       it 'should redirect to sign_in page on edit page' do
+        @list = create(:list, user: @user, visibility: :contributors, access: :contributors)
         get edit_user_list_path(@user, @list)
         expect(response.status).to eq 302
       end
 
       it 'should redirect to sign_in page on update request' do
+        @list = create(:list, user: @user, visibility: :contributors, access: :contributors)
         put user_list_path(@user, @list)
         expect(response.status).to eq 302
       end

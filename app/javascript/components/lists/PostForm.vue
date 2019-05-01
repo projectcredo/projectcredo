@@ -84,11 +84,13 @@ export default {
           article: this.article,
         })
         .then(res => {
-          this.$emit('new-post', res.data)
+          this.$emit('post-created', res.data)
           this.content = ''
           this.url = ''
         })
-        .catch(err => console.error)
+        .catch(err => {
+          alert(err.message)
+        })
         .then(() => this.loading = false)
     },
   },

@@ -6,7 +6,7 @@
     <i class='help-block'>
       <% if paper.abstract_editable %>
         This abstract is user generated and can be
-        <% if current_user_can_edit?(list) || (current_user && list.accepts_public_contributions?) %>
+        <% if ListPolicy.new(current_user, list).update? %>
           <%= link_to 'edited', '#', class: "edit-abstract" %>
         <% else %>
           edited by contributors
@@ -20,7 +20,7 @@
   <div class='abstract-form hidden'>
     <%= render('papers/abstract_form', paper: paper) %>
   </div>
-<% elsif current_user_can_edit?(list) || (current_user && list.accepts_public_contributions?) %>
+<% elsif ListPolicy.new(current_user, list).update? %>
   <b>No abstract found, you can add one:</b>
   <%= render 'papers/abstract_form', paper: paper %>
 <% else %>

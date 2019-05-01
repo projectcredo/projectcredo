@@ -24,16 +24,20 @@ class Users::ListsController < ApplicationController
   end
 
   def edit
+    authorize @list
+
     @members = User.where.not(id: @list.list_memberships.pluck(:user_id)).map do |m|
       { username: m.username, role: 'nonmember' }
     end
   end
 
   def update
+    authorize @list
+
+    param! :list, Object, required: true
     members = params[:list].delete(:list_members) || []
 
-    if current_user.can_edit?(@list)
-
+    if ListPolicy.new(current_user, @list).update?
       remove_current_user = @list.members.include?(current_user) && !members.include?(current_user.username) && current_user != @list.owner
 
       memberships = members.map do |member|
@@ -118,7 +122,7 @@ class Users::ListsController < ApplicationController
     def ensure_editable
       redirect_to(root_path) unless current_user
 
-      unless current_user.can_edit? @list
+      unless ListPolicy.new(current_user, @list).update?
         return redirect_back(
           fallback_location: root_path,
           alert: 'You must be a contributor to make changes to this board.'

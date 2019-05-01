@@ -10,7 +10,7 @@
         signedIn: user_signed_in?,
         currentUser: current_user ? current_user.username : '',
         currentUserId: current_user ? current_user.id : '',
-        userCanEdit: current_user_can_edit?(@list) || @list.accepts_public_contributions?,
+        userCanEdit: ListPolicy.new(current_user, @list).update?,
         references: ActiveSupport::JSON.decode(render('users/lists/jbuilders/references.json', references: @references)),
         summaryAddPath: new_user_list_summary_path(user_list_id: @list.slug),
       }.to_json
@@ -20,7 +20,7 @@
   <div class="col-md-4">
     <div class="edit-section">
       <% if current_user %>
-        <% if current_user.can_edit? @list %>
+        <% if ListPolicy.new(current_user, @list).update? %>
           <%= link_to 'Edit this board', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
         <% end %>
       <% end %>

@@ -4,11 +4,11 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 
 @each $space in $spaceamounts {
   @each $side in $sides {
-    .m-#{str-slice($side, 0, 1)}-#{$space} {
+    .m#{str-slice($side, 0, 1)}-#{$space} {
       margin-#{$side}: #{$space}px !important;
     }
 
-    .p-#{str-slice($side, 0, 1)}-#{$space} {
+    .p#{str-slice($side, 0, 1)}-#{$space} {
       padding-#{$side}: #{$space}px !important;
     }
   }
@@ -20,5 +20,6 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 .color-primary { color: $brand-primary; }
 .color-gray { color: $font-gray; }
 
+.text-small { font-size: 80%; }
 .text-smaller { font-size: 90%; }
 .text-large { font-size: 120%; }

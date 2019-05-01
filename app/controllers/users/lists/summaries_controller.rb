@@ -5,7 +5,7 @@ class Users::Lists::SummariesController < ApplicationController
   before_action :reject_user_without_edit_permissions, only:[:edit, :update, :destroy]
 
   def new
-    unless (current_user.can_edit?(@list) || @list.accepts_public_contributions? )
+    unless ListPolicy.new(current_user, @list).update?
       flash[:alert] = "You do not have permission to add a summary"
       return redirect_back(fallback_location: user_list_path(@list.owner, @list))
     end
@@ -60,7 +60,7 @@ class Users::Lists::SummariesController < ApplicationController
 
     # Reject users without permission to edit
     def reject_user_without_edit_permissions
-      unless (current_user.can_edit?(@list) || @summary.user == current_user )
+      unless ListPolicy.new(current_user, @list).update?
         flash[:alert] = "You do not have permission to edit this summary"
         return redirect_back(fallback_location: user_list_path(@list.owner, @list))
       end

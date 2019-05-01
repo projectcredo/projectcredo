@@ -1,14 +1,14 @@
 class PostsController < ApplicationController
   require 'link_thumbnailer'
 
+  after_action :verify_authorized, except: :load_open_graph
+
   def create
     param! :list_id, Integer, required: true
 
     list = List.find(params[:list_id])
 
-    unless list.accepts_public_contributions? || current_user.can_edit?(list)
-      return redirect_back(fallback_location: list_path, alert: 'You must be a contributor to make changes to this list.')
-    end
+    authorize list, :update?
 
     post = list.posts.create!(params.require(:post).permit(:content).merge({user: current_user}))
 
@@ -22,9 +22,25 @@ class PostsController < ApplicationController
   end
 
   def update
+    post = Post.find(params[:id])
+
+    authorize post
+
+    post.update(params.require(:post).permit(:content))
+
+    respond_to do |format|
+      format.json {render 'jbuilders/_post', {locals: {post: post}}}
+    end
   end
 
   def destroy
+    post = Post.find(params[:id])
+    authorize post
+    post.destroy
+
+    respond_to do |format|
+      format.json { render json: { message: 'Post was deleted' }}
+    end
   end
 
   def load_open_graph

@@ -75,25 +75,6 @@ class User < ApplicationRecord
     Thread.current[:user] = user
   end
 
-  def membership_for list
-    list.list_memberships.find_by(user: self)
-  end
-
-  def can_moderate? list
-    membership = membership_for list
-    membership && membership.can_moderate?
-  end
-
-  def can_edit? list
-    membership = membership_for list
-    membership && membership.can_edit?
-  end
-
-  def can_view? list
-    membership = membership_for list
-    membership && membership.can_view?
-  end
-
   def visible_lists
     List.visible_to(self)
   end

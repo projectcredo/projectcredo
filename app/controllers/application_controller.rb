@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pundit
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -7,6 +9,8 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
 
   force_ssl if: ->{ Rails.env.production? }, except: :lets_encrypt
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def set_current_user
     User.current = current_user
@@ -54,5 +58,18 @@ class ApplicationController < ActionController::Base
 
     def not_found
       raise ActionController::RoutingError.new('Not Found')
+    end
+
+    def user_not_authorized(exception)
+      policy_name = exception.policy.class.to_s.underscore
+      message = t("#{policy_name}.#{exception.query}", scope: 'pundit', default: :default)
+
+      respond_to do |format|
+        format.json { render json: { type: 'error', message: message}, status: :unauthorized  }
+        format.html {
+          flash[:alert] = message
+          redirect_to(request.referrer || root_path)
+        }
+      end
     end
 end

@@ -33,7 +33,7 @@
     <div class="list-date">
       asked {{ list.created_at | date('M/D/YYYY') }}, updated {{ list.updated_at | date('M/D/YYYY') }}
     </div>
-    <post-form @new-post="newPost" :list="list" v-if="userCanEdit"></post-form>
+    <post-form @post-created="postCreated" :list="list" v-if="userCanEdit"></post-form>
     <div class="list-summary">
       <div class="list-summary-title">Summary</div>
       <div class="list-summary-body" v-if="list.summaries.length">
@@ -47,9 +47,9 @@
       <div class="list-sources-filters">
         <div class="lsf-sort dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">sort <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li class="active"><a href="#">Latest</a></li>
-            <li><a href="#">Sort by</a></li>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li :class="{active: sortDir === 'desc'}"><a href="#" @click.prevent="sortDir = 'desc'">Latest</a></li>
+            <li :class="{active: sortDir === 'asc'}"><a href="#" @click.prevent="sortDir = 'asc'">Oldest</a></li>
           </ul>
         </div>
         <div class="lsf-filters">
@@ -59,7 +59,14 @@
       </div>
 
       <ul class="list-posts">
-        <list-post v-for="post in list.posts" :post="post" :key="post.id" :global="global" @select-paper="selectPaper"></list-post>
+        <list-post v-for="post in orderedPosts"
+          :post="post"
+          :key="post.id"
+          :global="global"
+          @select-paper="selectPaper"
+          @post-updated="postUpdated"
+          @post-deleted="postDeleted"
+        ></list-post>
       </ul>
     </div>
 
@@ -107,14 +114,10 @@ export default {
       selectedPaper: {},
       showPaperModal: false,
 
-      filterKey: '',
-      sortKey: '',
-      sortOrders: {'age': 1, 'votes': -1},
-      notesShown: 3,
-      summariesShown: 3,
-      listDescTruncated: true,
-      showQuickAdd: false,
       pinIsLoading: false,
+      sortBy: 'created_at',
+      sortDir: 'desc',
+      posts: [],
     }
   },
 
@@ -123,7 +126,8 @@ export default {
       container: 'body',
       placement: 'auto top',
       html: true,
-    });
+    })
+    this.posts = this.list.posts.slice()
   },
 
   computed: {
@@ -138,6 +142,13 @@ export default {
 
     editsAllowed () {
       return this.signedIn && this.userCanEdit
+    },
+
+    orderedPosts () {
+      return this.posts.slice().sort((a, b) => {
+        if (this.sortDir === 'desc') return new Date(b[this.sortBy]) - new Date(a[this.sortBy])
+        else return new Date(a[this.sortBy]) - new Date(b[this.sortBy])
+      })
     },
   },
 
@@ -163,9 +174,18 @@ export default {
       })
     },
 
-    newPost (post) {
-      this.list.posts.unshift(post)
-      this.$forceUpdate()
+    postCreated (post) {
+      this.posts.unshift(post)
+    },
+
+    postUpdated (post) {
+      const idx = this.posts.findIndex(p => p.id === post.id)
+      if (idx !== -1) Object.assign(this.posts[idx], post)
+    },
+
+    postDeleted (post) {
+      const idx = this.posts.findIndex(p => p.id === post.id)
+      if (idx !== -1) this.posts.splice(idx, 1)
     },
 
   },

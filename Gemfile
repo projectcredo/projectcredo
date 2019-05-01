@@ -9,6 +9,8 @@ gem 'paperclip', '~> 5.2.0'
 gem 'aws-sdk', '~> 2.3.0'
 gem 'impressionist'
 
+gem 'pundit'
+
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'

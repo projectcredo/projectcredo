@@ -56,7 +56,7 @@
         </div>
         <div class="panel-body">
           <% if current_user %>
-            <div class="m-b-20">
+            <div class="mb-20">
               <%= link_to 'Create a new board', new_list_path, class: 'btn btn-primary' %>
             </div>
           <% end %>
@@ -107,7 +107,7 @@
             {:key => 'Aug', :value => 16},
           ], 'x-label' => 'month', 'y-label' => 'contribution'}.to_json.html_safe %>'></div>
 
-          <p class="m-t-40"><strong>Content Views Over Time</strong></p>
+          <p class="mt-40"><strong>Content Views Over Time</strong></p>
           <p class="color-gray"><%= @user.first_name_or_username %>`s content views include views of their profile, lists, uploaded papers, and comments.</p>
           <div class="vue-simple-chart" data-props='<%= {:data => [
             {:key => 'Oct', :value => 80},
