@@ -1,34 +1,47 @@
-version: '2'
+version: '3.0'
 services:
 
   app:
-    container_name: pc_web
     build: .
-    #command: rails server -p 3000 -b '0.0.0.0'
-    command: foreman start -f Procfile.dev
+    # command: rails server -b 0.0.0.0 -p 3000
+    command: >
+      bash -c "rm -f /app/tmp/pids/server.pid;
+        bundle exec rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- /app/bin/rails server -b 0.0.0.0 -p 3000"
     volumes:
       - .:/app:cached
     ports:
-      - "3000:3000"
-      - "3035:3035"
-    links:
+      - 3000:3000
+      - 1234:1234
+      - 26162:26162
+    depends_on:
       - postgres
     environment:
       - NODE_ENV=development
       - DOCKERIZED=true
-      # - SCOUT_DEV_TRACE=true
     env_file:
-      - ".env"
+      - '.env'
     tty: true
     stdin_open: true
 
+  webpacker:
+    build: .
+    command: ./bin/webpack-dev-server
+    volumes:
+        - .:/app:cached
+    ports:
+      - 3035:3035
+    environment:
+      - NODE_ENV=development
+      - DOCKERIZED=true
+    env_file:
+      - '.env'
+
   postgres:
-    container_name: pc_postgres
     image: postgres:9.5
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
 
 volumes:
   postgres-data:

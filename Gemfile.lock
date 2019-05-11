@@ -74,6 +74,9 @@ GEM
     crass (1.0.4)
     dante (0.2.0)
     database_cleaner (1.7.0)
+    debase (0.2.2)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (0.10.4)
     devise (4.4.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -263,6 +266,8 @@ GEM
       unicode-display_width (~> 1.4.0)
     rubocop-rspec (1.32.0)
       rubocop (>= 0.60.0)
+    ruby-debug-ide (0.6.1)
+      rake (>= 0.8.1)
     ruby-ll (2.1.2)
       ansi
       ast
@@ -322,6 +327,7 @@ DEPENDENCIES
   capybara
   closure_tree (~> 6.1.0)
   database_cleaner
+  debase
   devise (~> 4.4.0)
   factory_bot_rails (~> 4.11)
   foreman
@@ -344,6 +350,7 @@ DEPENDENCIES
   rake
   rspec-rails (~> 3.6)
   rubocop-rspec
+  ruby-debug-ide
   scout_apm
   sentry-raven
   stripe

@@ -34,7 +34,7 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5
 
 # Expose port 3000 to the Docker host, so we can access it
 # from the outside.
-EXPOSE 3000 3035 5432
+EXPOSE 3000 3035 5432 1234 26162
 
 # Configure an entry point, so we don't need to specify
 # "bundle exec" for each of our commands.
