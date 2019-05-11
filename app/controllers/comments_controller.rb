@@ -13,59 +13,39 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
+    authorize :comment
     @comment = Comment.new(comment_params)
     @comment.user = current_user
     respond_to do |format|
-      if @comment.save
-        if @comment.commentable_type == 'List'
-          create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.root.commentable, activity_type: "commented", addable: @comment)
-        end
-        format.json {render :json => get_json_tree([@comment])[0] }
-        format.html { redirect_to :back, notice: 'Comment was successfully created.' }
-      else
-        format.html { redirect_to :back }
-        format.json {render :json => @comment }
+      if @comment.commentable_type == 'List'
+        create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.commentable, activity_type: 'commented', addable: @comment)
       end
+      format.json {render :json => get_json_tree([@comment])[0] }
+      format.html { redirect_back fallback_location: root_path, notice: 'Comment was successfully created.' }
     end
   end
 
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
-    unless @comment.user == current_user
-      commentable = @comment.root.commentable
-      list = get_commentable_root_list commentable
-      flash[:alert] = "You do not have permission to edit this comment"
-      return redirect_back(fallback_location: user_list_path(list.owner, list))
-    end
+    authorize @comment
 
+    @comment.update(comment_params.permit(:content))
     respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to :back, notice: 'Comment was successfully updated.' }
-        format.json {render :json => get_json_tree([@comment])[0] }
-      else
-        format.html { redirect_to :back, notice: 'Comment was not updated.' }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_back fallback_location: root_path, notice: 'Comment was successfully updated.' }
+      format.json {render :json => get_json_tree([@comment])[0] }
     end
   end
 
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    commentable = @comment.root.commentable
-    list_for_authorization = get_commentable_root_list commentable, @comment.root
+    authorize @comment
 
+    @comment.destroy
     respond_to do |format|
-      if current_user.can_moderate?(list_for_authorization) || @comment.user == current_user
-        @comment.destroy
-        format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
-        format.json {render :json => {}, :status => :no_content}
-      else
-        flash[:alert] = 'You do not have permission to moderate this list.'
-        format.html { redirect_back fallback_location: user_list_path(list_for_authorization.owner, list_for_authorization) }
-        format.json
-      end
+      format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
+      format.json {render :json => {}, :status => :no_content}
     end
   end
 
