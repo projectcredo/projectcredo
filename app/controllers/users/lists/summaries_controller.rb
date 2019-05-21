@@ -3,8 +3,11 @@ class Users::Lists::SummariesController < ApplicationController
   before_action :get_list
   before_action :get_summary, only:[:edit, :update, :destroy]
   before_action :reject_user_without_edit_permissions, only:[:edit, :update, :destroy]
+  after_action :verify_authorized
 
   def new
+    authorize :summary, @list
+
     unless ListPolicy.new(current_user, @list).update?
       flash[:alert] = "You do not have permission to add a summary"
       return redirect_back(fallback_location: user_list_path(@list.owner, @list))

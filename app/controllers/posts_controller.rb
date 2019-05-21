@@ -5,12 +5,11 @@ class PostsController < ApplicationController
 
   def create
     param! :list_id, Integer, required: true
-
     list = List.find(params[:list_id])
 
-    authorize list, :update?
-
-    post = list.posts.create!(params.require(:post).permit(:content).merge({user: current_user}))
+    post = list.posts.new(params.require(:post).permit(:content).merge({user: current_user}))
+    authorize post
+    post.save!
 
     if params[:article].present?
       article = post.articles.create!(params.require(:article).permit(:title, :url, :cover))
@@ -23,10 +22,9 @@ class PostsController < ApplicationController
 
   def update
     post = Post.find(params[:id])
-
     authorize post
 
-    post.update(params.require(:post).permit(:content))
+    post.update!(params.require(:post).permit(:content))
 
     respond_to do |format|
       format.json {render 'jbuilders/_post', {locals: {post: post}}}
@@ -36,7 +34,8 @@ class PostsController < ApplicationController
   def destroy
     post = Post.find(params[:id])
     authorize post
-    post.destroy
+
+    post.destroy!
 
     respond_to do |format|
       format.json { render json: { message: 'Post was deleted' }}

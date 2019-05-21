@@ -26,6 +26,8 @@ class ListsController < ApplicationController
     members = params[:list].delete(:list_members) || []
     @list = current_user.lists.build(list_params)
 
+    authorize @list
+
     respond_to do |format|
       if @list.save
         current_user.homepage.lists << @list
@@ -54,6 +56,7 @@ class ListsController < ApplicationController
   end
 
   def form_contributors
+    authorize @list, :create?
     exclude = if @list then @list.owner.id else current_user.id end
 
     users = User.where.not(id: exclude)
