@@ -3,10 +3,11 @@ services:
 
   app:
     build: .
-    # command: rails server -b 0.0.0.0 -p 3000
-    command: >
-      bash -c "rm -f /app/tmp/pids/server.pid;
-        bundle exec rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- /app/bin/rails server -b 0.0.0.0 -p 3000"
+    command: rails server -b 0.0.0.0 -p 3000
+    ## Uncomment next to use remote debugging
+    # command: >
+    #   bash -c "rm -f /app/tmp/pids/server.pid;
+    #     bundle exec rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- /app/bin/rails server -b 0.0.0.0 -p 3000"
     volumes:
       - .:/app:cached
     ports:
