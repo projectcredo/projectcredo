@@ -8,3 +8,4 @@ json.summaries list.summaries.order('created_at DESC'), partial: 'jbuilders/summ
 json.posts list.posts.order('updated_at DESC'), partial: 'jbuilders/post.json.jbuilder', as: :post
 json.pins list.homepages.size
 json.pinned current_user ? current_user.homepage.lists.include?(list) : false
+json.can_update ListPolicy.new(current_user, list).update?

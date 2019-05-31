@@ -2,18 +2,18 @@
   <modal :value="show" @input="$emit('hide')" ref="modal" size="lg">
     <div slot="title" v-if="paper.id">
       <h4 class="modal-title">
-        <vote :voteable="paper" :signed-in="global.signedIn"></vote>
+        <vote :voteable="paper" :signed-in="!! currentUser.id"></vote>
         {{ paper.title }}
         <a class="modal-external-link" :href="paper.direct_link" target="_blank"></a>
       </h4>
       <mini-bib :paper="paper"></mini-bib>
       <div>
-        <span v-if="paper.tags == 0 && global.editsAllowed">Add tags</span>
+        <span v-if="paper.tags == 0 && list.can_update">Add tags</span>
         <a class="tag" v-for="(tag, index) in paper.tags" :key="tag.id">
           {{ tag.name }}
           <button class="tag-remove" v-show="showTagForm" @click="removeTag(index)"></button>
         </a>
-        <a class="edit-btn" v-if="global.editsAllowed" @click="showTagForm = ! showTagForm"></a>
+        <a class="edit-btn" v-if="list.can_update" @click="showTagForm = ! showTagForm"></a>
         <div v-show="showTagForm">
           <input class="form-control input-sm tag-form"
                   v-model="newTag"
@@ -27,7 +27,7 @@
     <div v-if="paper.id">
       <div class="modal-section">
         <div class="modal-section-header">Notes and Highlights</div>
-        <div v-if="global.editsAllowed">
+        <div v-if="list.can_update">
           <div class="form-group">
             <textarea rows="3" v-model="commentField" class="form-control comment-box"
                       placeholder="help summarize this paper, what are some key takeaways?">
@@ -52,10 +52,10 @@
             <comment :comment="comment"></comment>
           </div>
           <!-- <vote :voteable="note" :signed-in="signedIn"></vote> -->
-          <a href="#" v-if="global.currentUserId === comment.user_id" class="action-link" @click.prevent="editComment(comment)">
+          <a href="#" v-if="currentUser.id === comment.user_id" class="action-link" @click.prevent="editComment(comment)">
             edit
           </a>
-          <a href="#" v-if="global.editsAllowed" class="action-link" @click.prevent="deleteComment(comment)" :disabled="deletingComment">delete</a>
+          <a href="#" v-if="list.can_update" class="action-link" @click.prevent="deleteComment(comment)" :disabled="deletingComment">delete</a>
         </div>
         <a class="action-link"
             @click="showAllComments = ! showAllComments"
@@ -74,13 +74,13 @@
           <a href="#" class="edit-btn"
               data-toggle="tooltip"
               data-placement="right"
-              v-if="paper.abstract_editable  && global.editsAllowed"
+              v-if="paper.abstract_editable  && list.can_update"
               @click.prevent="editAbstract"
               :title="hasAbstract ? 'Edit this abstract' : 'Add an abstract'"
           ></a>
         </div>
         <div class="nothing-yet" v-if="! hasAbstract" v-show="! showEditAbstract">No abstract was imported...</div>
-        <div v-if="global.editsAllowed" v-show="showEditAbstract">
+        <div v-if="list.can_update" v-show="showEditAbstract">
           <div class="form-group">
             <textarea rows="10"
                       class="form-control"
@@ -142,8 +142,8 @@ export default {
   props: [
     'list',
     'paper',
-    'global',
     'show',
+    'currentUser',
   ],
 
   data () {

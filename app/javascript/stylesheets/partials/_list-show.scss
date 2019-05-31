@@ -133,7 +133,7 @@
 }
 
 .summary-content.truncate {
-  max-height: 100px;
+  max-height: 100px; min-height: 50px;
   transition: max-height 0.3s ease-out;
   &:before {
     content: '';

@@ -12,7 +12,7 @@
         <span v-if="paper.authors.length">- {{ paper.authors.map(a => a.full_name).join(', ') }}</span>
       </div>
       <div class="lparp-bookmarks">
-        <bookmark :bookmarkable="paper" :type="'Paper'" :signed-in="global.signedIn"></bookmark>
+        <bookmark :bookmarkable="paper" :type="'Paper'" :signed-in="!! currentUser.id"></bookmark>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@ import moment from 'moment-mini'
 import Bookmark from '../bookmarks/Bookmark'
 
 export default {
-  props: ['paper', 'global'],
+  props: ['paper', 'currentUser'],
 
   components: {
     Bookmark

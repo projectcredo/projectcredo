@@ -33,14 +33,9 @@
     <div class="list-date">
       asked {{ list.created_at | date('M/D/YYYY') }}, updated {{ list.updated_at | date('M/D/YYYY') }}
     </div>
-    <post-form @post-created="postCreated" :list="list" v-if="userCanEdit"></post-form>
-    <div class="list-summary">
-      <div class="list-summary-title">Summary</div>
-      <div class="list-summary-body" v-if="list.summaries.length">
-        <summary-content :summary="list.summaries[0]" :list="list" @select-paper="selectPaper"></summary-content>
-      </div>
-      <div class="list-summary-body" v-else>No summaries written yet.</div>
-    </div>
+    <post-form @post-created="postCreated" :list="list" v-if="list.can_update"></post-form>
+
+    <list-summary :summary="list.summaries[0]" :list="list"></list-summary>
 
     <div class="list-sources">
       <div class="list-sources-title">Sources</div>
@@ -60,9 +55,10 @@
 
       <ul class="list-posts">
         <list-post v-for="post in orderedPosts"
+          :list="list"
           :post="post"
           :key="post.id"
-          :global="global"
+          :currentUser="currentUser"
           @select-paper="selectPaper"
           @post-updated="postUpdated"
           @post-deleted="postDeleted"
@@ -70,7 +66,7 @@
       </ul>
     </div>
 
-    <paper-modal :paper="selectedPaper" :list="list" :global="global" :show="showPaperModal" @hide="showPaperModal = false"></paper-modal>
+    <paper-modal :paper="selectedPaper" :list="list" :current-user="currentUser" :show="showPaperModal" @hide="showPaperModal = false"></paper-modal>
   </div>
 </template>
 
@@ -78,36 +74,26 @@
 import Vue from 'vue'
 import uniq from 'lodash-es/uniq'
 import axios from 'axios'
-import ReferenceModal from '../references/ReferenceModal.vue'
-import ReferenceList from '../references/ReferenceList.vue'
 import SummaryContent from '../summaries/SummaryContent.vue'
 import Vote from '../votes/Vote.vue'
-import Note from '../references/Note.vue'
-import CrossrefSearch from '../references/CrossrefSearch.vue'
-import AddByLocator from '../references/AddByLocator.vue'
-import MiniBib from '../references/MiniBib.vue'
 import ListPost from '../posts/ListPost.vue'
 import PaperModal from '../papers/PaperModal'
 import PostForm from './PostForm'
+import ListSummary from './ListSummary'
 import Fuse from 'fuse.js'
 import pick from 'lodash-es/pick'
 
 export default {
   components: {
-    ReferenceModal,
-    ReferenceList,
     SummaryContent,
     Vote,
-    Note,
-    CrossrefSearch,
-    AddByLocator,
-    MiniBib,
     ListPost,
     PaperModal,
     PostForm,
+    ListSummary,
   },
 
-  props: ['list', 'owner', 'signedIn', 'currentUser', 'currentUserId', 'userCanEdit', 'summaryAddPath'],
+  props: ['list', 'currentUser'],
 
   data () {
     return {
@@ -131,17 +117,8 @@ export default {
   },
 
   computed: {
-
-    global () {
-      return pick(this, ['signedIn', 'userCanEdit', 'editsAllowed', 'currentUser', 'currentUserId']);
-    },
-
     displayedListDesc () {
       return this.$options.filters.truncate(this.list.description, 350, this.listDescTruncated)
-    },
-
-    editsAllowed () {
-      return this.signedIn && this.userCanEdit
     },
 
     orderedPosts () {
