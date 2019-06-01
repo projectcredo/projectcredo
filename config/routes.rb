@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     resource :vote, controller: 'references/votes', only: [:create, :destroy]
   end
 
-  resources :summaries do
+  resources :summaries, only: [:create, :update, :destroy] do
     resource :vote, controller: 'summaries/votes', only: [:create, :destroy]
   end
 
@@ -62,7 +62,6 @@ Rails.application.routes.draw do
   scope ':username' do
     resources :lists, path: '/', except: [:new, :create], as: :user_lists, controller: 'users/lists' do
       get 'remove-attachment/:type' => 'users/lists#remove_attachment', :as => :remove_attachment
-      resources :summaries, except: [:index, :show], controller: 'users/lists/summaries'
     end
     get ':user_list_id/:id' => 'references#show', as: :user_list_reference
   end

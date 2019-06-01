@@ -35,7 +35,11 @@
     </div>
     <post-form @post-created="postCreated" :list="list" v-if="list.can_update"></post-form>
 
-    <list-summary :summary="list.summaries[0]" :list="list"></list-summary>
+    <list-summary :summary="summaries[0]" :list="list"
+      @summary-updated="summaryUpdated"
+      @summary-created="summaryCreated"
+      @select-paper="selectPaper"
+    ></list-summary>
 
     <div class="list-sources">
       <div class="list-sources-title">Sources</div>
@@ -104,6 +108,7 @@ export default {
       sortBy: 'created_at',
       sortDir: 'desc',
       posts: [],
+      summaries: [],
     }
   },
 
@@ -114,6 +119,7 @@ export default {
       html: true,
     })
     this.posts = this.list.posts.slice()
+    this.summaries = this.list.summaries.slice()
   },
 
   computed: {
@@ -163,6 +169,15 @@ export default {
     postDeleted (post) {
       const idx = this.posts.findIndex(p => p.id === post.id)
       if (idx !== -1) this.posts.splice(idx, 1)
+    },
+
+    summaryCreated (summary) {
+      this.summaries.unshift(summary)
+    },
+
+    summaryUpdated (summary) {
+      const idx = this.summaries.findIndex(s => s.id === summary.id)
+      if (idx !== -1) Object.assign(this.summaries[idx], summary)
     },
 
   },
