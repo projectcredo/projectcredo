@@ -1,5 +1,0 @@
- <%
-  comments_count = reference.comments.map {|c| c.self_and_descendants.length}.inject(0,&:+)
-  display_count =  content_tag(:span, comments_count, id: "comments-count-#{reference.id}")
-%>
-<%= link_to comments_count.zero? ? "Comments" : "Comments(#{display_count})".html_safe, '', "data-detail-id" => "comments-#{reference.id}", class: " paper-detail-tab" %>

@@ -41,32 +41,12 @@ class User < ApplicationRecord
   has_one :homepage, dependent: :destroy
 
   has_many :authored_lists, class_name: 'List'
-  has_many :list_memberships, dependent: :destroy
   has_many :activies, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :summaries, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-
-  has_many :lists, through: :list_memberships do
-    # Adds owner id to lists when created through join table
-    def add_user_id attributes
-      if attributes.is_a?(Array)
-        attributes.each {|attrs| attrs[:user_id] = @association.owner.id }
-      else
-        attributes[:user_id] = @association.owner.id
-      end
-      attributes
-    end
-
-    def build(attributes={}, &block)
-      super(add_user_id(attributes), &block)
-    end
-
-    def create(attributes={}, &block)
-      List.create(add_user_id(attributes), &block)
-    end
-  end
+  has_many :lists
 
   def self.current
     Thread.current[:user]
@@ -75,16 +55,8 @@ class User < ApplicationRecord
     Thread.current[:user] = user
   end
 
-  def visible_lists
-    List.visible_to(self)
-  end
-
   def owned_lists
     lists.where(user_id: id).distinct
-  end
-
-  def role(list)
-    ListMembership.find_by(list: list, user: self).role
   end
 
   def unread_notifications
@@ -149,8 +121,6 @@ class User < ApplicationRecord
   end
 
   def top_tags
-    roles = ListMembership.roles.select {|k,v| ['contributor', 'moderator', 'owner'].include?(k) }
-
     ActsAsTaggableOn::Tag.joins(:taggings)
       .joins(ActiveRecord::Base.__send__(:sanitize_sql, ['
         LEFT JOIN (
@@ -162,11 +132,10 @@ class User < ApplicationRecord
       .where("
         taggings.taggable_type = 'List' AND taggings.taggable_id IN (
           SELECT lists.id FROM lists
-          LEFT JOIN list_memberships lm ON lm.list_id = lists.id
-          WHERE lm.user_id = :user_id AND lm.role in (:roles)
+          WHERE lists.user_id = :user_id
         )
         OR taggings.tagger_id = :user_id
-      ", {:user_id => id, :roles => roles.values})
+      ", {:user_id => id})
       .group(:id)
       .group(:last_created_at)
       .order('taggings_count DESC')

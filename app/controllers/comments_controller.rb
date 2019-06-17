@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     respond_to do |format|
       if @comment.commentable_type == 'List'
-        create_activity_and_notifications(users: @comment.commentable.members, actable: @comment.commentable, activity_type: 'commented', addable: @comment)
+        create_activity_and_notifications(users: [@comment.commentable.user], actable: @comment.commentable, activity_type: 'commented', addable: @comment)
       end
       format.json {render :json => get_json_tree([@comment])[0] }
       format.html { redirect_back fallback_location: root_path, notice: 'Comment was successfully created.' }

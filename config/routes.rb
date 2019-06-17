@@ -30,19 +30,13 @@ Rails.application.routes.draw do
   resources :pins, only: [:create, :destroy]
 
   resources :lists, only: [:new, :create, :index] do
-    resources :references, only: [:show, :create, :destroy]
     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
-    resources :members, only: :destroy, controller: 'lists/members'
   end
 
   post 'posts/load-open-graph' => 'posts#load_open_graph'
   resources :posts, only: [:create, :update, :destroy]
 
   get 'lists/form_contributors(/:list_id)' => 'lists#form_contributors', as: :list_form_contributors
-
-  resources :references do
-    resource :vote, controller: 'references/votes', only: [:create, :destroy]
-  end
 
   resources :summaries, only: [:create, :update, :destroy] do
     resource :vote, controller: 'summaries/votes', only: [:create, :destroy]

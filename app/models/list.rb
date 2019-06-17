@@ -4,7 +4,6 @@ class List < ApplicationRecord
   acts_as_votable
   is_impressionable :counter_cache => true
 
-  # Attributes
   enum visibility: {private: 10, contributors: 20, public: 30}, _prefix: :visible_to
   enum access: {private: 10, contributors: 20, public: 30}, _prefix: :accepts, _suffix: :contributions
 
@@ -49,7 +48,6 @@ class List < ApplicationRecord
               case_sensitive: false,
               message: 'must be unique for lists you own.'
             }
-  validates_associated :list_memberships
   validate :validate_tag
 
   # Methods

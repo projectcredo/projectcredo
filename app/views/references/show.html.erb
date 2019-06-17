@@ -1,9 +1,0 @@
-<% content_for :paper_title do %>
-  <h1>
-    <%= link_to @reference.paper.title, @reference %>
-    <small>contributed by <%= link_to @reference.user.username, user_lists_path(@reference.user) %></small>
-  </h1>
-  <p>Referenced in <%= link_to @reference.list.name, user_list_path(@reference.list.owner, @reference.list) %></p>
-<% end %>
-
-<%= render 'references/reference', reference: @reference, show_comments: true %>

@@ -72,8 +72,8 @@ class Users::ListsController < ApplicationController
     end
 
     def set_list
-      @list = @user.owned_lists.find_by slug: params[:id]
-      return redirect_back(fallback_location: root_path, alert: "Board not found.") unless @list
+      @list = @user.lists.find_by slug: params[:id]
+      return redirect_back(fallback_location: root_path, alert: 'Board not found.') unless @list
     end
 
     def params_sort_order

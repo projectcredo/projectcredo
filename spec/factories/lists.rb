@@ -10,8 +10,6 @@ FactoryBot.define do
   factory :list do
     name { generate :name }
     description { generate :description }
-    visibility { :public }
-    access { :public }
     tag_list { 'tag1, tag2, tag3' }
     user
   end
