@@ -5,15 +5,9 @@ class Users::ListsController < ApplicationController
   before_action :ensure_current_user, except: [:index, :show]
   before_action :set_user
   before_action :set_list, except: [:index, :remove_attachment]
-  before_action :ensure_editable, only: [:edit, :update]
-  before_action :ensure_visible, only: :show
 
   def index
-    if current_user
-      @visible_lists = @user.lists.visible_to(current_user).ranked
-    else
-      @visible_lists = @user.lists.publicly_visible.ranked
-    end
+    @visible_lists = @user.lists.ranked
   end
 
   def show
@@ -25,41 +19,16 @@ class Users::ListsController < ApplicationController
 
   def edit
     authorize @list
-
-    @members = User.where.not(id: @list.list_memberships.pluck(:user_id)).map do |m|
-      { username: m.username, role: 'nonmember' }
-    end
   end
 
   def update
-    authorize @list
-
     param! :list, Object, required: true
-    members = params[:list].delete(:list_members) || []
-
-    if ListPolicy.new(current_user, @list).update?
-      remove_current_user = @list.members.include?(current_user) && !members.include?(current_user.username) && current_user != @list.owner
-
-      memberships = members.map do |member|
-        @list.list_memberships.find_or_create_by(
-          user: User.find_by(username: member),
-          role: :contributor
-        )
-      end
-      memberships << @list.list_memberships.find_by(user: @list.owner, role: :owner)
-      @list.list_memberships = memberships
-    end
-
-    params[:list].delete(:access) unless current_user == @list.owner
+    authorize @list
 
     respond_to do |format|
       if @list.update(list_params)
         format.html {
-          if remove_current_user
-            redirect_to user_list_path(@list.user, @list), notice: 'Board was successfully updated and you have removed yourself as a contributor'
-          else
-            redirect_back(fallback_location: user_list_path(@list.user, @list), notice: 'Board was successfully updated.')
-          end
+          redirect_back(fallback_location: user_list_path(@list.user, @list), notice: 'Board was successfully updated.')
         }
         format.json { render :show, status: :ok, location: @list }
       else
@@ -70,9 +39,7 @@ class Users::ListsController < ApplicationController
   end
 
   def destroy
-    unless current_user == @list.owner
-      return redirect_back(fallback_location: root_path, alert: 'Only the board owner can delete a board.')
-    end
+    authorize @list
 
     @list.destroy
 
@@ -84,7 +51,9 @@ class Users::ListsController < ApplicationController
 
   def remove_attachment
     @list = @user.owned_lists.find_by slug: params[:user_list_id]
-    return redirect_back(fallback_location: root_path, alert: "Board not found.") unless @list
+    return redirect_back(fallback_location: root_path, alert: 'Board not found.') unless @list
+
+    authorize @list, :update?
 
     unless @list.respond_to?(params[:type]) and @list.public_send(params[:type]).respond_to?(:destroy)
       redirect_to request.referer || root_path, alert: 'Invalid attachment type'
@@ -116,22 +85,6 @@ class Users::ListsController < ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :access, :cover, list_members: [ :username, :role ])
-    end
-
-    def ensure_editable
-      redirect_to(root_path) unless current_user
-
-      unless ListPolicy.new(current_user, @list).update?
-        return redirect_back(
-          fallback_location: root_path,
-          alert: 'You must be a contributor to make changes to this board.'
-        )
-      end
-    end
-
-    def ensure_visible
-      return if @list.visible_to_public?
-      return redirect_back(fallback_location: root_path) unless current_user && current_user.can_view?(@list)
+      params.require(:list).permit(:name, :description, :tag_list, :cover)
     end
 end

@@ -80,7 +80,7 @@ class User < ApplicationRecord
   end
 
   def owned_lists
-    lists.where('list_memberships.role' => :owner).distinct
+    lists.where(user_id: id).distinct
   end
 
   def role(list)

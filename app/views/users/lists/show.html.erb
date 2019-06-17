@@ -15,7 +15,7 @@
     <div class="edit-section">
       <% if current_user %>
         <% if ListPolicy.new(current_user, @list).update? %>
-          <%= link_to 'Edit this board', edit_user_list_path(@list.owner, @list), class: "edit-list-btn" %>
+          <%= link_to 'Edit this board', edit_user_list_path(@list.user, @list), class: "edit-list-btn" %>
         <% end %>
       <% end %>
     </div>

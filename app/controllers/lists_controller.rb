@@ -18,6 +18,7 @@ class ListsController < ApplicationController
   # GET /lists/new
   def new
     @list = List.new
+    @list.user = current_user
   end
 
   # POST /lists
@@ -75,7 +76,6 @@ class ListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :access, :cover,
-                                    list_members: [ :username, :role ])
+      params.require(:list).permit(:name, :description, :tag_list, :cover)
     end
 end

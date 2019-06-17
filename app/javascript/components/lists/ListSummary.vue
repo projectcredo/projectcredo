@@ -42,7 +42,7 @@ export default {
 
   methods: {
     edit () {
-      this.editContent = this.summary.content
+      this.editContent = this.summary ? this.summary.content : ''
       this.editing = true
     },
 
