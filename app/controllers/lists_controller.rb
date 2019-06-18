@@ -32,19 +32,11 @@ class ListsController < ApplicationController
     respond_to do |format|
       if @list.save
         current_user.homepage.lists << @list
-        if members
-          members.map do |m|
-            @list.list_memberships.create(
-              user: User.find_by(username: m),
-              role: :contributor
-            )
-          end
-        end
 
         create_activity_and_notifications(
           actable: @list,
           activity_type: "created",
-          users: @list.members
+          users: [@list.user]
         )
 
         format.html { redirect_to user_list_path(@list.owner, @list), notice: 'Board was successfully created.' }

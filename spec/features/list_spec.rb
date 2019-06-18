@@ -6,16 +6,13 @@ describe 'lists' do
     @user = create(:user)
     @list = create(:list, user: @user)
     @list2 = create(:list, user: @user)
-    @list_private = create(:list, user: @user, visibility: :private)
-
-    @contributor = create(:user)
-    @list.list_memberships.create(user: @contributor, role: :contributor)
+    @list_private = create(:list, user: @user)
 
     @other_user = create(:user)
 
     @user2 = create(:user)
-    @user2_list = create(:list, user: @user2, visibility: :private)
-    @user2_private_list = create(:list, user: @user2, visibility: :private)
+    @user2_list = create(:list, user: @user2)
+    @user2_private_list = create(:list, user: @user2)
   end
 
 
@@ -32,18 +29,9 @@ describe 'lists' do
         expect(page.status_code).to eq(200)
       end
 
-      it "should show all user's public lists" do
+      it "should show all lists" do
         expect(page.body).to include(@list.name)
         expect(page.body).to include(@list2.name)
-      end
-
-      it "should not show user's private lists" do
-        expect(page.body).to_not include(@list_private.name)
-      end
-
-      it 'should not show other users lists' do
-        expect(page.body).to_not include(@user2_list.name)
-        expect(page.body).to_not include(@user2_private_list.name)
       end
     end
 
@@ -57,7 +45,7 @@ describe 'lists' do
         expect(page.status_code).to eq(200)
       end
 
-      it "should show all user's lists" do
+      it "should show all lists" do
         expect(page.body).to include(@list.name)
         expect(page.body).to include(@list2.name)
         expect(page.body).to include(@list_private.name)
@@ -81,13 +69,6 @@ describe 'lists' do
       it 'should show board name and details' do
         expect(page.body).to include(@list.name)
         expect(page.body).to include(@list.description)
-      end
-
-      it 'should not show private list' do
-        pending('private boards should not be visible')
-        visit user_list_path @user, @list_private
-
-        expect(page.status_code).to eq(302)
       end
     end
 
@@ -142,8 +123,6 @@ describe 'lists' do
           name: 'Some name',
           description: 'Some description',
           tag_list: 'tag1, tag2',
-          access: 'public',
-          list_members: [],
         }
 
         expect do
@@ -176,24 +155,6 @@ describe 'lists' do
       end
     end
 
-    context 'when logged in as non member' do
-      before do
-        post new_user_session_path, params: {user: {login: @other_user.email, password: '123456'}}
-      end
-
-      it 'should redirect to sign_in page on edit page' do
-        @list = create(:list, user: @user, visibility: :contributors, access: :contributors)
-        get edit_user_list_path(@user, @list)
-        expect(response.status).to eq 302
-      end
-
-      it 'should redirect to sign_in page on update request' do
-        @list = create(:list, user: @user, visibility: :contributors, access: :contributors)
-        put user_list_path(@user, @list)
-        expect(response.status).to eq 302
-      end
-    end
-
     context 'when logged in as owner' do
       before do
         post new_user_session_path, params: {user: {login: @user.email, password: '123456'}}
@@ -209,8 +170,6 @@ describe 'lists' do
           name: 'Some name updated',
           description: 'Some description updated',
           tag_list: 'tag1, tag2, tag3',
-          access: 'public',
-          list_members: [],
         }
 
         put user_list_path(@user, @list), params: {list: data}
@@ -220,39 +179,6 @@ describe 'lists' do
 
     end
 
-    context 'when logged in as contributor' do
-      before do
-        post new_user_session_path, params: {user: {login: @contributor.email, password: '123456'}}
-      end
-
-      it 'can be updated with valid data', type: :request do
-        data = {
-          name: 'Some name updated',
-          description: 'Some description updated',
-          tag_list: 'tag1, tag2, tag3',
-          access: 'public',
-          list_members: [],
-        }
-
-        put user_list_path(@user, @list), params: {list: data}
-
-        expect(@list.reload).to have_attributes(data.slice(:name, :description, :access))
-      end
-
-      it 'should protect access field from change' do
-        data = {
-          name: 'Some name updated',
-          description: 'Some description updated',
-          tag_list: 'tag1, tag2, tag3',
-          access: 'contributors',
-          list_members: [],
-        }
-
-        put user_list_path(@user, @list), params: {list: data}
-
-        expect(@list.access).to_not eq('contributors')
-      end
-    end
   end
 
   #
@@ -294,18 +220,6 @@ describe 'lists' do
 
     end
 
-    context 'when logged in as contributor' do
-      before do
-        post new_user_session_path, params: {user: {login: @contributor.email, password: '123456'}}
-      end
-
-      it 'can not delete list' do
-        expect{
-          delete user_list_path(@user, @list)
-        }.to_not change(List, :count)
-      end
-
-    end
   end
 
 end
