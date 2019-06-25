@@ -15,7 +15,6 @@ describe 'lists' do
     @user2_private_list = create(:list, user: @user2)
   end
 
-
   #
   # User lists index page
   #
