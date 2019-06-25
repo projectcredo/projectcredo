@@ -1,15 +1,15 @@
 language: ruby
 rvm:
-  - 2.5.1
+  - 2.6.3
 sudo: required
 dist: precise
 addons:
-  postgresql: "9.5"
+  postgresql: 9.5
 services:
   - postgresql
 install:
   - bundle install
-  - nvm install 8.9
+  - nvm install 10
   - node -v
   - npm i -g yarn
   - yarn

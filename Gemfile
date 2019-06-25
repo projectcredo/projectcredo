@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.5.1'
+ruby '2.6.3'
 
 # ProjectCredo specific gems
-gem 'devise', '~> 4.4.0'
+gem 'devise', '~> 4.6.0'
 gem 'acts-as-taggable-on', '~> 4.0'
 gem 'acts_as_votable', '~> 0.10.0'
 gem 'paperclip', '~> 5.2.0'
