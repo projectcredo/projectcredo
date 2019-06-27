@@ -8,19 +8,21 @@
   </div>
   <div v-else>
     <span v-if="paper.publication != null || paper.published_at != null" class="action-link-soft text-capitalize">
-      <cite-text :paper="paper"></cite-text>
+      {{ citeText }}
     </span>
   </div>
 </template>
 
 <script>
-import CiteText from './CiteText'
+import {citeText} from './helpers'
 
 export default {
   props: ['paper'],
 
-  components: {
-    CiteText,
+  computed: {
+    citeText () {
+      return citeText(paper)
+    }
   },
 
   methods: {

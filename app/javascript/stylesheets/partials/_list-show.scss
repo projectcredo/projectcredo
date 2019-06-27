@@ -72,6 +72,10 @@
   padding-bottom: 5px; margin-bottom: 10px;
   border-bottom: 2px solid #CACACA; font-size: 18px; font-weight: bold;
 }
+.list-summary-textarea {
+  height: 80px; overflow: auto;
+  .r-cite { cursor: default; pointer-events: none; }
+}
 
 .list-sources { margin-bottom: 30px; }
 .list-sources-title { padding-bottom: 5px; margin-bottom: 10px; border-bottom: 2px solid #CACACA; font-size: 18px; font-weight: bold; }

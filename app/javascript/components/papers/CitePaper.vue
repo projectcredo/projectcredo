@@ -1,7 +1,7 @@
 <template>
   <span>
     <span class="text-capitalize r-cite" v-if="paper" @click.prevent="$parent.$emit('select-paper', paper)">
-      <cite-text :paper="paper"></cite-text>
+      {{ text }}
     </span>
     <span class="text-capitalize r-cite" v-else>
       [filtered]
@@ -10,13 +10,15 @@
 </template>
 
 <script>
-import CiteText from './CiteText'
+import {citeText} from './helpers'
 
 export default {
   props: ['paper'],
 
-  components: {
-    CiteText
+  computed: {
+    text () {
+      return citeText(this.paper)
+    },
   },
 }
 </script>

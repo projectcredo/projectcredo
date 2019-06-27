@@ -3,7 +3,14 @@
     <div class="list-summary-title">Summary</div>
     <a href="#" class="pull-right" v-if="list.can_update && ! editing" @click.prevent="edit" :disabled="submitting"><i class="fa fa-pencil"></i></a>
       <div v-if="editing" class="clearfix">
-        <textarea ref="content" v-model="editContent" class="form-control mb-5" :disabled="submitting"></textarea>
+        <div ref="content" contenteditable="true"
+             class="form-control mb-5 list-summary-textarea"
+             :disabled="submitting"
+             @blur="saveNewValue"
+             @keydown="editKeydown"
+             @focus="caretToEnd"
+             v-html="editContentParsed"
+        ></div>
         <a href="#" class="btn btn-success btn-sm" @click.prevent="showCitePaper = true">Cite Paper</a>
         <div class="pull-right">
           <a href="#" class="text-small" @click.prevent="editing = false" :disabled="submitting">Cancel</a>
@@ -22,6 +29,7 @@
 import axios from 'axios'
 import SummaryContent from '../summaries/SummaryContent'
 import CitePaperModal from '../summaries/CitePaperModal'
+import {citeText, getPaper} from '../papers/helpers'
 
 export default {
   props: ['summary', 'list'],
@@ -40,19 +48,37 @@ export default {
     }
   },
 
+  computed: {
+    editContentParsed () {
+      const text = this.editContent.replace(/\n/gi, '<br>')
+
+      return text.replace(/\[cite_paper id=(\d+)\]/gi, (match, id) => {
+        const paper = getPaper(this.list, id)
+
+        return '<span class="text-capitalize r-cite cite_paper-' + (paper ? paper.id : id) + '" contenteditable="false">' + citeText(paper) + '</span>'
+      })
+    },
+  },
+
   methods: {
+    saveNewValue () {
+      let text = this.$refs.content.innerHTML
+      text = text.replace(/(<span[^>]+cite_paper-([\w\d_+-]+)[^>]+>[^<]*<\/span>)/gi, (match, tag, id) => {
+        return `[cite_paper id=${id}]`
+      })
+      text = text.replace(/(<([^>]+)>)/gi ,'')
+      text = this.replaceHtmlEntites(text)
+
+      this.editContent = text
+    },
+
     edit () {
       this.editContent = this.summary ? this.summary.content : ''
       this.editing = true
     },
 
     citePaper (paper) {
-      const startPos = this.$refs.content.selectionStart
-
-      // Insert shortcode in the current cursor position
-      this.editContent = this.editContent.substring(0, startPos)
-        + `[cite_paper id=${paper.id}]`
-        + this.editContent.substring(startPos, this.editContent.length)
+      this.editContent = this.editContent + `[cite_paper id=${paper.id}]`
 
       this.showCitePaper = false
     },
@@ -78,7 +104,48 @@ export default {
           this.editing = false
         })
     },
-  },
 
+    editKeydown (e) {
+      if (e.keyCode === 13) {
+        // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+        document.execCommand('insertHTML', false, '<br><br>')
+        // prevent the default behaviour of return key pressed
+        e.preventDefault()
+      }
+    },
+
+    caretToEnd () {
+      const el = this.$refs.content
+      el.focus()
+      if (typeof window.getSelection !== 'undefined' && typeof document.createRange !== 'undefined') {
+        const range = document.createRange()
+        range.selectNodeContents(el)
+        range.collapse(false)
+        const sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
+      } else if (typeof document.body.createTextRange !== 'undefined') {
+        const textRange = document.body.createTextRange()
+        textRange.moveToElementText(el)
+        textRange.collapse(false)
+        textRange.select()
+      }
+    },
+
+    replaceHtmlEntites (s) {
+      const translateRe = /&(nbsp|amp|quot|lt|gt);/g
+      const translate = {
+        'nbsp': ' ',
+        'amp': '&',
+        'quot': '\"',
+        'lt': '<',
+        'gt': '>'
+      }
+
+      return (s.replace(translateRe, function(match, entity) {
+        return translate[entity]
+      }))
+    },
+  },
 }
 </script>
