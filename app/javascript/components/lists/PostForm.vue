@@ -68,6 +68,7 @@ export default {
       this.loadingUrlInfo = true
       axios.post('/posts/load-open-graph', {url: this.url})
         .then(res => {
+          console.log('res')
           this.urlInfo = res.data
         })
         .catch(err => console.error)

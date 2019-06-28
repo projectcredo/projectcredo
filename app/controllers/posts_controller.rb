@@ -44,9 +44,15 @@ class PostsController < ApplicationController
 
   def load_open_graph
     url = params.require(:url)
-    object = LinkThumbnailer.generate(url)
+    begin
+      object = LinkThumbnailer.generate(url)
+    rescue LinkThumbnailer::HTTPError => e
+      return render status: 400, body: 'Couldn\'t load the URL'
+    end
 
     puts object.inspect
+
+    puts Settings.paper_urls.inspect
 
     render json: object
   end

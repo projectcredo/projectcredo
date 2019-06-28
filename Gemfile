@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.6.3'
 
-# ProjectCredo specific gems
+gem 'config'
 gem 'devise', '~> 4.6.0'
 gem 'acts-as-taggable-on', '~> 4.0'
 gem 'acts_as_votable', '~> 0.10.0'

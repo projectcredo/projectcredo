@@ -19,6 +19,7 @@
 <script>
 import axios from '../../services/axios'
 import {Modal} from 'uiv'
+import uniqBy from 'lodash-es/uniqBy'
 
 export default {
 
@@ -33,13 +34,15 @@ export default {
 
   computed: {
     papers () {
-      return this.list.posts.reduce((acc, post) => {
+      const papers = this.list.posts.reduce((acc, post) => {
         post.articles.forEach(article => {
           acc = acc.concat(article.papers)
         })
 
         return acc;
       }, [])
+
+      return uniqBy(papers, 'id')
     },
   },
 
