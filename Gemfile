@@ -48,6 +48,8 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'rails_param'
 
+gem 'nokogiri'
+
 gem 'rake', group: :test
 
 # Use webpacker to build assets

@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
+  include PapersScraperHelper
   require 'link_thumbnailer'
+  require 'open-uri'
 
   after_action :verify_authorized, except: :load_open_graph
 
@@ -44,15 +46,23 @@ class PostsController < ApplicationController
 
   def load_open_graph
     url = params.require(:url)
+
+    # Optimize: find a way for LinkThumbnailer to generate from HTML string
+    # to avoid two requests
     begin
       object = LinkThumbnailer.generate(url)
     rescue LinkThumbnailer::HTTPError => e
       return render status: 400, body: 'Couldn\'t load the URL'
     end
 
-    puts object.inspect
+    begin
+      html = open(url).read
+      parsePapers(html)
+    rescue OpenURI::HTTPError => e
+      puts e.inspect
+      return render status: 400, body: 'Couldn\'t load the URL'
+    end
 
-    puts Settings.paper_urls.inspect
 
     render json: object
   end
