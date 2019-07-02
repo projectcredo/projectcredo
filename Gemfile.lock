@@ -224,6 +224,7 @@ GEM
     postmark-rails (0.14.0)
       actionmailer (>= 3.0.0)
       postmark (~> 1.9.0)
+    promise (0.3.1)
     public_suffix (3.1.0)
     puma (3.12.1)
     pundit (2.0.1)
@@ -374,6 +375,7 @@ DEPENDENCIES
   paperclip (~> 5.2.0)
   pg (~> 0.18)
   postmark-rails (~> 0.14.0)
+  promise
   puma (~> 3.0)
   pundit
   rails (>= 5.0.0, < 5.1)

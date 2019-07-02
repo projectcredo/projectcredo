@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  require 'pp'
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

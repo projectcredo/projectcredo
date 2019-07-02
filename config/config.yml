@@ -1,0 +1,22 @@
+
+# The list of paper URLs prefixes
+paper_urls:
+  - type: pubmed
+    prefix: https://www.ncbi.nlm.nih.gov/pubmed/
+    regex: \/pubmed\/([\d]+)
+
+  - type: doi
+    prefix: https://onlinelibrary.wiley.com/doi/
+    regex: (10.\d{4,9}\/[-._;()\/:A-Z0-9]+)
+
+  - type: pmc
+    prefix: https://www.ncbi.nlm.nih.gov/pmc/articles/
+    regex: (PMC[\d]+)
+
+  - type: url
+    prefix: https://www.sciencedirect.com/science/article/
+    regex:
+
+  - type: url
+    prefix: https://academic.oup.com/edrv/article/
+    regex:

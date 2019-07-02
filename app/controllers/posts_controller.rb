@@ -50,14 +50,15 @@ class PostsController < ApplicationController
     # Optimize: find a way for LinkThumbnailer to generate from HTML string
     # to avoid two requests
     begin
-      object = LinkThumbnailer.generate(url)
+      object = LinkThumbnailer.generate(url).as_json
     rescue LinkThumbnailer::HTTPError => e
       return render status: 400, body: 'Couldn\'t load the URL'
     end
 
     begin
       html = open(url).read
-      parsePapers(html)
+
+      object[:papers] = parsePapers(html)
     rescue OpenURI::HTTPError => e
       puts e.inspect
       return render status: 400, body: 'Couldn\'t load the URL'
