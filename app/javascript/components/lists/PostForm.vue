@@ -53,6 +53,7 @@ export default {
         url: this.urlInfo.url,
         title: this.urlInfo.title,
         cover: this.urlInfo.images.length ? this.urlInfo.images[0].src : null,
+        papers: this.urlInfo.papers.map(p => p.id)
       }
     },
   },

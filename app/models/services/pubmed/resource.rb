@@ -25,9 +25,9 @@ class Pubmed
       {
         import_source:      lambda {|data| 'pubmed' },
         title:              lambda {|data| data.css('ArticleTitle').text },
-        publication:        lambda {|data| data.css('Journal Title').text },
-        doi:                lambda {|data| data.css('ArticleId[IdType=doi]').text },
-        pubmed_id:          lambda {|data| data.css('ArticleIdList > ArticleId[IdType=pubmed]').text },
+        publication:        lambda {|data| data.css('Article Title').text },
+        doi:                lambda {|data| data.css('PubmedData > ArticleIdList > ArticleId[IdType=doi]').text },
+        pubmed_id:          lambda {|data| data.css('PubmedData > ArticleIdList > ArticleId[IdType=pubmed]').text },
         abstract:           lambda do |data|
           data.css('AbstractText').map do |a|
             if a['Label'] then "#{a['Label']}\n#{a.text}" else a.text end

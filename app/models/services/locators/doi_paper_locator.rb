@@ -1,8 +1,9 @@
 class DoiPaperLocator
-  attr_accessor :locator_id, :errors
+  attr_accessor :locator_id, :url, :errors
 
   def initialize locator_params={}
     self.locator_id = locator_params[:id].strip
+    self.url = locator_params[:url]
     self.errors = []
   end
 
@@ -16,10 +17,11 @@ class DoiPaperLocator
     if paper_attributes
       response = resource.response
       paper = Paper.create paper_attributes
+      if self.url then paper.links.create(url: self.url) end
 
       return nil if paper.errors.any?
 
-      paper.api_import_responses.create(json: JSON.parse(response.body), source_uri: response.uri.to_s)
+      paper.api_import_responses.create(json: JSON.parse(response.body), source_uri: response.uri.to_s) unless Rails.env.production?
       return paper
     else
       return nil

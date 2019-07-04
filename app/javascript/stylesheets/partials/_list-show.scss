@@ -67,6 +67,16 @@
   max-height: 3; /* fallback */
 }
 
+.urlp-papers { margin: 0 -10px -10px; }
+.urlp-papers-header { background-color: #CACACA; text-align: center; cursor: pointer; }
+.urlp-papers-list {
+  padding: 0; margin: 0; overflow: hidden;
+  list-style-type: decimal; list-style-position: inside;
+  max-height: 0; transition: max-height 0.5s ease;
+  &.show { max-height: 500px; overflow: scroll; }
+  li { padding: 0 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
 .list-summary { margin-bottom: 30px; }
 .list-summary-title {
   padding-bottom: 5px; margin-bottom: 10px;

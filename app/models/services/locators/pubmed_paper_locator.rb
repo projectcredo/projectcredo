@@ -1,8 +1,9 @@
 class PubmedPaperLocator
-  attr_accessor :locator_id, :errors
+  attr_accessor :locator_id, :url, :errors
 
   def initialize locator_params={}
     self.locator_id = locator_params[:id].strip
+    self.url = locator_params[:url]
     self.errors = []
   end
 
@@ -16,7 +17,9 @@ class PubmedPaperLocator
     if paper_attributes
       response = pubmed.resource.response
       paper = Paper.create paper_attributes
-      paper.api_import_responses.create(xml: response.body, source_uri: response.uri.to_s)
+      if self.url then paper.links.create(url: self.url) end
+
+      paper.api_import_responses.create(xml: response.body, source_uri: response.uri.to_s) unless Rails.env.production?
       return paper
     else
       return nil

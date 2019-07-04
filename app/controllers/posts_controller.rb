@@ -15,6 +15,7 @@ class PostsController < ApplicationController
 
     if params[:article].present?
       article = post.articles.create!(params.require(:article).permit(:title, :url, :cover))
+      article.papers << Paper.where(id: params[:article][:papers])
     end
 
     respond_to do |format|
@@ -58,7 +59,7 @@ class PostsController < ApplicationController
     begin
       html = open(url).read
 
-      object[:papers] = parsePapers(html)
+      object[:papers] = parse_papers(html).map { |p| p.slice('id', 'title', 'type', 'url', 'source_id') }
     rescue OpenURI::HTTPError => e
       puts e.inspect
       return render status: 400, body: 'Couldn\'t load the URL'
