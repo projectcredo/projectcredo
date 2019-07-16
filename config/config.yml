@@ -9,6 +9,10 @@ paper_urls:
     prefix: https://onlinelibrary.wiley.com/doi/
     regex: (10.\d{4,9}\/[-._;()\/:A-Z0-9]+)
 
+  - type: doi
+    prefix: https://doi.org/
+    regex: (10.\d{4,9}\/[-._;()\/:A-Z0-9]+)
+
   - type: pmc
     prefix: https://www.ncbi.nlm.nih.gov/pmc/articles/
     regex: (PMC[\d]+)

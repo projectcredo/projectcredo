@@ -11,7 +11,10 @@
           {{ info.papers.length }} found papers
         </div>
         <ul class="urlp-papers-list" :class="{show: showPapers}">
-          <li v-for="paper in info.papers" v-if="paper.title" :title="paper.title">{{ paper.title }}</li>
+          <li v-for="paper in info.papers" v-if="paper.title" :title="paper.title">
+            <input type="checkbox" v-model="checked" :value="paper.id">
+            {{ paper.title }}
+          </li>
         </ul>
       </div>
     </div>
@@ -25,7 +28,18 @@ export default {
   data () {
     return {
       showPapers: false,
+      checked: [],
     }
+  },
+
+  watch: {
+    info () {
+      this.checked = this.info.papers.map(p => p.id)
+    },
+
+    checked () {
+      this.$emit('checked', this.checked)
+    },
   }
 }
 </script>

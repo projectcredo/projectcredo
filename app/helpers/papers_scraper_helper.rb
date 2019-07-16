@@ -1,19 +1,43 @@
 module PapersScraperHelper
   require 'nokogiri'
+  require 'net/http'
+  require 'uri'
 
-  def parse_paper_urls(content)
+  def fetch(url, limit = 10)
+    # TODO: create a shared network service for this code to use in other places
+    endpoint = URI.parse(url)
+    http = Net::HTTP.new(endpoint.host, endpoint.port)
+    http.use_ssl = true
+    request = Net::HTTP::Get.new(endpoint.request_uri)
+    request['User-Agent'] = 'ProjectCredo (https://www.projectcredo.com/; mailto:accounts@projectcredo.com)'
+    response = http.request(request)
+
+    # Check fo redirects
+    case response
+    when Net::HTTPSuccess then response
+    when Net::HTTPRedirection then fetch(response['location'], limit - 1)
+    else
+      response.error!
+    end
+  end
+
+  def find_urls(content)
     doc = Nokogiri::HTML(content)
-    paper_urls = AppConfig['paper_urls']
-    prefixes = paper_urls.pluck('prefix')
 
     anchors = doc.css('a')
-    anchors.pluck(:href).uniq.
-        select{|h| h.start_with?(*prefixes) }.map do |h|
-          info = paper_urls.find{|u| h.start_with?(u['prefix'])}.clone
-          info['url'] = h
-          info['source_id'] = get_paper_id(info)
-          info
-        end
+    anchors.pluck(:href).uniq
+  end
+
+  def find_papers(urls)
+    @paper_urls = AppConfig['paper_urls']
+    prefixes = @paper_urls.pluck('prefix')
+
+    urls.select{|h| h && h.start_with?(*prefixes)}.map do |h|
+      info = @paper_urls.find{|u| h && h.start_with?(u['prefix'])}.clone
+      info['url'] = h
+      info['source_id'] = get_paper_id(info)
+      info
+    end
   end
 
   def get_paper_id(info)
@@ -62,9 +86,11 @@ module PapersScraperHelper
     data
   end
 
-  def parse_papers(content)
-    urls = parse_paper_urls(content)
+  def parse_papers(content, add_urls = [])
+    urls = find_urls(content)
+    urls.concat(add_urls).uniq!
+    info = find_papers(urls)
 
-    data = urls.map{|u| get_paper_data(u) }.select {|p| p.key?('id') || p.key?(:id) }
+    data = info.map{|u| get_paper_data(u) }.select {|p| p.key?('id') || p.key?(:id) }
   end
 end

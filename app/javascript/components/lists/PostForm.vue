@@ -1,7 +1,7 @@
 <template>
   <div class="list-post-form">
     <textarea v-model="content" ref="textarea" class="lpf-textarea" placeholder="What are you reading?" :disabled="loading"></textarea>
-    <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo"></url-preview>
+    <url-preview v-if="url" :info="urlInfo" :loading="loadingUrlInfo" @checked="(c) => checkedPapers = c"></url-preview>
     <button class="btn btn-primary" :disabled="loadingUrlInfo || loading || ! this.content" @click="submit">
       <span v-if="loading">Posting...</span>
       <span v-else>Post</span>
@@ -32,6 +32,7 @@ export default {
       urlInfo: {},
       loadingUrlInfo: false,
       loading: false,
+      checkedPapers: [],
     }
   },
 
@@ -53,7 +54,7 @@ export default {
         url: this.urlInfo.url,
         title: this.urlInfo.title,
         cover: this.urlInfo.images.length ? this.urlInfo.images[0].src : null,
-        papers: this.urlInfo.papers.map(p => p.id)
+        papers: this.checkedPapers,
       }
     },
   },
