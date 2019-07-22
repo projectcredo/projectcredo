@@ -1,7 +1,4 @@
 class PostsController < ApplicationController
-  include PapersScraperHelper
-  require 'link_thumbnailer'
-
   after_action :verify_authorized, except: :load_open_graph
 
   def create
@@ -48,17 +45,11 @@ class PostsController < ApplicationController
     url = params.require(:url)
 
     begin
-      html = fetch(url).body
-
-      scraper = LinkThumbnailer::Scraper.new(html, URI(url))
-      object = scraper.call.as_json
-
-      object[:papers] = parse_papers(html, [url]).map {|p| p.slice('id', 'title', 'type', 'url', 'source_id')}
+      object = Papers::Scraper.new.scrap_url(url)
 
       return render json: object
-    rescue OpenURI::HTTPError => e
-      puts e.inspect
-      return render status: 400, body: 'Could not load the URL'
+    rescue PapersScraperError => e
+      return render status: 400, body: e.message
     end
   end
 

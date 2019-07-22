@@ -1,0 +1,1 @@
+class PapersScraperError < StandardError; end
