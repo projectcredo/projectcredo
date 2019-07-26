@@ -78,6 +78,8 @@ module Papers
         raise "Paper type #{info['type']} not supported"
       end
 
+      # TODO: get opengraph data to retrieve paper cover image
+
       data
     end
 
