@@ -66,16 +66,11 @@ module Papers
       data = info.clone
 
       case info['type']
-      when 'pubmed'
-        data = data.merge(load_paper_pubmed_data(info))
-      when 'doi'
-        data = data.merge(load_paper_doi_data(info))
-      when 'pmc'
-        data = data.merge(load_paper_pmc_data(info))
-      when 'url'
-        data = data.merge(load_paper_url_data(info))
-      else
-        raise "Paper type #{info['type']} not supported"
+      when 'pubmed'; data = data.merge(load_paper_pubmed_data(info))
+      when 'doi'; data = data.merge(load_paper_doi_data(info))
+      when 'pmc'; data = data.merge(load_paper_pmc_data(info))
+      when 'url'; data = data.merge(load_paper_url_data(info))
+      else; raise "Paper type #{info['type']} not supported"
       end
 
       # TODO: get opengraph data to retrieve paper cover image
@@ -91,13 +86,22 @@ module Papers
       # TODO: run get_paper_data in parallel, wait for all results
 
       data = info.map{|u| get_paper_data(u) }.select {|p| p.key?('title') }.uniq{|p| p['title'] }
-      # store_papers(data)
     end
 
     def store_papers(papers)
       papers.map do |data|
-        paper = Paper.create(data.except('id', 'type', 'prefix', 'regex', 'url', 'source_id'))
-        if data['url'] then paper.links.create(url: data['url']) end
+        next data if data['id'].present?
+
+        paper = Paper.create({
+          title: data['title'],
+          published_at: data['published_at'],
+          abstract: data['abstract'],
+          doi: data['type'] == 'doi' ? data['source_id'] : nil,
+          pubmed_id: data['type'] == 'pubmed' ? data['source_id'] : nil,
+          publication: data['publication'],
+          import_source: data['import_source'],
+        })
+        paper.links.create(url: data['url'])
         data.merge(paper.as_json)
       end
     end
@@ -111,7 +115,9 @@ module Papers
         # scraper = LinkThumbnailer::Scraper.new(html, URI(url))
         # object = scraper.call.as_json
 
-        object[:papers] = parse_papers(html, [url]).map {|p| p.slice('id', 'title', 'type', 'url', 'source_id')}
+        papers = parse_papers(html, [url])
+        papers = store_papers(papers)
+        object[:papers]  = papers.map {|p| p.slice('id', 'title', 'type', 'url', 'source_id')}
 
         return object
       rescue OpenURI::HTTPError => e
