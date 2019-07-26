@@ -12,7 +12,7 @@
         <span v-if="paper.authors.length">- {{ paper.authors.map(a => a.full_name).join(', ') }}</span>
       </div>
       <div class="lparp-bookmarks">
-        <bookmark :bookmarkable="paper" :type="'Paper'" :signed-in="!! currentUser.id"></bookmark>
+        <bookmark :bookmarkable="paper" :type="'Paper'" :signed-in="!! currentUser"></bookmark>
       </div>
     </div>
   </div>

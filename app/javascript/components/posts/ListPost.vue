@@ -24,7 +24,7 @@
           <div class="lpar-title"><a :href="article.url" target="_blank">{{ article.title || 'No article' }}</a></div>
           <div class="lpar-source">{{ article.source }}</div>
           <div class="lpar-bookmarks">
-            <bookmark :bookmarkable="article" :type="'Article'" :signed-in="!! currentUser.id"></bookmark>
+            <bookmark :bookmarkable="article" :type="'Article'" :signed-in="!! currentUser"></bookmark>
           </div>
         </div>
       </div>
