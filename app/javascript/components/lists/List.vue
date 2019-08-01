@@ -2,7 +2,7 @@
   <div class="list-component">
     <div class="list-cover cropped-image">
       <div class="list-cover-img">
-        <img :src="list.cover_url" v-if="list.cover_file_name" alt="Board cover">
+        <img :src="list.cover_url" v-if="list.cover_url" alt="Board cover">
       </div>
       <h1 class="list-cover-title">
         <div class="list-title-text">{{ list.name }}</div>
