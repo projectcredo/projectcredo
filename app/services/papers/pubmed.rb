@@ -70,6 +70,7 @@ module Papers
           db: 'pubmed',
           retmode: 'xml',
           retmax: 2,
+          api_key: ENV['PUBMED_API_KEY'],
       }
     end
 

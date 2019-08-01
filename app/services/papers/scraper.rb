@@ -56,7 +56,7 @@ module Papers
 
     def load_paper_url_data(info)
       if (link = Link.find_by(url: info['url']))
-        return info.merge(link.paper.as_json)
+        return info.merge(link.paper.as_json) if link.paper
       end
 
       info.merge(LinkThumbnailer.generate(info['url']).as_json)
