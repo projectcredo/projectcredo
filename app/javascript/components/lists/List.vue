@@ -6,7 +6,7 @@
       </div>
       <h1 class="list-cover-title">
         <div class="list-title-text">{{ list.name }}</div>
-        <div class="list-title-star">
+        <div class="list-title-star" v-if="currentUser">
           <i title="Pin / unpin the list" class="fa" :class="{'fa-star': list.pinned, 'fa-star-o': ! list.pinned}"
             v-if="! pinIsLoading" @click="togglePin"></i>
           <span class="spinner" v-if="pinIsLoading">

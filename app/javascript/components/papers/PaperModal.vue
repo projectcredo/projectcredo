@@ -2,7 +2,7 @@
   <modal :value="show" @input="$emit('hide')" ref="modal" size="lg">
     <div slot="title" v-if="paper.id">
       <h4 class="modal-title">
-        <vote :voteable="paper" :signed-in="!! currentUser.id"></vote>
+        <vote :voteable="paper" :signed-in="!! currentUser"></vote>
         {{ paper.title }}
         <a class="modal-external-link" :href="paper.direct_link" target="_blank"></a>
       </h4>
@@ -52,7 +52,7 @@
             <comment :comment="comment"></comment>
           </div>
           <!-- <vote :voteable="note" :signed-in="signedIn"></vote> -->
-          <a href="#" v-if="currentUser.id === comment.user_id" class="action-link" @click.prevent="editComment(comment)">
+          <a href="#" v-if="currentUser && currentUser.id === comment.user_id" class="action-link" @click.prevent="editComment(comment)">
             edit
           </a>
           <a href="#" v-if="list.can_update" class="action-link" @click.prevent="deleteComment(comment)" :disabled="deletingComment">delete</a>
