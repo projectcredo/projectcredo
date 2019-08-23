@@ -59,7 +59,12 @@ module Papers
         return info.merge(link.paper.as_json) if link.paper
       end
 
-      info.merge(LinkThumbnailer.generate(info['url']).as_json)
+      begin
+        info.merge(LinkThumbnailer.generate(info['url']).as_json)
+      rescue LinkThumbnailer::Exceptions => e
+        Rails.logger.error e.message
+        info
+      end
     end
 
     def get_paper_data(info)
