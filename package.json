@@ -41,7 +41,7 @@
   },
   "devDependencies": {},
   "engines": {
-    "node": "8.x.x || 10.x.x"
+    "node": "14.x.x"
   },
   "license": "WIP"
 }
