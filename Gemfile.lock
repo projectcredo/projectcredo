@@ -226,7 +226,7 @@ GEM
       postmark (~> 1.9.0)
     promise (0.3.1)
     public_suffix (3.1.0)
-    puma (3.12.1)
+    puma (3.12.6)
     pundit (2.0.1)
       activesupport (>= 3.0.0)
     rack (2.0.7)
@@ -376,7 +376,7 @@ DEPENDENCIES
   pg (~> 0.18)
   postmark-rails (~> 0.14.0)
   promise
-  puma (~> 3.0)
+  puma (~> 3.12)
   pundit
   rails (>= 5.0.0, < 5.1)
   rails_param
