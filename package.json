@@ -11,7 +11,7 @@
     "@fancyapps/fancybox": "^3.2.5",
     "@rails/webpacker": "3.5",
     "autosize": "^4.0.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "babel-core": "^6.26.3",
     "babel-loader": "7",
     "bootstrap-sass": "^3.3.7",
