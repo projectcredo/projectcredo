@@ -4,7 +4,7 @@
       <img :src="paper.cover_thumb" alt="">
     </div>
     <div class="lparp-details">
-      <div class="lparp-score"><div class="lparp-score-value" style="width: 97%;">Credo Score: 97%</div></div>
+      <!--<div class="lparp-score"><div class="lparp-score-value" style="width: 97%;">Credo Score: 97%</div></div>-->
       <a class="lparp-title" href="#" @click.prevent="$emit('select-paper', paper)">{{ paper.title }}</a>
       <div class="lparp-source">{{ paper.publication }}</div>
       <div class="lparp-date-authors">
