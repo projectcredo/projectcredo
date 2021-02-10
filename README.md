@@ -56,9 +56,9 @@ Submit a pull request against the develop branch and fill out the Pull Request t
 
 #### Testing
 
-1. `docker-compose run app rails db:environment:set RAILS_ENV=test`
-1. `docker-compose run app rails webpacker:compile` - if assets were not compiled previously (remove public/packs if command is not compiling assets)
-1. `docker-compose run app rspec`
+1. `docker-compose run --rm app rails db:environment:set RAILS_ENV=test`
+1. `docker-compose run --rm app rails webpacker:compile` - if assets were not compiled previously (remove public/packs if command is not compiling assets)
+1. `docker-compose run --rm app rspec`
 
 ### Helpful commands
 

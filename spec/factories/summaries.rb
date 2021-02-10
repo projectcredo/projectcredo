@@ -5,7 +5,7 @@ FactoryBot.define do
 
   factory :summary do
     content { generate :summary_content }
-    evidence_rating 20
+    evidence_rating { 20 }
     user
     list
   end
