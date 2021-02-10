@@ -230,6 +230,7 @@ GEM
     puma (3.12.6)
     pundit (2.0.1)
       activesupport (>= 3.0.0)
+    racc (1.5.2)
     rack (2.2.3)
     rack-proxy (0.6.5)
       rack
@@ -395,7 +396,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.6.3p62
+   ruby 2.6.6p146
 
 BUNDLED WITH
    1.17.2
