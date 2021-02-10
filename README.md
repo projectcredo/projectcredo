@@ -23,8 +23,8 @@ Project Credo is open-source by design, under a GPLv3 license.
 1. `cd` into the directory
 1. Create a `.env` file in the root directory
 1. `docker-compose build` whenever you add a gem - in this case, you'll be installing all of them
-1. `docker-compose run app yarn` to install all node dependencies, required for Webpacker
-1. `docker-compose run app rails db:create db:schema:load db:migrate db:seed` - to create the database, load the schema, migrate any lingering migrations, and then seed with test data
+1. `docker-compose run --rm app yarn` to install all node dependencies, required for Webpacker
+1. `docker-compose run --rm app rails db:create db:schema:load db:migrate db:seed` - to create the database, load the schema, migrate any lingering migrations, and then seed with test data
 1. `docker-compose up` to run the rails server
 
 #### .env file
