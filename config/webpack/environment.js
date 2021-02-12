@@ -2,7 +2,7 @@ const { environment } = require('@rails/webpacker')
 const vue = require('./loaders/vue')
 const { resolve } = require('path')
 const webpack = require('webpack')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const babelLoader = environment.loaders.get('babel')
 babelLoader.exclude = []
@@ -19,25 +19,6 @@ environment.plugins.append(
     $: 'jquery',
     jQuery: 'jquery',
     jquery: 'jquery',
-  }),
-)
-
-environment.plugins.append(
-  'CommonsChunkVendor',
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    minChunks: module => {
-      // this assumes your vendor imports exist in the node_modules directory
-      return module.context && module.context.indexOf('node_modules') !== -1
-    },
-  }),
-)
-
-environment.plugins.append(
-  'CommonsChunkManifest',
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'manifest',
-    minChunks: Infinity,
   }),
 )
 

@@ -11,7 +11,7 @@ gem 'impressionist'
 
 gem 'pundit'
 
-gem 'omniauth'
+gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 
@@ -22,7 +22,7 @@ gem 'postmark-rails', '~> 0.14.0'
 gem 'gibbon'
 # gem 'rails_autolink'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 5.0.0', '< 5.1'
+gem 'rails', '>= 5.2.0', '< 5.3'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -54,7 +54,7 @@ gem 'promise'
 gem 'rake', group: :test
 
 # Use webpacker to build assets
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '~> 6.x'
 gem 'will_paginate'
 gem 'sentry-raven'
 gem 'link_thumbnailer'

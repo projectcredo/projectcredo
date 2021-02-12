@@ -1,13 +1,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-const environment = require('./environment')
-const merge = require('webpack-merge')
+const webpackConfig = require('./base')
 
-module.exports = merge(environment.toWebpackConfig(), {
-  devServer: {
-    watchOptions: {
-      poll: 1000,
-      ignored: /node_modules/,
-    },
-  },
-})
+console.log(JSON.stringify(webpackConfig, null, 2))
+
+module.exports = webpackConfig
