@@ -50,7 +50,7 @@ class List < ApplicationRecord
             }
   validate :validate_tag
 
-  def self.visible(user)
+  def self.visible(user = nil)
     user ? where(user_id: user.id).or(List.where(visibility: :public)) : where(visibility: :public)
   end
 
