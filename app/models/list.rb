@@ -17,7 +17,7 @@ class List < ApplicationRecord
   scope :ranked, -> {
     joins("LEFT JOIN homepages_lists ON lists.id = homepages_lists.list_id")
     .group(:id)
-    .select('lists.*,COUNT( distinct homepages_lists.homepage_id) AS pins')
+    .select('lists.*,COUNT(distinct homepages_lists.homepage_id) AS pins')
     .order('lists.cached_votes_up DESC, pins DESC, lists.updated_at DESC')
   }
   scope :by_activity, -> {
@@ -49,6 +49,14 @@ class List < ApplicationRecord
               message: 'must be unique for lists you own.'
             }
   validate :validate_tag
+
+  def self.visible(user)
+    user ? where(user_id: user.id).or(List.where(visibility: :public)) : where(visibility: :public)
+  end
+
+  def self.search(query)
+    where("lower(lists.name) LIKE :query OR lower(lists.description) LIKE :query", {query: "%#{query.downcase}%"})
+  end
 
   # Methods
   def owner

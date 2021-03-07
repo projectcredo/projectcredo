@@ -9,9 +9,13 @@ class ListsController < ApplicationController
   # GET /lists.json
   def index
     if current_user
-      @visible_lists = current_user.visible_lists.ranked
+      @visible_lists = List.visible(current_user).ranked
     else
-      @visible_lists = List.publicly_visible.ranked
+      @visible_lists = List.visible.ranked
+    end
+    if (params[:q])
+      @query = params[:q]
+      @visible_lists = @visible_lists.search(params[:q])
     end
   end
 

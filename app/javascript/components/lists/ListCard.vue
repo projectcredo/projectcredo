@@ -10,7 +10,7 @@
           <div>
             {{ list.description, 300 | truncate }}
           </div>
-          <div v-if="list.last_activities.length">
+          <div v-if="list.last_activities && list.last_activities.length">
             <div class="list-activity-row" v-for="(activity, index) in list.last_activities"
               v-show="showMore ? true : index < 3" :key="activity.id">
               <div class="col-md-1" :class="activity.type"></div>
