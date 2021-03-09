@@ -47,8 +47,8 @@
         <div class="form-group">
           <div class="col-md-offset-2 col-sm-8">
             <input type="submit" name="commit" value="Submit" method="patch" data-disable-with="Submit" class="btn btn-primary">
-            <a href="/vedmant/test" class="action-link">cancel</a>
-            <a v-if="summary.id" data-confirm="Are you sure you want to delete your summary?" rel="nofollow" data-method="delete" :href="formUrl" class="btn btn-danger pull-right">Delete this summary</a>
+            <a href="/" class="action-link">cancel</a>
+            <a v-if="summary.id" data-confirm="Are you sure you want to delete your summary?" rel="nofollow" :href="formUrl" class="btn btn-danger pull-right">Delete this summary</a>
           </div>
         </div>
 

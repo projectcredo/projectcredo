@@ -43,7 +43,7 @@ class CommentsController < ApplicationController
   def destroy
     authorize @comment
 
-    @comment.destroy
+    @comment.destroy!
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Comment was successfully destroyed.' }
       format.json {render :json => {}, :status => :no_content}

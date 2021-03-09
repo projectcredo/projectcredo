@@ -22,8 +22,11 @@
         <upvote :comment="comment"></upvote>
       </li>
       <li><a class="toggle-reply active-link btn-xs" @click.prevent="showReply = ! showReply" href="#">reply</a></li>
-      <li v-if="comment.user_id === userId"><a class="active-link btn-xs" data-remote="true" @click.prevent="showEdit = ! showEdit">edit</a></li>
-      <li v-if="comment.user_id === userId"><a class="text-danger small" data-remote="true" rel="nofollow" data-method="delete" href="/comments/55">delete</a></li>
+      <li v-if="comment.user_id === userId"><a class="active-link btn-xs cursor-pointer" @click.prevent="showEdit = ! showEdit">edit</a></li>
+      <li v-if="comment.user_id === userId">
+        <span v-if="removing">deleting...</span>
+        <a v-else class="text-danger small cursor-pointer" @click.prevent="removeComment">delete</a>
+      </li>
       <li></li>
     </ul>
 
@@ -44,6 +47,8 @@
 import moment from 'moment-mini'
 import CommentForm from './CommentForm.vue'
 import Upvote from './Upvote.vue'
+import axios from '../../services/axios'
+import pick from 'lodash-es/pick'
 
 export default {
   name: 'comment',
@@ -59,6 +64,7 @@ export default {
     return {
       showReply: false,
       showEdit: false,
+      removing: false,
     }
   },
 
@@ -75,6 +81,19 @@ export default {
     formatDate (date) {
       return moment(date).format('MMMM Do YYYY hh:mm:ss')
     },
+
+    removeComment() {
+      if (! confirm('Are you sure?')) return
+
+      this.removing = true
+      try {
+        axios.delete(`/comments/${this.comment.id}`)
+        this.$emit('deleted')
+      } catch (e) {
+        //
+      }
+      this.removing = false
+    }
   },
 
 }

@@ -8,6 +8,7 @@
              :user-id="userId"
              :commentable-type="commentableType"
              :commentable-id="commentableId"
+             @deleted="() => onDeleted(comment)"
     ></comment>
   </div>
 </template>
@@ -25,7 +26,12 @@ export default {
   props: ['commentableType', 'commentableId', 'signedIn', 'userId', 'comments'],
 
   methods: {
-    //
+    onDeleted (comment) {
+      const idx = this.comments.findIndex(c => c.id === comment.id)
+      if (idx !== -1) {
+        this.comments.splice(idx, 1)
+      }
+    }
   },
 }
 </script>
