@@ -31,7 +31,7 @@ export default {
 
   computed: {
     date () {
-      return moment(this.paper.created_at).format('D/M/YYYY')
+      return moment(this.paper.published_at).format('D/M/YYYY')
     },
   },
 }
