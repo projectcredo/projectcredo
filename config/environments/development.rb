@@ -68,7 +68,7 @@ Rails.application.configure do
     :port => '2525',
     :authentication => :cram_md5,
   }
-  config.action_mailer.default_url_options = { host: 'localhost:3000', protocol: :http }
+  config.action_mailer.default_url_options = { host: 'localhost:3001', protocol: :http }
 
   config.x.reload_papers_info_timeout = 120
 end

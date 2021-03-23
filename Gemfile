@@ -59,6 +59,8 @@ gem 'will_paginate'
 gem 'sentry-raven'
 gem 'link_thumbnailer'
 
+gem 'rack-cors'
+
 group :test do
   gem 'capybara'
   gem 'database_cleaner'

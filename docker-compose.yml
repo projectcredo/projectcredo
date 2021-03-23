@@ -3,7 +3,7 @@ services:
 
   app:
     build: .
-    command: bash -c "rm -f /app/tmp/pids/server.pid; rails server -b 0.0.0.0 -p 3000"
+    command: bash -c "rm -f /app/tmp/pids/server.pid; rails server -b 0.0.0.0 -p 3001"
     ## Uncomment next to use remote debugging
     # command: >
     #   bash -c "rm -f /app/tmp/pids/server.pid;
@@ -11,7 +11,7 @@ services:
     volumes:
       - .:/app:cached
     ports:
-      - 3000:3000
+      - 3001:3001
       - 1234:1234
       - 26162:26162
     depends_on:
