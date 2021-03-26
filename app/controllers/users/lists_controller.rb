@@ -15,6 +15,11 @@ class Users::ListsController < ApplicationController
     @list.refresh_papers_info
     @references = @list.references.joins(:paper).order(params_sort_order)
     @summaries = @list.summaries.ranked
+
+    respond_to do |format|
+      format.html
+      format.json {render 'jbuilders/_list.json.jbuilder', {locals: {list: @list}}}
+    end
   end
 
   def edit
