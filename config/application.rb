@@ -1,5 +1,4 @@
 require_relative 'boot'
-
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -21,6 +20,16 @@ module Projectcredo
 
     # Include the authenticity token in remote forms.
     config.action_view.embed_authenticity_token_in_remote_forms = true
+
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          headers: :any,
+          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+          methods: [:get, :post, :options, :delete, :put]
+      end
+    end
 
     config.generators do |g|
       g.test_framework :rspec

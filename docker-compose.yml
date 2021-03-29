@@ -24,18 +24,18 @@ services:
     tty: true
     stdin_open: true
 
-  webpacker:
-    build: .
-    command: ./bin/webpack-dev-server
-    volumes:
-        - .:/app:cached
-    ports:
-      - 3035:3035
-    environment:
-      - NODE_ENV=development
-      - DOCKERIZED=true
-    env_file:
-      - '.env'
+#  webpacker:
+#    build: .
+#    command: ./bin/webpack-dev-server
+#    volumes:
+#        - .:/app:cached
+#    ports:
+#      - 3035:3035
+#    environment:
+#      - NODE_ENV=development
+#      - DOCKERIZED=true
+#    env_file:
+#      - '.env'
 
   postgres:
     image: postgres:9.5

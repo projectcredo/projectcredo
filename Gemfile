@@ -3,15 +3,16 @@ ruby '2.6.6'
 
 gem 'config'
 gem 'devise', '~> 4.7.1'
+gem 'devise_token_auth'
 gem 'acts-as-taggable-on', '~> 4.0'
 gem 'acts_as_votable', '~> 0.10.0'
 gem 'paperclip', '~> 5.2.0'
 gem 'aws-sdk', '~> 2.3.0'
-gem 'impressionist'
+gem 'impressionist', '~> 1.6.1'
 
 gem 'pundit'
 
-gem 'omniauth'
+gem "omniauth", "~> 1.9.1"
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 
