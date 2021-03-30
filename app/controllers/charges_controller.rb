@@ -1,6 +1,6 @@
 class ChargesController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create, :webhook]
-  skip_before_action :verify_authenticity_token, only: :webhook
+  # skip_before_action :verify_authenticity_token, only: :webhook
 
   def new
   end
