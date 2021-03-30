@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
+  devise :database_authenticatable, :registerable, # :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
@@ -20,6 +20,7 @@ class User < ApplicationRecord
             format: {with: /\A[\p{N}\p{L}_]{3,}\z/}
 
   before_save { self.email.downcase! if self.email }
+  before_save { skip_confirmation! }
   after_create :create_homepage
   after_create :subscribe_user_to_all_users_list
 
@@ -180,7 +181,6 @@ class User < ApplicationRecord
 
   def short_data
     self.as_json(only: [:id, :about, :first_name, :last_name, :username, :about], methods: [:avatar_thumb, :full_name])
-      .merge({url: user_lists_path(self.username)})
   end
 
   private

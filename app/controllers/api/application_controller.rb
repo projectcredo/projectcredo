@@ -3,6 +3,7 @@ class Api::ApplicationController < ActionController::Base
   include Pundit
   require 'pp'
   before_action :set_current_user
+  respond_to :json
 
   def set_current_user
     @current_user = nil
