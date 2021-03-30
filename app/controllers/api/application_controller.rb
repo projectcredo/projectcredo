@@ -12,4 +12,14 @@ class Api::ApplicationController < ActionController::Base
       @current_user = current_api_user
     end
   end
+
+  def ensure_current_user
+    unless current_api_user
+      render json: {status: 'Unauthorized'}, status: :unauthorized
+    end
+  end
+
+  def not_found
+    render json: {status: 'Not found'}, status: :not_found
+  end
 end

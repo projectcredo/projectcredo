@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     get '/lists' => 'lists#show'
     put '/lists' => 'lists#update'
     delete '/lists' => 'lists#destroy'
+
+    resources :pins, only: [:create, :destroy]
+    resource :bookmarks, only: [:show, :create, :destroy]
+    resource :votes, only: [:create, :destroy]
   end
 
 #   devise_scope :user do
