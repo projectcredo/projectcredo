@@ -3,5 +3,9 @@ module Overrides
     def render_create_success
       render 'jbuilders/_user.json.jbuilder', {locals: {user: @resource}}
     end
+
+    def render_update_success
+      render 'jbuilders/_user.json.jbuilder', {locals: {user: @resource}}
+    end
   end
 end

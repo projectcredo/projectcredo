@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       sessions: 'overrides/sessions',
       registrations: 'overrides/registrations',
     }
+    delete '/auth/remove-attachment/:type' => 'registrations#remove_attachment'
 
     resources :activities, only: [:index]
 
