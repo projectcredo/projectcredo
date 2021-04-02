@@ -14,13 +14,18 @@ Rails.application.routes.draw do
 
   # /api routes
   namespace :api do
-    mount_devise_token_auth_for 'User', at: 'auth'
+    mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+      sessions: 'overrides/sessions',
+      registrations: 'overrides/registrations',
+    }
 
     resources :activities, only: [:index]
 
     get '/lists' => 'lists#show'
     put '/lists' => 'lists#update'
     delete '/lists' => 'lists#destroy'
+
+    get '/profile/:username' => 'profile#index'
 
     resources :pins, only: [:create, :destroy]
     resource :bookmarks, only: [:show, :create, :destroy]

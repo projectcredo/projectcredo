@@ -1,4 +1,4 @@
-json.extract! list, :id, :name, :slug, :description, :created_at
+json.extract! list, :id, :name, :slug, :description, :created_at, :updated_at
 json.cover_thumb list.cover.url(:thumb)
 json.cover_url list.cover.url(:cover)
 json.owner list.user.short_data
