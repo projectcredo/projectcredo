@@ -4,7 +4,7 @@
   username = n.activity.sentence_parts[:username]
   list = n.activity.actable
   list_name = truncate(list.name)
-  list_url =  user_list_path(list.owner, list)
+  # list_url =  user_list_path(list.owner, list)
   type = n.activity.activity_type
   more_details = " and made you a #{current_user.role(list)}" if n.activity.activity_type == "created"
 %>
@@ -12,7 +12,6 @@
 <div class="notification-item <%= 'unread' if !n.has_read %>">
   <b><%= username %></b>
   <%= "#{type} '#{added}' #{preposition}" %>
-  <b><%= link_to "'#{list_name}'", list_url%></b>
   <%= more_details %>
   <div class="notification-time"><%= "#{time_ago_in_words n.created_at} ago" %></div>
 </div>

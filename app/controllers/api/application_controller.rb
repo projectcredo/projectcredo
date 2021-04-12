@@ -5,6 +5,8 @@ class Api::ApplicationController < ActionController::Base
   before_action :set_current_user
   respond_to :json
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def set_current_user
     @current_user = nil
     if (current_api_user)

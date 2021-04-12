@@ -2,15 +2,36 @@ class Api::ListsController < Api::ApplicationController
   include ActivitiesHelper
   include NotificationsHelper
 
-  before_action :authenticate_api_user!, except: [:index, :show]
-  before_action :set_user
-  before_action :set_list, except: [:remove_attachment]
+  before_action :authenticate_api_user!, except: [:show]
+  before_action :set_user, except: [:create]
+  before_action :set_list, except: [:create, :remove_attachment]
 
   def show
     impressionist(@list, '', :unique => [:session_hash])
     @list.refresh_papers_info
 
     render 'jbuilders/_list.json.jbuilder', {locals: {list: @list}}
+  end
+
+  def create
+    members = params.delete(:list_members) || []
+    @list = current_api_user.lists.build(list_params)
+
+    respond_to do |format|
+      if @list.save
+        current_api_user.homepage.lists << @list
+
+        create_activity_and_notifications(
+          actable: @list,
+          activity_type: "created",
+          users: [@list.user]
+        )
+
+        format.json { render 'jbuilders/_list.json.jbuilder', {locals: {list: @list}} }
+      else
+        format.json { render json: @list.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update
@@ -72,6 +93,6 @@ class Api::ListsController < Api::ApplicationController
     end
 
     def list_params
-      params.require(:list).permit(:name, :description, :tag_list, :cover)
+      params.permit(:name, :description, :tag_list, :cover)
     end
 end

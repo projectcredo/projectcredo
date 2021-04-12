@@ -22,9 +22,7 @@ Rails.application.routes.draw do
 
     resources :activities, only: [:index]
 
-    get '/lists' => 'lists#show'
-    put '/lists' => 'lists#update'
-    delete '/lists' => 'lists#destroy'
+    resource :lists, only: [:show, :create, :update, :destroy]
 
     get '/profile/:username' => 'profile#index'
 

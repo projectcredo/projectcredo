@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
+  helper_method :current_user
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
@@ -54,7 +55,11 @@ class ApplicationController < ActionController::Base
 #       render js: "window.location.replace('#{redirect_uri}');"
 #     end
 #
-#   private
+  private
+    def current_user
+      return current_api_user
+    end
+
 #     def ensure_current_user
 #       unless current_user
 #         flash[:alert] = 'You must sign in to perform this action'
@@ -66,9 +71,9 @@ class ApplicationController < ActionController::Base
 #       end
 #     end
 #
-  def not_found
-    raise ActionController::RoutingError.new('Not Found')
-  end
+#     def not_found
+#       raise ActionController::RoutingError.new('Not Found')
+#     end
 #
 #     def user_not_authorized(exception)
 #       policy_name = exception.policy.class.to_s.underscore

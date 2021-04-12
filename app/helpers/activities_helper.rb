@@ -1,6 +1,6 @@
 module ActivitiesHelper
   def create_activity(actable:, activity_type:, addable: nil)
-    Activity.create(user_id: current_user.id,
+    Activity.create(user_id: current_api_user.id,
                         activity_type: activity_type,
                         addable: addable,
                         actable: actable)
