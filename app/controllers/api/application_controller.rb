@@ -24,4 +24,8 @@ class Api::ApplicationController < ActionController::Base
   def not_found
     render json: {status: 'Not found'}, status: :not_found
   end
+
+  def forbidden
+    render json: {status: 'Forbidden'}, status: :forbidden
+  end
 end

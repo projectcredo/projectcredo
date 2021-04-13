@@ -1,4 +1,9 @@
 json.extract! list, :id, :name, :slug, :description, :created_at, :updated_at
+json.cover do
+   json.present list.cover.present?
+   json.thumb list.cover.url(:thumb)
+   json.cover list.cover.url(:cover)
+end
 json.cover_thumb list.cover.url(:thumb)
 json.cover_url list.cover.url(:cover)
 json.owner list.user.short_data

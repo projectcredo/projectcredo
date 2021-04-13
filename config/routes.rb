@@ -1,17 +1,5 @@
 Rails.application.routes.draw do
 
-#   root 'activities#index'
-#   get '/about' => 'static_pages#about'
-#   get '/how-to' => 'static_pages#how_to'
-#   get '/manifest.json' => 'static_pages#manifest'
-#   get '/browserconfig.xml' => 'static_pages#browserconfig'
-#   get '/.well-known/acme-challenge/:id' => 'static_pages#lets_encrypt'
-#
-#   devise_for :users, :controllers => {
-#     :registrations => 'auth/registrations',
-#     :omniauth_callbacks => 'auth/omniauth_callbacks'
-#   }
-
   # /api routes
   namespace :api do
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {
@@ -23,18 +11,16 @@ Rails.application.routes.draw do
     resources :activities, only: [:index]
 
     resource :lists, only: [:show, :create, :update, :destroy]
+    delete '/lists/remove-attachment/:type' => 'lists#remove_attachment'
 
     get '/profile/:username' => 'profile#index'
 
     resources :pins, only: [:create, :destroy]
     resource :bookmarks, only: [:show, :create, :destroy]
+    resources :comments, only: [:create, :edit, :update, :destroy]
     resource :votes, only: [:create, :destroy]
   end
 
-#   devise_scope :user do
-#     get '/users/remove-attachment/:type' => 'auth/registrations#remove_attachment', :as => :users_remove_attachment
-#   end
-#
 #   resource :charges, only: [:new, :create] do
 #     get :subscriptions
 #     post :subscribe
@@ -47,10 +33,6 @@ Rails.application.routes.draw do
 #   end
 #
 #   resources :pins, only: [:create, :destroy]
-#
-#   resources :lists, only: [:new, :create, :index] do
-#     resource :vote, controller: 'lists/votes', only: [:create, :destroy]
-#   end
 #
 #   post 'posts/load-open-graph' => 'posts#load_open_graph'
 #   resources :posts, only: [:create, :update, :destroy]

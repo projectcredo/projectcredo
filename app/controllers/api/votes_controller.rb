@@ -1,26 +1,29 @@
 class Api::VotesController < Api::ApplicationController
   before_action :ensure_current_user
+  before_action :set_model
 
   def create
-    list = List.find(votable_params[:id])
-    @current_user.likes list
+    @current_user.likes @model
     respond_to do |format|
-      format.html { redirect_to :back }
-      format.json
+      format.json { render json: { cached_votes_up: @model.cached_votes_up, voted: true } }
     end
   end
 
   def destroy
-    list = List.find(votable_params[:id])
-    @current_user.unlike list
+    @current_user.unlike @model
     respond_to do |format|
-      format.html { redirect_to :back }
-      format.json
+      format.json { render json: { cached_votes_up: @model.cached_votes_up, voted: false } }
     end
   end
 
   private
-    def votable_params
-      params.permit(:id)
+    def set_model
+      if params[:type] == 'list'
+        @model = List.find(params[:id])
+      elsif params[:type] == 'comment'
+        @model = Comment.find(params[:id])
+      else
+        bad_request()
+      end
     end
 end
