@@ -1,4 +1,4 @@
-json.extract! list, :id, :name, :slug, :description, :created_at, :updated_at
+json.extract! list, :id, :user_id, :name, :slug, :description, :created_at, :updated_at
 json.cover do
    json.present list.cover.present?
    json.thumb list.cover.url(:thumb)

@@ -1,7 +1,5 @@
 class Api::ApplicationController < ActionController::Base
   include DeviseTokenAuth::Concerns::SetUserByToken
-  include Pundit
-  require 'pp'
   before_action :set_current_user
   respond_to :json
 

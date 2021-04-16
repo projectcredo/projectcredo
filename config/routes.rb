@@ -8,17 +8,24 @@ Rails.application.routes.draw do
     }
     delete '/auth/remove-attachment/:type' => 'registrations#remove_attachment'
 
+    get '/profile/:username' => 'profile#index'
+
     resources :activities, only: [:index]
 
     resource :lists, only: [:show, :create, :update, :destroy]
     delete '/lists/remove-attachment/:type' => 'lists#remove_attachment'
 
-    get '/profile/:username' => 'profile#index'
+    resources :posts, only: [:create, :update, :destroy]
+    post '/posts/load-open-graph' => 'posts#load_open_graph'
 
+    resources :summaries, only: [:create, :update, :destroy] 
     resources :pins, only: [:create, :destroy]
     resource :bookmarks, only: [:show, :create, :destroy]
     resources :comments, only: [:create, :edit, :update, :destroy]
     resource :votes, only: [:create, :destroy]
+    resources :notifications, only: [:index]
+    get '/unread-notifications' => 'notifications#unread', as:'unread_notifications'
+    post '/read_notifications' => 'notifications#read_notifications', as:'read_notifications'
   end
 
 #   resource :charges, only: [:new, :create] do

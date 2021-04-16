@@ -5,3 +5,4 @@ json.authors paper.authors
 json.tags paper.tags
 json.direct_link paper.direct_link
 json.comments get_json_tree(paper.comments.order('created_at DESC'))
+json.bookmarked paper.bookmarked?

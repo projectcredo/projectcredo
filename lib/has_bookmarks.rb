@@ -17,6 +17,8 @@ module HasBookmarks
     (options[:user_id] || options[:user]) || options[:user] = User.current
 
     options[:user_id] = options.delete(:user).id if options[:user]
+    puts '======'
+    puts self.bookmarks.to_json
     result = self.bookmarks.where(:user_id => options.delete(:user_id))
     result[0]
   end
