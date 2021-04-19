@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {
       sessions: 'overrides/sessions',
       registrations: 'overrides/registrations',
+      omniauth_callbacks: 'overrides/omniauth_callbacks',
     }
     delete '/auth/remove-attachment/:type' => 'registrations#remove_attachment'
 
