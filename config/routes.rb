@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resource :votes, only: [:create, :destroy]
     resources :notifications, only: [:index]
     get '/unread-notifications' => 'notifications#unread', as:'unread_notifications'
-    post '/read_notifications' => 'notifications#read_notifications', as:'read_notifications'
+    post '/read-notifications' => 'notifications#read_notifications', as:'read_notifications'
   end
 
 #   resource :charges, only: [:new, :create] do

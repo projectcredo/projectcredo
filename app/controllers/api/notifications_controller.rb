@@ -2,7 +2,7 @@ class Api::NotificationsController < Api::ApplicationController
   before_action :ensure_current_user
 
   def index
-    @notifications = current_api_user.notifications.paginate(:page => params[:page], :per_page => 30)
+    @notifications = current_api_user.notifications.order(created_at: :desc).paginate(:page => params[:page], :per_page => 30)
 
     render 'jbuilders/_notifications.json.jbuilder'
   end
