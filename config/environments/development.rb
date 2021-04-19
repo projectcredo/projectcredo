@@ -63,10 +63,10 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :user_name => ENV['MAIL_USERNAME'],
     :password => ENV['MAIL_PASSWORD'],
-    :address => 'smtp.mailtrap.io',
-    :domain => 'smtp.mailtrap.io',
-    :port => '2525',
-    :authentication => :cram_md5,
+    :address => 'mailcatcher',
+    :domain => 'mailcatcher',
+    :port => '1025',
+    # :authentication => :cram_md5,
   }
   config.action_mailer.default_url_options = { host: 'localhost:3001', protocol: :http }
 

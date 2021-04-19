@@ -47,5 +47,10 @@ services:
       - POSTGRES_DB=projectcredo_development
       - POSTGRES_PASSWORD=secret
 
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080
+
 volumes:
   postgres-data:
