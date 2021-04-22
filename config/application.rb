@@ -40,5 +40,7 @@ module Projectcredo
       config.dsn = 'https://f999457a4654438080b41c4bd9e1c5a0:c3d7aad45f674cf08bea3a8068a7734b@sentry.io/1371890'
       config.environments = ['staging', 'production']
     end
+
+    config.frontend_url = ENV['FRONTEND_URL']
   end
 end
