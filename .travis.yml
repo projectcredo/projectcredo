@@ -9,11 +9,6 @@ services:
   - postgresql
 install:
   - bundle install
-  - nvm install 14
-  - node -v
-  - npm i -g yarn
-  - yarn
-  - bundle exec rails webpacker:compile
 script:
   - bundle exec rails db:create db:schema:load db:migrate RAILS_ENV=test
   - rspec
