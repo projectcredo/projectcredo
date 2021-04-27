@@ -1,6 +1,0 @@
-<%= paper.authors.map(&:full_name).join(', ') %>
-<i>
-  <%= content_tag(:span, "in #{paper.publication}", class: 'publication') if paper.publication.present? %>
-  <%= "(#{paper.published_at})" if paper.published_at.present? %>
-</i>
-

@@ -10,8 +10,6 @@ gem 'paperclip', '~> 5.2.0'
 gem 'aws-sdk', '~> 2.3.0'
 gem 'impressionist', '~> 1.6.1'
 
-gem 'pundit'
-
 gem "omniauth", "~> 1.9.1"
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
@@ -57,7 +55,6 @@ gem 'promise'
 gem 'rake', group: :test
 
 # Use webpacker to build assets
-gem 'webpacker', '~> 3.0'
 gem 'will_paginate'
 gem 'sentry-raven'
 gem 'link_thumbnailer'

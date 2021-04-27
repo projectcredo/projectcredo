@@ -3,8 +3,6 @@ class Api::ApplicationController < ActionController::Base
   before_action :set_current_user
   respond_to :json
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
   def set_current_user
     @current_user = nil
     if (current_api_user)
@@ -25,5 +23,9 @@ class Api::ApplicationController < ActionController::Base
 
   def forbidden
     render json: {status: 'Forbidden'}, status: :forbidden
+  end
+
+  def bad_request
+    render json: {status: 'Bad request'}, status: :bad_request
   end
 end

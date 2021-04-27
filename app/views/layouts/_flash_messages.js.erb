@@ -1,7 +1,0 @@
-<% if flash[:notice] %>
-  $('div.flash-messages').append("<%= escape_javascript content_tag(:div, render('layouts/alert_message', message: flash[:notice]), class: 'alert alert-info') %>")
-<% end %>
-
-<% if flash[:alert] %>
-  $('div.flash-messages').append("<%= escape_javascript content_tag(:div, render('layouts/alert_message', message: flash[:alert]), class: 'alert alert-danger') %>")
-<% end %>

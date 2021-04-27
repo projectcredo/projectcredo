@@ -1,4 +1,0 @@
-<% active = current_user.unread_notifications.length > 0 %>
-<a href="#" class="dropdown-toggle notification-button <%= 'unread-notifications' if active %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-remote="true">
-  <%= "(#{current_user.unread_notifications.length})" if active %>
-</a>

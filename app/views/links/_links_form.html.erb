@@ -1,9 +1,0 @@
-<%= form_for(paper, html: {class: "form-inline"}) do |p| %>
-  <div class="form-group">
-    <%= p.fields_for :links, paper.links.build do |l| %>
-      <%= l.text_field :url, class: "form-control", size: 50%>
-    <% end %>
-    <%= p.submit 'Add Link', class: "btn btn-xs btn-primary" %>
-    <i class="help-block"> Add a primary source link for this paper that represents the paper itself </i>
-  </div>
-<% end %>

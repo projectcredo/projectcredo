@@ -1,8 +1,0 @@
-<span class="tags-list">
-  <% tags = paper.tag_list %>
-  <% tags.each do |tag| %>
-    <a class="tag"><%= tag %></a>
-  <% end %>
-  <%= link_to (if tags.empty? then "add a tag" else "edit tags" end), '#', class: "add-tag" %>
-</span>
-<%=  render 'papers/tags_form', paper: paper %>
