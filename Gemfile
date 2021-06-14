@@ -61,6 +61,8 @@ gem 'link_thumbnailer'
 
 gem 'rack-cors'
 
+gem 'rest-client', '~> 2.1'
+
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
