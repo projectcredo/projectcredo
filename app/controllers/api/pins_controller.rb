@@ -3,14 +3,14 @@ class Api::PinsController < Api::ApplicationController
   before_action :set_pinned_lists
 
   def create
-    @pinned_lists << List.find_by(slug: list_params[:id])
+    @pinned_lists << List.find_by(id: list_params[:id])
     respond_to do |format|
       format.json
     end
   end
 
   def destroy
-    list = @pinned_lists.find_by(slug: list_params[:id])
+    list = @pinned_lists.find_by(id: list_params[:id])
     @pinned_lists = @pinned_lists.delete(list)
     respond_to do |format|
       format.json

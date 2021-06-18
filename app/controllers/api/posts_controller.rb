@@ -4,7 +4,7 @@ class Api::PostsController < Api::ApplicationController
   def create
     param! :list_id, Integer, required: true
     list = List.find(params[:list_id])
-    forbidden() if (list.user_id != current_api_user.id)
+    return forbidden() if (list.user_id != current_api_user.id)
 
     post = list.posts.new(params.require(:post).permit(:content).merge({user: current_api_user}))
     post.save!
@@ -19,7 +19,7 @@ class Api::PostsController < Api::ApplicationController
 
   def update
     post = Post.find(params[:id])
-    forbidden() if (post.user_id != current_api_user.id)
+    return forbidden() if (post.user_id != current_api_user.id)
 
     post.update!(params.require(:post).permit(:content))
 
@@ -28,7 +28,7 @@ class Api::PostsController < Api::ApplicationController
 
   def destroy
     post = Post.find(params[:id])
-    forbidden() if (post.user_id != current_api_user.id)
+    return forbidden() if (post.user_id != current_api_user.id)
 
     post.destroy!
 

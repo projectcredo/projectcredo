@@ -5,7 +5,7 @@ class Api::ApplicationController < ActionController::Base
 
   def set_current_user
     @current_user = nil
-    if (current_api_user)
+    if current_api_user
       User.current = current_api_user
       @current_user = current_api_user
     end

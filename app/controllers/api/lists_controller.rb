@@ -2,7 +2,7 @@ class Api::ListsController < Api::ApplicationController
   include ActivitiesHelper
   include NotificationsHelper
 
-  before_action :authenticate_api_user!, except: [:show]
+  before_action :ensure_current_user, except: [:show]
   before_action :set_user, except: [:create]
   before_action :set_list, except: [:create]
 
@@ -35,7 +35,7 @@ class Api::ListsController < Api::ApplicationController
   end
 
   def update
-    forbidden() if (@list.user_id != current_api_user.id)
+    return forbidden() if (@list.user_id != current_api_user.id)
 
     respond_to do |format|
       if @list.update(list_params)
@@ -47,7 +47,7 @@ class Api::ListsController < Api::ApplicationController
   end
 
   def destroy
-    forbidden() if (@list.user_id != current_api_user.id)
+    return forbidden() if (@list.user_id != current_api_user.id)
 
     @list.destroy
 
@@ -57,7 +57,7 @@ class Api::ListsController < Api::ApplicationController
   end
 
   def remove_attachment
-    forbidden() if (@list.user_id != current_api_user.id)
+    return forbidden() if (@list.user_id != current_api_user.id)
 
     unless @list.public_send(params[:type]).respond_to?(:destroy)
       render :nothing => true, :status => :bad_request

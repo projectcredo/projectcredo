@@ -5,7 +5,7 @@ class Api::SummariesController < Api::ApplicationController
   def create
     param! :list_id, Integer, required: true
     list = List.find(params[:list_id])
-    forbidden() if (list.user_id != current_api_user.id)
+    return forbidden() if (list.user_id != current_api_user.id)
     summary = list.summaries.build(summary_params)
     summary.user = current_api_user
     summary.evidence_rating = 20
@@ -15,14 +15,14 @@ class Api::SummariesController < Api::ApplicationController
   end
 
   def update
-    forbidden() if (@summary.list.user_id != current_api_user.id)
+    return forbidden() if (@summary.list.user_id != current_api_user.id)
     @summary.update(summary_params)
 
     render json: @summary.as_json
   end
 
   def destroy
-    forbidden() if (@summary.list.user_id != current_api_user.id)
+    return forbidden() if (@summary.list.user_id != current_api_user.id)
     @summary.destroy
 
     head :ok

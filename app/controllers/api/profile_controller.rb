@@ -1,5 +1,10 @@
 class Api::ProfileController < Api::ApplicationController
   before_action :set_user
+  before_action :ensure_current_user, only: [:me]
+
+  def me
+    render 'jbuilders/_user.json.jbuilder', {locals: {user: @current_user}}
+  end
 
   def index
     @visible_lists = @user.lists.ranked

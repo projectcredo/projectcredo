@@ -18,17 +18,16 @@ class Api::CommentsController < Api::ApplicationController
   end
 
   def update
-    forbidden() if @comment.user_id != current_api_user.id
+    return forbidden() if @comment.user_id != current_api_user.id
 
     @comment.update(comment_params.permit(:content))
     respond_to do |format|
-      format.html { redirect_back fallback_location: root_path, notice: 'Comment was successfully updated.' }
       format.json {render :json => get_json_tree([@comment])[0] }
     end
   end
 
   def destroy
-    forbidden() if @comment.user_id != current_api_user.id
+    return forbidden() if @comment.user_id != current_api_user.id
 
     @comment.destroy!
     respond_to do |format|
