@@ -145,36 +145,6 @@ class User < ApplicationRecord
       .limit(10)
   end
 
-  def self.from_omniauth(auth)
-    password = Devise.friendly_token[0,20]
-    user_created = false
-    user = where(email: auth.info.email).first_or_create do |user|
-      user.password = password
-      user.username = auth.info.name.parameterize.underscore # assuming the user model has a name
-      if ! auth.info.image.empty? then user.avatar = open(auth.info.image) end # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      user.skip_confirmation!
-      user_created = true
-    end
-
-    return user, password, user_created
-  end
-
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      if data = session['devise.facebook_data'] && session['devise.facebook_data']['extra']['raw_info']
-        user.email = data['email'] if user.email.blank?
-        user.username = data['name'].parameterize.underscore if user.username.blank?
-      end
-
-      if data = session['devise.google_data'] && session['devise.google_data']['info']
-       user.email = data['email'] if user.email.blank?
-       user.username = data['name'].parameterize.underscore if user.username.blank?
-      end
-    end
-  end
-
   def avatar_thumb
     avatar.url(:thumb)
   end

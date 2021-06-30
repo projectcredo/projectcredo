@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # /api routes
   namespace :api do
     get '/auth/me' => 'auth#me'
+    post '/auth/facebook' => 'auth#facebook'
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {
       sessions: 'overrides/sessions',
       registrations: 'overrides/registrations',
