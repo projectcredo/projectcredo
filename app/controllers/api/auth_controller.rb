@@ -3,11 +3,13 @@ class Api::AuthController < Api::ApplicationController
 
   def facebook
     auth = Auth::Facebook.new(params.require(:accessToken))
+    puts auth.user_data.inspect
     password = Devise.friendly_token[0,20]
     user = User.where(email: auth.user_data['email']).first_or_create do |user|
       user.password = password
       user.username = auth.user_data['name'].parameterize.underscore
-      if ! auth.user_data['picture'].empty? then user.avatar = open(auth.user_data['picture']['url']) end
+      picture = auth.user_data.dig('picture', 'data', 'url')
+      if picture.present? then user.avatar = open(picture) end
       user.skip_confirmation!
     end
 

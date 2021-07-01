@@ -3,7 +3,7 @@ services:
 
   app:
     build: .
-    command: bash -c "rm -f /app/tmp/pids/server.pid; rails server -b 0.0.0.0 -p 3001"
+    command: bash -c "rm -f /app/tmp/pids/server.pid; rails s -b 'ssl://0.0.0.0:3001?key=localhost.key&cert=localhost.crt'"
     ## Uncomment next to use remote debugging
     # command: >
     #   bash -c "rm -f /app/tmp/pids/server.pid;
