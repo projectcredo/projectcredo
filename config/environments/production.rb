@@ -86,9 +86,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default charset: "utf-8"
-  config.action_mailer.delivery_method = :postmark
-  config.action_mailer.postmark_settings = { api_token: ENV['POSTMARK_API_TOKEN'] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :user_name => ENV['POSTMARK_API_TOKEN'],
+    :password => ENV['POSTMARK_API_TOKEN'],
+    :address => 'smtp.postmarkapp.com',
+    :domain => 'smtp.postmarkapp.com',
+    :port => '25',
+    # :authentication => :cram_md5,
+  }
   if ENV['IS_REVIEW_APP']
     config.action_mailer.default_url_options = { host: "#{ENV['HEROKU_APP_NAME']}.herokuapp.com", protocol: :https }
   else

@@ -19,7 +19,6 @@ gem 'stripe'
 gem "recaptcha"
 
 gem 'closure_tree', '~> 6.1.0'
-gem 'postmark-rails', '~> 0.14.0'
 gem 'gibbon'
 # gem 'rails_autolink'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

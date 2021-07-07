@@ -17,7 +17,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - NODE_ENV=development
+      - RAILS_ENV=development
       - DOCKERIZED=true
     env_file:
       - '.env'
