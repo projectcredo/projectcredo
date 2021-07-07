@@ -242,12 +242,6 @@ GEM
     parser (3.0.0.0)
       ast (~> 2.4.1)
     pg (0.21.0)
-    postmark (1.9.1)
-      json
-      rake
-    postmark-rails (0.14.0)
-      actionmailer (>= 3.0.0)
-      postmark (~> 1.9.0)
     promise (0.3.1)
     public_suffix (4.0.6)
     puma (5.3.2)
@@ -412,7 +406,6 @@ DEPENDENCIES
   omniauth-google-oauth2
   paperclip (~> 5.2.0)
   pg (~> 0.18)
-  postmark-rails (~> 0.14.0)
   promise
   puma (~> 5.3)
   rack-cors
